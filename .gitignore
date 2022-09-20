@@ -1,0 +1,7 @@
+.vscode/
+obj/
+.DS_Store
+*.a
+*.o
+*.swp
+21sh
