@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/28 16:25:00 by jumanner          #+#    #+#              #
-#    Updated: 2022/09/20 14:56:32 by jumanner         ###   ########.fr        #
+#    Updated: 2022/09/20 15:23:32 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,13 +50,13 @@ OBJS := $(patsubst %, $(OBJ_DIR)/%, $(SRC_FILES:.c=.o))
 
 FT_PRINTF_DIR = ./ft_printf
 
-FT_PRINTF_SRC_FILES =
-		conversion_control.c ft_printf.c set_flags.c print_result.c hash_flag.c	\
-		flag_control.c numeric_conversion.c width_precision.c plus_flag.c		\
-		handle_double.c ft_printf_putstr.c double_helpers.c	double_helpers2.c	\
-		signed_conversion_handlers.c unsigned_conversion_handlers.c add_sign.c	\
-		n_conversion.c set_conv_type.c colours.c ft_printf_control.c			\
-		chop_chop.c print_result_functions.c zero_flag.c z_conversions.c
+FT_PRINTF_SRC_FILES = conversion_control.c ft_printf.c set_flags.c			\
+		print_result.c hash_flag.c flag_control.c numeric_conversion.c		\
+		width_precision.c plus_flag.c handle_double.c ft_printf_putstr.c	\
+		double_helpers.c double_helpers2.c signed_conversion_handlers.c		\
+		unsigned_conversion_handlers.c add_sign.c n_conversion.c			\
+		set_conv_type.c colours.c ft_printf_control.c chop_chop.c			\
+		print_result_functions.c zero_flag.c z_conversions.c
 FT_PRINTF_SRC_DIR = $(FT_PRINTF_DIR)/src
 FT_PRINTF_SRCS := $(patsubst %, $(FT_PRINTF_SRC_DIR)/%, $(FT_PRINTF_SRC_FILES))
 FT_PRINTF_OBJ_DIR = $(FT_PRINTF_DIR)/obj
