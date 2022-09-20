@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 16:21:09 by amann             #+#    #+#             */
-/*   Updated: 2022/03/15 10:53:40 by amann            ###   ########.fr       */
+/*   Updated: 2022/09/20 15:33:04 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static size_t	set_len(const char *s)
 	return (len);
 }
 
-void	check_colour(const char *s, size_t *cursor, int *printf_ret)
+void	check_colour(int fd, const char *s, size_t *cursor, int *printf_ret)
 {
 	size_t	i;
 	size_t	len;
@@ -80,5 +80,5 @@ void	check_colour(const char *s, size_t *cursor, int *printf_ret)
 			return ;
 		}
 	}
-	ft_printf_putchar("{", 1, printf_ret);
+	ft_printf_putchar(fd, "{", 1, printf_ret);
 }

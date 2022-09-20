@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/19 14:52:18 by amann             #+#    #+#             */
-/*   Updated: 2022/09/20 14:54:55 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/09/20 16:20:19 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,12 @@ typedef struct s_flags
 	t_width			width;
 }					t_flags;
 
+typedef struct s_loop
+{
+	int		fd;
+	size_t	i;
+}			t_loop;
+
 /***** FUNCTION PROTOTYPING *****/
 
 /* ft_printf.c */
@@ -94,7 +100,7 @@ int			ft_printf(const char *s, ...);
 int			ft_dprintf(int fd, const char *s, ...);
 
 /* ft_printf_control.c */
-void		ft_printf_ctrl(const char *s, va_list lst, size_t *p_i, int *p_ret);
+void		ft_printf_ctrl(const char *s, va_list lst, t_loop *l, int *p_ret);
 
 /* set_flags.c */
 void		set_flags_and_length(const char *s, t_flags *flag, int *h_i);
@@ -169,16 +175,19 @@ char		*handle_plus(char *res, t_flags flag, int len);
 char		*handle_zero(char *res, t_flags flag);
 
 /* print_result.c */
-void		print_result(char *s, t_flags flag, int *printf_res);
+void		print_result(int fd, char *res, t_flags flag, int *printf_ret);
 
 /* print_result_functions.c */
 void		precision_helper(char *res, char *new, t_width w, t_flags flag);
 char		*set_memory(char *res, t_width w, t_flags flag);
 
 /* ft_printf_putstr.c */
-void		ft_printf_putstr(char const *str, int *printf_res, t_flags flag);
-void		ft_printf_putchar(char const *str, size_t i, int *printf_res);
+void		ft_printf_putstr(int fd, char const *str, int *printf_res, \
+				t_flags flag);
+void		ft_printf_putchar(int fd, char const *str, size_t i, \
+				int *printf_res);
 
 /* colours.c */
-void		check_colour(const char *s, size_t *cursor, int *printf_ret);
+void		check_colour(int fd, const char *s, size_t *cursor, \
+				int *printf_ret);
 #endif

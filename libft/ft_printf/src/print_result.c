@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 14:37:43 by amann             #+#    #+#             */
-/*   Updated: 2022/03/11 13:54:24 by amann            ###   ########.fr       */
+/*   Updated: 2022/09/20 15:37:12 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ static int	nil_check_2(t_flags flag)
 			if (!flag.plus && !(flag.conv.d && !flag.width.width))
 				return (TRUE);
 		}
-	}		
+	}
 	return (FALSE);
 }
 
-void	print_result(char *res, t_flags flag, int *printf_ret)
+void	print_result(int fd, char *res, t_flags flag, int *printf_ret)
 {
 	char	*new;
 	t_width	w;
@@ -65,6 +65,6 @@ void	print_result(char *res, t_flags flag, int *printf_ret)
 		new = print_result_helper(new, flag);
 	if (!new)
 		return ;
-	ft_printf_putstr(new, printf_ret, flag);
+	ft_printf_putstr(fd, new, printf_ret, flag);
 	free(new);
 }

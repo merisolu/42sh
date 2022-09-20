@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 15:22:16 by amann             #+#    #+#             */
-/*   Updated: 2022/03/11 13:54:32 by amann            ###   ########.fr       */
+/*   Updated: 2022/09/20 16:13:35 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static size_t	control_loop(const char *s, va_list lst, t_flags *flag_data)
 	return ((size_t)i);
 }
 
-void	ft_printf_ctrl(const char *s, va_list lst, size_t *p_i, int *p_ret)
+void	ft_printf_ctrl(const char *s, va_list lst, t_loop *l, int *p_ret)
 {
 	size_t	i;
 	t_flags	flag_data;
@@ -60,13 +60,13 @@ void	ft_printf_ctrl(const char *s, va_list lst, size_t *p_i, int *p_ret)
 	i = control_loop(s, lst, &flag_data);
 	if (s[i] == '\0' || (ft_isalpha(s[i]) && !conv_char(s[i])))
 	{
-		*p_i += i;
+		l->i += i;
 		return ;
 	}
 	res = conversion_ctrl(s + i, lst, &flag_data, p_ret);
 	res = flag_control(res, flag_data);
-	print_result(res, flag_data, p_ret);
+	print_result(l->fd, res, flag_data, p_ret);
 	if (res)
 		free(res);
-	*p_i += i + 1;
+	l->i += i + 1;
 }

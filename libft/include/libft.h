@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 16:24:04 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/20 14:44:19 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/09/20 16:03:11 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,5 +319,6 @@ int			ft_get_next_line(const int fd, char **line);
 
 /* ft_printf */
 int			ft_printf(const char *format, ...);
+int			ft_dprintf(int fd, const char *format, ...);
 
 #endif

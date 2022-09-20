@@ -6,35 +6,36 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 12:42:19 by amann             #+#    #+#             */
-/*   Updated: 2022/09/20 14:54:33 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/09/20 16:09:18 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void	ft_printf_loop(const char *s, va_list lst, int *ret)
+static void	ft_printf_loop(int fd, const char *s, va_list lst, int *ret)
 {
 	size_t	count;
-	size_t	i;
+	t_loop	l;
 
 	count = 0;
-	i = 0;
-	while (s[i] != '\0')
+	l.i = 0;
+	l.fd = fd;
+	while (s[l.i] != '\0')
 	{
-		if (s[i] == '%' || s[i] == '{')
+		if (s[l.i] == '%' || s[l.i] == '{')
 		{
-			ft_printf_putchar(s + count, i - count, ret);
-			if (s[i + 1] == '\0' && s[i] == '%')
+			ft_printf_putchar(fd, s + count, l.i - count, ret);
+			if (s[l.i + 1] == '\0' && s[l.i] == '%')
 				return ;
-			if (s[i] == '{')
-				check_colour(s + i, &i, ret);
+			if (s[l.i] == '{')
+				check_colour(fd, s + l.i, &(l.i), ret);
 			else
-				ft_printf_ctrl((s + i + 1), lst, &i, ret);
-			count = i + 1;
+				ft_printf_ctrl((s + l.i + 1), lst, &l, ret);
+			count = l.i + 1;
 		}
-		i++;
+		(l.i)++;
 	}
-	ft_printf_putchar(s + count, i - count, ret);
+	ft_printf_putchar(fd, s + count, l.i - count, ret);
 }
 
 int	ft_printf(const char *s, ...)
@@ -44,7 +45,7 @@ int	ft_printf(const char *s, ...)
 
 	va_start(lst, s);
 	ret = 0;
-	ft_printf_loop(s, lst, &ret);
+	ft_printf_loop(STDOUT_FILENO, s, lst, &ret);
 	va_end(lst);
 	return (ret);
 }
@@ -54,9 +55,11 @@ int	ft_dprintf(int fd, const char *s, ...)
 	va_list	lst;
 	int		ret;
 
+	if (fd < 0)
+		return (0);
 	va_start(lst, s);
 	ret = 0;
-	ft_printf_loop(s, lst, &ret);
+	ft_printf_loop(fd, s, lst, &ret);
 	va_end(lst);
 	return (ret);
 }
