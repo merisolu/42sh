@@ -17,6 +17,7 @@
 # include <termios.h>
 # include <sys/ioctl.h>
 # include <dirent.h>
+# include <termcap.h>
 
 # if __linux__
 #  include <sys/wait.h>
@@ -31,6 +32,9 @@
 # define RETURN_COMMAND_NOT_FOUND 127
 
 /* Errors */
+# define ERR_ENV_MISSING_TERM "No TERM environment variable set."
+# define ERR_TERMCAP_NO_ACCESS "Unable to access termcap database."
+# define ERR_TERMCAP_NO_ENTRY "No database entry for current terminal type."
 # define ERR_LINE_READ "input read error"
 # define ERR_HISTORY_RECALL "history recall error"
 # define ERR_CHILD_PROC_FAIL "cannot make child process"

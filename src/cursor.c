@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:13:18 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/20 14:52:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/09/21 10:58:38 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  */
 void	save_cursor(void)
 {
-	ft_putstr_fd("\033[6n", STDIN_FILENO);
+	ft_putstr_fd("\x1B[6n", STDIN_FILENO);
 }
 
 /*
@@ -58,10 +58,12 @@ int	parse_cursor(char buf[BUF_SIZE], t_state *state)
 }
 
 /*
- * Restores the cursor to the position saved in *state by outputting the ANSI
- * escape sequence for moving the cursor. The format is: ESC[{ROW};{COLUMN}H
+ * Restores the cursor to the position saved in *state.
  */
 void	load_cursor(t_state *state)
 {
-	ft_printf("\033[%zu;%zuH", state->input_start_y, state->input_start_x);
+	ft_putstr(tgoto(
+			tgetstr("cm", NULL),
+			state->input_start_x - 1,
+			state->input_start_y - 1));
 }
