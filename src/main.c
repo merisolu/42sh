@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/20 16:16:56 by amann            ###   ########.fr       */
+/*   Updated: 2022/09/21 12:07:40 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,18 @@ static void	tokenize_and_execute(t_state *state)
 
 static int	setup(char *const **env, t_state *state)
 {
+	char	*term;
+	int		database_result;
+
 	set_signal_handling();
+	term = getenv("TERM");
+	if (!term)
+		return (print_error(ERR_ENV_MISSING_TERM, 0));
+	database_result = tgetent(NULL, term);
+	if (database_result < 0)
+		return (print_error(ERR_TERMCAP_NO_ACCESS, 0));
+	else if (database_result == 0)
+		return (print_error(ERR_TERMCAP_NO_ENTRY, 0));
 	if (!get_state_struct(env, state))
 		return (print_error(ERR_MALLOC_FAIL, 0));
 	if (!configure_input(state))

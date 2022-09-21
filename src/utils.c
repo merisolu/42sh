@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:03:49 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/20 14:52:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/09/21 11:31:48 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ static void	move_cursor_to_saved_position(t_state *state, size_t width)
 	size_t	text_rows;
 	size_t	column;
 
-	column = ((state->input_start_x + state->cursor - 1) % width) + 1;
+	column = ((state->input_start_x + state->cursor - 1) % width);
 	cursor_rows = (state->input_start_x + state->cursor - 1) / width;
 	text_rows = (ft_strlen(state->input) + ft_strlen(PROMPT)
 			+ state->input_start_x - 1) / width;
-	ft_printf("\033[%zuG", column);
+	ft_putstr(tgoto(tgetstr("ch", NULL), 0, column));
 	if (text_rows - cursor_rows > 0)
-		ft_printf("\033[%zuA", text_rows - cursor_rows);
+		ft_putstr(tgoto(tgetstr("UP", NULL), 0, text_rows - cursor_rows));
 }
 
 /*
@@ -89,7 +89,7 @@ void	print_state(t_state *state, int newline)
 		if (state->input_start_y > length)
 			state->input_start_y = 0;
 		load_cursor(state);
-		ft_printf("\033[0J%s%s ", PROMPT, state->input);
+		ft_printf("%s%s%s ", tgetstr("cd", NULL), PROMPT, state->input);
 		move_cursor_to_saved_position(state, width);
 	}
 	else if (!newline)
