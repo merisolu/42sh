@@ -39,6 +39,8 @@
 # define ARROW_RIGHT "\x1B[C"
 # define RETURN_KEY "\x0A"
 # define BACKSPACE "\x7F"
+# define HOME_KEY "\x1B[H"
+# define END_KEY "\x1B[F"
 
 /* Key sequences */
 

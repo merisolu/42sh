@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 10:58:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/21 11:43:03 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/09/21 13:42:08 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ static int	handle_cursor(char buf[BUF_SIZE], t_state *state)
 		if (state->cursor + 1 <= ft_strlen(state->input) + ft_strlen(PROMPT))
 			state->cursor++;
 	}
+	else if (ft_strequ(buf, HOME_KEY))
+		state->cursor = ft_strlen(PROMPT);
+	else if (ft_strequ(buf, END_KEY))
+		state->cursor = ft_strlen(state->input) + ft_strlen(PROMPT);
 	else
 		return (0);
 	return (3);
@@ -49,6 +53,8 @@ int	check_escape_sequence(char buf[BUF_SIZE], t_state *state)
 	{ARROW_DOWN, &handle_history},
 	{ARROW_LEFT, &handle_cursor},
 	{ARROW_RIGHT, &handle_cursor},
+	{HOME_KEY, &handle_cursor},
+	{END_KEY, &handle_cursor},
 	{0, NULL}
 	};
 
