@@ -31,7 +31,21 @@
 # define RETURN_NO_ACCESS 126
 # define RETURN_COMMAND_NOT_FOUND 127
 
+/* Keys */
+
+# define ARROW_UP "\x1B[A"
+# define ARROW_DOWN "\x1B[B"
+# define ARROW_LEFT "\x1B[D"
+# define ARROW_RIGHT "\x1B[C"
+# define RETURN_KEY "\x0A"
+# define BACKSPACE "\x7F"
+
+/* Key sequences */
+
+# define CTRL_W "\x17"
+
 /* Errors */
+
 # define ERR_ENV_MISSING_TERM "No TERM environment variable set."
 # define ERR_TERMCAP_NO_ACCESS "Unable to access termcap database."
 # define ERR_TERMCAP_NO_ENTRY "No database entry for current terminal type."
@@ -105,7 +119,7 @@ typedef int	t_input_handler(char buf[16], t_state *state);
 
 typedef struct s_input_handler_dispatch
 {
-	const char		control_char;
+	char			*activator;
 	t_input_handler	*run;
 }	t_input_handler_dispatch;
 
