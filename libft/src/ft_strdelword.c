@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 15:34:28 by jumanner          #+#    #+#             */
-/*   Updated: 2022/05/11 11:44:07 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/09/21 13:56:04 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ char	*ft_strdelword(const char *s, size_t end, size_t *del_count)
 		start--;
 	while (start > 0 && start < len && !ft_is_whitespace(s[start]))
 		start--;
+	if (start > 0)
+		start++;
 	result = ft_strnew(len - (end - start));
 	if (!result)
 		return (NULL);
