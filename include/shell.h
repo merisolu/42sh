@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/29 11:18:41 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/09/29 11:21:02 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,8 +179,8 @@ void	autocomplete(t_state *state);
 /* literals.c */
 int		check_literals(t_token **cursor, t_state *state, char ***result);
 
-/* escapes.c */
-int		check_escape_sequence(char buf[BUF_SIZE], t_state *state);
+/* movement.c */
+int		check_movement(char buf[BUF_SIZE], t_state *state);
 
 /* lexer.c */
 t_token	*tokenize(char *line);

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/20 14:52:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/09/29 11:21:02 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	get_line(t_state *state)
 	read_count = read(STDIN_FILENO, &buf, BUF_SIZE);
 	if (read_count == 0)
 		return (-2);
-	i = check_escape_sequence(buf, state);
+	i = check_movement(buf, state);
 	while (i < read_count)
 	{
 		if (handle_char(buf, &i, state) == 1)

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   escapes.c                                          :+:      :+:    :+:   */
+/*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 10:58:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/29 11:01:43 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/09/29 11:21:02 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static t_input_handler_dispatch	*get_dispatch_table(void)
 	return ((t_input_handler_dispatch *)dispatch_table);
 }
 
-int	check_escape_sequence(char buf[BUF_SIZE], t_state *state)
+int	check_movement(char buf[BUF_SIZE], t_state *state)
 {
 	size_t						i;
 	size_t						cursor_parse_result;
