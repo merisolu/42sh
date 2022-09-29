@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell.h                                        :+:      :+:    :+:   */
+/*   shell.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/01 12:05:38 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/09/29 11:18:41 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@
 # define ARROW_DOWN "\x1B[B"
 # define ARROW_LEFT "\x1B[D"
 # define ARROW_RIGHT "\x1B[C"
+# define ARROW_LEFT_ALT "\033b"
+# define ARROW_RIGHT_ALT "\033f"
 # define RETURN_KEY "\x0A"
 # define BACKSPACE "\x7F"
 # define HOME_KEY "\x1B[H"
