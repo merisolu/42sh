@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 13:56:40 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/20 14:52:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/03 17:45:25 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,7 @@ static int	free_env_args(t_cmd_env *env_args, int return_value)
 
 static int	print_env_error(char *str1, char *str2, char *str3, int value)
 {
-	ft_putstr_fd("env: ", STDERR_FILENO);
-	ft_putstr_fd(str1, STDERR_FILENO);
-	ft_putstr_fd(str2, STDERR_FILENO);
-	ft_putstr_fd(str3, STDERR_FILENO);
-	ft_putchar_fd('\n', STDERR_FILENO);
+	ft_dprintf(STDERR_FILENO, "env: %s%s%s\n", str1, str2, str3);
 	return (value);
 }
 

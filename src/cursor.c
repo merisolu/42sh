@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:13:18 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/21 10:58:38 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/03 17:46:21 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  */
 void	save_cursor(void)
 {
-	ft_putstr_fd("\x1B[6n", STDIN_FILENO);
+	ft_dprintf(STDIN_FILENO, "\x1B[6n");
 }
 
 /*

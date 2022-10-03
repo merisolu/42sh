@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 15:27:43 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/20 14:52:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/03 11:52:43 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,10 @@
 
 static int	print_cd_error(char *name, char *message, int return_value)
 {
-	ft_putstr_fd("21sh: cd: ", STDERR_FILENO);
+	ft_dprintf(STDERR_FILENO, "21sh: cd: ");
 	if (name)
-	{
-		ft_putstr_fd(name, STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-	}
-	ft_putendl_fd(message, STDERR_FILENO);
+		ft_dprintf(STDERR_FILENO, "%s: ", name);
+	ft_dprintf(STDERR_FILENO, "%s\n", message);
 	return (return_value);
 }
 
