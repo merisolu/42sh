@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/29 11:21:02 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/03 14:45:36 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ static int	append_input(t_state *state, char character)
 {
 	char	*temp;
 
-	temp = ft_strins(state->input,
-			state->cursor - ft_strlen(PROMPT) - 1, character);
+	temp = ft_strdup(state->input);
 	if (!temp)
 		return (-1);
-	free(state->input);
-	state->input = temp;
+	state->input[state->cursor] = character;
+	ft_strcpy(state->input + state->cursor + 1, temp + state->cursor);
+	state->cursor++;
 	return (1);
 }
 
@@ -40,7 +40,7 @@ static int	get_line(t_state *state)
 	i = check_movement(buf, state);
 	while (i < read_count)
 	{
-		if (handle_char(buf, &i, state) == 1)
+		if (handle_char(buf, state) == 1)
 			return (1);
 		if (buf[i] == '\t')
 			autocomplete(state);

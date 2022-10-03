@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 10:58:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/29 11:21:02 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/03 14:59:04 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ static int	handle_alt_arrows(char buf[BUF_SIZE], t_state *state)
 	size_t	end_limit;
 	int		delta;
 
-	start_limit = ft_strlen(PROMPT);
-	end_limit = ft_strlen(state->input) + ft_strlen(PROMPT);
-	offset = ft_strlen(PROMPT);
+	start_limit = 0;
+	end_limit = ft_strlen(state->input);
+	offset = 0;
 	if (ft_strequ(buf, ARROW_LEFT_ALT))
 	{
 		offset++;
@@ -54,18 +54,18 @@ static int	handle_cursor(char buf[BUF_SIZE], t_state *state)
 {
 	if (ft_strequ(buf, ARROW_LEFT))
 	{
-		if (state->cursor - 1 >= ft_strlen(PROMPT))
+		if (state->cursor > 0)
 			state->cursor--;
 	}
 	else if (ft_strequ(buf, ARROW_RIGHT))
 	{
-		if (state->cursor + 1 <= ft_strlen(state->input) + ft_strlen(PROMPT))
+		if (state->cursor + 1 <= ft_strlen(state->input))
 			state->cursor++;
 	}
 	else if (ft_strequ(buf, HOME_KEY))
-		state->cursor = ft_strlen(PROMPT);
+		state->cursor = 0;
 	else if (ft_strequ(buf, END_KEY))
-		state->cursor = ft_strlen(state->input) + ft_strlen(PROMPT);
+		state->cursor = ft_strlen(state->input);
 	else
 		return (0);
 	return (3);

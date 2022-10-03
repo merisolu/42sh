@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/29 11:21:02 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/03 14:26:21 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define PROMPT "$> "
 
 # define BUF_SIZE 16
+# define INPUT_MAX_SIZE ARG_MAX
 # define HISTORY_SIZE 50
 
 # define RETURN_NO_ACCESS 126
@@ -162,7 +163,7 @@ int		set_input_config(t_state *state);
 int		set_orig_config(t_state *state);
 
 /* input_handlers.c */
-int		handle_char(char buf[BUF_SIZE], int *index, t_state *state);
+int		handle_char(char buf[BUF_SIZE], t_state *state);
 
 /* cursor.c */
 void	save_cursor(void);

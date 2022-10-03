@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:03:49 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/21 11:31:48 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/03 16:17:39 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void	*var_copy(void *var)
 
 void	clear_input(t_state *state, int newline)
 {
-	ft_strdel(&(state->input));
-	state->cursor = ft_strlen(PROMPT);
+	ft_bzero(state->input, INPUT_MAX_SIZE);
+	state->cursor = 0;
 	if (newline)
 		ft_putchar('\n');
 }
@@ -48,8 +48,10 @@ static void	move_cursor_to_saved_position(t_state *state, size_t width)
 	size_t	text_rows;
 	size_t	column;
 
-	column = ((state->input_start_x + state->cursor - 1) % width);
-	cursor_rows = (state->input_start_x + state->cursor - 1) / width;
+	column = ((state->input_start_x + state->cursor + ft_strlen(PROMPT) - 1)
+			% width);
+	cursor_rows = (state->input_start_x + state->cursor + ft_strlen(PROMPT) - 1)
+		/ width;
 	text_rows = (ft_strlen(state->input) + ft_strlen(PROMPT)
 			+ state->input_start_x - 1) / width;
 	ft_putstr(tgoto(tgetstr("ch", NULL), 0, column));
@@ -80,19 +82,14 @@ void	print_state(t_state *state, int newline)
 		print_error(ERR_SIZE_GET_FAIL, 0);
 		return ;
 	}
-	if (state->input)
-	{
-		rows = (state->prev_input_len + state->input_start_x - 2) / width;
-		if (state->input_start_y + rows + newline > length + 1)
-			state->input_start_y -= (state->input_start_y + rows + newline) \
-				- length - 1;
-		if (state->input_start_y > length)
-			state->input_start_y = 0;
-		load_cursor(state);
-		ft_printf("%s%s%s ", tgetstr("cd", NULL), PROMPT, state->input);
-		move_cursor_to_saved_position(state, width);
-	}
-	else if (!newline)
-		ft_putstr(PROMPT);
-	state->prev_input_len = ft_strlen(PROMPT) + ft_strlen(state->input) + 1;
+	rows = (state->prev_input_len + state->input_start_x - 2) / width;
+	if (state->input_start_y + rows + newline > length + 1)
+		state->input_start_y -= (state->input_start_y + rows + newline) \
+			- length - 1;
+	if (state->input_start_y > length)
+		state->input_start_y = 0;
+	load_cursor(state);
+	ft_printf("%s%s%s ", tgetstr("cd", NULL), PROMPT, state->input);
+	move_cursor_to_saved_position(state, width);
+	state->prev_input_len = ft_strlen(state->input) + 1;
 }
