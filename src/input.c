@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/03 14:45:36 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/04 11:15:41 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,9 @@ extern int	g_last_signal;
 
 static int	append_input(t_state *state, char character)
 {
-	char	*temp;
-
-	temp = ft_strdup(state->input);
-	if (!temp)
-		return (-1);
+	ft_memmove(state->input + state->cursor + 1, state->input + state->cursor,
+		ft_strlen(state->input) - state->cursor);
 	state->input[state->cursor] = character;
-	ft_strcpy(state->input + state->cursor + 1, temp + state->cursor);
 	state->cursor++;
 	return (1);
 }
