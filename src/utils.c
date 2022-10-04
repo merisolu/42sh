@@ -82,14 +82,19 @@ void	print_state(t_state *state, int newline)
 		print_error(ERR_SIZE_GET_FAIL, 0);
 		return ;
 	}
-	rows = (state->prev_input_len + state->input_start_x - 2) / width;
-	if (state->input_start_y + rows + newline > length + 1)
-		state->input_start_y -= (state->input_start_y + rows + newline) \
-			- length - 1;
-	if (state->input_start_y > length)
-		state->input_start_y = 0;
-	load_cursor(state);
-	ft_printf("%s%s%s ", tgetstr("cd", NULL), PROMPT, state->input);
-	move_cursor_to_saved_position(state, width);
-	state->prev_input_len = ft_strlen(state->input) + 1;
+	if (state->input[0])
+	{
+		rows = (state->prev_input_len + state->input_start_x - 2) / width;
+		if (state->input_start_y + rows + newline > length + 1)
+			state->input_start_y -= (state->input_start_y + rows + newline) \
+				- length - 1;
+		if (state->input_start_y > length)
+			state->input_start_y = 0;
+		load_cursor(state);
+		ft_printf("%s%s%s ", tgetstr("cd", NULL), PROMPT, state->input);
+		move_cursor_to_saved_position(state, width);
+		state->prev_input_len = ft_strlen(state->input) + 1;
+	}
+	else if (!newline)
+		ft_putstr(PROMPT);
 }
