@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:29:22 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/03 16:05:47 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/04 11:47:04 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ static int	handle_delete_word(char buf[BUF_SIZE], t_state *state)
 		start++;
 	ft_strncpy(state->input, state->input, start);
 	ft_strcpy(state->input + start, state->input + end + 1);
+	ft_bzero(state->input + ft_strlen(state->input),
+		INPUT_MAX_SIZE - ft_strlen(state->input));
 	state->cursor -= end - start + 1;
 	return (0);
 }
@@ -49,6 +51,8 @@ static int	handle_delete_char(char buf[BUF_SIZE], t_state *state)
 	if (state->cursor == 0)
 		return (0);
 	ft_strcpy(state->input + state->cursor - 1, state->input + state->cursor);
+	ft_bzero(state->input + ft_strlen(state->input),
+		INPUT_MAX_SIZE - ft_strlen(state->input));
 	state->cursor--;
 	return (0);
 }
