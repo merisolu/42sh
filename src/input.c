@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/04 11:15:41 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/04 14:07:41 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,12 @@
 
 extern int	g_last_signal;
 
-static int	append_input(t_state *state, char character)
+static void	append_input(t_state *state, char character)
 {
 	ft_memmove(state->input + state->cursor + 1, state->input + state->cursor,
 		ft_strlen(state->input) - state->cursor);
 	state->input[state->cursor] = character;
 	state->cursor++;
-	return (1);
 }
 
 static int	get_line(t_state *state)
@@ -41,10 +40,7 @@ static int	get_line(t_state *state)
 		if (buf[i] == '\t')
 			autocomplete(state);
 		else if (ft_isprint(buf[i]))
-		{
-			if (append_input(state, buf[i]) != 1)
-				return (-1);
-		}
+			append_input(state, buf[i]);
 		i++;
 	}
 	return (0);
