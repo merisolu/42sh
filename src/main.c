@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/03 16:11:56 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/04 11:19:49 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ static int	cleanup(t_state *state)
 		return (print_error(ERR_TERMIOS_FAIL, 1));
 	ft_free_array_elements((void **)state->history, HISTORY_SIZE);
 	ft_free_null_array((void **)(state->env));
+	free(state->input);
 	return (state->exit_return_value);
 }
 
