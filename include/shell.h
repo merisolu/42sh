@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 12:49:29 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/05 13:07:12 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # define PROMPT "$> "
 
 # define BUF_SIZE 16
-# define INPUT_MAX_SIZE ARG_MAX
+# define INPUT_MAX_SIZE LINE_MAX
 # define HISTORY_SIZE 50
 
 # define RETURN_NO_ACCESS 126
