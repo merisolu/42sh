@@ -6,21 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:13:18 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/03 17:46:21 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/05 13:16:29 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-
-/*
- * Outputs the ANSI escape sequence for requesting the cursor's position.
- *
- * The output is then parsed and saved by parse_cursor().
- */
-void	save_cursor(void)
-{
-	ft_dprintf(STDIN_FILENO, "\x1B[6n");
-}
 
 /*
  * Parses the ANSI escape sequence which reports the current cursor's position.
@@ -28,7 +18,7 @@ void	save_cursor(void)
  *
  * After the output has been parsed, the row and column are stored in *state.
  */
-int	parse_cursor(char buf[BUF_SIZE], t_state *state)
+static int	parse_cursor(char buf[BUF_SIZE], t_state *state)
 {
 	size_t	x;
 	size_t	y;
@@ -55,6 +45,21 @@ int	parse_cursor(char buf[BUF_SIZE], t_state *state)
 	state->input_start_x = x;
 	state->input_start_y = y;
 	return (i + 1);
+}
+
+/*
+ * Outputs the ANSI escape sequence for requesting the cursor's position.
+ *
+ * The output is then parsed and saved by parse_cursor().
+ */
+void	save_cursor(t_state *state)
+{
+	char	buf[BUF_SIZE];
+
+	ft_putstr_fd("\x1B[6n", STDIN_FILENO);
+	ft_bzero(&buf, BUF_SIZE);
+	if (read(STDIN_FILENO, &buf, BUF_SIZE) > 0)
+		parse_cursor(buf, state);
 }
 
 /*

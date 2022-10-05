@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/29 11:21:02 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/05 13:14:22 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,18 @@
 
 extern int	g_last_signal;
 
-static int	append_input(t_state *state, char character)
+static void	append_input(t_state *state, char character)
 {
-	char	*temp;
-
-	temp = ft_strins(state->input,
-			state->cursor - ft_strlen(PROMPT) - 1, character);
-	if (!temp)
-		return (-1);
-	free(state->input);
-	state->input = temp;
-	return (1);
+	if (ft_strlen(state->input) == INPUT_MAX_SIZE)
+	{
+		ft_putstr(tgetstr("bl", NULL));
+		ft_putstr(tgetstr("vb", NULL));
+		return ;
+	}
+	ft_memmove(state->input + state->cursor + 1, state->input + state->cursor,
+		ft_strlen(state->input) - state->cursor);
+	state->input[state->cursor] = character;
+	state->cursor++;
 }
 
 static int	get_line(t_state *state)
@@ -40,15 +41,12 @@ static int	get_line(t_state *state)
 	i = check_movement(buf, state);
 	while (i < read_count)
 	{
-		if (handle_char(buf, &i, state) == 1)
+		if (handle_char(buf, state) == 1)
 			return (1);
 		if (buf[i] == '\t')
 			autocomplete(state);
 		else if (ft_isprint(buf[i]))
-		{
-			if (append_input(state, buf[i]) != 1)
-				return (-1);
-		}
+			append_input(state, buf[i]);
 		i++;
 	}
 	return (0);
@@ -59,11 +57,11 @@ int	get_input(t_state *state)
 	int	result;
 
 	result = get_line(state);
+	if (result == 0)
+		print_state(state);
 	if (result == 1)
 		return (1);
 	else if (result == -1)
 		return (print_error(ERR_LINE_READ, 1));
-	else if (result != -2)
-		print_state(state, 1);
 	return (result);
 }

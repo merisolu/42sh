@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/29 11:21:02 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/05 13:07:12 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define PROMPT "$> "
 
 # define BUF_SIZE 16
+# define INPUT_MAX_SIZE LINE_MAX
 # define HISTORY_SIZE 50
 
 # define RETURN_NO_ACCESS 126
@@ -81,7 +82,7 @@ typedef struct s_state
 {
 	char *const		*env;
 	char			*input;
-	size_t			prev_input_len;
+	size_t			previous_input_length;
 	int				continue_previous_node;
 	int				in_double_quotes;
 	int				in_assignment;
@@ -162,11 +163,10 @@ int		set_input_config(t_state *state);
 int		set_orig_config(t_state *state);
 
 /* input_handlers.c */
-int		handle_char(char buf[BUF_SIZE], int *index, t_state *state);
+int		handle_char(char buf[BUF_SIZE], t_state *state);
 
 /* cursor.c */
-void	save_cursor(void);
-int		parse_cursor(char buf[BUF_SIZE], t_state *state);
+void	save_cursor(t_state *state);
 void	load_cursor(t_state *state);
 
 /* history.c */
@@ -253,7 +253,7 @@ int		cmd_exit(char *const *args, t_state *state);
 
 /* utils.c */
 void	clear_input(t_state *state, int newline);
-void	print_state(t_state *state, int newline);
+void	print_state(t_state *state);
 void	*var_copy(void *var);
 
 /* error.c */

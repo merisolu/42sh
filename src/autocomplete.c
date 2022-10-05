@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/20 14:52:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/09/29 13:04:43 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,8 +132,9 @@ void	autocomplete(t_state *state)
 	if (temp)
 	{
 		free(state->input);
-		state->input = temp;
-		state->cursor = ft_strlen(PROMPT) + ft_strlen(state->input);
+		ft_strcpy(state->input, temp);
+		state->cursor = ft_strlen(state->input);
+		free(temp);
 	}
 	free(trimmed_input);
 }
