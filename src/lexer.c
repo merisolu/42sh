@@ -6,30 +6,49 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/28 15:31:29 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/05 17:45:56 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
+static const t_token_dispatch	*get_token_dispatch(void)
+{
+	static const t_token_dispatch dispatch_table[] = {
+		{'$', TOKEN_DOLLAR},
+		{'~', TOKEN_TILDE},
+		{'"', TOKEN_DOUBLE_QUOTE},
+		{'\'', TOKEN_SINGLE_QUOTE},
+		{'{', TOKEN_CURLY_OPEN},
+		{'}', TOKEN_CURLY_CLOSED},
+		{'+', TOKEN_PLUS},
+		{'-', TOKEN_MINUS},
+		{'|', TOKEN_PIPE},
+		{';', TOKEN_SEMICOLON},
+		{'>', TOKEN_GT},
+		{'<', TOKEN_LT},
+		{'&', TOKEN_AMPERSAND},
+		{'\\', TOKEN_BACKSLASH},
+		{'\0', TOKEN_NULL}
+	};
+	return (dispatch_table);
+}
+
 static t_token_type	get_token_type(char value)
 {
+	const t_token_dispatch	*dispatch_table;
+	size_t					i;
+
+	dispatch_table = get_token_dispatch();
+	i = 0;
+	while (dispatch_table[i].token != TOKEN_NULL)
+	{
+		if (dispatch_table[i].symbol == value)
+			return (dispatch_table[i].token);
+		i++;
+	}
 	if (ft_is_whitespace(value))
 		return (TOKEN_WHITESPACE);
-	if (value == '$')
-		return (TOKEN_DOLLAR);
-	if (value == '~')
-		return (TOKEN_TILDE);
-	if (value == '"')
-		return (TOKEN_DOUBLEQUOTE);
-	if (value == '{')
-		return (TOKEN_CURLY_OPEN);
-	if (value == '}')
-		return (TOKEN_CURLY_CLOSED);
-	if (value == '+')
-		return (TOKEN_PLUS);
-	if (value == '-')
-		return (TOKEN_MINUS);
 	return (TOKEN_LITERAL);
 }
 

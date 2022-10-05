@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 15:19:19 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/05 17:45:02 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,11 +109,19 @@ typedef enum e_token_type
 	TOKEN_WHITESPACE,
 	TOKEN_DOLLAR,
 	TOKEN_TILDE,
-	TOKEN_DOUBLEQUOTE,
+	TOKEN_DOUBLE_QUOTE,
+	TOKEN_SINGLE_QUOTE,
 	TOKEN_CURLY_OPEN,
 	TOKEN_CURLY_CLOSED,
 	TOKEN_PLUS,
-	TOKEN_MINUS
+	TOKEN_MINUS,
+	TOKEN_PIPE,
+	TOKEN_SEMICOLON,
+	TOKEN_GT,
+	TOKEN_LT,
+	TOKEN_AMPERSAND,
+	TOKEN_BACKSLASH,
+	TOKEN_NULL
 }	t_token_type;
 
 typedef struct s_token
@@ -123,6 +131,12 @@ typedef struct s_token
 	struct s_token	*next;
 	struct s_token	*previous;
 }	t_token;
+
+typedef struct s_token_dispatch
+{
+	char				symbol;
+	t_token_type		token;
+}	t_token_dispatch;
 
 typedef int	t_key_handler(t_state *state);
 
