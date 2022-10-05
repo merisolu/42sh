@@ -30,10 +30,10 @@ void	check_signal(t_state *state)
 	if (g_last_signal == SIGINT)
 	{
 		clear_input(state, 1);
-		save_cursor();
-		print_state(state, 0);
+		save_cursor(state);
+		print_state(state);
 	}
 	else if (g_last_signal == SIGWINCH)
-		print_state(state, 1);
+		print_state(state);
 	g_last_signal = 0;
 }

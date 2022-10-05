@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/03 14:26:21 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/05 12:49:29 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ typedef struct s_state
 {
 	char *const		*env;
 	char			*input;
-	size_t			prev_input_len;
+	size_t			previous_input_length;
 	int				continue_previous_node;
 	int				in_double_quotes;
 	int				in_assignment;
@@ -166,8 +166,7 @@ int		set_orig_config(t_state *state);
 int		handle_char(char buf[BUF_SIZE], t_state *state);
 
 /* cursor.c */
-void	save_cursor(void);
-int		parse_cursor(char buf[BUF_SIZE], t_state *state);
+void	save_cursor(t_state *state);
 void	load_cursor(t_state *state);
 
 /* history.c */
@@ -254,7 +253,7 @@ int		cmd_exit(char *const *args, t_state *state);
 
 /* utils.c */
 void	clear_input(t_state *state, int newline);
-void	print_state(t_state *state, int newline);
+void	print_state(t_state *state);
 void	*var_copy(void *var);
 
 /* error.c */

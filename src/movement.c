@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 10:58:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/03 14:59:04 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/05 12:50:38 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,15 +91,11 @@ static t_input_handler_dispatch	*get_dispatch_table(void)
 int	check_movement(char buf[BUF_SIZE], t_state *state)
 {
 	size_t						i;
-	size_t						cursor_parse_result;
 	t_input_handler_dispatch	*dispatch_table;
 
 	dispatch_table = get_dispatch_table();
 	if (buf[0] != 0x1B)
 		return (0);
-	cursor_parse_result = parse_cursor(buf, state);
-	if (cursor_parse_result > 0)
-		return (cursor_parse_result);
 	i = 0;
 	while (dispatch_table[i].run != NULL)
 	{

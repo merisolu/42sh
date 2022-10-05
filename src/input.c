@@ -51,11 +51,11 @@ int	get_input(t_state *state)
 	int	result;
 
 	result = get_line(state);
+	if (result == 0)
+		print_state(state);
 	if (result == 1)
 		return (1);
 	else if (result == -1)
 		return (print_error(ERR_LINE_READ, 1));
-	else if (result != -2)
-		print_state(state, 1);
 	return (result);
 }
