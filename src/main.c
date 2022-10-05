@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 14:18:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/05 15:37:17 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ static int	get_state_struct(char *const **env, t_state *result)
 			return (0);
 		i++;
 	}
-	result->history_index = -1;
 	if (!ft_dup_null_array((void **)*env, (void ***)&(result->env), var_copy))
 		return (0);
 	return (

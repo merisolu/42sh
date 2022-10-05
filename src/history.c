@@ -6,13 +6,13 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 11:20:31 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 11:27:55 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/05 15:55:04 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static void	history_move_up(t_state *state)
+static void	history_move_down(t_state *state)
 {
 	size_t	i;
 
@@ -23,6 +23,18 @@ static void	history_move_up(t_state *state)
 		i--;
 	}
 	ft_bzero(state->history[0], INPUT_MAX_SIZE);
+}
+
+static void	history_move_up(t_state *state)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < HISTORY_SIZE - 2)
+	{
+		ft_strcpy(state->history[i], state->history[i + 1]);
+		i++;
+	}
 }
 
 /*
@@ -40,10 +52,10 @@ static void	history_move_up(t_state *state)
  */
 int	history_store(char *input, t_state *state)
 {
-	state->history_index = -1;
+	state->history_index = 0;
 	if (ft_strequ(state->history[0], input))
 		return (1);
-	history_move_up(state);
+	history_move_down(state);
 	ft_strcpy(state->history[0], input);
 	return (1);
 }
@@ -60,16 +72,15 @@ int	history_recall(int diff, t_state *state)
 {
 	int	new_index;
 
-	new_index = ft_clamp(state->history_index + diff, -1, HISTORY_SIZE - 1);
-	if (new_index > -1)
-	{
-		if (state->history[new_index][0] != '\0')
-			ft_strcpy(state->input, state->history[new_index]);
-		else
-			new_index = state->history_index;
-	}
-	else
-		ft_bzero(state->input, INPUT_MAX_SIZE);
+	new_index = state->history_index + diff;
+	if (new_index < 0 || new_index > HISTORY_SIZE - 1
+		|| (new_index != 0 && state->history[new_index][0] == '\0'))
+		return (1);
+	if (state->history_index == 0 && diff > 0)
+		history_store(state->input, state);
+	ft_strcpy(state->input, state->history[new_index]);
+	if (new_index == 0 && diff < 0)
+		history_move_up(state);
 	state->cursor = ft_strlen(state->input);
 	state->history_index = new_index;
 	return (1);
