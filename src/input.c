@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 13:53:49 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/05 13:58:43 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,8 @@ static int	get_line(t_state *state)
 			return (1);
 		if (buf[i] == '\t')
 			autocomplete(state);
-		else if (buf[i] == CTRL_D && ft_strlen(state->input) == 0)
-		{
-			state->exiting = 1;
-			return (-2);
-		}
+		else if (buf[i] == CTRL_D)
+			return (ctrl_d(state));
 		else if (ft_isprint(buf[i]))
 			append_input(state, buf[i]);
 		i++;

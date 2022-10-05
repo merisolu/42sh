@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 13:52:59 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/05 14:10:50 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 
 # define RETURN_NO_ACCESS 126
 # define RETURN_COMMAND_NOT_FOUND 127
+
+# define RETURN_CTRL_D 127
 
 /* Keys */
 
@@ -176,6 +178,9 @@ int		history_recall(int diff, t_state *state);
 
 /* autocomplete.c */
 void	autocomplete(t_state *state);
+
+/* ctrl_d.c */
+int		ctrl_d(t_state *state);
 
 /* literals.c */
 int		check_literals(t_token **cursor, t_state *state, char ***result);
