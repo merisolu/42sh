@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 14:40:14 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/05 15:19:19 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ int		set_input_config(t_state *state);
 int		set_orig_config(t_state *state);
 
 /* input_handlers.c */
-int		handle_key(char buf[BUF_SIZE], t_state *state);
+int		handle_key(char *buf, t_state *state);
 
 /* cursor.c */
 void	save_cursor(t_state *state);
@@ -195,7 +195,7 @@ int		ctrl_d(t_state *state);
 int		check_literals(t_token **cursor, t_state *state, char ***result);
 
 /* movement.c */
-int		check_movement(char buf[BUF_SIZE], t_state *state);
+int		check_movement(char *buf, t_state *state);
 
 /* lexer.c */
 t_token	*tokenize(char *line);

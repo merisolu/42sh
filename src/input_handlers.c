@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:29:22 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 14:41:47 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/05 15:22:54 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	handle_delete_char(t_state *state)
 	return (0);
 }
 
-int	handle_key(char buf[BUF_SIZE], t_state *state)
+int	handle_key(char *buf, t_state *state)
 {
 	size_t								i;
 	static const t_key_handler_dispatch	dispatch_table[] = {
@@ -69,7 +69,8 @@ int	handle_key(char buf[BUF_SIZE], t_state *state)
 	i = 0;
 	while (dispatch_table[i].run != NULL)
 	{
-		if (ft_strequ(dispatch_table[i].activator, buf))
+		if (ft_strnequ(dispatch_table[i].activator, buf,
+				ft_strlen(dispatch_table[i].activator)))
 			return (dispatch_table[i].run(state));
 		i++;
 	}

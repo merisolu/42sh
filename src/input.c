@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 15:14:13 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/05 15:18:55 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,26 @@ static void	append_input(t_state *state, char character)
 static int	get_line(t_state *state)
 {
 	int		read_count;
-	char	buf[BUF_SIZE];
+	char	buf[BUF_SIZE + 1];
 	int		i;
 
-	ft_bzero(&buf, BUF_SIZE);
+	ft_bzero(&buf, BUF_SIZE + 1);
 	read_count = read(STDIN_FILENO, &buf, BUF_SIZE);
 	if (read_count == 0)
 		return (-2);
-	i = check_movement(buf, state);
+	i = 0;
 	while (i < read_count)
 	{
-		if (handle_key(buf, state) == 1)
+		i += check_movement(buf + i, state);
+		if (i >= BUF_SIZE)
+			break ;
+		if (handle_key(buf + i, state) == 1)
 			return (1);
 		else if (ft_isprint(buf[i]))
+		{
 			append_input(state, buf[i]);
+			print_state(state);
+		}
 		i++;
 	}
 	return (0);
