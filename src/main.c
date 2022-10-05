@@ -6,12 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 13:49:00 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/05 14:18:16 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-#include <fcntl.h>
 
 int	g_last_signal;
 
