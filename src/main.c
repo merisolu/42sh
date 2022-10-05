@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 12:49:28 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/05 13:49:00 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,5 +126,6 @@ int	main(const int argc, const char **argv, char *const *env)
 			g_last_signal = 0;
 		}
 	}
+	ft_putendl("exit");
 	return (cleanup(&state));
 }

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 13:07:12 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/05 13:52:59 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@
 /* Key sequences */
 
 # define CTRL_W "\x17"
+# define CTRL_D '\x04'
 
 /* Errors */
 
