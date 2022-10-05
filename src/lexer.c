@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 17:45:56 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/05 17:56:29 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,24 @@
 
 static const t_token_dispatch	*get_token_dispatch(void)
 {
-	static const t_token_dispatch dispatch_table[] = {
-		{'$', TOKEN_DOLLAR},
-		{'~', TOKEN_TILDE},
-		{'"', TOKEN_DOUBLE_QUOTE},
-		{'\'', TOKEN_SINGLE_QUOTE},
-		{'{', TOKEN_CURLY_OPEN},
-		{'}', TOKEN_CURLY_CLOSED},
-		{'+', TOKEN_PLUS},
-		{'-', TOKEN_MINUS},
-		{'|', TOKEN_PIPE},
-		{';', TOKEN_SEMICOLON},
-		{'>', TOKEN_GT},
-		{'<', TOKEN_LT},
-		{'&', TOKEN_AMPERSAND},
-		{'\\', TOKEN_BACKSLASH},
-		{'\0', TOKEN_NULL}
+	static const t_token_dispatch	dispatch_table[] = {
+	{'$', TOKEN_DOLLAR},
+	{'~', TOKEN_TILDE},
+	{'"', TOKEN_DOUBLE_QUOTE},
+	{'\'', TOKEN_SINGLE_QUOTE},
+	{'{', TOKEN_CURLY_OPEN},
+	{'}', TOKEN_CURLY_CLOSED},
+	{'+', TOKEN_PLUS},
+	{'-', TOKEN_MINUS},
+	{'|', TOKEN_PIPE},
+	{';', TOKEN_SEMICOLON},
+	{'>', TOKEN_GT},
+	{'<', TOKEN_LT},
+	{'&', TOKEN_AMPERSAND},
+	{'\\', TOKEN_BACKSLASH},
+	{'\0', TOKEN_NULL}
 	};
+
 	return (dispatch_table);
 }
 
