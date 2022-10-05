@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/04 14:07:41 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/05 13:14:22 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@ extern int	g_last_signal;
 
 static void	append_input(t_state *state, char character)
 {
+	if (ft_strlen(state->input) == INPUT_MAX_SIZE)
+	{
+		ft_putstr(tgetstr("bl", NULL));
+		ft_putstr(tgetstr("vb", NULL));
+		return ;
+	}
 	ft_memmove(state->input + state->cursor + 1, state->input + state->cursor,
 		ft_strlen(state->input) - state->cursor);
 	state->input[state->cursor] = character;
