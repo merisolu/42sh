@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 10:58:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 13:16:09 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/05 15:16:04 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ static int	handle_cursor(char buf[BUF_SIZE], t_state *state)
 	return (3);
 }
 
-static t_input_handler_dispatch	*get_dispatch_table(void)
+static t_movement_handler_dispatch	*get_dispatch_table(void)
 {
-	static const t_input_handler_dispatch	dispatch_table[] = {
+	static const t_movement_handler_dispatch	dispatch_table[] = {
 	{ARROW_UP, &handle_history},
 	{ARROW_DOWN, &handle_history},
 	{ARROW_LEFT, &handle_cursor},
@@ -85,13 +85,13 @@ static t_input_handler_dispatch	*get_dispatch_table(void)
 	{0, NULL}
 	};
 
-	return ((t_input_handler_dispatch *)dispatch_table);
+	return ((t_movement_handler_dispatch *)dispatch_table);
 }
 
 int	check_movement(char buf[BUF_SIZE], t_state *state)
 {
 	size_t						i;
-	t_input_handler_dispatch	*dispatch_table;
+	t_movement_handler_dispatch	*dispatch_table;
 
 	dispatch_table = get_dispatch_table();
 	if (buf[0] != 0x1B)

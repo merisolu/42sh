@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 14:10:50 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/05 14:40:14 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,12 @@
 # define BACKSPACE "\x7F"
 # define HOME_KEY "\x1B[H"
 # define END_KEY "\x1B[F"
+# define TAB "\t"
 
 /* Key sequences */
 
 # define CTRL_W "\x17"
-# define CTRL_D '\x04'
+# define CTRL_D "\x04"
 
 /* Errors */
 
@@ -123,13 +124,21 @@ typedef struct s_token
 	struct s_token	*previous;
 }	t_token;
 
-typedef int	t_input_handler(char buf[16], t_state *state);
+typedef int	t_key_handler(t_state *state);
 
-typedef struct s_input_handler_dispatch
+typedef struct s_key_handler_dispatch
 {
 	char			*activator;
-	t_input_handler	*run;
-}	t_input_handler_dispatch;
+	t_key_handler	*run;
+}	t_key_handler_dispatch;
+
+typedef int	t_movement_handler(char buf[16], t_state *state);
+
+typedef struct s_movement_handler_dispatch
+{
+	char				*activator;
+	t_movement_handler	*run;
+}	t_movement_handler_dispatch;
 
 typedef int	t_cmd(char *const *args, t_state *state);
 
@@ -166,7 +175,7 @@ int		set_input_config(t_state *state);
 int		set_orig_config(t_state *state);
 
 /* input_handlers.c */
-int		handle_char(char buf[BUF_SIZE], t_state *state);
+int		handle_key(char buf[BUF_SIZE], t_state *state);
 
 /* cursor.c */
 void	save_cursor(t_state *state);
@@ -177,7 +186,7 @@ int		history_store(char *input, t_state *state);
 int		history_recall(int diff, t_state *state);
 
 /* autocomplete.c */
-void	autocomplete(t_state *state);
+int		autocomplete(t_state *state);
 
 /* ctrl_d.c */
 int		ctrl_d(t_state *state);

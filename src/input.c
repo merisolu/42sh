@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 13:58:43 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/05 15:14:13 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,8 @@ static int	get_line(t_state *state)
 	i = check_movement(buf, state);
 	while (i < read_count)
 	{
-		if (handle_char(buf, state) == 1)
+		if (handle_key(buf, state) == 1)
 			return (1);
-		if (buf[i] == '\t')
-			autocomplete(state);
-		else if (buf[i] == CTRL_D)
-			return (ctrl_d(state));
 		else if (ft_isprint(buf[i]))
 			append_input(state, buf[i]);
 		i++;

@@ -6,26 +6,24 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:29:22 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/04 11:47:04 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/05 14:41:47 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static int	handle_newline(char buf[BUF_SIZE], t_state *state)
+static int	handle_newline(t_state *state)
 {
-	(void)buf;
 	state->cursor = 0;
 	return (1);
 }
 
-static int	handle_delete_word(char buf[BUF_SIZE], t_state *state)
+static int	handle_delete_word(t_state *state)
 {
 	size_t	len;
 	size_t	end;
 	size_t	start;
 
-	(void)buf;
 	if (!(ft_strlen(state->input) > 0 && state->cursor > 0))
 		return (0);
 	len = ft_strlen(state->input);
@@ -45,9 +43,8 @@ static int	handle_delete_word(char buf[BUF_SIZE], t_state *state)
 	return (0);
 }
 
-static int	handle_delete_char(char buf[BUF_SIZE], t_state *state)
+static int	handle_delete_char(t_state *state)
 {
-	(void)buf;
 	if (state->cursor == 0)
 		return (0);
 	ft_strcpy(state->input + state->cursor - 1, state->input + state->cursor);
@@ -57,13 +54,15 @@ static int	handle_delete_char(char buf[BUF_SIZE], t_state *state)
 	return (0);
 }
 
-int	handle_char(char buf[BUF_SIZE], t_state *state)
+int	handle_key(char buf[BUF_SIZE], t_state *state)
 {
-	size_t									i;
-	static const t_input_handler_dispatch	dispatch_table[] = {
+	size_t								i;
+	static const t_key_handler_dispatch	dispatch_table[] = {
 	{RETURN_KEY, &handle_newline},
 	{CTRL_W, &handle_delete_word},
 	{BACKSPACE, &handle_delete_char},
+	{TAB, &autocomplete},
+	{CTRL_D, &ctrl_d},
 	{0, NULL}
 	};
 
@@ -71,7 +70,7 @@ int	handle_char(char buf[BUF_SIZE], t_state *state)
 	while (dispatch_table[i].run != NULL)
 	{
 		if (ft_strequ(dispatch_table[i].activator, buf))
-			return (dispatch_table[i].run(buf, state));
+			return (dispatch_table[i].run(state));
 		i++;
 	}
 	return (0);

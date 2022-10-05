@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/29 13:04:43 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/05 14:32:12 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,30 +111,30 @@ static void	search_from_paths(char *const *env, char *input, char **result)
  * Attempts to autocomplete a partical binary name in state->input. If a match
  * is found, the partial name will be replaced with the full name.
  */
-void	autocomplete(t_state *state)
+int	autocomplete(t_state *state)
 {
 	char	*trimmed_input;
 	char	*temp;
 
 	if (!state || ft_strlen(state->input) == 0)
-		return ;
+		return (0);
 	trimmed_input = ft_strtrim(state->input);
 	if (ft_strlen(trimmed_input) == 0)
 	{
 		if (!trimmed_input)
 			print_error(ERR_MALLOC_FAIL, 0);
 		free(trimmed_input);
-		return ;
+		return (0);
 	}
 	temp = search_for_built_in(trimmed_input);
 	if (!temp)
 		search_from_paths(state->env, trimmed_input, &temp);
 	if (temp)
 	{
-		free(state->input);
 		ft_strcpy(state->input, temp);
 		state->cursor = ft_strlen(state->input);
 		free(temp);
 	}
 	free(trimmed_input);
+	return (0);
 }
