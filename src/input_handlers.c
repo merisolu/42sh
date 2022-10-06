@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:29:22 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/06 13:35:08 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/06 14:07:56 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,18 @@ static t_input_result	handle_delete_char(t_state *state)
 	return (NO_NEWLINE_FOUND);
 }
 
+static t_input_result	handle_delete_to_cursor(t_state *state)
+{
+	size_t	len;
+
+	len = ft_strlen(state->input + state->cursor);
+	ft_strcpy(state->input, state->input + state->cursor);
+	ft_bzero(state->input + ft_strlen(state->input),
+		INPUT_MAX_SIZE - state->cursor);
+	state->cursor = 0;
+	return (NO_NEWLINE_FOUND);
+}
+
 t_input_result	handle_key(char *buf, t_state *state)
 {
 	size_t								i;
@@ -63,6 +75,7 @@ t_input_result	handle_key(char *buf, t_state *state)
 	{BACKSPACE, &handle_delete_char},
 	{TAB, &autocomplete},
 	{CTRL_D, &ctrl_d},
+	{CTRL_U, &handle_delete_to_cursor},
 	{0, NULL}
 	};
 
