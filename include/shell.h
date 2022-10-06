@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 17:45:02 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/06 13:39:22 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@
 
 /* Globals */
 
-extern int	g_last_signal;
+extern int				g_last_signal;
 
 /* Types */
 
@@ -102,6 +102,14 @@ typedef struct s_state
 	int				exit_return_value;
 	int				exiting;
 }	t_state;
+
+typedef enum e_input_result
+{
+	NOTHING_READ = -2,
+	ERROR = -1,
+	NO_NEWLINE_FOUND = 0,
+	NEWLINE_FOUND = 1
+}	t_input_result;
 
 typedef enum e_token_type
 {
@@ -138,7 +146,7 @@ typedef struct s_token_dispatch
 	t_token_type		token;
 }	t_token_dispatch;
 
-typedef int	t_key_handler(t_state *state);
+typedef t_input_result	t_key_handler(t_state *state);
 
 typedef struct s_key_handler_dispatch
 {
@@ -146,7 +154,7 @@ typedef struct s_key_handler_dispatch
 	t_key_handler	*run;
 }	t_key_handler_dispatch;
 
-typedef int	t_movement_handler(char buf[16], t_state *state);
+typedef int				t_movement_handler(char buf[16], t_state *state);
 
 typedef struct s_movement_handler_dispatch
 {
@@ -154,7 +162,7 @@ typedef struct s_movement_handler_dispatch
 	t_movement_handler	*run;
 }	t_movement_handler_dispatch;
 
-typedef int	t_cmd(char *const *args, t_state *state);
+typedef int				t_cmd(char *const *args, t_state *state);
 
 typedef struct s_cmd_dispatch
 {
@@ -162,7 +170,8 @@ typedef struct s_cmd_dispatch
 	t_cmd		*run;
 }	t_cmd_dispatch;
 
-typedef int	t_parse_function(t_token **cursor, t_state *state, char ***result);
+typedef int				t_parse_function(\
+	t_token **cursor, t_state *state, char ***result);
 
 typedef struct s_cmd_env
 {
@@ -174,119 +183,123 @@ typedef struct s_cmd_env
 /* Files */
 
 /* signal.c */
-void	check_signal(t_state *state);
-void	set_signal_handling(void);
+void			check_signal(t_state *state);
+void			set_signal_handling(void);
 
 /* shlvl.c */
-int		set_shlvl(char *const **env);
+int				set_shlvl(char *const **env);
 
 /* input.c */
-int		get_input(t_state *state);
+t_input_result	get_input(t_state *state);
 
 /* input_configuration.c */
-int		configure_input(t_state *state);
-int		set_input_config(t_state *state);
-int		set_orig_config(t_state *state);
+int				configure_input(t_state *state);
+int				set_input_config(t_state *state);
+int				set_orig_config(t_state *state);
 
 /* input_handlers.c */
-int		handle_key(char *buf, t_state *state);
+t_input_result	handle_key(char *buf, t_state *state);
 
 /* cursor.c */
-void	save_cursor(t_state *state);
-void	load_cursor(t_state *state);
+void			save_cursor(t_state *state);
+void			load_cursor(t_state *state);
 
 /* history.c */
-int		history_store(char *input, t_state *state);
-int		history_recall(int diff, t_state *state);
+int				history_store(char *input, t_state *state);
+int				history_recall(int diff, t_state *state);
 
 /* autocomplete.c */
-int		autocomplete(t_state *state);
+int				autocomplete(t_state *state);
 
 /* ctrl_d.c */
-int		ctrl_d(t_state *state);
+int				ctrl_d(t_state *state);
 
 /* literals.c */
-int		check_literals(t_token **cursor, t_state *state, char ***result);
+int				check_literals(\
+	t_token **cursor, t_state *state, char ***result);
 
 /* movement.c */
-int		check_movement(char *buf, t_state *state);
+int				check_movement(char *buf, t_state *state);
 
 /* lexer.c */
-t_token	*tokenize(char *line);
+t_token			*tokenize(char *line);
 
 /* parser.c */
-char	**parse(t_token *list, t_state *state);
-int		expect_token(t_token **cursor, t_token_type type, t_token *on_fail);
-int		add_to_result(char ***result, char *value, t_state *state);
+char			**parse(t_token *list, t_state *state);
+int				expect_token(\
+	t_token **cursor, t_token_type type, t_token *on_fail);
+int				add_to_result(char ***result, char *value, t_state *state);
 
 /* expansions.c */
-int		expand_tilde(t_token **cursor, t_state *state, char ***result);
-int		expand_variable(t_token **cursor, t_state *state, char ***result);
+int				expand_tilde(t_token **cursor, t_state *state, char ***result);
+int				expand_variable(\
+	t_token **cursor, t_state *state, char ***result);
 
 /* token.c */
-t_token	*token_add(t_token **list, t_token_type type, char *value);
-void	token_free(t_token **token);
-int		token_is_word_end(t_token *token);
+t_token			*token_add(t_token **list, t_token_type type, char *value);
+void			token_free(t_token **token);
+int				token_is_word_end(t_token *token);
 
 /* token_list.c */
-void	token_list_free(t_token **list);
+void			token_list_free(t_token **list);
 
 /* environment.c */
-int		env_set(const char *name, const char *value, char *const **env);
-int		env_unset(const char *name, char *const **env);
-void	env_print_all(char *const *env);
-size_t	valid_env_name_length(char *name);
+int				env_set(const char *name, const char *value, char *const **env);
+int				env_unset(const char *name, char *const **env);
+void			env_print_all(char *const *env);
+size_t			valid_env_name_length(char *name);
 
 /* environment_getters.c */
-char	*env_get(const char *name, char *const *env);
-char	*env_get_or(char *name, char *on_fail, char *const *env);
-char	**env_get_pointer(const char *name, char *const *env);
+char			*env_get(const char *name, char *const *env);
+char			*env_get_or(char *name, char *on_fail, char *const *env);
+char			**env_get_pointer(const char *name, char *const *env);
 
 /* bin.c */
-int		bin_env_find(const char *name, char *const *env, char **result);
-int		bin_execute(char *path, char **args, char *const *env, int underscore);
+int				bin_env_find(const char *name, char *const *env, char **result);
+int				bin_execute(\
+	char *path, char **args, char *const *env, int underscore);
 
 /* built_ins.c */
-t_cmd	*get_built_in(const char *name);
-char	*search_for_built_in(const char *partial_name);
-int		run_built_in(t_cmd cmd, char *const *args, t_state *state);
+t_cmd			*get_built_in(const char *name);
+char			*search_for_built_in(const char *partial_name);
+int				run_built_in(t_cmd cmd, char *const *args, t_state *state);
 
 /* executor.c */
-int		execute(char *const *args, t_state *state);
+int				execute(char *const *args, t_state *state);
 
 /* return_value.c */
-int		get_return_value_from_status(int status);
-void	set_return_value(int return_value, t_state *state);
+int				get_return_value_from_status(int status);
+void			set_return_value(int return_value, t_state *state);
 
 /* Built-in commands */
 
 /* cmd_echo.c */
-int		cmd_echo(char *const *args, t_state *state);
+int				cmd_echo(char *const *args, t_state *state);
 
 /* cmd_cd.c */
-int		cmd_cd(char *const *args, t_state *state);
+int				cmd_cd(char *const *args, t_state *state);
 
 /* cmd_env.c */
-int		cmd_env(char *const *args, t_state *state);
+int				cmd_env(char *const *args, t_state *state);
 
 /* cmd_setenv.c */
-int		cmd_setenv(char *const *args, t_state *state);
+int				cmd_setenv(char *const *args, t_state *state);
 
 /* cmd_unsetenv.c */
-int		cmd_unsetenv(char *const *args, t_state *state);
+int				cmd_unsetenv(char *const *args, t_state *state);
 
 /* cmd_exit.c */
-int		cmd_exit(char *const *args, t_state *state);
+int				cmd_exit(char *const *args, t_state *state);
 
 /* Utilities */
 
 /* utils.c */
-void	clear_input(t_state *state, int newline);
-void	print_state(t_state *state);
-void	*var_copy(void *var);
+void			clear_input(t_state *state, int newline);
+void			print_state(t_state *state);
+void			*var_copy(void *var);
 
 /* error.c */
-int		print_error(char *message, int return_value);
-int		print_named_error(char *name, char *message, int return_value);
+int				print_error(char *message, int return_value);
+int				print_named_error(char *name, char *message, int return_value);
 
 #endif

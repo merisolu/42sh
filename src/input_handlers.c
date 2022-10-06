@@ -6,26 +6,26 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:29:22 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 15:22:54 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/06 13:35:08 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static int	handle_newline(t_state *state)
+static t_input_result	handle_newline(t_state *state)
 {
 	state->cursor = 0;
-	return (1);
+	return (NEWLINE_FOUND);
 }
 
-static int	handle_delete_word(t_state *state)
+static t_input_result	handle_delete_word(t_state *state)
 {
 	size_t	len;
 	size_t	end;
 	size_t	start;
 
 	if (!(ft_strlen(state->input) > 0 && state->cursor > 0))
-		return (0);
+		return (NO_NEWLINE_FOUND);
 	len = ft_strlen(state->input);
 	end = state->cursor - 1;
 	start = end;
@@ -40,21 +40,21 @@ static int	handle_delete_word(t_state *state)
 	ft_bzero(state->input + ft_strlen(state->input),
 		INPUT_MAX_SIZE - ft_strlen(state->input));
 	state->cursor -= end - start + 1;
-	return (0);
+	return (NO_NEWLINE_FOUND);
 }
 
-static int	handle_delete_char(t_state *state)
+static t_input_result	handle_delete_char(t_state *state)
 {
 	if (state->cursor == 0)
-		return (0);
+		return (NO_NEWLINE_FOUND);
 	ft_strcpy(state->input + state->cursor - 1, state->input + state->cursor);
 	ft_bzero(state->input + ft_strlen(state->input),
 		INPUT_MAX_SIZE - ft_strlen(state->input));
 	state->cursor--;
-	return (0);
+	return (NO_NEWLINE_FOUND);
 }
 
-int	handle_key(char *buf, t_state *state)
+t_input_result	handle_key(char *buf, t_state *state)
 {
 	size_t								i;
 	static const t_key_handler_dispatch	dispatch_table[] = {
@@ -74,5 +74,5 @@ int	handle_key(char *buf, t_state *state)
 			return (dispatch_table[i].run(state));
 		i++;
 	}
-	return (0);
+	return (NO_NEWLINE_FOUND);
 }
