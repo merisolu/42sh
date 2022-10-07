@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 14:21:42 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/07 10:48:52 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/07 11:26:40 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_input_result	cut_word(t_state *state)
 t_input_result	cut_to_cursor(t_state *state)
 {
 	ft_strncpy(state->clipboard, state->input, state->cursor);
+	state->clipboard[state->cursor] = '\0';
 	ft_strcpy(state->input, state->input + state->cursor);
 	ft_bzero(state->input + ft_strlen(state->input),
 		INPUT_MAX_SIZE - state->cursor);
@@ -53,6 +54,7 @@ t_input_result	cut_from_cursor(t_state *state)
 {
 	ft_strncpy(state->clipboard, state->input + state->cursor,
 		ft_strlen(state->input + state->cursor));
+	state->clipboard[ft_strlen(state->input + state->cursor)] = '\0';
 	ft_bzero(state->input + state->cursor,
 		ft_strlen(state->input) - state->cursor);
 	return (NO_NEWLINE_FOUND);
