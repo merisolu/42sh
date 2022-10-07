@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/06 14:20:51 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/07 11:45:50 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int	main(const int argc, const char **argv, char *const *env)
 	while (!state.exiting)
 	{
 		check_signal(&state);
-		if (get_input(&state) == NEWLINE_FOUND)
+		if (get_input(&state) == INPUT_NEWLINE_FOUND)
 		{
 			tokenize_and_execute(&state);
 			if (!state.exiting)

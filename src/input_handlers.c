@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:29:22 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/06 14:29:37 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/07 11:45:50 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,18 @@
 static t_input_result	handle_newline(t_state *state)
 {
 	state->cursor = 0;
-	return (NEWLINE_FOUND);
+	return (INPUT_NEWLINE_FOUND);
 }
 
 static t_input_result	handle_delete_char(t_state *state)
 {
 	if (state->cursor == 0)
-		return (NO_NEWLINE_FOUND);
+		return (INPUT_NO_NEWLINE_FOUND);
 	ft_strcpy(state->input + state->cursor - 1, state->input + state->cursor);
 	ft_bzero(state->input + ft_strlen(state->input),
 		INPUT_MAX_SIZE - ft_strlen(state->input));
 	state->cursor--;
-	return (NO_NEWLINE_FOUND);
+	return (INPUT_NO_NEWLINE_FOUND);
 }
 
 t_input_result	handle_key(char *buf, t_state *state)
@@ -52,5 +52,5 @@ t_input_result	handle_key(char *buf, t_state *state)
 			return (dispatch_table[i].run(state));
 		i++;
 	}
-	return (NO_NEWLINE_FOUND);
+	return (INPUT_NO_NEWLINE_FOUND);
 }

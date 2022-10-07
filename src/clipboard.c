@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 14:21:42 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/07 11:26:40 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/07 11:45:45 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_input_result	cut_word(t_state *state)
 	size_t	start;
 
 	if (!(ft_strlen(state->input) > 0 && state->cursor > 0))
-		return (NO_NEWLINE_FOUND);
+		return (INPUT_NO_NEWLINE_FOUND);
 	len = ft_strlen(state->input);
 	end = state->cursor - 1;
 	start = end;
@@ -36,7 +36,7 @@ t_input_result	cut_word(t_state *state)
 	ft_bzero(state->input + ft_strlen(state->input),
 		INPUT_MAX_SIZE - ft_strlen(state->input));
 	state->cursor -= end - start + 1;
-	return (NO_NEWLINE_FOUND);
+	return (INPUT_NO_NEWLINE_FOUND);
 }
 
 t_input_result	cut_to_cursor(t_state *state)
@@ -47,7 +47,7 @@ t_input_result	cut_to_cursor(t_state *state)
 	ft_bzero(state->input + ft_strlen(state->input),
 		INPUT_MAX_SIZE - state->cursor);
 	state->cursor = 0;
-	return (NO_NEWLINE_FOUND);
+	return (INPUT_NO_NEWLINE_FOUND);
 }
 
 t_input_result	cut_from_cursor(t_state *state)
@@ -57,7 +57,7 @@ t_input_result	cut_from_cursor(t_state *state)
 	state->clipboard[ft_strlen(state->input + state->cursor)] = '\0';
 	ft_bzero(state->input + state->cursor,
 		ft_strlen(state->input) - state->cursor);
-	return (NO_NEWLINE_FOUND);
+	return (INPUT_NO_NEWLINE_FOUND);
 }
 
 t_input_result	paste(t_state *state)
@@ -80,5 +80,5 @@ t_input_result	paste(t_state *state)
 		ft_putstr(tgetstr("bl", NULL));
 		ft_putstr(tgetstr("vb", NULL));
 	}
-	return (NO_NEWLINE_FOUND);
+	return (INPUT_NO_NEWLINE_FOUND);
 }

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/06 14:27:55 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/07 11:45:50 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,10 +109,10 @@ typedef struct s_state
 
 typedef enum e_input_result
 {
-	NOTHING_READ = -2,
-	ERROR = -1,
-	NO_NEWLINE_FOUND = 0,
-	NEWLINE_FOUND = 1
+	INPUT_NOTHING_READ = -2,
+	INPUT_READ_ERROR = -1,
+	INPUT_NO_NEWLINE_FOUND = 0,
+	INPUT_NEWLINE_FOUND = 1
 }	t_input_result;
 
 typedef enum e_token_type
