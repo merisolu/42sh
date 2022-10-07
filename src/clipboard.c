@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 14:21:42 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/07 10:26:30 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/07 10:48:52 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ t_input_result	paste(t_state *state)
 	ft_memmove(
 		state->input + state->cursor + ft_strlen(state->clipboard),
 		state->input + state->cursor,
-		ft_strlen(state->clipboard));
+		ft_strlen(state->input + state->cursor));
 	ft_memcpy(state->input + state->cursor, state->clipboard,
 		ft_strlen(state->clipboard));
 	state->cursor += ft_strlen(state->clipboard);
