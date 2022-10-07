@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 11:20:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/20 14:52:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/06 15:52:10 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,6 @@ int	configure_input(t_state *state)
 	state->input_conf.c_lflag |= ISIG;
 	state->input_conf.c_cc[VMIN] = 0;
 	state->input_conf.c_cc[VTIME] = 1;
+	state->input_conf.c_cc[VDSUSP] = '\0';
 	return (set_input_config(state));
 }

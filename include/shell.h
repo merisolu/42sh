@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/06 14:02:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/06 14:27:55 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,11 @@
 
 /* Key sequences */
 
-# define CTRL_W "\x17"
 # define CTRL_D "\x04"
+# define CTRL_K "\x0b"
 # define CTRL_U "\x15"
+# define CTRL_W "\x17"
+# define CTRL_Y "\x19"
 
 /* Errors */
 
@@ -87,6 +89,7 @@ typedef struct s_state
 {
 	char *const		*env;
 	char			*input;
+	char			*clipboard;
 	size_t			previous_input_length;
 	int				continue_previous_node;
 	int				in_double_quotes;
@@ -211,6 +214,12 @@ int				history_recall(int diff, t_state *state);
 
 /* autocomplete.c */
 int				autocomplete(t_state *state);
+
+/* clipboard.c */
+t_input_result	cut_word(t_state *state);
+t_input_result	cut_to_cursor(t_state *state);
+t_input_result	cut_from_cursor(t_state *state);
+t_input_result	paste(t_state *state);
 
 /* ctrl_d.c */
 int				ctrl_d(t_state *state);

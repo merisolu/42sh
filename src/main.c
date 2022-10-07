@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/06 13:24:26 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/06 14:20:51 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@ static int	get_state_struct(char *const **env, t_state *result)
 	ft_bzero(result, sizeof(t_state));
 	result->input = ft_memalloc(INPUT_MAX_SIZE + 1);
 	if (!result->input)
+		return (0);
+	result->clipboard = ft_memalloc(INPUT_MAX_SIZE + 1);
+	if (!result->clipboard)
 		return (0);
 	while (i < HISTORY_SIZE)
 	{
@@ -97,6 +100,7 @@ static int	cleanup(t_state *state)
 	ft_free_array_elements((void **)state->history, HISTORY_SIZE);
 	ft_free_null_array((void **)(state->env));
 	free(state->input);
+	free(state->clipboard);
 	return (state->exit_return_value);
 }
 
