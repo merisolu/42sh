@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/06 13:35:08 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/07 11:43:30 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,11 @@ t_input_result	get_input(t_state *state)
 	t_input_result	result;
 
 	result = get_line(state);
-	if (result == 0)
+	if (result == NO_NEWLINE_FOUND)
 		print_state(state);
-	if (result == 1)
-		return (1);
-	else if (result == -1)
+	if (result == NEWLINE_FOUND)
+		return (NEWLINE_FOUND);
+	else if (result == ERROR)
 		return (print_error(ERR_LINE_READ, 1));
 	return (result);
 }
