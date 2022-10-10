@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 16:24:04 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/20 16:03:11 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/10 10:26:05 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ char		**ft_strsplit(char const *s, char c);
 char		*ft_strtolower(char *s);
 char		*ft_strtoupper(char *s);
 int			ft_strisempty(const char *str);
+size_t		ft_strcharcount(char *str, char c);
 
 /* Mem functions. */
 void		*ft_memset(void *b, int c, size_t len);
