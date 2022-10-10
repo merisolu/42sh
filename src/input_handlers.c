@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:29:22 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/07 11:45:50 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/10 11:45:34 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,12 @@
 
 static t_input_result	handle_newline(t_state *state)
 {
-	state->cursor = 0;
-	return (INPUT_NEWLINE_FOUND);
+	if (state->input[ft_strlen(state->input) - 1] != '\\')
+	{
+		state->cursor = 0;
+		return (INPUT_NEWLINE_FOUND);
+	}
+	return (INPUT_NO_NEWLINE_FOUND);
 }
 
 static t_input_result	handle_delete_char(t_state *state)
