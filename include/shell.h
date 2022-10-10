@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/07 11:45:50 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/10 11:52:52 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ typedef struct s_state
 	char *const		*env;
 	char			*input;
 	char			*clipboard;
-	size_t			previous_input_length;
 	int				continue_previous_node;
 	int				in_double_quotes;
 	int				in_assignment;

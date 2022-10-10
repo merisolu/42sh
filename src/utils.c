@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:03:49 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 12:49:30 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/10 13:28:23 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,12 @@ static void	move_cursor_to_saved_position(t_state *state, size_t width)
  * 		- First the cursor position is moved back to where the start of the
  * 			prompt was printed.
  * 		- Then, the everything from the cursor to the end of the screen is
- * 			erased (this doesn't move the cursor).
- * 		- After that, the prompt and the input are printed back on to
+ * 			erased, and the prompt and the input are printed back on to
  * 			the screen.
- * 		- Finally, the cursor is moved to stored cursor position.
+ * 		- After that, the cursor is moved to stored cursor position.
+ * 		- Finally, input_start_y position is updated (the position that's
+ * 			set now will be used the next time move_cursor_to_saved_position
+ * 			is called).
  */
 void	print_state(t_state *state)
 {
@@ -82,13 +84,12 @@ void	print_state(t_state *state)
 		print_error(ERR_SIZE_GET_FAIL, 0);
 		return ;
 	}
-	rows = (state->previous_input_length + ft_strlen(PROMPT)) / width;
+	load_cursor(state);
+	ft_printf("%s%s%s ", tgetstr("cd", NULL), PROMPT, state->input);
+	move_cursor_to_saved_position(state, width);
+	rows = (ft_strlen(state->input) + ft_strlen(PROMPT)) / width;
 	if (state->input_start_y + rows > height)
 		state->input_start_y -= (state->input_start_y + rows) - height;
 	if (state->input_start_y > height)
 		state->input_start_y = 0;
-	load_cursor(state);
-	ft_printf("%s%s%s ", tgetstr("cd", NULL), PROMPT, state->input);
-	move_cursor_to_saved_position(state, width);
-	state->previous_input_length = ft_strlen(state->input);
 }
