@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:11:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/10 16:23:37 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/11 16:18:58 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	add_to_result(char ***result, char *value, t_state *state)
 	}
 	return (-1);
 }
-
+/*
 static int	run_functions(t_token **cursor, t_state *state, char ***result)
 {
 	int						func_return;
@@ -113,7 +113,7 @@ static void	reset_state(t_state *state)
 	state->has_seen_tilde_in_word = 0;
 	state->in_double_quotes = 0;
 }
-
+*/
 /* Shiny new parser 8-)
  *
  * Refer to grammar in opengroup
@@ -127,10 +127,54 @@ static void	reset_state(t_state *state)
  * Debug method needed to print the AST
 */
 
+static void	print_ast_node(t_ast *node)
+{
+	ft_putstr("NODE\nnode_type: ");
+	if (node->node_type == AST_COMPLETE_COMMAND)
+		ft_putendl("COMPLETE_COMMAND");
+	else if (node->node_type == AST_SIMPLE_COMMAND)
+		ft_putendl("SIMPLE_COMMAND");
+	else if (node->node_type == AST_COMMAND_NAME)
+		ft_putendl("COMMAND_NAME");
+	ft_putstr("token: ");
+	if (node->token)
+		ft_putendl(node->token->value);
+	else
+		ft_putendl("none");
+	if (node->left)
+		ft_putendl(" ||\n ||\n \\/");
+}
+
+static void	tree_iterate(t_ast *root)
+{
+	if (root)
+	{
+		print_ast_node(root);
+		tree_iterate(root->left);
+		tree_iterate(root->right);
+	}
+}
+
+static void	print_ast(t_ast **tree)
+{
+	size_t	idx;
+	t_ast	*root;
+
+	idx = 0;
+	while (tree[idx])
+	{
+		root = tree[idx];
+		tree_iterate(root);
+		idx++;
+	}
+}
+
 char	**parse(t_token *list, t_state *state)
 {
-	(void ) list;
 	(void ) state;
+	if (ft_strequ(list->value, "exit"))
+		exit(0);
+	print_ast(construct_ast_list(&list));
 	return (NULL);
 }
 /*

@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/11 13:55:29 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/11 15:28:58 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ typedef enum e_token_type
 	TOKEN_LT,
 	TOKEN_AMPERSAND,
 	TOKEN_BACKSLASH,
+	TOKEN_NEWLINE,
 	TOKEN_NULL
 }	t_token_type;
 
@@ -200,11 +201,14 @@ typedef struct s_ast
 {
 	t_ast_node_type	node_type;
 	t_token			*token;
-	t_ast			*left;
-	t_ast			*right;
+	struct s_ast	*left;
+	struct s_ast	*right;
 }	t_ast;
 
 /* Files */
+
+/* grammar.c */
+t_ast	**construct_ast_list(t_token **cursor);
 
 /* signal.c */
 void			check_signal(t_state *state);
