@@ -6,11 +6,29 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 15:23:36 by amann             #+#    #+#             */
-/*   Updated: 2022/10/11 16:14:01 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/11 18:48:33 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
+
+void	realloc_array(char ***arr, size_t size)
+{
+	char	**res;
+	size_t	i;
+
+
+	res = (char **) ft_memalloc(sizeof(char *) * (size + 1));
+	//malloc protect
+	i = 0;
+	while (i < size)
+	{
+		res[i] = (*arr)[i];
+		i++;
+	}
+	free(*arr);
+	*arr = res;
+}
 
 size_t	token_semicolon_count(t_token *list)
 {
@@ -45,6 +63,53 @@ int	cmd_name(t_token **cursor, t_token *reset)
 	return (FALSE);
 }
 
+t_ast	*cmd_suffix(t_token **cursor)
+{
+	t_ast	*res;
+	size_t	size;
+	size_t	idx;
+	size_t	args;
+
+	if (!*cursor || (*cursor)->type == TOKEN_SEMICOLON)
+		return (NULL);
+	res = (t_ast *) ft_memalloc(sizeof(t_ast));
+	if (!res)
+		return (NULL);
+	res->node_type = AST_COMMAND_SUFFIX;
+	res->left = NULL;
+	res->right = NULL;
+	res->token = NULL;
+	size = 2;
+	idx = 0;
+	args = FALSE;
+	res->arg_list = (char **) ft_memalloc(sizeof(char *) * (size + 1));
+	while (*cursor)
+	{
+		if ((*cursor)->type == TOKEN_SEMICOLON || (*cursor)->type == TOKEN_PIPE)
+			break ;
+		if ((*cursor)->type == TOKEN_WORD)
+		{
+			if (!args)
+				args = TRUE;
+			if (idx > size)
+			{
+				size *= 2;
+				realloc_array(&(res->arg_list), size);
+			}
+			res->arg_list[idx] = ft_strdup((*cursor)->value);
+			idx++;
+		}
+		*cursor = (*cursor)->next;
+	}
+	if (!args)
+	{
+		free(res->arg_list);
+		free(res);
+		return (NULL);
+	}
+	return (res);
+}
+
 t_ast	*simple_command(t_token **cursor, t_token *reset)
 {
 	t_ast	*res;
@@ -69,10 +134,9 @@ t_ast	*simple_command(t_token **cursor, t_token *reset)
 		res->left->right = NULL;
 		if (*cursor)
 			*cursor = (*cursor)->next;
-		if (!*cursor || (*cursor)->type == TOKEN_SEMICOLON)
-		{
-			res->right = NULL;
-		}
+		res->right = cmd_suffix(cursor);
+		//if (!res->right)
+		//.	return (NULL);
 	}
 	return (res);
 }

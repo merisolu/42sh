@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/11 15:28:58 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/11 17:25:37 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,6 +201,7 @@ typedef struct s_ast
 {
 	t_ast_node_type	node_type;
 	t_token			*token;
+	char			**arg_list;
 	struct s_ast	*left;
 	struct s_ast	*right;
 }	t_ast;

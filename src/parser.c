@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:11:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/11 16:18:58 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/11 18:55:48 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ static int	run_functions(t_token **cursor, t_state *state, char ***result)
 	}
 	return (0);
 }
-
+*/
 static void	reset_state(t_state *state)
 {
 	if (!state)
@@ -113,7 +113,7 @@ static void	reset_state(t_state *state)
 	state->has_seen_tilde_in_word = 0;
 	state->in_double_quotes = 0;
 }
-*/
+
 /* Shiny new parser 8-)
  *
  * Refer to grammar in opengroup
@@ -129,18 +129,24 @@ static void	reset_state(t_state *state)
 
 static void	print_ast_node(t_ast *node)
 {
-	ft_putstr("NODE\nnode_type: ");
 	if (node->node_type == AST_COMPLETE_COMMAND)
 		ft_putendl("COMPLETE_COMMAND");
 	else if (node->node_type == AST_SIMPLE_COMMAND)
 		ft_putendl("SIMPLE_COMMAND");
-	else if (node->node_type == AST_COMMAND_NAME)
+	if (node->node_type == AST_COMMAND_NAME)
+	{
 		ft_putendl("COMMAND_NAME");
-	ft_putstr("token: ");
-	if (node->token)
+		ft_putstr("token: ");
 		ft_putendl(node->token->value);
-	else
-		ft_putendl("none");
+	}
+	if (node->node_type == AST_COMMAND_SUFFIX)
+	{
+		ft_putendl("COMMAND_SUFFIX");
+		ft_putstr("token: ");
+		for (int i = 0; node->arg_list[i]; i++)
+			ft_printf("%s ", node->arg_list[i]);
+		ft_putchar('\n');
+	}
 	if (node->left)
 		ft_putendl(" ||\n ||\n \\/");
 }
@@ -160,6 +166,11 @@ static void	print_ast(t_ast **tree)
 	size_t	idx;
 	t_ast	*root;
 
+	if (!tree)
+	{
+		ft_putendl("something terrible happened");
+		return ;
+	}
 	idx = 0;
 	while (tree[idx])
 	{
@@ -169,11 +180,45 @@ static void	print_ast(t_ast **tree)
 	}
 }
 
+void	clense_ws(t_token **list)
+{
+	t_token	*cursor;
+	t_token *temp;
+	int		in_quotes;
+
+	in_quotes = FALSE;
+	cursor = *list;
+	while (cursor)
+	{
+		ft_printf("%s\n", cursor->value);
+		if (cursor->type == TOKEN_WHITESPACE)
+		{
+			if (cursor->previous == NULL)
+				temp = cursor->next;
+			else if (cursor->next == NULL)
+				temp = NULL;
+			else
+			{
+				cursor->previous->next = cursor->next;
+				cursor->next->previous = cursor->previous;
+				temp = cursor->next;
+			}
+			free(cursor->value);
+			free(cursor);
+			cursor = temp;
+		}
+		else
+			cursor = cursor->next;
+	}
+}
+
 char	**parse(t_token *list, t_state *state)
 {
-	(void ) state;
+	reset_state(state);
 	if (ft_strequ(list->value, "exit"))
 		exit(0);
+	clense_ws(&list);
+	clense_ws(&list);
 	print_ast(construct_ast_list(&list));
 	return (NULL);
 }
