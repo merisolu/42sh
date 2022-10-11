@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:03:49 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/11 11:03:43 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/11 13:33:38 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,10 @@ static void	move_cursor_to_saved_position(t_state *state)
 	size_t	text_rows;
 	size_t	column;
 
-	if (ft_strrchr(state->input, '\n'))
-		column = (((state->cursor - (ft_strrchr(state->input, '\n')
-							- state->input)) - 1) % state->width);
-	else
-		column = ((state->input_start_x + state->cursor + ft_strlen(PROMPT) - 1)
-				% state->width);
+	column = ft_dstrchr(state->input, '\n', state->cursor - 1);
+	if (column == state->cursor || state->cursor == 0)
+		column = (state->input_start_x + state->cursor + ft_strlen(PROMPT) - 1)
+			% state->width;
 	cursor_rows = (state->input_start_x + state->cursor + ft_strlen(PROMPT) - 1)
 		/ state->width;
 	text_rows = (ft_strlen(state->input) + ft_strlen(PROMPT)
@@ -54,6 +52,9 @@ static void	move_cursor_to_saved_position(t_state *state)
 	ft_putstr(tgoto(tgetstr("ch", NULL), 0, column));
 	if (text_rows - cursor_rows > 0)
 		ft_putstr(tgoto(tgetstr("UP", NULL), 0, text_rows - cursor_rows));
+	if (ft_strcharcount(state->input + state->cursor, '\n') > 0)
+		ft_putstr(tgoto(tgetstr("UP", NULL), 0,
+				ft_strcharcount(state->input + state->cursor, '\n')));
 }
 
 /*
