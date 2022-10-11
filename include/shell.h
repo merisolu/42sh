@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/10 11:52:52 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/11 10:17:41 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ typedef struct s_state
 	size_t			cursor;
 	size_t			input_start_x;
 	size_t			input_start_y;
+	size_t			width;
+	size_t			height;
 	struct termios	input_conf;
 	struct termios	orig_conf;
 	char			*history[HISTORY_SIZE];
@@ -303,6 +305,7 @@ int				cmd_exit(char *const *args, t_state *state);
 /* Utilities */
 
 /* utils.c */
+void			update_window_size(t_state *state);
 void			clear_input(t_state *state, int newline);
 void			print_state(t_state *state);
 void			*var_copy(void *var);
