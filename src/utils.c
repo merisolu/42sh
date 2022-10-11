@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:03:49 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/11 10:18:55 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/11 11:03:43 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,12 @@ static void	move_cursor_to_saved_position(t_state *state)
 	size_t	text_rows;
 	size_t	column;
 
-	column = ((state->input_start_x + state->cursor + ft_strlen(PROMPT) - 1)
-			% state->width);
+	if (ft_strrchr(state->input, '\n'))
+		column = (((state->cursor - (ft_strrchr(state->input, '\n')
+							- state->input)) - 1) % state->width);
+	else
+		column = ((state->input_start_x + state->cursor + ft_strlen(PROMPT) - 1)
+				% state->width);
 	cursor_rows = (state->input_start_x + state->cursor + ft_strlen(PROMPT) - 1)
 		/ state->width;
 	text_rows = (ft_strlen(state->input) + ft_strlen(PROMPT)
@@ -73,7 +77,8 @@ void	print_state(t_state *state)
 	load_cursor(state);
 	ft_printf("%s%s%s ", tgetstr("cd", NULL), PROMPT, state->input);
 	move_cursor_to_saved_position(state);
-	rows = (ft_strlen(state->input) + ft_strlen(PROMPT)) / state->width;
+	rows = ((ft_strlen(state->input) + ft_strlen(PROMPT)) / state->width)
+		+ ft_strcharcount(state->input, '\n');
 	if (state->input_start_y + rows > state->height)
 		state->input_start_y -= (state->input_start_y + rows) - state->height;
 	if (state->input_start_y > state->height)
