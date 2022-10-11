@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 17:56:29 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/10 15:53:30 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static t_token_type	get_token_type(char value)
 	}
 	if (ft_is_whitespace(value))
 		return (TOKEN_WHITESPACE);
-	return (TOKEN_LITERAL);
+	return (TOKEN_WORD);
 }
 
 t_token	*tokenize(char *line)
@@ -69,7 +69,7 @@ t_token	*tokenize(char *line)
 	while (line[i])
 	{
 		if ((get_token_type(line[i]) != type
-				|| (type != TOKEN_LITERAL && type != TOKEN_WHITESPACE))
+				|| (type != TOKEN_WORD && type != TOKEN_WHITESPACE))
 			&& (i - changed) > 0)
 		{
 			token_add(&result, type, ft_strsub(line, changed, i - changed));

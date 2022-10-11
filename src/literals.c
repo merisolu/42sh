@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   literals.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 15:05:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 17:39:08 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/10 15:53:30 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	check_literals(t_token **cursor, t_state *state, char ***result)
 			return (add_to_result(result, "", state));
 		return (1);
 	}
-	if (expect_token(cursor, TOKEN_LITERAL, original))
+	if (expect_token(cursor, TOKEN_WORD, original))
 		return (add_to_result(result, original->value, state));
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/07 11:45:50 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/11 13:55:29 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@
 # define RETURN_COMMAND_NOT_FOUND 127
 
 # define RETURN_CTRL_D 127
+
+# define TRUE 1
+# define FALSE 0
 
 /* Keys */
 
@@ -117,7 +120,7 @@ typedef enum e_input_result
 
 typedef enum e_token_type
 {
-	TOKEN_LITERAL,
+	TOKEN_WORD,
 	TOKEN_WHITESPACE,
 	TOKEN_DOLLAR,
 	TOKEN_TILDE,
@@ -183,6 +186,23 @@ typedef struct s_cmd_env
 	char	**args;
 	char	**env;
 }	t_cmd_env;
+
+typedef enum e_ast_node_type
+{
+	AST_COMPLETE_COMMAND,
+	AST_PIPE_SEQUENCE,
+	AST_SIMPLE_COMMAND,
+	AST_COMMAND_NAME,
+	AST_COMMAND_SUFFIX
+}	t_ast_node_type;
+
+typedef struct s_ast
+{
+	t_ast_node_type	node_type;
+	t_token			*token;
+	t_ast			*left;
+	t_ast			*right;
+}	t_ast;
 
 /* Files */
 
