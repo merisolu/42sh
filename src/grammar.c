@@ -6,8 +6,6 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 15:23:36 by amann             #+#    #+#             */
-/*   Updated: 2022/10/11 18:48:33 by amann            ###   ########.fr       */
-/*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
@@ -21,7 +19,7 @@ void	realloc_array(char ***arr, size_t size)
 	res = (char **) ft_memalloc(sizeof(char *) * (size + 1));
 	//malloc protect
 	i = 0;
-	while (i < size)
+	while ((*arr)[i])
 	{
 		res[i] = (*arr)[i];
 		i++;
@@ -58,7 +56,7 @@ int	separator(t_token **cursor, t_token *reset)
 int	cmd_name(t_token **cursor, t_token *reset)
 {
 	(void) reset;
-	if ((*cursor)->type == TOKEN_WORD)
+	if (*cursor && (*cursor)->type == TOKEN_WORD)
 		return (TRUE);
 	return (FALSE);
 }
@@ -70,7 +68,7 @@ t_ast	*cmd_suffix(t_token **cursor)
 	size_t	idx;
 	size_t	args;
 
-	if (!*cursor || (*cursor)->type == TOKEN_SEMICOLON)
+	if (!*cursor || (*cursor)->type == TOKEN_SEMICOLON || (*cursor)->type == TOKEN_PIPE)
 		return (NULL);
 	res = (t_ast *) ft_memalloc(sizeof(t_ast));
 	if (!res)
@@ -86,16 +84,17 @@ t_ast	*cmd_suffix(t_token **cursor)
 	while (*cursor)
 	{
 		if ((*cursor)->type == TOKEN_SEMICOLON || (*cursor)->type == TOKEN_PIPE)
-			break ;
+			return (res);
 		if ((*cursor)->type == TOKEN_WORD)
 		{
 			if (!args)
 				args = TRUE;
-			if (idx > size)
+			if (idx >= size)
 			{
 				size *= 2;
 				realloc_array(&(res->arg_list), size);
 			}
+			ft_printf("%s %zu %zu\n",(*cursor)->value, size + 1, idx);
 			res->arg_list[idx] = ft_strdup((*cursor)->value);
 			idx++;
 		}
@@ -117,12 +116,11 @@ t_ast	*simple_command(t_token **cursor, t_token *reset)
 	res = NULL;
 	if (cmd_name(cursor, reset))
 	{
-		res = (t_ast *) malloc(sizeof(t_ast));
+		res = (t_ast *) ft_memalloc(sizeof(t_ast));
 		if (!res)
 			return (NULL);
 		res->node_type = AST_SIMPLE_COMMAND;
-		res->token = NULL;
-		res->left = (t_ast *) malloc(sizeof(t_ast));
+		res->left = (t_ast *) ft_memalloc(sizeof(t_ast));
 		if (!res->left)
 		{
 			free(res);
@@ -130,8 +128,6 @@ t_ast	*simple_command(t_token **cursor, t_token *reset)
 		}
 		res->left->node_type = AST_COMMAND_NAME;
 		res->left->token = *cursor;
-		res->left->left = NULL;
-		res->left->right = NULL;
 		if (*cursor)
 			*cursor = (*cursor)->next;
 		res->right = cmd_suffix(cursor);
@@ -141,51 +137,78 @@ t_ast	*simple_command(t_token **cursor, t_token *reset)
 	return (res);
 }
 
-int	complete_command(t_ast ***tree_list, t_token **cursor, size_t idx)
+int		pipes_in_queue(t_token *cursor)
 {
+	if (cursor->type == TOKEN_PIPE)
+		cursor = cursor->next;
+	while (cursor)
+	{
+		if (cursor->type == TOKEN_PIPE)
+			return (TRUE);
+		cursor = cursor->next;
+	}
+	return (FALSE);
+}
+
+t_ast	*pipe_sequence(t_token **cursor)
+{
+	t_ast	*new_node;
 	t_token *reset;
 
 	reset = *cursor;
-	(*tree_list)[idx] = (t_ast *) malloc(sizeof(t_ast));
-	if (!(*tree_list)[idx])
-		return (0);
-	((*tree_list)[idx])->node_type = AST_COMPLETE_COMMAND;
-	((*tree_list)[idx])->token = NULL;
-	((*tree_list)[idx])->right = NULL;
-
-	((*tree_list)[idx])->left = simple_command(cursor, reset);
-	if (!((*tree_list)[idx])->left)
-		return (0);
-	//if we have a simple_command, and tokens left, we also need to check if it's the start of a pipe_sequence
-	if (*cursor)
-		;//check pipe_sequence and return 0 if fails
-	return (1);
+	ft_printf("the cursor points to: %s\n", reset->value);
+	new_node = (t_ast *) ft_memalloc(sizeof(t_ast));
+	if (!new_node)
+		return (NULL);
+	new_node->node_type = AST_PIPE_SEQUENCE;
+	new_node->left = simple_command(cursor, reset);
+	if (!(new_node->left))
+		return (NULL);
+	if (*cursor && (*cursor)->type == TOKEN_SEMICOLON)
+		return (new_node);
+	if (!(*cursor))
+		return (new_node);
+	*cursor = (*cursor)->next;
+	//if next command ends with a pipe, we need to create a new pipesequence
+	if (*cursor && pipes_in_queue(*cursor))
+		new_node->right = pipe_sequence(cursor);
+	//otherwise, the right node can be a command
+	else if (*cursor)
+		new_node->right = simple_command(cursor, reset);
+	return (new_node);
 }
 
 t_ast	**construct_ast_list(t_token **cursor)
 {
 	t_token *reset;
 	t_ast	**tree_list;
+	size_t	len;
 	size_t	idx;
 
 	reset = *cursor;
+	len = token_semicolon_count(*cursor);
 	//tree list will be a null-terminated array of pointers to root-ast nodes
 	//We can determine this by counting the occurences of TOKEN_SEMICOLON
-	tree_list = (t_ast **) ft_memalloc(sizeof(t_ast *) * (token_semicolon_count(*cursor) + 1));
+	tree_list = (t_ast **) ft_memalloc(sizeof(t_ast *) * (len + 1));
 	if (!tree_list)
 		return (NULL);
 	//loop through tokens until either we reach the end or encounter a sequence not matching grammar
 	idx = 0;
-	while (*cursor && complete_command(&tree_list, cursor, idx))
+	while (idx < len)//*cursor)
 	{
+		ft_printf("%zu\n", idx);
+		tree_list[idx] = pipe_sequence(cursor);
 		idx++;
 		if (*cursor)
+		{
+			ft_printf("this is the cursor in the loop: %s\n", (*cursor)->value);
 			*cursor = (*cursor)->next;
+		}
 	}
 	//if we get to here and we're not at the end of the token list, something has gone wrong
 	//free everything!!!!!
-	if (*cursor)
-		return (NULL);
+	//if (*cursor)
+	//	return (NULL);
 	return (tree_list);
 }
 

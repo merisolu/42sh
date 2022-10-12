@@ -6,12 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:11:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/11 18:55:48 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/12 16:56:20 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-
 /*
  * Checks if the cursor is currently on a token with the type of 'type'.
  *
@@ -127,38 +126,39 @@ static void	reset_state(t_state *state)
  * Debug method needed to print the AST
 */
 
-static void	print_ast_node(t_ast *node)
+static void	print_ast_node(t_ast *node, int space, int count)
 {
-	if (node->node_type == AST_COMPLETE_COMMAND)
-		ft_putendl("COMPLETE_COMMAND");
+	ft_putchar('\n');
+	for (int i = count; i < space; i++)
+		ft_putchar(' ');
+	if (node->node_type == AST_PIPE_SEQUENCE)
+		ft_putendl("PIPE_SEQUENCE");
 	else if (node->node_type == AST_SIMPLE_COMMAND)
 		ft_putendl("SIMPLE_COMMAND");
 	if (node->node_type == AST_COMMAND_NAME)
-	{
-		ft_putendl("COMMAND_NAME");
-		ft_putstr("token: ");
 		ft_putendl(node->token->value);
-	}
 	if (node->node_type == AST_COMMAND_SUFFIX)
 	{
-		ft_putendl("COMMAND_SUFFIX");
-		ft_putstr("token: ");
-		for (int i = 0; node->arg_list[i]; i++)
-			ft_printf("%s ", node->arg_list[i]);
+		for (int i = 0; (node->arg_list)[i]; i++)
+			ft_printf("%s ", (char *)(node->arg_list)[i]);
 		ft_putchar('\n');
 	}
-	if (node->left)
-		ft_putendl(" ||\n ||\n \\/");
 }
 
-static void	tree_iterate(t_ast *root)
+static void	tree_iterate(t_ast *root, int space)
 {
+	int count;
+
+	count = 20;
 	if (root)
 	{
-		print_ast_node(root);
-		tree_iterate(root->left);
-		tree_iterate(root->right);
+		space += count;
+		tree_iterate(root->right, space);
+		print_ast_node(root, space, count);
+		tree_iterate(root->left, space);
 	}
+	else
+		return ;
 }
 
 static void	print_ast(t_ast **tree)
@@ -166,7 +166,8 @@ static void	print_ast(t_ast **tree)
 	size_t	idx;
 	t_ast	*root;
 
-	if (!tree)
+	ft_putendl("########## AST ##########");
+	if (!tree || !(tree[0]))
 	{
 		ft_putendl("something terrible happened");
 		return ;
@@ -175,7 +176,8 @@ static void	print_ast(t_ast **tree)
 	while (tree[idx])
 	{
 		root = tree[idx];
-		tree_iterate(root);
+		tree_iterate(root, 0);
+		ft_printf("The above is tree number %zu\n", idx + 1);
 		idx++;
 	}
 }
@@ -217,7 +219,6 @@ char	**parse(t_token *list, t_state *state)
 	reset_state(state);
 	if (ft_strequ(list->value, "exit"))
 		exit(0);
-	clense_ws(&list);
 	clense_ws(&list);
 	print_ast(construct_ast_list(&list));
 	return (NULL);
