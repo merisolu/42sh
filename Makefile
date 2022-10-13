@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/10/06 14:21:37 by jumanner         ###   ########.fr        #
+#    Updated: 2022/10/13 12:54:32 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,9 @@ LIB_PATH = ./libft/libft.a
 SRC_FILES = main.c \
 			signal.c \
 			shlvl.c \
-			input.c input_configuration.c input_handlers.c cursor.c history.c \
-			autocomplete.c clipboard.c ctrl_d.c \
+			input.c input_configuration.c input_handlers.c input_utils.c \
+			cursor.c cursor_utils.c \
+			history.c autocomplete.c clipboard.c ctrl_d.c \
 			movement.c \
 			literals.c \
 			lexer.c parser.c expansions.c \

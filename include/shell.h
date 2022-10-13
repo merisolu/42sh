@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/11 10:17:41 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/13 14:46:15 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,9 +205,17 @@ int				set_orig_config(t_state *state);
 /* input_handlers.c */
 t_input_result	handle_key(char *buf, t_state *state);
 
+/* input_utils.c */
+size_t			input_get_row_count(t_state *state, size_t index);
+void			input_get_line_properties(\
+	t_state *state, size_t index, size_t *start, size_t *length);
+
 /* cursor.c */
 void			save_cursor(t_state *state);
 void			load_cursor(t_state *state);
+
+/* cursor_utils.c */
+void			move_cursor_to_saved_position(t_state *state);
 
 /* history.c */
 int				history_store(char *input, t_state *state);

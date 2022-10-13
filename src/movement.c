@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 10:58:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 15:21:29 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/13 12:45:54 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,15 @@ static int	handle_cursor(char buf[BUF_SIZE], t_state *state)
 	{
 		if (state->cursor > 0)
 			state->cursor--;
+		while (state->cursor > 0 && state->input[state->cursor] == '\n')
+			state->cursor--;
 	}
 	else if (ft_strnequ(buf, ARROW_RIGHT, ft_strlen(ARROW_RIGHT)))
 	{
 		if (state->cursor + 1 <= ft_strlen(state->input))
+			state->cursor++;
+		while (state->cursor + 1
+			<= ft_strlen(state->input) && state->input[state->cursor] == '\n')
 			state->cursor++;
 	}
 	else if (ft_strnequ(buf, HOME_KEY, ft_strlen(HOME_KEY)))
