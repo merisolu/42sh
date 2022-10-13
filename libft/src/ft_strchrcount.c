@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 10:22:31 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/10 10:26:52 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/13 11:38:23 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
  * Returns the amount of occurances of char c in the string str.
  */
-size_t	ft_strcharcount(char *str, char c)
+size_t	ft_strchrcount(char *str, char c)
 {
 	size_t	i;
 	size_t	result;
