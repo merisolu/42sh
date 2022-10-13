@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/10/11 15:26:13 by amann            ###   ########.fr        #
+#    Updated: 2022/10/13 15:14:21 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,8 @@ SRC_FILES = main.c \
 			bin.c executor.c return_value.c \
 			built_ins.c cmd_cd.c cmd_echo.c cmd_env.c cmd_setenv.c \
 			cmd_unsetenv.c cmd_exit.c \
-			utils.c error.c
+			utils.c error.c \
+			print_ast_debug.c #DELETE ME
 SRC_DIR = ./src
 SRCS := $(patsubst %, $(SRC_DIR)/%, $(SRC_FILES))
 

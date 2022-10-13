@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/10 15:53:30 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/13 13:46:08 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static const t_token_dispatch	*get_token_dispatch(void)
 	{'\'', TOKEN_SINGLE_QUOTE},
 	{'{', TOKEN_CURLY_OPEN},
 	{'}', TOKEN_CURLY_CLOSED},
-	{'+', TOKEN_PLUS},
-	{'-', TOKEN_MINUS},
+//	{'+', TOKEN_PLUS},
+//	{'-', TOKEN_MINUS},
 	{'|', TOKEN_PIPE},
 	{';', TOKEN_SEMICOLON},
 	{'>', TOKEN_GT},

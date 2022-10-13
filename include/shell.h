@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/11 17:25:37 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/13 15:09:13 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,10 +129,10 @@ typedef enum e_token_type
 	TOKEN_CURLY_OPEN,
 	TOKEN_CURLY_CLOSED,
 	TOKEN_PLUS,
-	TOKEN_MINUS,
+	TOKEN_MINUS, //TO-DO remove
 	TOKEN_PIPE,
 	TOKEN_SEMICOLON,
-	TOKEN_GT,
+	TOKEN_GT, // double GT LT symbols also need to be handled
 	TOKEN_LT,
 	TOKEN_AMPERSAND,
 	TOKEN_BACKSLASH,
@@ -193,8 +193,7 @@ typedef enum e_ast_node_type
 	AST_COMPLETE_COMMAND,
 	AST_PIPE_SEQUENCE,
 	AST_SIMPLE_COMMAND,
-	AST_COMMAND_NAME,
-	AST_COMMAND_SUFFIX
+	AST_COMMAND_ARGS,
 }	t_ast_node_type;
 
 typedef struct s_ast
@@ -206,10 +205,14 @@ typedef struct s_ast
 	struct s_ast	*right;
 }	t_ast;
 
+
+//DELETE ME
+void			print_ast(t_ast **tree);
+
 /* Files */
 
 /* grammar.c */
-t_ast	**construct_ast_list(t_token **cursor);
+t_ast			**construct_ast_list(t_token **cursor);
 
 /* signal.c */
 void			check_signal(t_state *state);
@@ -260,7 +263,7 @@ int				check_movement(char *buf, t_state *state);
 t_token			*tokenize(char *line);
 
 /* parser.c */
-char			**parse(t_token *list, t_state *state);
+t_ast			**parse(t_token *list, t_state *state);
 int				expect_token(\
 	t_token **cursor, t_token_type type, t_token *on_fail);
 int				add_to_result(char ***result, char *value, t_state *state);

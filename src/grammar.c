@@ -23,6 +23,31 @@ int		pipes_in_queue(t_token *cursor)
 	return (FALSE);
 }
 
+size_t	token_semicolon_count(t_token *list)
+{
+	size_t res;
+
+	res = 1;
+	while (list)
+	{
+		if (list->type == TOKEN_SEMICOLON)
+			res++;
+		list = list->next;
+	}
+	return (res);
+}
+
+int	check_token_type(t_token **cursor, enum e_token_type type)
+{
+	if (*cursor && (*cursor)->type == type)
+		return (TRUE);
+	return (FALSE);
+}
+
+/*
+ * NB: the below process will result in trailing NULL pointers in our args array, maybe this should
+ * be tidied up...
+ */
 int	realloc_array(char ***arr, size_t size)
 {
 	char	**res;
@@ -46,39 +71,7 @@ int	realloc_array(char ***arr, size_t size)
 	return (1);
 }
 
-size_t	token_semicolon_count(t_token *list)
-{
-	size_t res;
-
-	res = 1;
-	while (list)
-	{
-		if (list->type == TOKEN_SEMICOLON)
-			res++;
-		list = list->next;
-	}
-	return (res);
-}
-/*
-int	separator(t_token **cursor, t_token *reset)
-{
-	if ((*cursor)->type == TOKEN_SEMICOLON || (*cursor)->type == TOKEN_NEWLINE)
-	{
-		*cursor = (*cursor)->next;
-		return (TRUE);
-	}
-	*cursor = reset;
-	return (FALSE);
-}*/
-
-int	token_is_word(t_token **cursor)
-{
-	if (*cursor && (*cursor)->type == TOKEN_WORD)
-		return (TRUE);
-	return (FALSE);
-}
-
-int	allocate_args_array(t_ast **res, t_token **cursor)
+int	allocate_args_array(char ***res, t_token **cursor)
 {
 	size_t	idx;
 	size_t	size;
@@ -87,18 +80,18 @@ int	allocate_args_array(t_ast **res, t_token **cursor)
 	idx = 0;
 	while (*cursor)
 	{
-		if ((*cursor)->type == TOKEN_SEMICOLON || (*cursor)->type == TOKEN_PIPE)
+		if (check_token_type(cursor, TOKEN_SEMICOLON) || check_token_type(cursor, TOKEN_PIPE))
 			return (1);
-		if ((*cursor)->type == TOKEN_WORD)
+		if (check_token_type(cursor, TOKEN_WORD))
 		{
 			if (idx >= size)
 			{
 				size *= 2;
-				if (!realloc_array(&((*res)->arg_list), size))
+				if (!realloc_array(res, size))
 					return (0);
 			}
-			(*res)->arg_list[idx] = ft_strdup((*cursor)->value);
-			if (!((*res)->arg_list[idx]))
+			(*res)[idx] = ft_strdup((*cursor)->value);
+			if (!(*res)[idx])
 				return (0);
 			idx++;
 		}
@@ -107,34 +100,27 @@ int	allocate_args_array(t_ast **res, t_token **cursor)
 	return (1);
 }
 
-t_ast	*cmd_suffix(t_token **cursor)
+char	**add_args(t_token **cursor)
 {
-	t_ast	*res;
+	char	**res;
 
-	if (!*cursor || (*cursor)->type == TOKEN_SEMICOLON || (*cursor)->type == TOKEN_PIPE)
-		return (NULL);
-	res = (t_ast *) ft_memalloc(sizeof(t_ast));
+	res = (char **) ft_memalloc(sizeof(char *) * 3);
 	if (!res)
-		return (NULL);
-	res->node_type = AST_COMMAND_SUFFIX;
-	res->arg_list = (char **) ft_memalloc(sizeof(char *) * 3);
-	if (!(res->arg_list))
 		return (NULL);
 	if (!(allocate_args_array(&res, cursor)))
 	{
-		ft_free_null_array((void **)res->arg_list);
-		free(res);
+		ft_free_null_array((void **)res);
 		return (NULL);
 	}
 	return (res);
 }
 
-t_ast	*simple_command(t_token **cursor, t_token *reset)
+t_ast	*simple_command(t_token **cursor)
 {
 	t_ast	*res;
 
 	res = NULL;
-	if (token_is_word(cursor))
+	if (check_token_type(cursor, TOKEN_WORD))
 	{
 		res = (t_ast *) ft_memalloc(sizeof(t_ast));
 		if (!res)
@@ -146,11 +132,11 @@ t_ast	*simple_command(t_token **cursor, t_token *reset)
 			free(res);
 			return (NULL);
 		}
-		res->left->node_type = AST_COMMAND_NAME;
+		res->left->node_type = AST_COMMAND_ARGS;
 		res->left->token = *cursor;
-		if (*cursor)
-			*cursor = (*cursor)->next;
-		res->right = cmd_suffix(cursor);
+		res->left->arg_list = add_args(cursor);
+//		TO-DO - check redirections - right node should contain type of redirect and filename
+		res->right = NULL;
 	}
 	return (res);
 }
@@ -166,7 +152,7 @@ t_ast	*pipe_sequence(t_token **cursor)
 	new_node->left = simple_command(cursor);
 	if (!(new_node->left))
 		return (NULL);
-	if (*cursor && (*cursor)->type == TOKEN_SEMICOLON)
+	if (*cursor && check_token_type(cursor, TOKEN_SEMICOLON))
 		return (new_node);
 	if (!(*cursor))
 		return (new_node);

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:11:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/12 16:56:20 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/13 15:16:52 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,62 +126,6 @@ static void	reset_state(t_state *state)
  * Debug method needed to print the AST
 */
 
-static void	print_ast_node(t_ast *node, int space, int count)
-{
-	ft_putchar('\n');
-	for (int i = count; i < space; i++)
-		ft_putchar(' ');
-	if (node->node_type == AST_PIPE_SEQUENCE)
-		ft_putendl("PIPE_SEQUENCE");
-	else if (node->node_type == AST_SIMPLE_COMMAND)
-		ft_putendl("SIMPLE_COMMAND");
-	if (node->node_type == AST_COMMAND_NAME)
-		ft_putendl(node->token->value);
-	if (node->node_type == AST_COMMAND_SUFFIX)
-	{
-		for (int i = 0; (node->arg_list)[i]; i++)
-			ft_printf("%s ", (char *)(node->arg_list)[i]);
-		ft_putchar('\n');
-	}
-}
-
-static void	tree_iterate(t_ast *root, int space)
-{
-	int count;
-
-	count = 20;
-	if (root)
-	{
-		space += count;
-		tree_iterate(root->right, space);
-		print_ast_node(root, space, count);
-		tree_iterate(root->left, space);
-	}
-	else
-		return ;
-}
-
-static void	print_ast(t_ast **tree)
-{
-	size_t	idx;
-	t_ast	*root;
-
-	ft_putendl("########## AST ##########");
-	if (!tree || !(tree[0]))
-	{
-		ft_putendl("something terrible happened");
-		return ;
-	}
-	idx = 0;
-	while (tree[idx])
-	{
-		root = tree[idx];
-		tree_iterate(root, 0);
-		ft_printf("The above is tree number %zu\n", idx + 1);
-		idx++;
-	}
-}
-
 void	clense_ws(t_token **list)
 {
 	t_token	*cursor;
@@ -192,7 +136,7 @@ void	clense_ws(t_token **list)
 	cursor = *list;
 	while (cursor)
 	{
-		ft_printf("%s\n", cursor->value);
+//		ft_printf("%s\n", cursor->value);
 		if (cursor->type == TOKEN_WHITESPACE)
 		{
 			if (cursor->previous == NULL)
@@ -214,20 +158,24 @@ void	clense_ws(t_token **list)
 	}
 }
 
-char	**parse(t_token *list, t_state *state)
+t_ast	**parse(t_token *list, t_state *state)
 {
+	t_ast	**tree;
+
+	if (!list || !state)
+		return (NULL);
 	reset_state(state);
-	if (ft_strequ(list->value, "exit"))
-		exit(0);
 	clense_ws(&list);
-	print_ast(construct_ast_list(&list));
-	return (NULL);
+	tree = construct_ast_list(&list);
+//	print_ast(tree);
+	return (tree);
 }
 /*
  * Parses the given list of tokens, handles expansions and whitespace, puts the
  * result into a char**, then returns it.
  *
  * Returns NULL on error.
+
 
 char	**parse(t_token *list, t_state *state)
 {
@@ -256,4 +204,3 @@ char	**parse(t_token *list, t_state *state)
 	token_list_free(&list);
 	return (result);
 }*/
-
