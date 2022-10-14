@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:03:49 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/14 11:10:11 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/14 12:43:19 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,24 @@ void	update_window_size(t_state *state)
 void	print_state(t_state *state)
 {
 	size_t	rows;
+	size_t	start;
+	size_t	length;
+	size_t	index;
 
 	load_cursor(state);
-	ft_printf("%s%s%s ", tgetstr("cd", NULL), PROMPT, state->input);
+	ft_printf("%s%s", tgetstr("cd", NULL), PROMPT);
+	index = 0;
+	while (index < ft_strlen(state->input))
+	{
+		input_get_line_properties(state, index, &start, &length);
+		if (start != 0)
+			ft_putstr(MULTILINE_PROMPT);
+		ft_putstrn(state->input + index, length + 1);
+		index += length + 1;
+		if (index == ft_strlen(state->input))
+			ft_putstr(MULTILINE_PROMPT);
+	}
+	ft_putchar(' ');
 	move_cursor_to_saved_position(state);
 	rows = ft_min_size_t(
 			input_get_row_count(state, ft_strlen(state->input)),

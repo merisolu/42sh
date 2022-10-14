@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 12:53:40 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/14 11:16:19 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/14 12:34:37 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ size_t	input_get_row_count(t_state *state, size_t index)
 			break ;
 		}
 		else
-			result += (index - start) / state->width;
+			result += ((index - start) + ft_strlen(MULTILINE_PROMPT))
+				/ state->width;
 		index = start - 1;
 		input_get_line_properties(state, index, &start, &length);
 	}
