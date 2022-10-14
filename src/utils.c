@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:03:49 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/14 12:43:19 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/14 14:03:02 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,38 @@ void	update_window_size(t_state *state)
 }
 
 /*
+ * Returns the currently stored input in a form that can be printed to
+ * the screen (has prompts, etc).
+ */
+static char	*get_formatted_input(t_state *state)
+{
+	size_t	start;
+	size_t	length;
+	size_t	index;
+	char	*result;
+
+	result = ft_strjoin(tgetstr("cd", NULL), PROMPT);
+	index = 0;
+	while (result && index < ft_strlen(state->input))
+	{
+		input_get_line_properties(state, index, &start, &length);
+		if (start != 0)
+			result = ft_strjoinfree(result, MULTILINE_PROMPT);
+		if (!result)
+			break ;
+		result = ft_strnjoinfree(result, state->input + index, length + 1);
+		if (!result)
+			break ;
+		index += length + 1;
+		if (index == ft_strlen(state->input))
+			result = ft_strjoinfree(result, MULTILINE_PROMPT);
+	}
+	if (result)
+		result = ft_strjoinfree(result, " ");
+	return (result);
+}
+
+/*
  * Redraws the prompt and current input.
  *
  * Redraw process:
@@ -51,24 +83,17 @@ void	update_window_size(t_state *state)
 void	print_state(t_state *state)
 {
 	size_t	rows;
-	size_t	start;
-	size_t	length;
-	size_t	index;
+	char	*formatted_input;
 
 	load_cursor(state);
-	ft_printf("%s%s", tgetstr("cd", NULL), PROMPT);
-	index = 0;
-	while (index < ft_strlen(state->input))
+	formatted_input = get_formatted_input(state);
+	if (formatted_input)
 	{
-		input_get_line_properties(state, index, &start, &length);
-		if (start != 0)
-			ft_putstr(MULTILINE_PROMPT);
-		ft_putstrn(state->input + index, length + 1);
-		index += length + 1;
-		if (index == ft_strlen(state->input))
-			ft_putstr(MULTILINE_PROMPT);
+		ft_putstr(formatted_input);
+		free(formatted_input);
 	}
-	ft_putchar(' ');
+	else
+		ft_printf("%s%s%s", PROMPT, tgetstr("cd", NULL), ERR_MALLOC_FAIL);
 	move_cursor_to_saved_position(state);
 	rows = ft_min_size_t(
 			input_get_row_count(state, ft_strlen(state->input)),
