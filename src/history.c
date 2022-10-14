@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 11:20:31 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/14 15:43:20 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/14 15:48:11 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int	history_recall(int diff, t_state *state)
 	if (new_index < 0 || new_index > HISTORY_SIZE - 1
 		|| (new_index != 0 && state->history[new_index][0] == '\0'))
 		return (1);
+	ft_strclr(state->input);
 	ft_strcpy(state->input, state->history[new_index]);
 	if (new_index == 0 && diff < 0)
 		history_move_up(state);
