@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/10 11:46:11 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/13 15:39:58 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,7 @@ static t_input_result	get_line(t_state *state)
 		if (handle_key(buf + i, state) == INPUT_NEWLINE_FOUND)
 			return (INPUT_NEWLINE_FOUND);
 		else if (ft_isprint(buf[i]) || buf[i] == '\n')
-		{
 			append_input(state, buf[i]);
-			print_state(state);
-		}
 		i++;
 	}
 	return (INPUT_NO_NEWLINE_FOUND);
