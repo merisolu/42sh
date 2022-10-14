@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 16:24:04 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/13 11:43:12 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/14 13:02:15 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,8 @@ char		*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char		*ft_strsub(char const *s, unsigned int start, size_t len);
 char		*ft_strjoin(char const *s1, char const *s2);
 char		*ft_strnjoin(char const *s1, char const *s2, size_t n);
+char		*ft_strjoinfree(char const *s1, char const *s2);
+char		*ft_strnjoinfree(char const *s1, char const *s2, size_t n);
 char		*ft_strins(const char *s, size_t i, char c);
 char		*ft_strtrim(char const *s);
 char		**ft_strsplit(char const *s, char c);
