@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:03:49 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/13 15:09:33 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/14 11:10:11 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ void	print_state(t_state *state)
 	ft_printf("%s%s%s ", tgetstr("cd", NULL), PROMPT, state->input);
 	move_cursor_to_saved_position(state);
 	rows = ft_min_size_t(
-			input_get_row_count(
-				state, ft_strlen(state->input) + ft_strlen(PROMPT)),
+			input_get_row_count(state, ft_strlen(state->input)),
 			state->height);
 	if (state->input_start_y + rows > state->height)
 		state->input_start_y -= (state->input_start_y + rows) - state->height;
