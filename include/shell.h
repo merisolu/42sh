@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/13 15:09:13 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/17 11:02:19 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,7 @@ typedef enum e_ast_node_type
 	AST_PIPE_SEQUENCE,
 	AST_SIMPLE_COMMAND,
 	AST_COMMAND_ARGS,
+	AST_REDIRECTIONS
 }	t_ast_node_type;
 
 typedef struct s_ast
@@ -201,6 +202,7 @@ typedef struct s_ast
 	t_ast_node_type	node_type;
 	t_token			*token;
 	char			**arg_list;
+	char			*file;
 	struct s_ast	*left;
 	struct s_ast	*right;
 }	t_ast;

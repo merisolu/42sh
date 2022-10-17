@@ -80,7 +80,9 @@ int	allocate_args_array(char ***res, t_token **cursor)
 	idx = 0;
 	while (*cursor)
 	{
-		if (check_token_type(cursor, TOKEN_SEMICOLON) || check_token_type(cursor, TOKEN_PIPE))
+		//perhaps we could handle expansions before this point and only send words + the below to this process
+		if (check_token_type(cursor, TOKEN_SEMICOLON) || check_token_type(cursor, TOKEN_PIPE)
+				|| check_token_type(cursor, TOKEN_LT) || check_token_type(cursor, TOKEN_GT))
 			return (1);
 		if (check_token_type(cursor, TOKEN_WORD))
 		{
@@ -115,6 +117,22 @@ char	**add_args(t_token **cursor)
 	return (res);
 }
 
+t_ast	*add_redirects(t_token **cursor)
+{
+	t_ast	*node;
+
+	node = (t_ast *) ft_memalloc(sizeof(t_ast));
+	if (!node)
+		return (NULL);
+	node->node_type = AST_REDIRECTIONS;
+	node->token = *cursor;
+	*cursor = (*cursor)->next;
+	if (check_token_type(cursor, TOKEN_WORD))
+		node->file = ft_strdup((*cursor)->value);
+	*cursor = (*cursor)->next;
+	return (node);
+}
+
 t_ast	*simple_command(t_token **cursor)
 {
 	t_ast	*res;
@@ -135,8 +153,11 @@ t_ast	*simple_command(t_token **cursor)
 		res->left->node_type = AST_COMMAND_ARGS;
 		res->left->token = *cursor;
 		res->left->arg_list = add_args(cursor);
-//		TO-DO - check redirections - right node should contain type of redirect and filename
-		res->right = NULL;
+//		TODO - check redirections - right node should contain type of redirect and filename
+		if (check_token_type(cursor, TOKEN_LT) || check_token_type(cursor, TOKEN_GT))
+			res->right = add_redirects(cursor);
+		else
+			res->right = NULL;
 	}
 	return (res);
 }
@@ -156,13 +177,16 @@ t_ast	*pipe_sequence(t_token **cursor)
 		return (new_node);
 	if (!(*cursor))
 		return (new_node);
-	*cursor = (*cursor)->next;
+	if (!check_token_type(cursor, TOKEN_WORD))
+		*cursor = (*cursor)->next;
 	//if next command ends with a pipe, we need to create a new pipesequence
 	if (*cursor && pipes_in_queue(*cursor))
 		new_node->right = pipe_sequence(cursor);
 	//otherwise, the right node can be a command
 	else if (*cursor)
+	{
 		new_node->right = simple_command(cursor);
+	}
 	return (new_node);
 }
 

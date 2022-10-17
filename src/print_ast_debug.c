@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 15:07:12 by amann             #+#    #+#             */
-/*   Updated: 2022/10/13 15:08:17 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/17 11:04:22 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,15 @@ static void	print_ast_node(t_ast *node, int space, int count)
 		ft_putendl("PIPE_SEQUENCE");
 	else if (node->node_type == AST_SIMPLE_COMMAND)
 		ft_putendl("SIMPLE_COMMAND");
-	if (node->node_type == AST_COMMAND_ARGS)
+	else if (node->node_type == AST_COMMAND_ARGS)
 	{
 		for (int i = 0; (node->arg_list)[i]; i++)
 			ft_printf("%s ", (char *)(node->arg_list)[i]);
 		ft_putchar('\n');
+	}
+	else if (node->node_type == AST_REDIRECTIONS)
+	{
+		ft_printf("%s %s\n", node->token->value, node->file);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:11:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/13 15:16:52 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/17 11:04:46 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ t_ast	**parse(t_token *list, t_state *state)
 	reset_state(state);
 	clense_ws(&list);
 	tree = construct_ast_list(&list);
-//	print_ast(tree);
+	print_ast(tree);
 	return (tree);
 }
 /*
