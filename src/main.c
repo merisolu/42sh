@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/13 15:01:01 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/17 13:54:27 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,17 +100,18 @@ static void	tokenize_and_execute(t_state *state)
 	//The parser now builds a beautiful AST
 	//It no longer expands variables or handles quotes properly
 	tree = parse(tokenize(state->input), state);
-
-	args = NULL;
-	i = 0;
-	while (get_args_from_tree(tree[i], &args))
+	if (tree)
 	{
-		set_return_value(execute(args, state), state);
-		if (args)
-			env_set("_", args[ft_null_array_len((void **)args) - 1], &(state->env));
-		i++;
+		args = NULL;
+		i = 0;
+		while (get_args_from_tree(tree[i], &args))
+		{
+			set_return_value(execute(args, state), state);
+			if (args)
+				env_set("_", args[ft_null_array_len((void **)args) - 1], &(state->env));
+			i++;
+		}
 	}
-
 	//TODO build a function to free the tree
 //	ft_free_null_array((void **)args);
 	clear_input(state, 0);

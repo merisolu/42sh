@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 15:05:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/10 15:53:30 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/17 14:20:47 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	check_literals(t_token **cursor, t_state *state, char ***result)
 {
 	t_token	*original;
 
-	(void)state;
 	original = *cursor;
 	if (expect_token(cursor, TOKEN_WHITESPACE, original))
 	{

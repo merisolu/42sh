@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:11:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/17 11:04:46 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/17 14:11:42 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ t_ast	**parse(t_token *list, t_state *state)
  * Returns NULL on error.
 
 
-char	**parse(t_token *list, t_state *state)
+t_ast	**parse(t_token *list, t_state *state)
 {
 	t_token	*cursor;
 	char	**result;
@@ -202,5 +202,11 @@ char	**parse(t_token *list, t_state *state)
 	if (state->in_double_quotes && add_to_result(&result, "", state) == -1)
 		result = ft_free_null_array((void **)result);
 	token_list_free(&list);
-	return (result);
+	for (int i = 0; result[i] != NULL; i++)
+	{
+		if (ft_strequ(result[i], "exit"))
+			exit(0);
+		ft_putendl(result[i]);
+	}
+	return (NULL);
 }*/

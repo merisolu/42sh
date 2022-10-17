@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/17 11:02:19 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/17 13:43:33 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,11 +129,13 @@ typedef enum e_token_type
 	TOKEN_CURLY_OPEN,
 	TOKEN_CURLY_CLOSED,
 	TOKEN_PLUS,
-	TOKEN_MINUS, //TO-DO remove
+	TOKEN_MINUS, //TODO remove
 	TOKEN_PIPE,
 	TOKEN_SEMICOLON,
 	TOKEN_GT, // double GT LT symbols also need to be handled
 	TOKEN_LT,
+	TOKEN_DGT,
+	TOKEN_DLT,
 	TOKEN_AMPERSAND,
 	TOKEN_BACKSLASH,
 	TOKEN_NEWLINE,
