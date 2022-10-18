@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/17 13:54:27 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/18 16:40:11 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static int	get_state_struct(char *const **env, t_state *result)
 		env_unset("OLDPWD", &(result->env))
 	);
 }
+
 /*
  * check start == pipe_sequence node
  * check if right node is null (if not, we need to pipe something...)

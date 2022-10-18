@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/18 15:52:58 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/18 17:37:56 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,8 @@ typedef enum e_token_type
 	TOKEN_LT,
 	TOKEN_DGT,
 	TOKEN_DLT,
+	TOKEN_LTAND,
+	TOKEN_GTAND,
 	TOKEN_AMPERSAND,
 	TOKEN_BACKSLASH,
 	TOKEN_NEWLINE,

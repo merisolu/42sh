@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/18 15:51:54 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/18 18:51:37 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@
  * If in_quotes is still TRUE at the end of the input string, we can enter
  * multi-line input mode.
  */
-
 
 static int		check_quotes(char c, t_tokenizer *t)
 {
@@ -67,6 +66,17 @@ static int	tokenize_init(t_tokenizer *t, char *line)
 	return (1);
 }
 
+/*
+ * While we are dealing with the same type of token, we keep appending chars
+ * to the buffer.
+ *
+ * When we hit a token that differs, we append the buffer to our token list
+ * and clear the buffer. The current token is then added to the start of the
+ * buffer and the type is reset to its type.
+ */
+
+//TODO add a process for handling empty strings (i.e. echo "" hello <- should result in 3 word tokens.)
+
 static void t_loop(char *lc, t_tokenizer *t, t_token_type *type, t_token **r)
 {
 	if (get_token_type(*lc, t->in_quotes) == *type)
@@ -77,9 +87,10 @@ static void t_loop(char *lc, t_tokenizer *t, t_token_type *type, t_token **r)
 	else
 	{
 		token_add(r, *type, ft_strdup(t->buff));
-		*type = get_token_type(*(lc + 1), t->in_quotes);
 		ft_bzero(t->buff, ft_strlen(t->buff) + 1);
-		t->buff_idx = 0;
+		*type = get_token_type(*lc, t->in_quotes);
+		t->buff[0] = *lc;
+		t->buff_idx = 1;
 	}
 }
 
@@ -87,8 +98,8 @@ t_token	*tokenize(char *line)
 {
 	t_token			*result;
 	t_token_type	type;
-	int				i;
 	t_tokenizer		t;
+	int				i;
 
 	if (!tokenize_init(&t, line))
 		return (NULL);
@@ -103,5 +114,12 @@ t_token	*tokenize(char *line)
 	}
 	token_add(&result, type, ft_strdup(t.buff));
 	free(t.buff);
+//	t_token *temp = result;
+//	ft_putendl("########## TOKENS ##########");
+//	while (temp)
+//	{
+//		ft_printf("type = %d || value = %s\n", temp->type, temp->value);
+//		temp = temp->next;
+//	}
 	return (result);
 }
