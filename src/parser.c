@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:11:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/17 14:11:42 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/17 18:16:05 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,19 +113,6 @@ static void	reset_state(t_state *state)
 	state->in_double_quotes = 0;
 }
 
-/* Shiny new parser 8-)
- *
- * Refer to grammar in opengroup
- *
- * Tree struct needed.
- * - Rule from grammar
- * - Token value
- * - left ptr
- * - right ptr
- *
- * Debug method needed to print the AST
-*/
-
 void	clense_ws(t_token **list)
 {
 	t_token	*cursor;
@@ -136,7 +123,6 @@ void	clense_ws(t_token **list)
 	cursor = *list;
 	while (cursor)
 	{
-//		ft_printf("%s\n", cursor->value);
 		if (cursor->type == TOKEN_WHITESPACE)
 		{
 			if (cursor->previous == NULL)

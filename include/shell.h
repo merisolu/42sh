@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/17 13:43:33 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/18 15:06:23 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,14 @@ typedef struct s_token_dispatch
 	char				symbol;
 	t_token_type		token;
 }	t_token_dispatch;
+
+typedef struct s_tokenizer
+{
+	int		in_quotes;
+	char	quote_type;
+	char	*buff;
+	size_t	buff_idx;
+}	t_tokenizer;
 
 typedef t_input_result	t_key_handler(t_state *state);
 
