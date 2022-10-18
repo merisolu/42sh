@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/10/13 12:54:32 by jumanner         ###   ########.fr        #
+#    Updated: 2022/10/18 13:43:31 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ SRC_FILES = main.c \
 			input.c input_configuration.c input_handlers.c input_utils.c \
 			cursor.c cursor_utils.c \
 			history.c autocomplete.c clipboard.c ctrl_d.c \
-			movement.c \
+			movement.c movement_alt.c \
 			literals.c \
 			lexer.c parser.c expansions.c \
 			token.c token_list.c \

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/14 11:39:04 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/18 15:44:46 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@
 # define ARROW_DOWN "\x1B[B"
 # define ARROW_LEFT "\x1B[D"
 # define ARROW_RIGHT "\x1B[C"
+# define ARROW_UP_ALT "\x1B[1;3A"
+# define ARROW_DOWN_ALT "\x1B[1;3B"
 # define ARROW_LEFT_ALT "\033b"
 # define ARROW_RIGHT_ALT "\033f"
 # define RETURN_KEY "\x0A"
@@ -217,6 +219,8 @@ void			load_cursor(t_state *state);
 
 /* cursor_utils.c */
 void			move_cursor_to_saved_position(t_state *state);
+size_t			cursor_get_column(t_state *state, size_t index);
+size_t			cursor_get_row(t_state *state, size_t index);
 
 /* history.c */
 int				history_store(char *input, t_state *state);
@@ -240,6 +244,10 @@ int				check_literals(\
 
 /* movement.c */
 int				check_movement(char *buf, t_state *state);
+
+/* alt_movement.c */
+int				handle_alt_left_right(char buf[BUF_SIZE], t_state *state);
+int				handle_alt_up_down(char buf[BUF_SIZE], t_state *state);
 
 /* lexer.c */
 t_token			*tokenize(char *line);

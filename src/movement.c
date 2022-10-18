@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 10:58:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/13 12:45:54 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/18 15:44:46 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,33 +20,6 @@ static int	handle_history(char buf[BUF_SIZE], t_state *state)
 		history_recall(-1, state);
 	else
 		return (0);
-	return (3);
-}
-
-static int	handle_alt_arrows(char buf[BUF_SIZE], t_state *state)
-{
-	size_t	start_limit;
-	size_t	offset;
-	size_t	end_limit;
-	int		delta;
-
-	start_limit = 0;
-	end_limit = ft_strlen(state->input);
-	offset = 0;
-	if (ft_strnequ(buf, ARROW_LEFT_ALT, ft_strlen(ARROW_LEFT_ALT)))
-	{
-		offset++;
-		delta = -1;
-	}
-	else
-		delta = 1;
-	while (state->cursor + delta >= start_limit
-		&& state->cursor + delta < end_limit
-		&& !ft_isalnum(state->input[state->cursor - offset]))
-		state->cursor += delta;
-	while (state->cursor + delta >= start_limit
-		&& ft_isalnum(state->input[state->cursor - offset]))
-		state->cursor += delta;
 	return (3);
 }
 
@@ -85,8 +58,10 @@ static t_movement_handler_dispatch	*get_dispatch_table(void)
 	{ARROW_RIGHT, &handle_cursor},
 	{HOME_KEY, &handle_cursor},
 	{END_KEY, &handle_cursor},
-	{ARROW_LEFT_ALT, &handle_alt_arrows},
-	{ARROW_RIGHT_ALT, &handle_alt_arrows},
+	{ARROW_UP_ALT, &handle_alt_up_down},
+	{ARROW_DOWN_ALT, &handle_alt_up_down},
+	{ARROW_LEFT_ALT, &handle_alt_left_right},
+	{ARROW_RIGHT_ALT, &handle_alt_left_right},
 	{0, NULL}
 	};
 

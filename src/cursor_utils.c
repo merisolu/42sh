@@ -6,13 +6,13 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:01:54 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/14 12:32:51 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/18 15:21:54 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static size_t	cursor_get_column(t_state *state, size_t index)
+size_t	cursor_get_column(t_state *state, size_t index)
 {
 	size_t	start;
 	size_t	length;
@@ -23,7 +23,7 @@ static size_t	cursor_get_column(t_state *state, size_t index)
 	return (((index - start) + ft_strlen(MULTILINE_PROMPT)) % state->width);
 }
 
-static size_t	cursor_get_row(t_state *state, size_t index)
+size_t	cursor_get_row(t_state *state, size_t index)
 {
 	size_t	result;
 
