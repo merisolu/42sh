@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/18 15:44:46 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/18 18:13:24 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,9 +245,10 @@ int				check_literals(\
 /* movement.c */
 int				check_movement(char *buf, t_state *state);
 
-/* alt_movement.c */
+/* movement_alt.c */
 int				handle_alt_left_right(char buf[BUF_SIZE], t_state *state);
-int				handle_alt_up_down(char buf[BUF_SIZE], t_state *state);
+int				handle_alt_up(char buf[BUF_SIZE], t_state *state);
+int				handle_alt_down(char buf[BUF_SIZE], t_state *state);
 
 /* lexer.c */
 t_token			*tokenize(char *line);

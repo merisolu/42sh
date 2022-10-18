@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 13:40:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/18 16:44:32 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/18 18:14:46 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,36 +39,44 @@ int	handle_alt_left_right(char buf[BUF_SIZE], t_state *state)
 	return (3);
 }
 
-int	handle_alt_up_down(char buf[BUF_SIZE], t_state *state)
+int	handle_alt_up(char buf[BUF_SIZE], t_state *state)
 {
 	size_t	column;
-	size_t	start;
 	size_t	length;
+	size_t	distance;
 
+	(void)buf;
 	column = cursor_get_column(state, state->cursor);
-	if (ft_strnequ(buf, ARROW_UP_ALT, ft_strlen(ARROW_UP_ALT)))
-	{
-		while (state->cursor > 0 && state->input[state->cursor] != '\n')
-			state->cursor--;
-		if (state->cursor > 0)
-			state->cursor--;
-		input_get_line_properties(state, state->cursor, &start, &length);
-		if (state->cursor < length - column + 1)
-			return (6);
-		state->cursor -= length - column + 1;
-	}
-	else if (ft_strnequ(buf, ARROW_DOWN_ALT, ft_strlen(ARROW_DOWN_ALT)))
-	{
-		while (state->cursor < ft_strlen(state->input) - 1 && state->input[state->cursor] != '\n')
-			state->cursor++;
-		if (state->cursor < ft_strlen(state->input))
-			state->cursor++;
-		input_get_line_properties(state, state->cursor, &start, &length);
-		if (state->cursor + ft_min(column - 2, length - 1) >= ft_strlen(state->input) - 1)
-			return (6);
-		state->cursor += ft_min(column - 2, length - 1);
-	}
+	distance = ft_dstrchr(state->input, '\n', state->cursor);
+	if (distance != state->cursor + 1)
+		state->cursor = state->cursor - (distance + 1);
 	else
-		return (0);
+		state->cursor = 0;
+	input_get_line_properties(state, state->cursor, NULL, &length);
+	if (state->cursor >= length - column + 1)
+		state->cursor -= length - column + 1;
+	return (6);
+}
+
+int	handle_alt_down(char buf[BUF_SIZE], t_state *state)
+{
+	size_t	column;
+	size_t	length;
+	size_t	distance;
+
+	(void)buf;
+	column = cursor_get_column(state, state->cursor);
+	distance = ft_dstchr(
+			state->input + state->cursor,
+			'\n',
+			ft_strlen(state->input + state->cursor));
+	if (distance != ft_strlen(state->input + state->cursor) + 1)
+		state->cursor += distance + 1;
+	else
+		state->cursor = ft_strlen(state->input);
+	input_get_line_properties(state, state->cursor, NULL, &length);
+	if (state->cursor + ft_min(column - 2, length - 1)
+		< ft_strlen(state->input) - 1)
+		state->cursor += ft_min(column - 2, length - 1);
 	return (6);
 }

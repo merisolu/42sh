@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 10:58:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/18 15:44:46 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/18 18:13:41 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ static t_movement_handler_dispatch	*get_dispatch_table(void)
 	{ARROW_RIGHT, &handle_cursor},
 	{HOME_KEY, &handle_cursor},
 	{END_KEY, &handle_cursor},
-	{ARROW_UP_ALT, &handle_alt_up_down},
-	{ARROW_DOWN_ALT, &handle_alt_up_down},
+	{ARROW_UP_ALT, &handle_alt_up},
+	{ARROW_DOWN_ALT, &handle_alt_down},
 	{ARROW_LEFT_ALT, &handle_alt_left_right},
 	{ARROW_RIGHT_ALT, &handle_alt_left_right},
 	{0, NULL}
