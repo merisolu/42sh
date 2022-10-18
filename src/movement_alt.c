@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 13:40:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/18 15:44:46 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/18 16:40:26 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ int	handle_alt_up_down(char buf[BUF_SIZE], t_state *state)
 	size_t	start;
 	size_t	length;
 
+	input_get_line_properties(state, state->cursor, &start, &length);
+	column = cursor_get_column(state, state->cursor);
 	if (ft_strnequ(buf, ARROW_UP_ALT, ft_strlen(ARROW_UP_ALT)))
 	{
-		input_get_line_properties(state, state->cursor, &start, NULL);
 		if (start == 0)
 			return (6);
-		column = cursor_get_column(state, state->cursor);
 		while (state->cursor > 0 && state->input[state->cursor] != '\n')
 			state->cursor--;
 		if (state->cursor > 0)
@@ -58,6 +58,17 @@ int	handle_alt_up_down(char buf[BUF_SIZE], t_state *state)
 		input_get_line_properties(state, state->cursor, NULL, &length);
 		if (column <= length)
 			state->cursor -= length - column + 1;
+	}
+	else if (ft_strnequ(buf, ARROW_DOWN_ALT, ft_strlen(ARROW_DOWN_ALT)))
+	{
+		while (state->cursor < ft_strlen(state->input) - 1 && state->input[state->cursor] != '\n')
+			state->cursor++;
+		if (state->cursor < ft_strlen(state->input))
+			state->cursor++;
+		input_get_line_properties(state, state->cursor, &start, &length);
+		if (state->cursor + ft_min(column - 2, length - 1) >= ft_strlen(state->input) - 1)
+			return (6);
+		state->cursor += ft_min(column - 2, length - 1);
 	}
 	else
 		return (0);
