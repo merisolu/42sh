@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/18 15:06:23 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/18 15:52:58 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,6 +273,9 @@ int				check_movement(char *buf, t_state *state);
 
 /* lexer.c */
 t_token			*tokenize(char *line);
+
+/* get_token_type.c */
+t_token_type	get_token_type(char value, int in_quotes);
 
 /* parser.c */
 t_ast			**parse(t_token *list, t_state *state);
