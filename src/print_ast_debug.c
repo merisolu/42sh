@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 15:07:12 by amann             #+#    #+#             */
-/*   Updated: 2022/10/17 11:04:22 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/19 13:43:06 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,24 @@
 
 static void	print_ast_node(t_ast *node, int space, int count)
 {
+	int	i;
+
+	i = count;
 	ft_putchar('\n');
-	for (int i = count; i < space; i++)
+	while (i < space)
+	{
 		ft_putchar(' ');
+		i++;
+	}
 	if (node->node_type == AST_PIPE_SEQUENCE)
 		ft_putendl("PIPE_SEQUENCE");
 	else if (node->node_type == AST_SIMPLE_COMMAND)
 		ft_putendl("SIMPLE_COMMAND");
 	else if (node->node_type == AST_COMMAND_ARGS)
 	{
-		for (int i = 0; (node->arg_list)[i]; i++)
-			ft_printf("%s ", (char *)(node->arg_list)[i]);
+		i = 0;
+		while ((node->arg_list)[i])
+			ft_printf("%s ", (char *)(node->arg_list)[i++]);
 		ft_putchar('\n');
 	}
 	else if (node->node_type == AST_REDIRECTIONS)
@@ -35,7 +42,7 @@ static void	print_ast_node(t_ast *node, int space, int count)
 
 static void	tree_iterate(t_ast *root, int space)
 {
-	int count;
+	int	count;
 
 	count = 20;
 	if (root)

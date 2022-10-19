@@ -6,26 +6,28 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 15:49:38 by amann             #+#    #+#             */
-/*   Updated: 2022/10/18 18:53:03 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/19 13:26:42 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-//expansions may need to happen after the construction of the AST, so tokens
-//associated with these can be removed from this part of the process
+/*
+expansions may need to happen after the construction of the AST, so tokens
+associated with these can be removed from this part of the process
+	{'$', TOKEN_DOLLAR},
+	{'~', TOKEN_TILDE},
+	{'"', TOKEN_DOUBLE_QUOTE},
+	{'\'', TOKEN_SINGLE_QUOTE},
+	{'{', TOKEN_CURLY_OPEN},
+	{'}', TOKEN_CURLY_CLOSED},
+	{'+', TOKEN_PLUS},
+	{'-', TOKEN_MINUS},
+*/
 
 static const t_token_dispatch	*get_token_dispatch(void)
 {
 	static const t_token_dispatch	dispatch_table[] = {
-//	{'$', TOKEN_DOLLAR},
-//	{'~', TOKEN_TILDE},
-//	{'"', TOKEN_DOUBLE_QUOTE},
-//	{'\'', TOKEN_SINGLE_QUOTE},
-//	{'{', TOKEN_CURLY_OPEN},
-//	{'}', TOKEN_CURLY_CLOSED},
-//	{'+', TOKEN_PLUS},
-//	{'-', TOKEN_MINUS},
 	{'|', TOKEN_PIPE},
 	{';', TOKEN_SEMICOLON},
 	{'>', TOKEN_GT},

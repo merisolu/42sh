@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:11:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/17 18:16:05 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/19 13:41:22 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ static int	run_functions(t_token **cursor, t_state *state, char ***result)
 	return (0);
 }
 */
+
 static void	reset_state(t_state *state)
 {
 	if (!state)
@@ -116,10 +117,8 @@ static void	reset_state(t_state *state)
 void	clense_ws(t_token **list)
 {
 	t_token	*cursor;
-	t_token *temp;
-	int		in_quotes;
+	t_token	*temp;
 
-	in_quotes = FALSE;
 	cursor = *list;
 	while (cursor)
 	{
@@ -153,10 +152,10 @@ t_ast	**parse(t_token *list, t_state *state)
 	reset_state(state);
 	clense_ws(&list);
 	tree = construct_ast_list(&list);
-	print_ast(tree);
 	return (tree);
 }
 /*
+ * print_ast(tree);
  * Parses the given list of tokens, handles expansions and whitespace, puts the
  * result into a char**, then returns it.
  *

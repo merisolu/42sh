@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/19 11:44:52 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/19 13:25:48 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
  * multi-line input mode.
  */
 
-static int		check_quotes(char c, t_tokenizer *t)
+static int	check_quotes(char c, t_tokenizer *t)
 {
 	if ((c == '\'' || c == '\"') && !(t->in_quotes))
 	{
@@ -47,7 +47,7 @@ static int		check_quotes(char c, t_tokenizer *t)
 
 static int	skip_whitespace(char *line)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (line[i] && get_token_type(line[i], FALSE) == TOKEN_WHITESPACE)
@@ -76,23 +76,35 @@ static int	tokenize_init(t_tokenizer *t, char *line)
  *
  * Exceptional case is that we are looking at an & when expecting a > or <
  * This is needed in situations when we are dealing with fd aggregation
+ *
+ * TODO add a process for handling empty strings
+ * (i.e. echo "" hello <- should result in 3 word tokens.)
  */
 
-//TODO add a process for handling empty strings (i.e. echo "" hello <- should result in 3 word tokens.)
-static void t_loop(char *lc, t_tokenizer *t, t_token_type *type, t_token **r)
+static void	t_loop(char *lc, t_tokenizer *t, t_token_type *type, t_token **r)
 {
 	if (get_token_type(*lc, t->in_quotes) != *type
 		&& !((*type == TOKEN_LT || *type == TOKEN_GT)
-		&& get_token_type(*lc, t->in_quotes) == TOKEN_AMPERSAND))
+			&& get_token_type(*lc, t->in_quotes) == TOKEN_AMPERSAND))
 	{
-			token_add(r, *type, ft_strdup(t->buff));
-			ft_bzero(t->buff, ft_strlen(t->buff) + 1);
-			*type = get_token_type(*lc, t->in_quotes);
-			t->buff_idx = 0;
+		token_add(r, *type, ft_strdup(t->buff));
+		ft_bzero(t->buff, ft_strlen(t->buff) + 1);
+		*type = get_token_type(*lc, t->in_quotes);
+		t->buff_idx = 0;
 	}
 	(t->buff)[t->buff_idx] = *lc;
 	(t->buff_idx)++;
 }
+
+/*
+	t_token *temp = result;
+	ft_putendl("########## TOKENS ##########");
+	while (temp)
+	{
+		ft_printf("type = %d || value = %s\n", temp->type, temp->value);
+		temp = temp->next;
+	}
+*/
 
 t_token	*tokenize(char *line)
 {
@@ -114,14 +126,5 @@ t_token	*tokenize(char *line)
 	}
 	token_add(&result, type, ft_strdup(t.buff));
 	free(t.buff);
-/*
-	t_token *temp = result;
-	ft_putendl("########## TOKENS ##########");
-	while (temp)
-	{
-		ft_printf("type = %d || value = %s\n", temp->type, temp->value);
-		temp = temp->next;
-	}
-*/
 	return (result);
 }

@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/18 17:37:56 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/19 13:54:25 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,10 +129,10 @@ typedef enum e_token_type
 	TOKEN_CURLY_OPEN,
 	TOKEN_CURLY_CLOSED,
 	TOKEN_PLUS,
-	TOKEN_MINUS, //TODO remove
+	TOKEN_MINUS,
 	TOKEN_PIPE,
 	TOKEN_SEMICOLON,
-	TOKEN_GT, // double GT LT symbols also need to be handled
+	TOKEN_GT,
 	TOKEN_LT,
 	TOKEN_DGT,
 	TOKEN_DLT,
@@ -219,11 +219,16 @@ typedef struct s_ast
 	struct s_ast	*right;
 }	t_ast;
 
-
-//DELETE ME
+/* DEBUG FUNCTION - DELETE ME */
 void			print_ast(t_ast **tree);
 
 /* Files */
+
+/* ast_add_args.c */
+char			**ast_add_args(t_token **cursor);
+
+/* ast_pipe_sequence.c */
+t_ast			*ast_pipe_sequence(t_token **cursor);
 
 /* grammar.c */
 t_ast			**construct_ast_list(t_token **cursor);
@@ -272,6 +277,9 @@ int				check_literals(\
 
 /* movement.c */
 int				check_movement(char *buf, t_state *state);
+
+/* tokenize_and_execute.c */
+void			tokenize_and_execute(t_state *state);
 
 /* lexer.c */
 t_token			*tokenize(char *line);
