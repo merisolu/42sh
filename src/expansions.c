@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansions.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:47:12 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/20 14:52:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/10 15:53:30 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ static int	expand_tilde_special(t_token **cursor, t_state *state, char ***res)
 	if (expect_token(cursor, TOKEN_PLUS, original))
 	{
 		if (token_is_word_end(*cursor)
-			|| ((*cursor)->type == TOKEN_LITERAL && (*cursor)->value[0] == '/'))
+			|| ((*cursor)->type == TOKEN_WORD && (*cursor)->value[0] == '/'))
 			return (add_to_result(res,
 					env_get_or("PWD", "~+", state->env), state));
 	}
 	if (expect_token(cursor, TOKEN_MINUS, original))
 	{
 		if (token_is_word_end(*cursor)
-			|| ((*cursor)->type == TOKEN_LITERAL && (*cursor)->value[0] == '/'))
+			|| ((*cursor)->type == TOKEN_WORD && (*cursor)->value[0] == '/'))
 			return (add_to_result(res,
 					env_get_or("OLDPWD", "~-", state->env), state));
 	}
@@ -64,7 +64,7 @@ int	expand_tilde(t_token **cursor, t_state *state, char ***res)
 		return (add_to_result(res, "~", state));
 	state->has_seen_tilde_in_word = 1;
 	state->in_assignment = is_in_assignment(state, res);
-	if (original->previous && original->previous->type == TOKEN_LITERAL)
+	if (original->previous && original->previous->type == TOKEN_WORD)
 	{
 		if (!state->in_assignment)
 			return (add_to_result(res, "~", state));
@@ -112,7 +112,7 @@ int	expand_variable(t_token **cursor, t_state *state, char ***res)
 
 	original = *cursor;
 	if (expect_token(cursor, TOKEN_DOLLAR, original)
-		&& expect_token(cursor, TOKEN_LITERAL, original))
+		&& expect_token(cursor, TOKEN_WORD, original))
 	{
 		return_code = expand_name(original->next->value, state, res);
 		if (return_code == 0)
@@ -121,7 +121,7 @@ int	expand_variable(t_token **cursor, t_state *state, char ***res)
 	}
 	if (expect_token(cursor, TOKEN_DOLLAR, original)
 		&& expect_token(cursor, TOKEN_CURLY_OPEN, original)
-		&& expect_token(cursor, TOKEN_LITERAL, original)
+		&& expect_token(cursor, TOKEN_WORD, original)
 		&& expect_token(cursor, TOKEN_CURLY_CLOSED, original))
 		return (add_to_result(res, env_get_or(original->next->next->value, "",
 					state->env), state));

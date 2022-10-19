@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/18 18:13:24 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/19 14:11:55 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@
 # define RETURN_COMMAND_NOT_FOUND 127
 
 # define RETURN_CTRL_D 127
+
+# define TRUE 1
+# define FALSE 0
 
 /* Keys */
 
@@ -121,7 +124,7 @@ typedef enum e_input_result
 
 typedef enum e_token_type
 {
-	TOKEN_LITERAL,
+	TOKEN_WORD,
 	TOKEN_WHITESPACE,
 	TOKEN_DOLLAR,
 	TOKEN_TILDE,
@@ -135,8 +138,13 @@ typedef enum e_token_type
 	TOKEN_SEMICOLON,
 	TOKEN_GT,
 	TOKEN_LT,
+	TOKEN_DGT,
+	TOKEN_DLT,
+	TOKEN_LTAND,
+	TOKEN_GTAND,
 	TOKEN_AMPERSAND,
 	TOKEN_BACKSLASH,
+	TOKEN_NEWLINE,
 	TOKEN_NULL
 }	t_token_type;
 
@@ -153,6 +161,14 @@ typedef struct s_token_dispatch
 	char				symbol;
 	t_token_type		token;
 }	t_token_dispatch;
+
+typedef struct s_tokenizer
+{
+	int		in_quotes;
+	char	quote_type;
+	char	*buff;
+	size_t	buff_idx;
+}	t_tokenizer;
 
 typedef t_input_result	t_key_handler(t_state *state);
 
@@ -188,7 +204,38 @@ typedef struct s_cmd_env
 	char	**env;
 }	t_cmd_env;
 
+typedef enum e_ast_node_type
+{
+	AST_COMPLETE_COMMAND,
+	AST_PIPE_SEQUENCE,
+	AST_SIMPLE_COMMAND,
+	AST_COMMAND_ARGS,
+	AST_REDIRECTIONS
+}	t_ast_node_type;
+
+typedef struct s_ast
+{
+	t_ast_node_type	node_type;
+	t_token			*token;
+	char			**arg_list;
+	char			*file;
+	struct s_ast	*left;
+	struct s_ast	*right;
+}	t_ast;
+
+/* DEBUG FUNCTION - DELETE ME */
+void			print_ast(t_ast **tree);
+
 /* Files */
+
+/* ast_add_args.c */
+char			**ast_add_args(t_token **cursor);
+
+/* ast_pipe_sequence.c */
+t_ast			*ast_pipe_sequence(t_token **cursor);
+
+/* grammar.c */
+t_ast			**construct_ast_list(t_token **cursor);
 
 /* signal.c */
 void			check_signal(t_state *state);
@@ -250,11 +297,17 @@ int				handle_alt_left_right(char buf[BUF_SIZE], t_state *state);
 int				handle_alt_up(char buf[BUF_SIZE], t_state *state);
 int				handle_alt_down(char buf[BUF_SIZE], t_state *state);
 
+/* tokenize_and_execute.c */
+void			tokenize_and_execute(t_state *state);
+
 /* lexer.c */
 t_token			*tokenize(char *line);
 
+/* get_token_type.c */
+t_token_type	get_token_type(char value, int in_quotes);
+
 /* parser.c */
-char			**parse(t_token *list, t_state *state);
+t_ast			**parse(t_token *list, t_state *state);
 int				expect_token(\
 	t_token **cursor, t_token_type type, t_token *on_fail);
 int				add_to_result(char ***result, char *value, t_state *state);

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/11 10:18:23 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/19 14:10:50 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,33 +39,6 @@ static int	get_state_struct(char *const **env, t_state *result)
 	return (
 		env_unset("OLDPWD", &(result->env))
 	);
-}
-
-static void	tokenize_and_execute(t_state *state)
-{
-	char		**args;
-
-	if (ft_strisempty(state->input))
-	{
-		clear_input(state, 1);
-		return ;
-	}
-	if (!set_orig_config(state))
-	{
-		print_error(ERR_TERMIOS_FAIL, 1);
-		return ;
-	}
-	history_store(state->input, state);
-	state->cursor = ft_strlen(state->input);
-	ft_putchar('\n');
-	args = parse(tokenize(state->input), state);
-	set_return_value(execute(args, state), state);
-	if (args)
-		env_set("_", args[ft_null_array_len((void **)args) - 1], &(state->env));
-	ft_free_null_array((void **)args);
-	clear_input(state, 0);
-	if (!set_input_config(state))
-		print_error(ERR_TERMIOS_FAIL, 1);
 }
 
 static int	setup(char *const **env, t_state *state)

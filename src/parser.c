@@ -6,12 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:11:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/20 14:52:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/19 13:41:22 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-
 /*
  * Checks if the cursor is currently on a token with the type of 'type'.
  *
@@ -48,10 +47,10 @@ int	expect_token(t_token **cursor, t_token_type type, t_token *on_fail)
  * Adds the given value to the result array.
  *
  * The way the value is added depends on the continue_previous_node flag.
- * 		- If it's set to 1, the last string of the result array will have value
- * 		appended to it.
- * 		- If it's set to 0, a new node will be created in the result array,
- * 		with the given value.
+ *		- If it's set to 1, the last string of the result array will have value
+ *		appended to it.
+ *		- If it's set to 0, a new node will be created in the result array,
+ *		with the given value.
  */
 int	add_to_result(char ***result, char *value, t_state *state)
 {
@@ -81,7 +80,7 @@ int	add_to_result(char ***result, char *value, t_state *state)
 	}
 	return (-1);
 }
-
+/*
 static int	run_functions(t_token **cursor, t_state *state, char ***result)
 {
 	int						func_return;
@@ -103,6 +102,7 @@ static int	run_functions(t_token **cursor, t_state *state, char ***result)
 	}
 	return (0);
 }
+*/
 
 static void	reset_state(t_state *state)
 {
@@ -114,13 +114,55 @@ static void	reset_state(t_state *state)
 	state->in_double_quotes = 0;
 }
 
+void	clense_ws(t_token **list)
+{
+	t_token	*cursor;
+	t_token	*temp;
+
+	cursor = *list;
+	while (cursor)
+	{
+		if (cursor->type == TOKEN_WHITESPACE)
+		{
+			if (cursor->previous == NULL)
+				temp = cursor->next;
+			else if (cursor->next == NULL)
+				temp = NULL;
+			else
+			{
+				cursor->previous->next = cursor->next;
+				cursor->next->previous = cursor->previous;
+				temp = cursor->next;
+			}
+			free(cursor->value);
+			free(cursor);
+			cursor = temp;
+		}
+		else
+			cursor = cursor->next;
+	}
+}
+
+t_ast	**parse(t_token *list, t_state *state)
+{
+	t_ast	**tree;
+
+	if (!list || !state)
+		return (NULL);
+	reset_state(state);
+	clense_ws(&list);
+	tree = construct_ast_list(&list);
+	return (tree);
+}
 /*
+ * print_ast(tree);
  * Parses the given list of tokens, handles expansions and whitespace, puts the
- * result into a char**, then returns it. 
+ * result into a char**, then returns it.
  *
  * Returns NULL on error.
- */
-char	**parse(t_token *list, t_state *state)
+
+
+t_ast	**parse(t_token *list, t_state *state)
 {
 	t_token	*cursor;
 	char	**result;
@@ -145,5 +187,11 @@ char	**parse(t_token *list, t_state *state)
 	if (state->in_double_quotes && add_to_result(&result, "", state) == -1)
 		result = ft_free_null_array((void **)result);
 	token_list_free(&list);
-	return (result);
-}
+	for (int i = 0; result[i] != NULL; i++)
+	{
+		if (ft_strequ(result[i], "exit"))
+			exit(0);
+		ft_putendl(result[i]);
+	}
+	return (NULL);
+}*/
