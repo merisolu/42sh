@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 15:49:38 by amann             #+#    #+#             */
-/*   Updated: 2022/10/18 15:49:57 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/18 18:53:03 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static const t_token_dispatch	*get_token_dispatch(void)
 	return (dispatch_table);
 }
 
-t_token_type	get_token_type(char value, int in_quotes)//, char quote_type)
+t_token_type	get_token_type(char value, int in_quotes)
 {
 	const t_token_dispatch	*dispatch_table;
 	size_t					i;
