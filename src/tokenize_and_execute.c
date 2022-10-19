@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/19 13:56:56 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/19 14:21:45 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ void	tokenize_and_execute(t_state *state)
 	}
 	history_store(state->input, state);
 	state->cursor = ft_strlen(state->input);
-	state->previous_input_length = 0;
 	ft_putchar('\n');
 	execute_tree_list(parse(tokenize(state->input), state), state);
 	clear_input(state, 0);
