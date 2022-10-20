@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 13:21:45 by amann             #+#    #+#             */
-/*   Updated: 2022/10/20 14:35:19 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/20 15:16:51 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,14 @@ int	cmd_redir_test(char *const *args, t_state *state)
 	if (dup2(fd_out, STDOUT_FILENO) == -1)
 		return (1);
 
+	//The fd's opened for the redirection are then closed, they are no longer needed
+	close(fd_out);
+	close(fd_in);
+
 	read(STDIN_FILENO, buff, ft_strlen("well hello...") + 1);
 	write(STDOUT_FILENO, buff, ft_strlen("well hello...") + 1);
 	//we now execute our command
+	//execve();
 	//ft_putendl("well hello ...");
 
 	//STDIN and STDOUT are reset using the temp vars
@@ -58,8 +63,5 @@ int	cmd_redir_test(char *const *args, t_state *state)
 	if (dup2(saved_in, STDIN_FILENO) == -1)
 		return (1);
 
-	//The fd's opened for the redirection are then closed, they are no longer needed
-	close(fd_out);
-	close(fd_in);
 	return (0);
 }

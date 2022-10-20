@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/20 13:28:03 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/20 15:19:20 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,6 +222,14 @@ typedef struct s_ast
 	struct s_ast	*left;
 	struct s_ast	*right;
 }	t_ast;
+
+typedef struct s_redir
+{
+	int	fd_out;
+	int	fd_in;
+	int	saved_out;
+	int	saved_in;
+}	t_redir;
 
 /* DEBUG FUNCTION - DELETE ME */
 /* ast_print_debug.c */
