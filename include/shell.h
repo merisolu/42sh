@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/19 14:11:55 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/20 14:55:29 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 # if __linux__
 #  include <sys/wait.h>
 # endif
+
+# define PIPE_READ 0
+# define PIPE_WRITE 1
 
 # define PROMPT "$> "
 # define MULTILINE_PROMPT "> "
@@ -372,6 +375,9 @@ int				cmd_unsetenv(char *const *args, t_state *state);
 
 /* cmd_exit.c */
 int				cmd_exit(char *const *args, t_state *state);
+
+/* cmd_pipetest.c */
+int				cmd_pipetest(char *const *args, t_state *state);
 
 /* Utilities */
 
