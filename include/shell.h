@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/19 14:11:55 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/20 13:01:42 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,12 +224,16 @@ typedef struct s_ast
 }	t_ast;
 
 /* DEBUG FUNCTION - DELETE ME */
+/* ast_print_debug.c */
 void			print_ast(t_ast **tree);
 
 /* Files */
 
 /* ast_add_args.c */
 char			**ast_add_args(t_token **cursor);
+
+/* ast_free.c */
+void	ast_free(t_ast **tree_list);
 
 /* ast_pipe_sequence.c */
 t_ast			*ast_pipe_sequence(t_token **cursor);

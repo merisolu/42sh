@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/19 14:21:45 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/20 12:58:46 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ static void	execute_tree_list(t_ast **tree_list, t_state *state)
 					);
 			i++;
 		}
+		print_ast(tree_list);
+		ast_free(tree_list);
 	}
 }
 

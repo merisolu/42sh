@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:11:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/19 13:41:22 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/20 12:54:15 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,10 @@ void	clense_ws(t_token **list)
 	}
 }
 
+/*
+ * TODO we should probably free the list of tokens after constructing the AST
+ */
+
 t_ast	**parse(t_token *list, t_state *state)
 {
 	t_ast	**tree;
@@ -152,6 +156,7 @@ t_ast	**parse(t_token *list, t_state *state)
 	reset_state(state);
 	clense_ws(&list);
 	tree = construct_ast_list(&list);
+	token_list_free(&list);
 	return (tree);
 }
 /*
