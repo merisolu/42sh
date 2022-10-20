@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/20 13:01:42 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/20 13:28:03 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,7 @@ void			print_ast(t_ast **tree);
 char			**ast_add_args(t_token **cursor);
 
 /* ast_free.c */
-void	ast_free(t_ast **tree_list);
+void			ast_free(t_ast **tree_list);
 
 /* ast_pipe_sequence.c */
 t_ast			*ast_pipe_sequence(t_token **cursor);
@@ -376,6 +376,9 @@ int				cmd_unsetenv(char *const *args, t_state *state);
 
 /* cmd_exit.c */
 int				cmd_exit(char *const *args, t_state *state);
+
+//DELETE ME
+int	cmd_redir_test(char *const *args, t_state *state);
 
 /* Utilities */
 

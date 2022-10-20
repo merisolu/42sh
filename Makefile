@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/10/20 13:02:05 by amann            ###   ########.fr        #
+#    Updated: 2022/10/20 13:23:01 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ SRC_FILES = main.c \
 			environment.c environment_getters.c \
 			bin.c executor.c return_value.c tokenize_and_execute.c \
 			built_ins.c cmd_cd.c cmd_echo.c cmd_env.c cmd_setenv.c \
-			cmd_unsetenv.c cmd_exit.c \
+			cmd_unsetenv.c cmd_exit.c cmd_redir_test.c \
 			utils.c error.c \
 			ast_print_debug.c # DELETE ME
 SRC_DIR = ./src
