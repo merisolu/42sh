@@ -6,13 +6,11 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/20 16:26:24 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/20 17:26:21 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-//maybe put this in a header file
-#include <fcntl.h>
 
 
 /*
@@ -33,37 +31,9 @@ static int	check_node_type(t_ast *node, t_ast_node_type type)
 	return (FALSE);
 }
 
-//TODO error handling - at present we don't reset STDIN and STDOUT properly
-//TODO > should remove any contents of the file before writing onto it.
-
-int	handle_redirects(t_ast *redir_node, t_redir *r)
-{
-	char		*file;
-	static int	o_flags;
-	static int	permissions;
-
-	o_flags = O_WRONLY | O_CREAT | O_TRUNC;
-	if (ft_strequ(redir_node->token->value, ">>"))
-		o_flags = O_WRONLY | O_CREAT | O_APPEND;
-	permissions = S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR | S_IROTH;
-	file = redir_node->file;
-	if (!file || !redir_node->token->value)
-		return (print_error("bad filename (paceholder)\n", 0));
-	r->fd_out = open(file, o_flags, permissions);
-	if (r->fd_out == -1)
-		return (print_error("could not open! (paceholder)\n", 0));
-	r->saved_out = dup(STDOUT_FILENO);
-	if (r->saved_out == -1)
-		return (print_error("could not dup! (paceholder)\n", 0));
-	if (dup2(r->fd_out, STDOUT_FILENO) == -1)
-		return (print_error("could not dup2! (paceholder)\n", 0));
-	close(r->fd_out);
-	return (1);
-}
-
 /*
  * TODO handle piping under (tree->right)
- * TODO handle redirects under (cmd_node->right)
+ * TODO handle redirects under (cmd_node->right) WIP
  */
 
 static int	get_args_from_tree(t_ast *tree, char ***args, t_redir *r)
@@ -86,18 +56,23 @@ static int	get_args_from_tree(t_ast *tree, char ***args, t_redir *r)
 	return (1);
 }
 
+static void	set_redir_struct(t_redir *r)
+{
+	r->fd_out = -1;
+	r->fd_in = -1;
+	r->saved_out = -1;
+	r->saved_in = -1;
+}
+
 static void	execute_tree_list(t_ast **tree_list, t_state *state)
 {
 	t_redir	r;
 	char	**args;
 	int		i;
 
-	r.fd_out = -1;
-	r.fd_in = -1;
-	r.saved_out = -1;
-	r.saved_in = -1;
 	if (tree_list)
 	{
+		set_redir_struct(&r);
 		args = NULL;
 		i = 0;
 		while (get_args_from_tree(tree_list[i], &args, &r))
@@ -109,15 +84,12 @@ static void	execute_tree_list(t_ast **tree_list, t_state *state)
 					args[ft_null_array_len((void **)args) - 1],
 					&(state->env)
 					);
-			if (r.saved_out != -1)
+			if (!reset_io(r))
 			{
-				if (dup2(r.saved_out, STDOUT_FILENO) == -1)
-				{
-					ft_dprintf(STDERR_FILENO, "could not dup2! (paceholder)\n");
-					return ;
-				}
-				r.saved_out = -1;
+				ft_dprintf(STDERR_FILENO, "could not dup2! (paceholder)\n");
+				return ;
 			}
+			set_redir_struct(&r);
 			i++;
 		}
 		//print_ast(tree_list);

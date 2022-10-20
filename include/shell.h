@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/20 15:19:20 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/20 17:25:20 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,18 @@
 # include <dirent.h>
 # include <termcap.h>
 
+//only needed in redirects.c maybe put this in a separate header file
+#include <fcntl.h>
+
 # if __linux__
 #  include <sys/wait.h>
 # endif
 
 # define PROMPT "$> "
 # define MULTILINE_PROMPT "> "
+
+# define REDIR_APPEND ">>"
+# define REDIR_HEREDOC "<<"
 
 # define BUF_SIZE 16
 # define INPUT_MAX_SIZE LINE_MAX
@@ -248,6 +254,10 @@ t_ast			*ast_pipe_sequence(t_token **cursor);
 
 /* grammar.c */
 t_ast			**construct_ast_list(t_token **cursor);
+
+/* redirects.c */
+int				reset_io(t_redir r);
+int				handle_redirects(t_ast *redir_node, t_redir *r);
 
 /* signal.c */
 void			check_signal(t_state *state);
