@@ -6,13 +6,11 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/10/21 15:59:16 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/21 18:44:37 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-
-//TODO error handling - at present we don't reset STDIN and STDOUT properly
 
 int	reset_io(t_redir r)
 {
@@ -60,7 +58,7 @@ static int	redirect_input(t_ast *redir_node, t_redir *r)
 {
 	r->fd_in = open(redir_node->in_file, O_RDONLY);
 	if (r->fd_in == -1)
-		return (print_error("could not open! (paceholder)\n", 0));
+		return (print_error(ERR_NO_SUCH_FILE_OR_DIR, 0));
 	r->saved_in = dup(STDIN_FILENO);
 	if (r->saved_in == -1)
 		return (print_error("could not dup! (paceholder)\n", 0));

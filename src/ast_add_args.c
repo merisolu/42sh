@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:55:34 by amann             #+#    #+#             */
-/*   Updated: 2022/10/19 13:32:10 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/21 18:23:28 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	realloc_array(char ***arr, size_t size)
 	if (!res)
 	{
 		ft_free_null_array((void **) *arr);
-		return (0);
+		return (print_error(ERR_MALLOC_FAIL, 0));
 	}
 	i = 0;
 	while ((*arr)[i])
@@ -68,7 +68,7 @@ static int	allocate_args_array(char ***res, t_token **cursor)
 			}
 			(*res)[idx] = ft_strdup((*cursor)->value);
 			if (!(*res)[idx])
-				return (0);
+				return (print_error(ERR_MALLOC_FAIL, 0));
 			idx++;
 		}
 		*cursor = (*cursor)->next;
@@ -82,7 +82,10 @@ char	**ast_add_args(t_token **cursor)
 
 	res = (char **) ft_memalloc(sizeof(char *) * 3);
 	if (!res)
+	{
+		print_error(ERR_MALLOC_FAIL, 0);
 		return (NULL);
+	}
 	if (!(allocate_args_array(&res, cursor)))
 	{
 		ft_free_null_array((void **)res);

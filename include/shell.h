@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/21 15:11:24 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/21 18:14:27 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@
 # define ERR_SIZE_GET_FAIL "failed to read terminal size"
 # define ERR_NO_HOME "HOME not set"
 # define ERR_NO_OLDPWD "OLDPWD not set"
+# define ERR_SYNTAX "syntax error, unexpected token"
 
 /* Globals */
 

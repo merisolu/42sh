@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:11:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/21 15:07:50 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/21 18:27:19 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,16 @@ void	clense_ws(t_token **list)
 }
 
 /*
- * TODO we should probably free the list of tokens after constructing the AST
+ * TODO variable ($) and tilde (~) expansions
+ * - we cannot expand during tokenisation as this could cause problems during tree construction
+ *		- however, this is also where quote handling happens, so doing it elsewhere would make it
+ *		tricky/impossible to manage quote inhibition properly.
+ * - another option would be to leave the quotes in the strings while the AST is being built. Then
+ *   remove them during parsing (only external quotes need to be removed, these would be first and last
+ *   chars of each string). This would tell us when not to expand $ and ~
+ * - If we do not care about quote inhibition, we can could just parse each word of the arg_list.
+ * - We could also re-tokenise each arg_list - this would probably involve strjoin-ing them back together...
+ *   probably quite a lot of work to get a sub-optimal result.
  */
 
 t_ast	**parse(t_token *list, t_state *state)
@@ -156,8 +165,10 @@ t_ast	**parse(t_token *list, t_state *state)
 	reset_state(state);
 	clense_ws(&list);
 	tree = construct_ast_list(&list);
-	//token_list_free(&list);
-	//print_ast(tree);
+	token_list_free(&list);
+	if (!tree)
+		return (NULL);
+//	print_ast(tree);
 	return (tree);
 }
 /*

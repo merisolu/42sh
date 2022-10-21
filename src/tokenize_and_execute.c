@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/20 17:59:13 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/21 18:38:19 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ static int	check_node_type(t_ast *node, t_ast_node_type type)
 }
 
 /*
- * TODO handle piping under (tree->right)
- * TODO handle redirects under (cmd_node->right) WIP
+ * TODO handle piping under (tree->right)..? maybe
+ * TODO check malloc protection in redirects works correctly.
  */
 
 static int	get_args_from_tree(t_ast *tree, char ***args, t_redir *r)
@@ -49,7 +49,7 @@ static int	get_args_from_tree(t_ast *tree, char ***args, t_redir *r)
 	cmd_node = tree->left;
 	if (cmd_node->right && (!handle_redirects(cmd_node->right, r)
 		|| !check_node_type(cmd_node->right, AST_REDIRECTIONS)))
-		return (-1);
+		return (0);
 	if (!cmd_node->left || !check_node_type(cmd_node->left, AST_COMMAND_ARGS))
 		return (0);
 	*args = cmd_node->left->arg_list;
