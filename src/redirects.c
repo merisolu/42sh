@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/10/21 13:00:34 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/21 15:59:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,11 @@ int	handle_redirects(t_ast *redir_node, t_redir *r)
 {
 	if (redir_node->out_type)
 	{
-		//ft_putendl("out");
 		if (!redirect_output(redir_node, r))
 			return (0);
 	}
 	if (redir_node->in_type)
 	{
-		//ft_putendl("in");
 		if (!redirect_input(redir_node, r))
 			return (0);
 	}

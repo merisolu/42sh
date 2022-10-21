@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 12:55:17 by amann             #+#    #+#             */
-/*   Updated: 2022/10/21 15:03:28 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/21 15:59:18 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	pipes_in_queue(t_token *cursor)
 {
-	if (cursor->type == TOKEN_PIPE)
+	if (cursor && cursor->type == TOKEN_PIPE)
 		cursor = cursor->next;
 	while (cursor)
 	{
