@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 15:07:12 by amann             #+#    #+#             */
-/*   Updated: 2022/10/19 13:43:06 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/21 12:57:22 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,11 @@ static void	print_ast_node(t_ast *node, int space, int count)
 	}
 	else if (node->node_type == AST_REDIRECTIONS)
 	{
-		ft_printf("%s %s\n", node->token->value, node->file);
+		if (node->in_type)
+			ft_printf("input (type: %s file: %s)", node->in_type, node->in_file);
+		if (node->out_type)
+			ft_printf(" output (type: %s file: %s)", node->out_type, node->out_file);
+		ft_putchar('\n');
 	}
 }
 

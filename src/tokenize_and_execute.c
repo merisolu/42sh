@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/20 17:26:21 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/20 17:59:13 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,31 +70,27 @@ static void	execute_tree_list(t_ast **tree_list, t_state *state)
 	char	**args;
 	int		i;
 
-	if (tree_list)
+	if (!tree_list)
+		return ;
+	set_redir_struct(&r);
+	args = NULL;
+	i = 0;
+	while (get_args_from_tree(tree_list[i], &args, &r))
 	{
+		set_return_value(execute(args, state), state);
+		if (args)
+			env_set(
+				"_",
+				args[ft_null_array_len((void **)args) - 1],
+				&(state->env)
+				);
+		if (!reset_io(r))
+			return ;
 		set_redir_struct(&r);
-		args = NULL;
-		i = 0;
-		while (get_args_from_tree(tree_list[i], &args, &r))
-		{
-			set_return_value(execute(args, state), state);
-			if (args)
-				env_set(
-					"_",
-					args[ft_null_array_len((void **)args) - 1],
-					&(state->env)
-					);
-			if (!reset_io(r))
-			{
-				ft_dprintf(STDERR_FILENO, "could not dup2! (paceholder)\n");
-				return ;
-			}
-			set_redir_struct(&r);
-			i++;
-		}
-		//print_ast(tree_list);
-		ast_free(tree_list);
+		i++;
 	}
+	//print_ast(tree_list);
+	ast_free(tree_list);
 }
 
 /*

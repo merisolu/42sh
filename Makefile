@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/10/20 17:23:41 by amann            ###   ########.fr        #
+#    Updated: 2022/10/21 15:10:16 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,12 +30,13 @@ SRC_FILES = main.c \
 			literals.c \
 			lexer.c parser.c expansions.c \
 			grammar.c ast_add_args.c ast_pipe_sequence.c ast_free.c \
+			ast_redir_recursion.c \
 			token.c token_list.c get_token_type.c \
 			environment.c environment_getters.c \
 			redirects.c \
 			bin.c executor.c return_value.c tokenize_and_execute.c \
 			built_ins.c cmd_cd.c cmd_echo.c cmd_env.c cmd_setenv.c \
-			cmd_unsetenv.c cmd_exit.c cmd_redir_test.c \
+			cmd_unsetenv.c cmd_exit.c \
 			utils.c error.c \
 			ast_print_debug.c # DELETE ME
 SRC_DIR = ./src

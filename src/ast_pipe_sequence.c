@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 12:55:17 by amann             #+#    #+#             */
-/*   Updated: 2022/10/19 13:40:15 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/21 15:03:28 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,6 @@ static int	pipes_in_queue(t_token *cursor)
 	return (FALSE);
 }
 
-static int	check_token_type(t_token **cursor, enum e_token_type type)
-{
-	if (*cursor && (*cursor)->type == type)
-		return (TRUE);
-	return (FALSE);
-}
-
 static t_ast	*add_redirects(t_token **cursor)
 {
 	t_ast	*node;
@@ -41,10 +34,8 @@ static t_ast	*add_redirects(t_token **cursor)
 		return (NULL);
 	node->node_type = AST_REDIRECTIONS;
 	node->token = *cursor;
-	*cursor = (*cursor)->next;
-	if (check_token_type(cursor, TOKEN_WORD))
-		node->file = ft_strdup((*cursor)->value);
-	*cursor = (*cursor)->next;
+	if (!ast_redirect_recursion(node, cursor))
+		return (NULL);
 	return (node);
 }
 
@@ -57,7 +48,7 @@ static t_ast	*simple_command(t_token **cursor)
 	t_ast	*res;
 
 	res = NULL;
-	if (check_token_type(cursor, TOKEN_WORD))
+	if (*cursor && (*cursor)->type == TOKEN_WORD)
 	{
 		res = (t_ast *) ft_memalloc(sizeof(t_ast));
 		if (!res)
@@ -72,8 +63,8 @@ static t_ast	*simple_command(t_token **cursor)
 		res->left->node_type = AST_COMMAND_ARGS;
 		res->left->token = *cursor;
 		res->left->arg_list = ast_add_args(cursor);
-		if (check_token_type(cursor, TOKEN_LT)
-			|| check_token_type(cursor, TOKEN_GT))
+		if (*cursor && ((*cursor)->type == TOKEN_LT
+			|| (*cursor)->type == TOKEN_GT))
 			res->right = add_redirects(cursor);
 		else
 			res->right = NULL;
@@ -92,17 +83,15 @@ t_ast	*ast_pipe_sequence(t_token **cursor)
 	new_node->left = simple_command(cursor);
 	if (!(new_node->left))
 		return (NULL);
-	if (*cursor && check_token_type(cursor, TOKEN_SEMICOLON))
+	if (*cursor && (*cursor)->type == TOKEN_SEMICOLON)
 		return (new_node);
 	if (!(*cursor))
 		return (new_node);
-	if (!check_token_type(cursor, TOKEN_WORD))
+	if ((*cursor)->type != TOKEN_WORD)
 		*cursor = (*cursor)->next;
 	if (*cursor && pipes_in_queue(*cursor))
 		new_node->right = ast_pipe_sequence(cursor);
 	else if (*cursor)
-	{
 		new_node->right = simple_command(cursor);
-	}
 	return (new_node);
 }

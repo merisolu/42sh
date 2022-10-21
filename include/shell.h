@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/20 17:25:20 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/21 15:11:24 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,7 +224,10 @@ typedef struct s_ast
 	t_ast_node_type	node_type;
 	t_token			*token;
 	char			**arg_list;
-	char			*file;
+	char			*in_file;
+	char			*out_file;
+	char			*in_type;
+	char			*out_type;
 	struct s_ast	*left;
 	struct s_ast	*right;
 }	t_ast;
@@ -251,6 +254,9 @@ void			ast_free(t_ast **tree_list);
 
 /* ast_pipe_sequence.c */
 t_ast			*ast_pipe_sequence(t_token **cursor);
+
+/* ast_redirect_recursion.c */
+int				ast_redirect_recursion(t_ast *node, t_token **cursor);
 
 /* grammar.c */
 t_ast			**construct_ast_list(t_token **cursor);
@@ -394,9 +400,6 @@ int				cmd_unsetenv(char *const *args, t_state *state);
 
 /* cmd_exit.c */
 int				cmd_exit(char *const *args, t_state *state);
-
-//DELETE ME
-int	cmd_redir_test(char *const *args, t_state *state);
 
 /* Utilities */
 

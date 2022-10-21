@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/10/20 17:54:13 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/21 13:00:34 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ static int	redirect_output(t_ast *redir_node, t_redir *r)
 	o_flags = O_WRONLY | O_CREAT;
 	permissions = S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR | S_IROTH;
 	append = O_TRUNC;
-	if (ft_strequ(redir_node->token->value, REDIR_APPEND))
+	if (ft_strequ(redir_node->out_type, REDIR_APPEND))
 		append = O_APPEND;
-	r->fd_out = open(redir_node->file, o_flags | append, permissions);
+	r->fd_out = open(redir_node->out_file, o_flags | append, permissions);
 	if (r->fd_out == -1)
 		return (print_error("could not open! (paceholder)\n", 0));
 	r->saved_out = dup(STDOUT_FILENO);
@@ -52,9 +52,13 @@ static int	redirect_output(t_ast *redir_node, t_redir *r)
 	return (1);
 }
 
+/*
+ * TODO heredocs
+ */
+
 static int	redirect_input(t_ast *redir_node, t_redir *r)
 {
-	r->fd_in = open(redir_node->file, O_RDONLY);
+	r->fd_in = open(redir_node->in_file, O_RDONLY);
 	if (r->fd_in == -1)
 		return (print_error("could not open! (paceholder)\n", 0));
 	r->saved_in = dup(STDIN_FILENO);
@@ -68,11 +72,17 @@ static int	redirect_input(t_ast *redir_node, t_redir *r)
 
 int	handle_redirects(t_ast *redir_node, t_redir *r)
 {
-	if (!redir_node->file || !redir_node->token->value)
-		return (print_error("bad filename (paceholder)\n", 0));
-	if (redir_node->token->type == TOKEN_GT)
-		return (redirect_output(redir_node, r));
-	if (redir_node->token->type == TOKEN_LT)
-		return (redirect_input(redir_node, r));
+	if (redir_node->out_type)
+	{
+		//ft_putendl("out");
+		if (!redirect_output(redir_node, r))
+			return (0);
+	}
+	if (redir_node->in_type)
+	{
+		//ft_putendl("in");
+		if (!redirect_input(redir_node, r))
+			return (0);
+	}
 	return (1);
 }
