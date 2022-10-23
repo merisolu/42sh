@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/10/21 18:44:37 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/21 18:52:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ static int	redirect_output(t_ast *redir_node, t_redir *r)
 
 /*
  * TODO heredocs
+ * check permissions if file cannot be opened or read
+ * check error messages needed for issues with dup...
  */
 
 static int	redirect_input(t_ast *redir_node, t_redir *r)
