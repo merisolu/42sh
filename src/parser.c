@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:11:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/23 13:29:03 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/23 14:19:38 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	add_to_result(char ***result, char *value, t_state *state)
 	}
 	return (-1);
 }
-/*
+
 static int	run_functions(t_token **cursor, t_state *state, char ***result)
 {
 	int						func_return;
@@ -102,7 +102,7 @@ static int	run_functions(t_token **cursor, t_state *state, char ***result)
 	}
 	return (0);
 }
-*/
+
 
 static void	reset_state(t_state *state)
 {
@@ -227,6 +227,7 @@ static t_token	*re_tokenize(char *line)
 		i++;
 	}
 	token_add(&result, type, ft_strdup(buff));
+	free(buff);
 	return (result);
 }
 
@@ -241,9 +242,13 @@ void	print_tokens(t_token *result)
 	}
 }
 
-static int expand_node(t_ast *node)
+static int expand_node(t_ast *node, t_state *state)
 {
-	int	i;
+	int		i;
+	int		func_result;
+	t_token	*list;
+	t_token	*cursor;
+	char	**result;
 
 	if (node->node_type == AST_PIPE_SEQUENCE || node->node_type == AST_SIMPLE_COMMAND)
 		return (1);
@@ -252,22 +257,44 @@ static int expand_node(t_ast *node)
 		i = 0;
 		while (node->arg_list[i])
 		{
-			print_tokens(re_tokenize(node->arg_list[i]));
-			ft_putendl(node->arg_list[i++]);
+			list = re_tokenize(node->arg_list[i]);
+			cursor = list;
+			result = (char **)ft_memalloc(sizeof(char *));
+			while (cursor && result)
+			{
+				func_result = run_functions(&cursor, state, &result);
+				if (func_result == 0 && cursor)
+				{
+					func_result = add_to_result(&result, cursor->value, state);
+					cursor = cursor->next;
+				}
+				if (func_result == -1)
+					result = ft_free_null_array((void **)result);
+			}
+			print_tokens(list);
+			for (int j = 0; result[j] ; j++)
+				ft_printf("result[%d]: %s\n", j, result[j]);
+			free(node->arg_list[i]);
+			node->arg_list[i] = ft_strdup(result[0]);
+			result = ft_free_null_array((void **)result);
+			reset_state(state);
+			token_list_free(&list);
+			i++;
+			//ft_putendl(node->arg_list[i++]);
 		}
 	}
 	return (1);
 }
 
 
-int	parse_expansions(t_ast *root)
+int	parse_expansions(t_ast *root, t_state *state)
 {
 	if (root)
 	{
-		parse_expansions(root->right);
-		if (!expand_node(root))
+		parse_expansions(root->right, state);
+		if (!expand_node(root, state))
 			return (0);
-		parse_expansions(root->left);
+		parse_expansions(root->left, state);
 	}
 	return (1);
 }
@@ -280,7 +307,7 @@ t_ast	**parse(t_token *list, t_state *state)
 	if (!list || !state)
 		return (NULL);
 	reset_state(state);
-	clense_ws(&list);
+	clense_ws(&list); // this could potentially be moved into the lexer
 	tree = construct_ast_list(&list);
 	token_list_free(&list);
 	if (!tree)
@@ -290,7 +317,7 @@ t_ast	**parse(t_token *list, t_state *state)
 	i = 0;
 	while (tree[i])
 	{
-		if (!parse_expansions(tree[i]))
+		if (!parse_expansions(tree[i], state))
 		{
 			ast_free(tree);
 			ft_putendl("you set that tree free");
