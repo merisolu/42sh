@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/21 18:14:27 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/23 12:53:07 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,6 @@ typedef struct s_cmd_env
 
 typedef enum e_ast_node_type
 {
-	AST_COMPLETE_COMMAND,
 	AST_PIPE_SEQUENCE,
 	AST_SIMPLE_COMMAND,
 	AST_COMMAND_ARGS,

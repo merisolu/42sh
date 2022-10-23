@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/19 13:25:48 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/23 12:41:27 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,8 @@ t_token	*tokenize(char *line)
 	type = get_token_type(line[i], FALSE);
 	while (line[i])
 	{
-		if (!check_quotes(line[i], &t))
-			t_loop(line + i, &t, &type, &result);
+		check_quotes(line[i], &t);
+		t_loop(line + i, &t, &type, &result);
 		i++;
 	}
 	token_add(&result, type, ft_strdup(t.buff));

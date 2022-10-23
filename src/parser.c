@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:11:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/21 18:27:19 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/23 13:29:03 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,11 +154,128 @@ void	clense_ws(t_token **list)
  * - If we do not care about quote inhibition, we can could just parse each word of the arg_list.
  * - We could also re-tokenise each arg_list - this would probably involve strjoin-ing them back together...
  *   probably quite a lot of work to get a sub-optimal result.
+ *
+ *   The plan
+ *   - We need to iterate through to the arg_list and filenames (in_file, out_file) in the AST to
+ *   check for expansions
+ *   - To handle quotes properly, we need to tweak the tokenizer to make sure they remain in the strings
+ *   - We can then remove them in the parsing phase, being mindful of quote inhibition when handling expansions
+ *   - Each arg in each arg_list can then be re-tokenised, with a view to retro-fitting the old expansion process
+ *   into the new system.
  */
+static const t_token_dispatch	*get_parse_token_dispatch(void)
+{
+	static const t_token_dispatch	dispatch_table[] = {
+	{'$', TOKEN_DOLLAR},
+	{'~', TOKEN_TILDE},
+	{'"', TOKEN_DOUBLE_QUOTE},
+	{'\'', TOKEN_SINGLE_QUOTE},
+	{'{', TOKEN_CURLY_OPEN},
+	{'}', TOKEN_CURLY_CLOSED},
+	{'+', TOKEN_PLUS},
+	{'-', TOKEN_MINUS},
+	{'\0', TOKEN_NULL}
+	};
+
+	return (dispatch_table);
+}
+
+static t_token_type	get_parser_token_type(char value)
+{
+	const t_token_dispatch	*dispatch_table;
+	size_t					i;
+
+	dispatch_table = get_parse_token_dispatch();
+	i = 0;
+	while (dispatch_table[i].token != TOKEN_NULL)
+	{
+		if (dispatch_table[i].symbol == value)
+			return (dispatch_table[i].token);
+		i++;
+	}
+	if (ft_is_whitespace(value))
+		return (TOKEN_WHITESPACE);
+	return (TOKEN_WORD);
+}
+
+static t_token	*re_tokenize(char *line)
+{
+	t_token			*result;
+	t_token_type	type;
+	int				i;
+	int				buff_idx;
+	char			*buff;
+
+	buff = ft_strnew(ft_strlen(line) + 1);
+	if (!buff)
+		return (NULL);
+	result = NULL;
+	type = get_parser_token_type(line[0]);
+	i = 0;
+	buff_idx = 0;
+	while (line[i])
+	{
+		if (get_parser_token_type(line[i]) != type)
+		{
+			token_add(&result, type, ft_strdup(buff));
+			ft_bzero(buff, ft_strlen(buff) + 1);
+			type = get_parser_token_type(line[i]);
+			buff_idx = 0;
+		}
+		buff[buff_idx] = line[i];
+		buff_idx++;
+		i++;
+	}
+	token_add(&result, type, ft_strdup(buff));
+	return (result);
+}
+
+void	print_tokens(t_token *result)
+{
+	t_token *temp = result;
+	ft_putendl("########## TOKENS ##########");
+	while (temp)
+	{
+		ft_printf("type = %d || value = %s\n", temp->type, temp->value);
+		temp = temp->next;
+	}
+}
+
+static int expand_node(t_ast *node)
+{
+	int	i;
+
+	if (node->node_type == AST_PIPE_SEQUENCE || node->node_type == AST_SIMPLE_COMMAND)
+		return (1);
+	if (node->node_type == AST_COMMAND_ARGS)
+	{
+		i = 0;
+		while (node->arg_list[i])
+		{
+			print_tokens(re_tokenize(node->arg_list[i]));
+			ft_putendl(node->arg_list[i++]);
+		}
+	}
+	return (1);
+}
+
+
+int	parse_expansions(t_ast *root)
+{
+	if (root)
+	{
+		parse_expansions(root->right);
+		if (!expand_node(root))
+			return (0);
+		parse_expansions(root->left);
+	}
+	return (1);
+}
 
 t_ast	**parse(t_token *list, t_state *state)
 {
 	t_ast	**tree;
+	int		i;
 
 	if (!list || !state)
 		return (NULL);
@@ -168,7 +285,19 @@ t_ast	**parse(t_token *list, t_state *state)
 	token_list_free(&list);
 	if (!tree)
 		return (NULL);
-//	print_ast(tree);
+	print_ast(tree);
+
+	i = 0;
+	while (tree[i])
+	{
+		if (!parse_expansions(tree[i]))
+		{
+			ast_free(tree);
+			ft_putendl("you set that tree free");
+			return (NULL);
+		}
+		i++;
+	}
 	return (tree);
 }
 /*
