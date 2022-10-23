@@ -6,13 +6,13 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 15:05:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/17 14:20:47 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/23 15:42:19 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int	check_literals(t_token **cursor, t_state *state, char ***result)
+int	check_literals(t_token **cursor, t_state *state, char **result)
 {
 	t_token	*original;
 

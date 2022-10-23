@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/23 12:53:07 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/23 15:43:06 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,7 +202,7 @@ typedef struct s_cmd_dispatch
 }	t_cmd_dispatch;
 
 typedef int				t_parse_function(\
-	t_token **cursor, t_state *state, char ***result);
+	t_token **cursor, t_state *state, char **result);
 
 typedef struct s_cmd_env
 {
@@ -315,7 +315,7 @@ int				ctrl_d(t_state *state);
 
 /* literals.c */
 int				check_literals(\
-	t_token **cursor, t_state *state, char ***result);
+	t_token **cursor, t_state *state, char **result);
 
 /* movement.c */
 int				check_movement(char *buf, t_state *state);
@@ -338,12 +338,12 @@ t_token_type	get_token_type(char value, int in_quotes);
 t_ast			**parse(t_token *list, t_state *state);
 int				expect_token(\
 	t_token **cursor, t_token_type type, t_token *on_fail);
-int				add_to_result(char ***result, char *value, t_state *state);
+int				add_to_result(char **result, char *value, t_state *state);
 
 /* expansions.c */
-int				expand_tilde(t_token **cursor, t_state *state, char ***result);
+int				expand_tilde(t_token **cursor, t_state *state, char **result);
 int				expand_variable(\
-	t_token **cursor, t_state *state, char ***result);
+	t_token **cursor, t_state *state, char **result);
 
 /* token.c */
 t_token			*token_add(t_token **list, t_token_type type, char *value);

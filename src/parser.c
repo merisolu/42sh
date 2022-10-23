@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:11:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/23 14:19:38 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/23 16:29:05 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	expect_token(t_token **cursor, t_token_type type, t_token *on_fail)
  *		appended to it.
  *		- If it's set to 0, a new node will be created in the result array,
  *		with the given value.
- */
+ *
 int	add_to_result(char ***result, char *value, t_state *state)
 {
 	char	**destination;
@@ -61,6 +61,7 @@ int	add_to_result(char ***result, char *value, t_state *state)
 		return (-1);
 	if (state->continue_previous_node)
 	{
+		ft_putendl("here");
 		destination = ((*result) + ft_null_array_len((void **)(*result)) - 1);
 		temp = ft_strjoin(*destination, value);
 		if (!temp)
@@ -80,8 +81,42 @@ int	add_to_result(char ***result, char *value, t_state *state)
 	}
 	return (-1);
 }
+*/
 
-static int	run_functions(t_token **cursor, t_state *state, char ***result)
+int	add_to_result(char **res, char *value, t_state *state)
+{
+	char	*temp;
+//	(void) state;
+
+
+	ft_printf("res = %s | value = %s | prev node = %d\n", *res, value, state->continue_previous_node);
+	if (!value)
+		return (-1);
+	if (state->continue_previous_node)
+	{
+		temp = ft_strjoin(*res, value);
+		if (!temp)
+			return (-1);
+		ft_strdel(res);
+		*res = ft_strdup(temp);
+		free(temp);
+		if (!(*res))
+			return (-1);
+		return (1);
+	}
+	else
+	{
+		state->continue_previous_node = 1;
+		ft_strdel(res);
+		*res = ft_strdup(value);
+		if (!(*res))
+			return (-1);
+		return (1);
+	}
+	return (-1);
+}
+
+static int	run_functions(t_token **cursor, t_state *state, char **result)
 {
 	int						func_return;
 	static t_parse_function	*functions[] = {
@@ -242,58 +277,73 @@ void	print_tokens(t_token *result)
 	}
 }
 
-static int expand_node(t_ast *node, t_state *state)
+static int expand_node(char **word, t_state *state)
 {
-	int		i;
 	int		func_result;
 	t_token	*list;
 	t_token	*cursor;
-	char	**result;
+	char	*result;
 
-	if (node->node_type == AST_PIPE_SEQUENCE || node->node_type == AST_SIMPLE_COMMAND)
-		return (1);
-	if (node->node_type == AST_COMMAND_ARGS)
+	list = re_tokenize(*word);
+	cursor = list;
+	result = NULL;
+	while (cursor)
 	{
-		i = 0;
-		while (node->arg_list[i])
+		func_result = run_functions(&cursor, state, &result);
+		if (func_result == 0 && cursor)
 		{
-			list = re_tokenize(node->arg_list[i]);
-			cursor = list;
-			result = (char **)ft_memalloc(sizeof(char *));
-			while (cursor && result)
-			{
-				func_result = run_functions(&cursor, state, &result);
-				if (func_result == 0 && cursor)
-				{
-					func_result = add_to_result(&result, cursor->value, state);
-					cursor = cursor->next;
-				}
-				if (func_result == -1)
-					result = ft_free_null_array((void **)result);
-			}
-			print_tokens(list);
-			for (int j = 0; result[j] ; j++)
-				ft_printf("result[%d]: %s\n", j, result[j]);
-			free(node->arg_list[i]);
-			node->arg_list[i] = ft_strdup(result[0]);
-			result = ft_free_null_array((void **)result);
-			reset_state(state);
-			token_list_free(&list);
-			i++;
-			//ft_putendl(node->arg_list[i++]);
+			func_result = add_to_result(&result, cursor->value, state);
+			cursor = cursor->next;
 		}
+		if (func_result == -1)
+			free(result);
 	}
+	print_tokens(list);
+	ft_printf("result: %s\n\n", result);
+	if (ft_strequ(*word, result))
+	{
+		free(result);
+		return (1);
+	}
+	ft_strdel(word);
+	*word = ft_strdup(result);
+	if (!(*word))
+		return (print_error(ERR_MALLOC_FAIL, 0));
+	free(result);
+	reset_state(state);
+	token_list_free(&list);
+//	if (node->node_type == AST_REDIRECTIONS)
+//	{
+//		
+//	
+//	}
 	return (1);
 }
 
 
 int	parse_expansions(t_ast *root, t_state *state)
 {
+	int	i;
+
 	if (root)
 	{
 		parse_expansions(root->right, state);
-		if (!expand_node(root, state))
-			return (0);
+		if (root->node_type == AST_COMMAND_ARGS)
+		{
+			i = 0;
+			while (root->arg_list[i])
+			{
+				if (!expand_node(&(root->arg_list[i]), state))
+					return (0);
+				i++;
+			}
+			return (1);
+		}
+		if (root->node_type == AST_REDIRECTIONS)
+		{
+		
+		
+		}
 		parse_expansions(root->left, state);
 	}
 	return (1);

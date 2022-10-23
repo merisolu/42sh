@@ -6,13 +6,13 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:47:12 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/10 15:53:30 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/23 15:45:57 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-
-static int	is_in_assignment(t_state *state, char ***res)
+/*
+static int	is_in_assignment(t_state *state, char **res)
 {
 	char	*previous;
 	char	*first_equals;
@@ -25,8 +25,8 @@ static int	is_in_assignment(t_state *state, char ***res)
 		&& first_equals != previous && first_equals == last_equals
 		&& !ft_strchr(previous, '~'));
 }
-
-static int	expand_tilde_special(t_token **cursor, t_state *state, char ***res)
+*/
+static int	expand_tilde_special(t_token **cursor, t_state *state, char **res)
 {
 	t_token	*original;
 
@@ -52,7 +52,7 @@ static int	expand_tilde_special(t_token **cursor, t_state *state, char ***res)
 	return (0);
 }
 
-int	expand_tilde(t_token **cursor, t_state *state, char ***res)
+int	expand_tilde(t_token **cursor, t_state *state, char **res)
 {
 	t_token	*original;
 	int		special_result;
@@ -63,7 +63,7 @@ int	expand_tilde(t_token **cursor, t_state *state, char ***res)
 	if (state->has_seen_tilde_in_word && !state->in_assignment)
 		return (add_to_result(res, "~", state));
 	state->has_seen_tilde_in_word = 1;
-	state->in_assignment = is_in_assignment(state, res);
+	state->in_assignment = 0;// is_in_assignment(state, res);
 	if (original->previous && original->previous->type == TOKEN_WORD)
 	{
 		if (!state->in_assignment)
@@ -80,7 +80,7 @@ int	expand_tilde(t_token **cursor, t_state *state, char ***res)
 	return (add_to_result(res, env_get_or("HOME", "~", state->env), state));
 }
 
-static int	expand_name(char *value, t_state *state, char ***res)
+static int	expand_name(char *value, t_state *state, char **res)
 {
 	int		return_code;
 	char	*valid;
@@ -105,7 +105,7 @@ static int	expand_name(char *value, t_state *state, char ***res)
 	return (return_code);
 }
 
-int	expand_variable(t_token **cursor, t_state *state, char ***res)
+int	expand_variable(t_token **cursor, t_state *state, char **res)
 {
 	t_token	*original;
 	int		return_code;
