@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:11:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/23 16:29:05 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/23 17:37:53 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,53 +43,10 @@ int	expect_token(t_token **cursor, t_token_type type, t_token *on_fail)
 	return (result);
 }
 
-/*
- * Adds the given value to the result array.
- *
- * The way the value is added depends on the continue_previous_node flag.
- *		- If it's set to 1, the last string of the result array will have value
- *		appended to it.
- *		- If it's set to 0, a new node will be created in the result array,
- *		with the given value.
- *
-int	add_to_result(char ***result, char *value, t_state *state)
-{
-	char	**destination;
-	char	*temp;
-
-	if (!value)
-		return (-1);
-	if (state->continue_previous_node)
-	{
-		ft_putendl("here");
-		destination = ((*result) + ft_null_array_len((void **)(*result)) - 1);
-		temp = ft_strjoin(*destination, value);
-		if (!temp)
-			return (-1);
-		free(*destination);
-		*destination = temp;
-		return (1);
-	}
-	else
-	{
-		state->continue_previous_node = 1;
-		temp = ft_strdup(value);
-		if (!temp)
-			return (-1);
-		if (ft_add_to_null_array((void ***)result, temp))
-			return (1);
-	}
-	return (-1);
-}
-*/
-
 int	add_to_result(char **res, char *value, t_state *state)
 {
 	char	*temp;
-//	(void) state;
 
-
-	ft_printf("res = %s | value = %s | prev node = %d\n", *res, value, state->continue_previous_node);
 	if (!value)
 		return (-1);
 	if (state->continue_previous_node)
@@ -116,30 +73,7 @@ int	add_to_result(char **res, char *value, t_state *state)
 	return (-1);
 }
 
-static int	run_functions(t_token **cursor, t_state *state, char **result)
-{
-	int						func_return;
-	static t_parse_function	*functions[] = {
-		&expand_variable,
-		&expand_tilde,
-		&check_literals,
-		NULL
-	};
-	size_t					i;
-
-	i = 0;
-	while (functions[i] != NULL)
-	{
-		func_return = (*functions[i])(cursor, state, result);
-		if (func_return != 0)
-			return (func_return);
-		i++;
-	}
-	return (0);
-}
-
-
-static void	reset_state(t_state *state)
+void	reset_state(t_state *state)
 {
 	if (!state)
 		return ;
@@ -178,177 +112,6 @@ void	clense_ws(t_token **list)
 	}
 }
 
-/*
- * TODO variable ($) and tilde (~) expansions
- * - we cannot expand during tokenisation as this could cause problems during tree construction
- *		- however, this is also where quote handling happens, so doing it elsewhere would make it
- *		tricky/impossible to manage quote inhibition properly.
- * - another option would be to leave the quotes in the strings while the AST is being built. Then
- *   remove them during parsing (only external quotes need to be removed, these would be first and last
- *   chars of each string). This would tell us when not to expand $ and ~
- * - If we do not care about quote inhibition, we can could just parse each word of the arg_list.
- * - We could also re-tokenise each arg_list - this would probably involve strjoin-ing them back together...
- *   probably quite a lot of work to get a sub-optimal result.
- *
- *   The plan
- *   - We need to iterate through to the arg_list and filenames (in_file, out_file) in the AST to
- *   check for expansions
- *   - To handle quotes properly, we need to tweak the tokenizer to make sure they remain in the strings
- *   - We can then remove them in the parsing phase, being mindful of quote inhibition when handling expansions
- *   - Each arg in each arg_list can then be re-tokenised, with a view to retro-fitting the old expansion process
- *   into the new system.
- */
-static const t_token_dispatch	*get_parse_token_dispatch(void)
-{
-	static const t_token_dispatch	dispatch_table[] = {
-	{'$', TOKEN_DOLLAR},
-	{'~', TOKEN_TILDE},
-	{'"', TOKEN_DOUBLE_QUOTE},
-	{'\'', TOKEN_SINGLE_QUOTE},
-	{'{', TOKEN_CURLY_OPEN},
-	{'}', TOKEN_CURLY_CLOSED},
-	{'+', TOKEN_PLUS},
-	{'-', TOKEN_MINUS},
-	{'\0', TOKEN_NULL}
-	};
-
-	return (dispatch_table);
-}
-
-static t_token_type	get_parser_token_type(char value)
-{
-	const t_token_dispatch	*dispatch_table;
-	size_t					i;
-
-	dispatch_table = get_parse_token_dispatch();
-	i = 0;
-	while (dispatch_table[i].token != TOKEN_NULL)
-	{
-		if (dispatch_table[i].symbol == value)
-			return (dispatch_table[i].token);
-		i++;
-	}
-	if (ft_is_whitespace(value))
-		return (TOKEN_WHITESPACE);
-	return (TOKEN_WORD);
-}
-
-static t_token	*re_tokenize(char *line)
-{
-	t_token			*result;
-	t_token_type	type;
-	int				i;
-	int				buff_idx;
-	char			*buff;
-
-	buff = ft_strnew(ft_strlen(line) + 1);
-	if (!buff)
-		return (NULL);
-	result = NULL;
-	type = get_parser_token_type(line[0]);
-	i = 0;
-	buff_idx = 0;
-	while (line[i])
-	{
-		if (get_parser_token_type(line[i]) != type)
-		{
-			token_add(&result, type, ft_strdup(buff));
-			ft_bzero(buff, ft_strlen(buff) + 1);
-			type = get_parser_token_type(line[i]);
-			buff_idx = 0;
-		}
-		buff[buff_idx] = line[i];
-		buff_idx++;
-		i++;
-	}
-	token_add(&result, type, ft_strdup(buff));
-	free(buff);
-	return (result);
-}
-
-void	print_tokens(t_token *result)
-{
-	t_token *temp = result;
-	ft_putendl("########## TOKENS ##########");
-	while (temp)
-	{
-		ft_printf("type = %d || value = %s\n", temp->type, temp->value);
-		temp = temp->next;
-	}
-}
-
-static int expand_node(char **word, t_state *state)
-{
-	int		func_result;
-	t_token	*list;
-	t_token	*cursor;
-	char	*result;
-
-	list = re_tokenize(*word);
-	cursor = list;
-	result = NULL;
-	while (cursor)
-	{
-		func_result = run_functions(&cursor, state, &result);
-		if (func_result == 0 && cursor)
-		{
-			func_result = add_to_result(&result, cursor->value, state);
-			cursor = cursor->next;
-		}
-		if (func_result == -1)
-			free(result);
-	}
-	print_tokens(list);
-	ft_printf("result: %s\n\n", result);
-	if (ft_strequ(*word, result))
-	{
-		free(result);
-		return (1);
-	}
-	ft_strdel(word);
-	*word = ft_strdup(result);
-	if (!(*word))
-		return (print_error(ERR_MALLOC_FAIL, 0));
-	free(result);
-	reset_state(state);
-	token_list_free(&list);
-//	if (node->node_type == AST_REDIRECTIONS)
-//	{
-//		
-//	
-//	}
-	return (1);
-}
-
-
-int	parse_expansions(t_ast *root, t_state *state)
-{
-	int	i;
-
-	if (root)
-	{
-		parse_expansions(root->right, state);
-		if (root->node_type == AST_COMMAND_ARGS)
-		{
-			i = 0;
-			while (root->arg_list[i])
-			{
-				if (!expand_node(&(root->arg_list[i]), state))
-					return (0);
-				i++;
-			}
-			return (1);
-		}
-		if (root->node_type == AST_REDIRECTIONS)
-		{
-		
-		
-		}
-		parse_expansions(root->left, state);
-	}
-	return (1);
-}
-
 t_ast	**parse(t_token *list, t_state *state)
 {
 	t_ast	**tree;
@@ -362,15 +125,13 @@ t_ast	**parse(t_token *list, t_state *state)
 	token_list_free(&list);
 	if (!tree)
 		return (NULL);
-	print_ast(tree);
-
+	//print_ast(tree);
 	i = 0;
 	while (tree[i])
 	{
-		if (!parse_expansions(tree[i], state))
+		if (!ast_parse_expansions(tree[i], state))
 		{
 			ast_free(tree);
-			ft_putendl("you set that tree free");
 			return (NULL);
 		}
 		i++;

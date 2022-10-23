@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/23 15:43:06 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/23 17:37:18 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,6 +244,10 @@ typedef struct s_redir
 /* ast_print_debug.c */
 void			print_ast(t_ast **tree);
 
+/* DEBUG FUNCTION - DELETE ME */
+/* print_tokens.c */
+void	print_tokens(t_token *result);
+
 /* Files */
 
 /* ast_add_args.c */
@@ -252,11 +256,17 @@ char			**ast_add_args(t_token **cursor);
 /* ast_free.c */
 void			ast_free(t_ast **tree_list);
 
+/* ast_parse_expansions.c */
+int				ast_parse_expansions(t_ast *root, t_state *state);
+
 /* ast_pipe_sequence.c */
 t_ast			*ast_pipe_sequence(t_token **cursor);
 
 /* ast_redirect_recursion.c */
 int				ast_redirect_recursion(t_ast *node, t_token **cursor);
+
+/* ast_retokenize.c */
+t_token			*ast_retokenize(char *line);
 
 /* grammar.c */
 t_ast			**construct_ast_list(t_token **cursor);
@@ -339,6 +349,7 @@ t_ast			**parse(t_token *list, t_state *state);
 int				expect_token(\
 	t_token **cursor, t_token_type type, t_token *on_fail);
 int				add_to_result(char **result, char *value, t_state *state);
+void			reset_state(t_state *state);
 
 /* expansions.c */
 int				expand_tilde(t_token **cursor, t_state *state, char **result);
