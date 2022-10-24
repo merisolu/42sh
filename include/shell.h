@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/20 14:55:29 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/24 13:13:13 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 # include <dirent.h>
 # include <termcap.h>
 
+//only needed in redirects.c maybe put this in a separate header file
+#include <fcntl.h>
+
 # if __linux__
 #  include <sys/wait.h>
 # endif
@@ -28,6 +31,9 @@
 
 # define PROMPT "$> "
 # define MULTILINE_PROMPT "> "
+
+# define REDIR_APPEND ">>"
+# define REDIR_HEREDOC "<<"
 
 # define BUF_SIZE 16
 # define INPUT_MAX_SIZE LINE_MAX
@@ -87,6 +93,7 @@
 # define ERR_SIZE_GET_FAIL "failed to read terminal size"
 # define ERR_NO_HOME "HOME not set"
 # define ERR_NO_OLDPWD "OLDPWD not set"
+# define ERR_SYNTAX "syntax error, unexpected token"
 
 /* Globals */
 
@@ -221,12 +228,24 @@ typedef struct s_ast
 	t_ast_node_type	node_type;
 	t_token			*token;
 	char			**arg_list;
-	char			*file;
+	char			*in_file;
+	char			*out_file;
+	char			*in_type;
+	char			*out_type;
 	struct s_ast	*left;
 	struct s_ast	*right;
 }	t_ast;
 
+typedef struct s_redir
+{
+	int	fd_out;
+	int	fd_in;
+	int	saved_out;
+	int	saved_in;
+}	t_redir;
+
 /* DEBUG FUNCTION - DELETE ME */
+/* ast_print_debug.c */
 void			print_ast(t_ast **tree);
 
 /* Files */
@@ -234,11 +253,21 @@ void			print_ast(t_ast **tree);
 /* ast_add_args.c */
 char			**ast_add_args(t_token **cursor);
 
+/* ast_free.c */
+void			ast_free(t_ast **tree_list);
+
 /* ast_pipe_sequence.c */
 t_ast			*ast_pipe_sequence(t_token **cursor);
 
+/* ast_redirect_recursion.c */
+int				ast_redirect_recursion(t_ast *node, t_token **cursor);
+
 /* grammar.c */
 t_ast			**construct_ast_list(t_token **cursor);
+
+/* redirects.c */
+int				reset_io(t_redir r);
+int				handle_redirects(t_ast *redir_node, t_redir *r);
 
 /* signal.c */
 void			check_signal(t_state *state);

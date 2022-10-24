@@ -6,11 +6,12 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/19 14:21:45 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/21 18:38:19 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
+
 
 /*
  * check start == pipe_sequence node
@@ -31,11 +32,11 @@ static int	check_node_type(t_ast *node, t_ast_node_type type)
 }
 
 /*
- * TODO handle piping under (tree->right)
- * TODO handle redirects under (cmd_node->right)
+ * TODO handle piping under (tree->right)..? maybe
+ * TODO check malloc protection in redirects works correctly.
  */
 
-static int	get_args_from_tree(t_ast *tree, char ***args)
+static int	get_args_from_tree(t_ast *tree, char ***args, t_redir *r)
 {
 	t_ast	*cmd_node;
 
@@ -46,7 +47,8 @@ static int	get_args_from_tree(t_ast *tree, char ***args)
 	if (!tree->left || !check_node_type(tree->left, AST_SIMPLE_COMMAND))
 		return (0);
 	cmd_node = tree->left;
-	if (cmd_node->right)
+	if (cmd_node->right && (!handle_redirects(cmd_node->right, r)
+		|| !check_node_type(cmd_node->right, AST_REDIRECTIONS)))
 		return (0);
 	if (!cmd_node->left || !check_node_type(cmd_node->left, AST_COMMAND_ARGS))
 		return (0);
@@ -54,27 +56,41 @@ static int	get_args_from_tree(t_ast *tree, char ***args)
 	return (1);
 }
 
+static void	set_redir_struct(t_redir *r)
+{
+	r->fd_out = -1;
+	r->fd_in = -1;
+	r->saved_out = -1;
+	r->saved_in = -1;
+}
+
 static void	execute_tree_list(t_ast **tree_list, t_state *state)
 {
+	t_redir	r;
 	char	**args;
 	int		i;
 
-	if (tree_list)
+	if (!tree_list)
+		return ;
+	set_redir_struct(&r);
+	args = NULL;
+	i = 0;
+	while (get_args_from_tree(tree_list[i], &args, &r))
 	{
-		args = NULL;
-		i = 0;
-		while (get_args_from_tree(tree_list[i], &args))
-		{
-			set_return_value(execute(args, state), state);
-			if (args)
-				env_set(
-					"_",
-					args[ft_null_array_len((void **)args) - 1],
-					&(state->env)
-					);
-			i++;
-		}
+		set_return_value(execute(args, state), state);
+		if (args)
+			env_set(
+				"_",
+				args[ft_null_array_len((void **)args) - 1],
+				&(state->env)
+				);
+		if (!reset_io(r))
+			return ;
+		set_redir_struct(&r);
+		i++;
 	}
+	//print_ast(tree_list);
+	ast_free(tree_list);
 }
 
 /*

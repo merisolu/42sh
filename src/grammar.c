@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:27:35 by amann             #+#    #+#             */
-/*   Updated: 2022/10/19 13:34:16 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/21 18:26:48 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,7 @@ static size_t	sc_count(t_token *list)
 }
 
 /*
- * TODO build a function that will free the ast in case of error
- *
- * In order to manage the semicolons effectives, we construct a separate tree
+ * In order to manage the semicolons effectively, we construct a separate tree
  * for each complete command, then pass that array of trees back to the parser
  *
  * The root node of each tree will be a pipe_sequence, with only one node if
@@ -52,11 +50,14 @@ t_ast	**construct_ast_list(t_token **cursor)
 	while (idx < len)
 	{
 		tree_list[idx] = ast_pipe_sequence(cursor);
+		if (!tree_list[idx])
+		{
+			ast_free(tree_list);
+			return (NULL);
+		}
 		idx++;
 		if (*cursor)
 			*cursor = (*cursor)->next;
 	}
-	if (*cursor)
-		return (NULL);
 	return (tree_list);
 }
