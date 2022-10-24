@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/24 14:09:09 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/24 19:28:27 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -354,8 +354,10 @@ int				expect_token(\
 int				add_to_result(char **result, char *value, t_state *state);
 void			reset_state(t_state *state);
 
-/* expansions.c */
+/* expand_tilde.c */
 int				expand_tilde(t_token **cursor, t_state *state, char **result);
+
+/* expand_variables.c */
 int				expand_variable(\
 	t_token **cursor, t_state *state, char **result);
 
