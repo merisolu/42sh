@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:11:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/23 17:37:53 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/24 19:20:02 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	add_to_result(char **res, char *value, t_state *state)
 {
 	char	*temp;
 
+//	ft_printf("res = %s | value = %s\n", *res, value);
 	if (!value)
 		return (-1);
 	if (state->continue_previous_node)

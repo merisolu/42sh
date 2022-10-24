@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:18:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/23 17:30:47 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/24 11:54:44 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,27 +83,27 @@ int	ast_parse_expansions(t_ast *root, t_state *state)
 {
 	int	i;
 
-	if (root)
+	if (!root)
+		return (1);
+	ast_parse_expansions(root->right, state);
+	if (root->node_type == AST_COMMAND_ARGS)
 	{
-		ast_parse_expansions(root->right, state);
-		if (root->node_type == AST_COMMAND_ARGS)
+		i = 0;
+		while (root->arg_list[i])
 		{
-			i = 0;
-			while (root->arg_list[i])
-			{
-				if (!expand_node(&(root->arg_list[i]), state))
-					return (0);
-				i++;
-			}
-			return (1);
-		}
-		if (root->node_type == AST_REDIRECTIONS)
-		{
-			if (!expand_node(&root->in_file, state) || !expand_node(&root->out_file, state))
+			if (!expand_node(&(root->arg_list[i]), state))
 				return (0);
-			return (1);
+			i++;
 		}
-		ast_parse_expansions(root->left, state);
+		return (1);
 	}
+	if (root->node_type == AST_REDIRECTIONS)
+	{
+		if (!expand_node(&root->in_file, state)
+			|| !expand_node(&root->out_file, state))
+			return (0);
+		return (1);
+	}
+	ast_parse_expansions(root->left, state);
 	return (1);
 }

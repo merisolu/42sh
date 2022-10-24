@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:47:12 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/23 15:45:57 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/24 19:11:21 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,15 @@
 /*
 static int	is_in_assignment(t_state *state, char **res)
 {
-	char	*previous;
 	char	*first_equals;
 	char	*last_equals;
 
-	previous = (*res)[ft_null_array_len((void **)(*res)) - 1];
-	first_equals = ft_strchr(previous, '=');
-	last_equals = ft_strrchr(previous, '=');
-	return (state->continue_previous_node && previous && first_equals
-		&& first_equals != previous && first_equals == last_equals
-		&& !ft_strchr(previous, '~'));
+
+	first_equals = ft_strchr(*res, '=');
+
+
 }
-*/
+
 static int	expand_tilde_special(t_token **cursor, t_state *state, char **res)
 {
 	t_token	*original;
@@ -50,34 +47,73 @@ static int	expand_tilde_special(t_token **cursor, t_state *state, char **res)
 				&& ft_strchr(":/", (*cursor)->value[0]))))
 		return (add_to_result(res, "~", state));
 	return (0);
+}*/
+
+static int	check_first_equals(t_token *cursor)
+{
+	int first;
+
+	if ((cursor && cursor->type != TOKEN_EQUALS)
+		|| (cursor && cursor->type == TOKEN_EQUALS
+		&& (!cursor->previous || cursor->previous->type != TOKEN_WORD)))
+		return (FALSE);
+	first = TRUE;
+	cursor = cursor->previous;
+	while (cursor)
+	{
+		if (cursor->type == TOKEN_EQUALS)
+			return (FALSE);
+		cursor = cursor->previous;
+	}
+	return (first);
 }
+
+static int	expect_slash_null_colon(t_token **cursor, t_token *check, t_token *fall_back)
+{
+	if (check == NULL)
+		return (TRUE);
+	if (check->type == TOKEN_FWD_SLASH || check->type == TOKEN_COLON)
+		return (TRUE);
+	*cursor = fall_back;
+	return (FALSE);
+}
+
+static int	check_colon(t_token *cursor)
+{
+	if (cursor && cursor->type != TOKEN_COLON)
+		return (FALSE);
+	cursor = cursor->previous;
+	if (!cursor)
+		return (FALSE);
+	while (cursor->previous)
+		cursor = cursor->previous;
+	return (expect_token(&cursor, TOKEN_WORD, cursor) && expect_token(&cursor, TOKEN_EQUALS, cursor));
+}
+
 
 int	expand_tilde(t_token **cursor, t_state *state, char **res)
 {
 	t_token	*original;
-	int		special_result;
 
 	original = *cursor;
-	if (!expect_token(cursor, TOKEN_TILDE, original))
+	if (original->type != TOKEN_TILDE || ft_strlen(original->value) > 1)
 		return (0);
-	if (state->has_seen_tilde_in_word && !state->in_assignment)
-		return (add_to_result(res, "~", state));
-	state->has_seen_tilde_in_word = 1;
-	state->in_assignment = 0;// is_in_assignment(state, res);
-	if (original->previous && original->previous->type == TOKEN_WORD)
+	if (!original->previous || check_first_equals(original->previous)
+		|| check_colon(original->previous))
 	{
-		if (!state->in_assignment)
-			return (add_to_result(res, "~", state));
+		if (expect_token(cursor, TOKEN_TILDE, original)
+			&& expect_slash_null_colon(cursor, original->next, original))
+			return (add_to_result(res, env_get_or("HOME", "~", state->env), state));
+		if (expect_token(cursor, TOKEN_TILDE, original)
+			&& expect_token(cursor, TOKEN_PLUS, original)
+			&& expect_slash_null_colon(cursor, original->next->next, original))
+			return (add_to_result(res, env_get_or("PWD", "~+", state->env), state));
+		if (expect_token(cursor, TOKEN_TILDE, original)
+			&& expect_token(cursor, TOKEN_MINUS, original)
+			&& expect_slash_null_colon(cursor, original->next->next, original))
+			return (add_to_result(res, env_get_or("OLDPWD", "~-", state->env), state));
 	}
-	else if (!token_is_word_end(*cursor))
-	{
-		special_result = expand_tilde_special(cursor, state, res);
-		if (special_result != 0)
-			return (special_result);
-	}
-	if (*cursor && (*cursor)->value && !ft_strchr(":/ \t", (*cursor)->value[0]))
-		return (add_to_result(res, "~", state));
-	return (add_to_result(res, env_get_or("HOME", "~", state->env), state));
+	return (0);
 }
 
 static int	expand_name(char *value, t_state *state, char **res)
@@ -123,7 +159,6 @@ int	expand_variable(t_token **cursor, t_state *state, char **res)
 		&& expect_token(cursor, TOKEN_CURLY_OPEN, original)
 		&& expect_token(cursor, TOKEN_WORD, original)
 		&& expect_token(cursor, TOKEN_CURLY_CLOSED, original))
-		return (add_to_result(res, env_get_or(original->next->next->value, "",
-					state->env), state));
+			return (expand_name(original->next->next->value, state, res));
 	return (0);
 }

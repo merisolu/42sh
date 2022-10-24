@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/23 17:37:18 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/24 14:09:09 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ typedef enum e_token_type
 	TOKEN_MINUS,
 	TOKEN_PIPE,
 	TOKEN_SEMICOLON,
+	TOKEN_COLON,
 	TOKEN_GT,
 	TOKEN_LT,
 	TOKEN_DGT,
@@ -151,7 +152,9 @@ typedef enum e_token_type
 	TOKEN_GTAND,
 	TOKEN_AMPERSAND,
 	TOKEN_BACKSLASH,
+	TOKEN_FWD_SLASH,
 	TOKEN_NEWLINE,
+	TOKEN_EQUALS,
 	TOKEN_NULL
 }	t_token_type;
 
