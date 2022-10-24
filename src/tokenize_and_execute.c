@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/24 14:46:12 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/24 15:16:18 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static pid_t	run_command(char *path, char *const *args, char *const *env, t_pipe
 	return (0);
 }
 
-static void	execute_helper(t_ast *node, t_state *state, t_pipes *pipes, int is_at_end)
+static void	execute_simple_command(t_ast *node, t_state *state, t_pipes *pipes, int is_at_end)
 {
 	if (!is_at_end)
 	{
@@ -134,16 +134,16 @@ static void	execute_tree(t_ast *node, t_state *state, t_pipes *pipes, int is_at_
 	if (node->node_type == AST_SIMPLE_COMMAND)
 	{
 		if (node->right)
-			ft_printf("Running %s (redirecting to %s)\n", node->left->arg_list[0], node->right->arg_list[0]);
+			ft_printf("Redirects are not implemented yet. Not running anything.\n");
 		else
-			execute_helper(node, state, pipes, is_at_end);
+			execute_simple_command(node, state, pipes, is_at_end);
 		return ;
 	}
 	else if (node->node_type == AST_PIPE_SEQUENCE)
 	{
-		ft_printf("Running a pipe sequence!\n");
-		execute_tree(node->left, state, pipes, 0);
-		execute_tree(node->right, state, pipes, is_at_end_check(node));
+		execute_tree(node->left, state, pipes, !node->right);
+		if (node->right)
+			execute_tree(node->right, state, pipes, is_at_end_check(node));
 	}
 }
 
