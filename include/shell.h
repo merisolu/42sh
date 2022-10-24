@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/24 13:13:13 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/24 13:59:26 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,6 +243,12 @@ typedef struct s_redir
 	int	saved_out;
 	int	saved_in;
 }	t_redir;
+
+typedef struct s_pipes
+{
+	int	read[2];
+	int	write[2];
+}	t_pipes;
 
 /* DEBUG FUNCTION - DELETE ME */
 /* ast_print_debug.c */

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_and_execute.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/21 18:38:19 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/24 14:46:12 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,37 +24,37 @@
  *
  */
 
-static int	check_node_type(t_ast *node, t_ast_node_type type)
-{
-	if (node && node->node_type == type)
-		return (TRUE);
-	return (FALSE);
-}
+// static int	check_node_type(t_ast *node, t_ast_node_type type)
+// {
+// 	if (node && node->node_type == type)
+// 		return (TRUE);
+// 	return (FALSE);
+// }
 
-/*
- * TODO handle piping under (tree->right)..? maybe
- * TODO check malloc protection in redirects works correctly.
- */
+// /*
+//  * TODO handle piping under (tree->right)..? maybe
+//  * TODO check malloc protection in redirects works correctly.
+//  */
 
-static int	get_args_from_tree(t_ast *tree, char ***args, t_redir *r)
-{
-	t_ast	*cmd_node;
+// static int	get_args_from_tree(t_ast *tree, char ***args, t_redir *r)
+// {
+// 	t_ast	*cmd_node;
 
-	if (!check_node_type(tree, AST_PIPE_SEQUENCE))
-		return (0);
-	if (tree->right)
-		return (0);
-	if (!tree->left || !check_node_type(tree->left, AST_SIMPLE_COMMAND))
-		return (0);
-	cmd_node = tree->left;
-	if (cmd_node->right && (!handle_redirects(cmd_node->right, r)
-		|| !check_node_type(cmd_node->right, AST_REDIRECTIONS)))
-		return (0);
-	if (!cmd_node->left || !check_node_type(cmd_node->left, AST_COMMAND_ARGS))
-		return (0);
-	*args = cmd_node->left->arg_list;
-	return (1);
-}
+// 	if (!check_node_type(tree, AST_PIPE_SEQUENCE))
+// 		return (0);
+// 	if (tree->right)
+// 		return (0);
+// 	if (!tree->left || !check_node_type(tree->left, AST_SIMPLE_COMMAND))
+// 		return (0);
+// 	cmd_node = tree->left;
+// 	if (cmd_node->right && (!handle_redirects(cmd_node->right, r)
+// 		|| !check_node_type(cmd_node->right, AST_REDIRECTIONS)))
+// 		return (0);
+// 	if (!cmd_node->left || !check_node_type(cmd_node->left, AST_COMMAND_ARGS))
+// 		return (0);
+// 	*args = cmd_node->left->arg_list;
+// 	return (1);
+// }
 
 static void	set_redir_struct(t_redir *r)
 {
@@ -64,32 +64,116 @@ static void	set_redir_struct(t_redir *r)
 	r->saved_in = -1;
 }
 
+static void	connect_pipes(int read_pipe[2], int write_pipe[2])
+{
+	if (read_pipe[PIPE_READ] != -1)
+	{
+		if (dup2(read_pipe[PIPE_READ], STDIN_FILENO) == -1)
+			print_error("read pipe dup2 fail", 1);
+		close(read_pipe[PIPE_WRITE]);
+		close(read_pipe[PIPE_READ]);
+	}
+	if (write_pipe[PIPE_READ] != -1)
+	{
+		if (dup2(write_pipe[PIPE_WRITE], STDOUT_FILENO) == -1)
+			print_error("write pipe dup2 fail", 1);
+		close(write_pipe[PIPE_READ]);
+		close(write_pipe[PIPE_WRITE]);
+	}
+}
+
+static pid_t	run_command(char *path, char *const *args, char *const *env, t_pipes *pipes)
+{
+	pid_t	pid;
+
+	ft_dprintf(STDERR_FILENO, "Pipes: [%i, %i], [%i, %i]\n", pipes->read[0], pipes->read[1], pipes->write[0], pipes->write[1]);
+	if (pipes->read[0] != -1 && pipes->write[0] != -1)
+		dup2(pipes->write[PIPE_READ], pipes->read[PIPE_WRITE]);
+	pid = fork();
+	if (pid == -1)
+		return (print_error(ERR_CHILD_PROC_FAIL, -1));
+	if (pid > 0)
+		return (pid);
+	connect_pipes(pipes->read, pipes->write);
+	signal(SIGINT, SIG_DFL);
+	if (execve(path, args, env) == -1)
+		exit(print_error(ERR_CHILD_PROC_FAIL, 1));
+	return (0);
+}
+
+static void	execute_helper(t_ast *node, t_state *state, t_pipes *pipes, int is_at_end)
+{
+	if (!is_at_end)
+	{
+		if (pipe(pipes->write) == -1)
+			print_error("Failed to create pipe", 1);
+	}
+	else
+	{
+		pipes->write[PIPE_READ] = -1;
+		pipes->write[PIPE_WRITE] = -1;
+	}
+
+	ft_printf("Running %s\n", node->left->arg_list[0]);
+	run_command(node->left->arg_list[0], node->left->arg_list, state->env, pipes);
+
+	close(pipes->read[PIPE_READ]);
+	close(pipes->read[PIPE_WRITE]);
+
+	pipes->read[PIPE_READ] = pipes->write[PIPE_READ];
+	pipes->read[PIPE_WRITE] = pipes->write[PIPE_WRITE];
+}
+
+static int is_at_end_check(t_ast *node)
+{
+	return !node->right || node->right->node_type == AST_SIMPLE_COMMAND;
+}
+
+static void	execute_tree(t_ast *node, t_state *state, t_pipes *pipes, int is_at_end)
+{
+	if (node->node_type == AST_SIMPLE_COMMAND)
+	{
+		if (node->right)
+			ft_printf("Running %s (redirecting to %s)\n", node->left->arg_list[0], node->right->arg_list[0]);
+		else
+			execute_helper(node, state, pipes, is_at_end);
+		return ;
+	}
+	else if (node->node_type == AST_PIPE_SEQUENCE)
+	{
+		ft_printf("Running a pipe sequence!\n");
+		execute_tree(node->left, state, pipes, 0);
+		execute_tree(node->right, state, pipes, is_at_end_check(node));
+	}
+}
+
+// /bin/ls -l / | /usr/bin/grep A | /usr/bin/wc -l
 static void	execute_tree_list(t_ast **tree_list, t_state *state)
 {
 	t_redir	r;
+	t_pipes	pipes;
 	char	**args;
 	int		i;
 
 	if (!tree_list)
 		return ;
 	set_redir_struct(&r);
+	pipes.read[0] = -1;
+	pipes.read[1] = -1;
+	pipes.write[0] = -1;
+	pipes.write[1] = -1;
 	args = NULL;
 	i = 0;
-	while (get_args_from_tree(tree_list[i], &args, &r))
+	while (tree_list[i] != NULL)
 	{
-		set_return_value(execute(args, state), state);
-		if (args)
-			env_set(
-				"_",
-				args[ft_null_array_len((void **)args) - 1],
-				&(state->env)
-				);
-		if (!reset_io(r))
-			return ;
-		set_redir_struct(&r);
+		execute_tree(tree_list[i], state, &pipes, 0);
 		i++;
 	}
-	//print_ast(tree_list);
+
+	close(pipes.read[PIPE_READ]);
+	close(pipes.read[PIPE_WRITE]);
+
+	print_ast(tree_list);
 	ast_free(tree_list);
 }
 
