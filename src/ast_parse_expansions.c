@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:18:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/24 11:54:44 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/25 14:38:13 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static char	*expansions_loop(t_token *cursor, t_state *state)
 	return (result);
 }
 
-static int expand_node(char **word, t_state *state)
+static int	expand_node(char **word, t_state *state)
 {
 	t_token	*list;
 	char	*result;

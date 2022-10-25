@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 12:55:17 by amann             #+#    #+#             */
-/*   Updated: 2022/10/21 18:35:14 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/25 14:37:48 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static t_ast	*simple_command(t_token **cursor)
 	res->node_type = AST_SIMPLE_COMMAND;
 	res->left = create_cmd_args_node(cursor);
 	if (*cursor && ((*cursor)->type == TOKEN_LT
-		|| (*cursor)->type == TOKEN_GT))
+			|| (*cursor)->type == TOKEN_GT))
 	{
 		if (!add_redirects(cursor, &(res->right)))
 			return (NULL);

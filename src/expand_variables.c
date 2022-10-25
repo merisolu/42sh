@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:26:38 by amann             #+#    #+#             */
-/*   Updated: 2022/10/25 11:58:05 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/25 14:13:53 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,6 @@ int	expand_variable(t_token **cursor, t_state *state, char **res)
 		&& eat_token(cursor, TOKEN_CURLY_OPEN, original)
 		&& eat_token(cursor, TOKEN_WORD, original)
 		&& eat_token(cursor, TOKEN_CURLY_CLOSED, original))
-			return (expand_name(original->next->next->value, state, res));
+		return (expand_name(original->next->next->value, state, res));
 	return (0);
 }

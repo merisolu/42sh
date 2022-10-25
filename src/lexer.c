@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/23 12:41:27 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/25 14:43:23 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,16 +95,6 @@ static void	t_loop(char *lc, t_tokenizer *t, t_token_type *type, t_token **r)
 	(t->buff)[t->buff_idx] = *lc;
 	(t->buff_idx)++;
 }
-
-/*
-	t_token *temp = result;
-	ft_putendl("########## TOKENS ##########");
-	while (temp)
-	{
-		ft_printf("type = %d || value = %s\n", temp->type, temp->value);
-		temp = temp->next;
-	}
-*/
 
 t_token	*tokenize(char *line)
 {

@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:21:06 by amann             #+#    #+#             */
-/*   Updated: 2022/10/24 19:19:45 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/25 14:36:58 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,35 +50,45 @@ static t_token_type	get_parser_token_type(char value)
 	return (TOKEN_WORD);
 }
 
+static t_tokenizer	retokenize_init(char *line)
+{
+	t_tokenizer	t;
+
+	t.buff = ft_strnew(ft_strlen(line) + 1);
+	t.buff_idx = 0;
+	return (t);
+}
+
+static void	rt_loop(t_tokenizer *t, t_token **res, t_token_type *type, char *lc)
+{
+	token_add(res, *type, ft_strdup(t->buff));
+	ft_bzero(t->buff, ft_strlen(t->buff) + 1);
+	*type = get_parser_token_type(*lc);
+	t->buff_idx = 0;
+}
+
 t_token	*ast_retokenize(char *line)
 {
 	t_token			*result;
 	t_token_type	type;
 	int				i;
-	int				buff_idx;
-	char			*buff;
+	t_tokenizer		t;
 
-	buff = ft_strnew(ft_strlen(line) + 1);
-	if (!buff)
+	t = retokenize_init(line);
+	if (!t.buff)
 		return (NULL);
 	result = NULL;
 	type = get_parser_token_type(line[0]);
 	i = 0;
-	buff_idx = 0;
 	while (line[i])
 	{
 		if (get_parser_token_type(line[i]) != type)
-		{
-			token_add(&result, type, ft_strdup(buff));
-			ft_bzero(buff, ft_strlen(buff) + 1);
-			type = get_parser_token_type(line[i]);
-			buff_idx = 0;
-		}
-		buff[buff_idx] = line[i];
-		buff_idx++;
+			rt_loop(&t, &result, &type, line + i);
+		t.buff[t.buff_idx] = line[i];
+		(t.buff_idx)++;
 		i++;
 	}
-	token_add(&result, type, ft_strdup(buff));
-	free(buff);
+	token_add(&result, type, ft_strdup(t.buff));
+	free(t.buff);
 	return (result);
 }

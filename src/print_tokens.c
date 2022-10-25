@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:35:59 by amann             #+#    #+#             */
-/*   Updated: 2022/10/23 17:36:27 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/25 14:09:44 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void	print_tokens(t_token *result)
 {
-	t_token *temp = result;
+	t_token	*temp;
+
+	temp = result;
 	ft_putendl("########## TOKENS ##########");
 	while (temp)
 	{
