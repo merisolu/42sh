@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/25 14:05:32 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/25 14:44:20 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,6 +252,14 @@ typedef struct s_pipes
 	int	read[2];
 	int	write[2];
 }	t_pipes;
+
+typedef struct s_ast_execution
+{
+	t_ast	*node;
+	t_redir	*redirect;
+	t_pipes	*pipes;
+	int		is_at_end;
+}	t_ast_execution;
 
 /* DEBUG FUNCTION - DELETE ME */
 /* ast_print_debug.c */

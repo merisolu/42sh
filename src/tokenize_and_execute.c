@@ -6,56 +6,64 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/25 14:00:22 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/25 14:44:43 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static pid_t	execute_simple_command(t_ast *node, t_state *state, t_pipes *pipes, int is_at_end)
+static int	is_at_end_check(t_ast *node)
+{
+	return (!node->right || node->right->node_type == AST_SIMPLE_COMMAND);
+}
+
+static pid_t	execute_simple_command(t_ast_execution *context, t_state *state)
 {
 	pid_t	result;
 
-	if (!is_at_end)
+	if (!context->is_at_end)
 	{
-		if (pipe(pipes->write) == -1)
+		if (pipe(context->pipes->write) == -1)
 			print_error(ERR_PIPE_FAIL, 1);
 	}
 	else
-		pipe_reset(pipes->write);
-	result = execute(node->left->arg_list, &(state->env), pipes);
-	pipe_close(pipes->read);
-	pipes_copy(pipes->read, pipes->write);
+		pipe_reset(context->pipes->write);
+	result = execute(
+			context->node->left->arg_list, &(state->env), context->pipes);
+	pipe_close(context->pipes->read);
+	pipes_copy(context->pipes->read, context->pipes->write);
 	return (result);
 }
 
-static int is_at_end_check(t_ast *node)
+static pid_t	execute_tree(t_ast_execution *context, t_state *state)
 {
-	return !node->right || node->right->node_type == AST_SIMPLE_COMMAND;
-}
-
-static pid_t	execute_tree(t_ast *node, t_state *state, t_redir *redir, t_pipes *pipes, int is_at_end)
-{
-	pid_t	result;
+	pid_t			result;
 
 	result = -1;
-	if (node->node_type == AST_SIMPLE_COMMAND)
+	if (context->node->node_type == AST_SIMPLE_COMMAND)
 	{
-		if (node->right)
-			handle_redirects(node->right, redir);
-		result = execute_simple_command(node, state, pipes, is_at_end);
-		reset_io(*redir);
+		if (context->node->right)
+			handle_redirects(context->node->right, context->redirect);
+		result = execute_simple_command(context, state);
+		reset_io(*(context->redirect));
 	}
-	else if (node->node_type == AST_PIPE_SEQUENCE)
+	else if (context->node->node_type == AST_PIPE_SEQUENCE)
 	{
-		result = execute_tree(node->left, state, redir, pipes, !node->right);
-		if (node->right)
-			result = execute_tree(node->right, state, redir, pipes, is_at_end_check(node));
+		result = execute_tree(
+				&(t_ast_execution){
+				context->node->left, context->redirect,
+				context->pipes, !context->node->right
+			}, state);
+		if (context->node->right)
+			result = execute_tree(
+					&(t_ast_execution){
+					context->node->right, context->redirect,
+					context->pipes, is_at_end_check(context->node)
+				}, state);
 	}
 	return (result);
 }
 
-// ls -l / | grep A | wc -l
 static void	execute_tree_list(t_ast **tree_list, t_state *state)
 {
 	t_redir	redir;
@@ -72,7 +80,8 @@ static void	execute_tree_list(t_ast **tree_list, t_state *state)
 	i = 0;
 	while (tree_list[i] != NULL)
 	{
-		tree_pid = execute_tree(tree_list[i], state, &redir, &pipes, 0);
+		tree_pid = execute_tree(
+				&(t_ast_execution){tree_list[0], &redir, &pipes, 0}, state);
 		if (tree_pid != -1)
 			waitpid(tree_pid, NULL, 0);
 		i++;
@@ -80,10 +89,6 @@ static void	execute_tree_list(t_ast **tree_list, t_state *state)
 	pipe_close(pipes.read);
 	ast_free(tree_list);
 }
-
-/*
- * TODO We will also need our tree-freeing function here
- */
 
 void	tokenize_and_execute(t_state *state)
 {
