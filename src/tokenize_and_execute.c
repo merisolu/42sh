@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/25 10:51:42 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/25 11:25:01 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,29 +20,10 @@ static void	set_redir_struct(t_redir *r)
 	r->saved_in = -1;
 }
 
-static void	connect_pipes(int read_pipe[2], int write_pipe[2])
-{
-	if (read_pipe[PIPE_READ] != -1)
-	{
-		if (dup2(read_pipe[PIPE_READ], STDIN_FILENO) == -1)
-			print_error("read pipe dup2 fail", 1);
-		close(read_pipe[PIPE_WRITE]);
-		close(read_pipe[PIPE_READ]);
-	}
-	if (write_pipe[PIPE_READ] != -1)
-	{
-		if (dup2(write_pipe[PIPE_WRITE], STDOUT_FILENO) == -1)
-			print_error("write pipe dup2 fail", 1);
-		close(write_pipe[PIPE_READ]);
-		close(write_pipe[PIPE_WRITE]);
-	}
-}
-
 static pid_t	run_command(char *path, char *const *args, char *const *env, t_pipes *pipes)
 {
 	pid_t	pid;
 
-	// ft_dprintf(STDERR_FILENO, "Pipes: [%i, %i], [%i, %i]\n", pipes->read[0], pipes->read[1], pipes->write[0], pipes->write[1]);
 	if (pipes->read[0] != -1 && pipes->write[0] != -1)
 		dup2(pipes->write[PIPE_READ], pipes->read[PIPE_WRITE]);
 	pid = fork();
@@ -50,7 +31,8 @@ static pid_t	run_command(char *path, char *const *args, char *const *env, t_pipe
 		return (print_error(ERR_CHILD_PROC_FAIL, -1));
 	if (pid > 0)
 		return (pid);
-	connect_pipes(pipes->read, pipes->write);
+	if (!pipes_connect(pipes->read, pipes->write))
+		exit(print_error(ERR_CHILD_PIPE_FAIL, 1));
 	signal(SIGINT, SIG_DFL);
 	if (execve(path, args, env) == -1)
 		exit(print_error(ERR_CHILD_PROC_FAIL, 1));
@@ -64,22 +46,13 @@ static pid_t	execute_simple_command(t_ast *node, t_state *state, t_pipes *pipes,
 	if (!is_at_end)
 	{
 		if (pipe(pipes->write) == -1)
-			print_error("Failed to create pipe", 1);
+			print_error(ERR_PIPE_FAIL, 1);
 	}
 	else
-	{
-		pipes->write[PIPE_READ] = -1;
-		pipes->write[PIPE_WRITE] = -1;
-	}
-
+		pipe_reset(pipes->write);
 	result = run_command(node->left->arg_list[0], node->left->arg_list, state->env, pipes);
-
-	close(pipes->read[PIPE_READ]);
-	close(pipes->read[PIPE_WRITE]);
-
-	pipes->read[PIPE_READ] = pipes->write[PIPE_READ];
-	pipes->read[PIPE_WRITE] = pipes->write[PIPE_WRITE];
-
+	pipe_close(pipes->read);
+	pipes_copy(pipes->read, pipes->write);
 	return (result);
 }
 
@@ -120,10 +93,7 @@ static void	execute_tree_list(t_ast **tree_list, t_state *state)
 	if (!tree_list)
 		return ;
 	set_redir_struct(&redir);
-	pipes.read[0] = -1;
-	pipes.read[1] = -1;
-	pipes.write[0] = -1;
-	pipes.write[1] = -1;
+	pipes_reset(pipes.read, pipes.write);
 	args = NULL;
 	i = 0;
 	while (tree_list[i] != NULL)
@@ -131,11 +101,7 @@ static void	execute_tree_list(t_ast **tree_list, t_state *state)
 		waitpid(execute_tree(tree_list[i], state, &redir, &pipes, 0), NULL, 0);
 		i++;
 	}
-
-	close(pipes.read[PIPE_READ]);
-	close(pipes.read[PIPE_WRITE]);
-
-	// print_ast(tree_list);
+	pipe_close(pipes.read);
 	ast_free(tree_list);
 }
 

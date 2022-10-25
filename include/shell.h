@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/24 13:59:26 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/25 11:33:41 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,9 @@
 # define ERR_LINE_READ "input read error"
 # define ERR_HISTORY_RECALL "history recall error"
 # define ERR_CHILD_PROC_FAIL "cannot make child process"
+# define ERR_CHILD_PIPE_FAIL "cannot make child pipes"
+# define ERR_PIPE_FAIL "failed to create pipe"
+# define ERR_DUP_FAIL "failed to duplicate file descriptor"
 # define ERR_COM_NOT_FOUND "command not found"
 # define ERR_NO_PERMISSION "Permission denied"
 # define ERR_TOO_FEW_ARGS "too few arguments"
@@ -274,6 +277,13 @@ t_ast			**construct_ast_list(t_token **cursor);
 /* redirects.c */
 int				reset_io(t_redir r);
 int				handle_redirects(t_ast *redir_node, t_redir *r);
+
+/* pipes.c */
+void			pipe_reset(int pipe[2]);
+void			pipe_close(int pipe[2]);
+void			pipes_reset(int pipe1[2], int pipe2[2]);
+int				pipes_connect(int read_pipe[2], int write_pipe[2]);
+void			pipes_copy(int target[2], int source[2]);
 
 /* signal.c */
 void			check_signal(t_state *state);

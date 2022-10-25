@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/10/24 13:13:24 by jumanner         ###   ########.fr        #
+#    Updated: 2022/10/25 10:55:20 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ SRC_FILES = main.c \
 			ast_redir_recursion.c \
 			token.c token_list.c get_token_type.c \
 			environment.c environment_getters.c \
-			redirects.c \
+			redirects.c pipes.c \
 			bin.c executor.c return_value.c tokenize_and_execute.c \
 			built_ins.c cmd_cd.c cmd_echo.c cmd_env.c cmd_setenv.c cmd_pipetest.c \
 			cmd_unsetenv.c cmd_exit.c \
