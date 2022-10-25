@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/25 11:25:01 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/25 13:22:35 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,25 +20,6 @@ static void	set_redir_struct(t_redir *r)
 	r->saved_in = -1;
 }
 
-static pid_t	run_command(char *path, char *const *args, char *const *env, t_pipes *pipes)
-{
-	pid_t	pid;
-
-	if (pipes->read[0] != -1 && pipes->write[0] != -1)
-		dup2(pipes->write[PIPE_READ], pipes->read[PIPE_WRITE]);
-	pid = fork();
-	if (pid == -1)
-		return (print_error(ERR_CHILD_PROC_FAIL, -1));
-	if (pid > 0)
-		return (pid);
-	if (!pipes_connect(pipes->read, pipes->write))
-		exit(print_error(ERR_CHILD_PIPE_FAIL, 1));
-	signal(SIGINT, SIG_DFL);
-	if (execve(path, args, env) == -1)
-		exit(print_error(ERR_CHILD_PROC_FAIL, 1));
-	return (0);
-}
-
 static pid_t	execute_simple_command(t_ast *node, t_state *state, t_pipes *pipes, int is_at_end)
 {
 	pid_t	result;
@@ -50,7 +31,7 @@ static pid_t	execute_simple_command(t_ast *node, t_state *state, t_pipes *pipes,
 	}
 	else
 		pipe_reset(pipes->write);
-	result = run_command(node->left->arg_list[0], node->left->arg_list, state->env, pipes);
+	result = execute(node->left->arg_list, &(state->env), pipes);
 	pipe_close(pipes->read);
 	pipes_copy(pipes->read, pipes->write);
 	return (result);
@@ -82,7 +63,7 @@ static pid_t	execute_tree(t_ast *node, t_state *state, t_redir *redir, t_pipes *
 	return (result);
 }
 
-// /bin/ls -l / | /usr/bin/grep A | /usr/bin/wc -l
+// ls -l / | grep A | wc -l
 static void	execute_tree_list(t_ast **tree_list, t_state *state)
 {
 	t_redir	redir;

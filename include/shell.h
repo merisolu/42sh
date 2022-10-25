@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/25 11:33:41 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/25 13:21:57 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -386,8 +386,7 @@ char			**env_get_pointer(const char *name, char *const *env);
 
 /* bin.c */
 int				bin_env_find(const char *name, char *const *env, char **result);
-int				bin_execute(\
-	char *path, char **args, char *const *env, int underscore);
+pid_t			bin_execute(char *path, char **args, char *const *env, t_pipes *pipes);
 
 /* built_ins.c */
 t_cmd			*get_built_in(const char *name);
@@ -395,7 +394,7 @@ char			*search_for_built_in(const char *partial_name);
 int				run_built_in(t_cmd cmd, char *const *args, t_state *state);
 
 /* executor.c */
-int				execute(char *const *args, t_state *state);
+pid_t			execute(char *const *args, char *const **env, t_pipes *pipes);
 
 /* return_value.c */
 int				get_return_value_from_status(int status);

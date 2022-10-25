@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:29:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/09/20 14:52:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/25 13:28:29 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,33 +79,28 @@ int	bin_env_find(const char *name, char *const *env, char **result)
 }
 
 /*
- * Attempts to fork the current process, transform it into a new process
- * defined by the given path to a binary, and wait for its execution to finish.
+ * Attempts to fork the current process, and transform it into a new process
+ * defined by the given path to a binary.
  *
  * If fork or execve calls fail, an error message is printed to stderr.
  */
-int	bin_execute(char *path, char **args, char *const *env, int underscore)
+pid_t	bin_execute(char *path, char **args, char *const *env, t_pipes *pipes)
 {
-	pid_t	process_pid;
-	int		status;
+	pid_t	result;
 
 	if (!path)
-		return (1);
-	if (access(path, X_OK) == -1)
-		return (print_named_error(
-				(char *)path, ERR_NO_PERMISSION, RETURN_NO_ACCESS
-			));
-	if (underscore && !env_set("_", path, &env))
-		return (1);
-	process_pid = fork();
-	if (process_pid == 0)
-	{
-		signal(SIGINT, SIG_DFL);
-		if (execve(path, args, env) == -1)
-			exit(print_error(ERR_CHILD_PROC_FAIL, 1));
-	}
-	else if (process_pid == -1)
-		return (print_error(ERR_CHILD_PROC_FAIL, 1));
-	waitpid(process_pid, &status, 0);
-	return (get_return_value_from_status(status));
+		return (-1);
+	if (pipes->read[0] != -1 && pipes->write[0] != -1)
+		dup2(pipes->write[PIPE_READ], pipes->read[PIPE_WRITE]);
+	result = fork();
+	if (result == -1)
+		return (print_error(ERR_CHILD_PROC_FAIL, -1));
+	if (result != 0)
+		return (result);
+	if (!pipes_connect(pipes->read, pipes->write))
+		exit(print_error(ERR_CHILD_PIPE_FAIL, 1));
+	signal(SIGINT, SIG_DFL);
+	if (execve(path, args, env) == -1)
+		exit(print_error(ERR_CHILD_PROC_FAIL, 1));
+	return (result);
 }
