@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 15:05:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/23 15:42:19 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/25 11:58:53 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	check_literals(t_token **cursor, t_state *state, char **result)
 	t_token	*original;
 
 	original = *cursor;
-	if (expect_token(cursor, TOKEN_WHITESPACE, original))
+	if (eat_token(cursor, TOKEN_WHITESPACE, original))
 	{
 		if (state->in_double_quotes)
 			return (add_to_result(result, original->value, state));
@@ -26,7 +26,7 @@ int	check_literals(t_token **cursor, t_state *state, char **result)
 		state->in_assignment = 0;
 		return (1);
 	}
-	if (expect_token(cursor, TOKEN_DOUBLE_QUOTE, original))
+	if (eat_token(cursor, TOKEN_DOUBLE_QUOTE, original))
 	{
 		state->in_double_quotes = !state->in_double_quotes;
 		if (original && original->previous
@@ -34,7 +34,7 @@ int	check_literals(t_token **cursor, t_state *state, char **result)
 			return (add_to_result(result, "", state));
 		return (1);
 	}
-	if (expect_token(cursor, TOKEN_WORD, original))
+	if (eat_token(cursor, TOKEN_WORD, original))
 		return (add_to_result(result, original->value, state));
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/10/24 19:29:35 by amann            ###   ########.fr        #
+#    Updated: 2022/10/25 12:44:35 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ SRC_FILES = main.c \
 			movement.c movement_alt.c \
 			literals.c \
 			lexer.c parser.c expand_tilde.c expand_variables.c \
+			eat_read_token.c \
 			grammar.c ast_add_args.c ast_pipe_sequence.c ast_free.c \
 			ast_redir_recursion.c ast_retokenize.c ast_parse_expansions.c \
 			token.c token_list.c get_token_type.c \

@@ -6,11 +6,14 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:47:12 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/24 19:28:41 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/25 13:44:38 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
+
+//#include <pwd.h>
+
 
 static int	check_first_equals(t_token *cursor)
 {
@@ -31,16 +34,6 @@ static int	check_first_equals(t_token *cursor)
 	return (first);
 }
 
-static int	expect_slash_null_colon(t_token **cursor, t_token *check, t_token *fall_back)
-{
-	if (check == NULL)
-		return (TRUE);
-	if (check->type == TOKEN_FWD_SLASH || check->type == TOKEN_COLON)
-		return (TRUE);
-	*cursor = fall_back;
-	return (FALSE);
-}
-
 static int	check_colon(t_token *cursor)
 {
 	if (cursor && cursor->type != TOKEN_COLON)
@@ -50,10 +43,34 @@ static int	check_colon(t_token *cursor)
 		return (FALSE);
 	while (cursor->previous)
 		cursor = cursor->previous;
-	return (expect_token(&cursor, TOKEN_WORD, cursor)
-			&& expect_token(&cursor, TOKEN_EQUALS, cursor));
+	return (eat_token(&cursor, TOKEN_WORD, cursor)
+			&& eat_token(&cursor, TOKEN_EQUALS, cursor));
 }
 
+/*
+ * We can find the appropriate user directory using the passwd struct
+ * Malloc protection happens in add_to_result (just returns -1 if value == NULL)
+ * We need to do it like this to avoid leaking memory when constructing our string
+ */
+
+static int	find_user(char **res, t_token **cursor, t_state *state)
+{
+	int				ret;
+	struct passwd	*pw;
+	char			*usr;
+
+	pw = getpwnam((*cursor)->value);
+	if (!pw)
+	{
+		usr = ft_strjoin("~", (*cursor)->value);
+		ret = add_to_result(res, usr, state);
+		free(usr);
+	}
+	else
+		ret = add_to_result(res, pw->pw_dir, state);
+	*cursor = (*cursor)->next;
+	return (ret);
+}
 
 int	expand_tilde(t_token **cursor, t_state *state, char **res)
 {
@@ -65,17 +82,20 @@ int	expand_tilde(t_token **cursor, t_state *state, char **res)
 	if (!original->previous || check_first_equals(original->previous)
 		|| check_colon(original->previous))
 	{
-		if (expect_token(cursor, TOKEN_TILDE, original)
-			&& expect_slash_null_colon(cursor, original->next, original))
+		if (eat_token(cursor, TOKEN_TILDE, original)
+			&& read_token(cursor, TOKEN_FWD_SLASH | TOKEN_COLON | TOKEN_NULL, original))
 			return (add_to_result(res, env_get_or("HOME", "~", state->env), state));
-		if (expect_token(cursor, TOKEN_TILDE, original)
-			&& expect_token(cursor, TOKEN_PLUS, original)
-			&& expect_slash_null_colon(cursor, original->next->next, original))
+		if (eat_token(cursor, TOKEN_TILDE, original)
+			&& eat_token(cursor, TOKEN_PLUS, original)
+			&& read_token(cursor, TOKEN_FWD_SLASH | TOKEN_COLON | TOKEN_NULL, original))
 			return (add_to_result(res, env_get_or("PWD", "~+", state->env), state));
-		if (expect_token(cursor, TOKEN_TILDE, original)
-			&& expect_token(cursor, TOKEN_MINUS, original)
-			&& expect_slash_null_colon(cursor, original->next->next, original))
+		if (eat_token(cursor, TOKEN_TILDE, original)
+			&& eat_token(cursor, TOKEN_MINUS, original)
+			&& read_token(cursor, TOKEN_FWD_SLASH | TOKEN_COLON | TOKEN_NULL, original))
 			return (add_to_result(res, env_get_or("OLDPWD", "~-", state->env), state));
-	}
+		if (eat_token(cursor, TOKEN_TILDE, original)
+			&& read_token(cursor, TOKEN_WORD, original))
+			return (find_user(res, cursor, state));
+		}
 	return (0);
 }

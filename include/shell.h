@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/24 19:28:27 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/25 13:49:07 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@
 
 //only needed in redirects.c maybe put this in a separate header file
 #include <fcntl.h>
+
+//only needed in expand_tildes.c for finding usernames, see above comment
+#include <pwd.h>
 
 # if __linux__
 #  include <sys/wait.h>
@@ -131,31 +134,31 @@ typedef enum e_input_result
 
 typedef enum e_token_type
 {
-	TOKEN_WORD,
-	TOKEN_WHITESPACE,
-	TOKEN_DOLLAR,
-	TOKEN_TILDE,
-	TOKEN_DOUBLE_QUOTE,
-	TOKEN_SINGLE_QUOTE,
-	TOKEN_CURLY_OPEN,
-	TOKEN_CURLY_CLOSED,
-	TOKEN_PLUS,
-	TOKEN_MINUS,
-	TOKEN_PIPE,
-	TOKEN_SEMICOLON,
-	TOKEN_COLON,
-	TOKEN_GT,
-	TOKEN_LT,
-	TOKEN_DGT,
-	TOKEN_DLT,
-	TOKEN_LTAND,
-	TOKEN_GTAND,
-	TOKEN_AMPERSAND,
-	TOKEN_BACKSLASH,
-	TOKEN_FWD_SLASH,
-	TOKEN_NEWLINE,
-	TOKEN_EQUALS,
-	TOKEN_NULL
+	TOKEN_WORD = 1 << 0,
+	TOKEN_WHITESPACE = 1 << 1,
+	TOKEN_DOLLAR = 1 << 2,
+	TOKEN_TILDE = 1 << 3,
+	TOKEN_DOUBLE_QUOTE = 1 << 4,
+	TOKEN_SINGLE_QUOTE = 1 << 5,
+	TOKEN_CURLY_OPEN = 1 << 6,
+	TOKEN_CURLY_CLOSED = 1 << 7,
+	TOKEN_PLUS = 1 << 8,
+	TOKEN_MINUS = 1 << 9,
+	TOKEN_PIPE = 1 << 10,
+	TOKEN_SEMICOLON = 1 << 11,
+	TOKEN_COLON = 1 << 12,
+	TOKEN_GT = 1 << 13,
+	TOKEN_LT = 1 << 14,
+	TOKEN_DGT = 1 << 15,
+	TOKEN_DLT = 1 << 16,
+	TOKEN_LTAND = 1 << 17,
+	TOKEN_GTAND = 1 << 18,
+	TOKEN_AMPERSAND = 1 << 19,
+	TOKEN_BACKSLASH = 1 << 20,
+	TOKEN_FWD_SLASH = 1 << 21,
+	TOKEN_NEWLINE = 1 << 22,
+	TOKEN_EQUALS = 1 << 24,
+	TOKEN_NULL = 1 << 25
 }	t_token_type;
 
 typedef struct s_token
@@ -349,10 +352,14 @@ t_token_type	get_token_type(char value, int in_quotes);
 
 /* parser.c */
 t_ast			**parse(t_token *list, t_state *state);
-int				expect_token(\
-	t_token **cursor, t_token_type type, t_token *on_fail);
 int				add_to_result(char **result, char *value, t_state *state);
 void			reset_state(t_state *state);
+
+/* eat_read_token.c */
+int				eat_token(\
+	t_token **cursor, t_token_type type, t_token *on_fail);
+int				read_token(\
+	t_token **cursor, t_token_type type, t_token *on_fail);
 
 /* expand_tilde.c */
 int				expand_tilde(t_token **cursor, t_state *state, char **result);
