@@ -6,19 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/25 13:45:17 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/25 14:00:22 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-
-static void	set_redir_struct(t_redir *r)
-{
-	r->fd_out = -1;
-	r->fd_in = -1;
-	r->saved_out = -1;
-	r->saved_in = -1;
-}
 
 static pid_t	execute_simple_command(t_ast *node, t_state *state, t_pipes *pipes, int is_at_end)
 {
@@ -74,7 +66,7 @@ static void	execute_tree_list(t_ast **tree_list, t_state *state)
 
 	if (!tree_list)
 		return ;
-	set_redir_struct(&redir);
+	initialize_redir_struct(&redir);
 	pipes_reset(pipes.read, pipes.write);
 	args = NULL;
 	i = 0;

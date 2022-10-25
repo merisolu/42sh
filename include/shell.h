@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/25 13:21:57 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/25 14:00:44 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,6 +275,7 @@ int				ast_redirect_recursion(t_ast *node, t_token **cursor);
 t_ast			**construct_ast_list(t_token **cursor);
 
 /* redirects.c */
+void			initialize_redir_struct(t_redir *r);
 int				reset_io(t_redir r);
 int				handle_redirects(t_ast *redir_node, t_redir *r);
 
