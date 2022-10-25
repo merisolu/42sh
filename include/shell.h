@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/25 14:00:44 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/25 14:05:32 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -420,9 +420,6 @@ int				cmd_unsetenv(char *const *args, t_state *state);
 
 /* cmd_exit.c */
 int				cmd_exit(char *const *args, t_state *state);
-
-/* cmd_pipetest.c */
-int				cmd_pipetest(char *const *args, t_state *state);
 
 /* Utilities */
 
