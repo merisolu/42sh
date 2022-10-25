@@ -6,55 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/24 15:16:18 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/25 10:51:42 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-
-
-/*
- * check start == pipe_sequence node
- * check if right node is null (if not, we need to pipe something...)
- * check if left node contains a simple command (if not... bad things... exit)
- * move to command node.
- * check if right node is null (if not, we have to handle a redirection)
- * check if left node is command_args node
- * return a pointer to the arg_list from that node to the args variable
- *
- */
-
-// static int	check_node_type(t_ast *node, t_ast_node_type type)
-// {
-// 	if (node && node->node_type == type)
-// 		return (TRUE);
-// 	return (FALSE);
-// }
-
-// /*
-//  * TODO handle piping under (tree->right)..? maybe
-//  * TODO check malloc protection in redirects works correctly.
-//  */
-
-// static int	get_args_from_tree(t_ast *tree, char ***args, t_redir *r)
-// {
-// 	t_ast	*cmd_node;
-
-// 	if (!check_node_type(tree, AST_PIPE_SEQUENCE))
-// 		return (0);
-// 	if (tree->right)
-// 		return (0);
-// 	if (!tree->left || !check_node_type(tree->left, AST_SIMPLE_COMMAND))
-// 		return (0);
-// 	cmd_node = tree->left;
-// 	if (cmd_node->right && (!handle_redirects(cmd_node->right, r)
-// 		|| !check_node_type(cmd_node->right, AST_REDIRECTIONS)))
-// 		return (0);
-// 	if (!cmd_node->left || !check_node_type(cmd_node->left, AST_COMMAND_ARGS))
-// 		return (0);
-// 	*args = cmd_node->left->arg_list;
-// 	return (1);
-// }
 
 static void	set_redir_struct(t_redir *r)
 {
@@ -86,7 +42,7 @@ static pid_t	run_command(char *path, char *const *args, char *const *env, t_pipe
 {
 	pid_t	pid;
 
-	ft_dprintf(STDERR_FILENO, "Pipes: [%i, %i], [%i, %i]\n", pipes->read[0], pipes->read[1], pipes->write[0], pipes->write[1]);
+	// ft_dprintf(STDERR_FILENO, "Pipes: [%i, %i], [%i, %i]\n", pipes->read[0], pipes->read[1], pipes->write[0], pipes->write[1]);
 	if (pipes->read[0] != -1 && pipes->write[0] != -1)
 		dup2(pipes->write[PIPE_READ], pipes->read[PIPE_WRITE]);
 	pid = fork();
@@ -101,8 +57,10 @@ static pid_t	run_command(char *path, char *const *args, char *const *env, t_pipe
 	return (0);
 }
 
-static void	execute_simple_command(t_ast *node, t_state *state, t_pipes *pipes, int is_at_end)
+static pid_t	execute_simple_command(t_ast *node, t_state *state, t_pipes *pipes, int is_at_end)
 {
+	pid_t	result;
+
 	if (!is_at_end)
 	{
 		if (pipe(pipes->write) == -1)
@@ -114,14 +72,15 @@ static void	execute_simple_command(t_ast *node, t_state *state, t_pipes *pipes, 
 		pipes->write[PIPE_WRITE] = -1;
 	}
 
-	ft_printf("Running %s\n", node->left->arg_list[0]);
-	run_command(node->left->arg_list[0], node->left->arg_list, state->env, pipes);
+	result = run_command(node->left->arg_list[0], node->left->arg_list, state->env, pipes);
 
 	close(pipes->read[PIPE_READ]);
 	close(pipes->read[PIPE_WRITE]);
 
 	pipes->read[PIPE_READ] = pipes->write[PIPE_READ];
 	pipes->read[PIPE_WRITE] = pipes->write[PIPE_WRITE];
+
+	return (result);
 }
 
 static int is_at_end_check(t_ast *node)
@@ -129,35 +88,38 @@ static int is_at_end_check(t_ast *node)
 	return !node->right || node->right->node_type == AST_SIMPLE_COMMAND;
 }
 
-static void	execute_tree(t_ast *node, t_state *state, t_pipes *pipes, int is_at_end)
+static pid_t	execute_tree(t_ast *node, t_state *state, t_redir *redir, t_pipes *pipes, int is_at_end)
 {
+	pid_t	result;
+
+	result = -1;
 	if (node->node_type == AST_SIMPLE_COMMAND)
 	{
 		if (node->right)
-			ft_printf("Redirects are not implemented yet. Not running anything.\n");
-		else
-			execute_simple_command(node, state, pipes, is_at_end);
-		return ;
+			handle_redirects(node->right, redir);
+		result = execute_simple_command(node, state, pipes, is_at_end);
+		reset_io(*redir);
 	}
 	else if (node->node_type == AST_PIPE_SEQUENCE)
 	{
-		execute_tree(node->left, state, pipes, !node->right);
+		result = execute_tree(node->left, state, redir, pipes, !node->right);
 		if (node->right)
-			execute_tree(node->right, state, pipes, is_at_end_check(node));
+			result = execute_tree(node->right, state, redir, pipes, is_at_end_check(node));
 	}
+	return (result);
 }
 
 // /bin/ls -l / | /usr/bin/grep A | /usr/bin/wc -l
 static void	execute_tree_list(t_ast **tree_list, t_state *state)
 {
-	t_redir	r;
+	t_redir	redir;
 	t_pipes	pipes;
 	char	**args;
 	int		i;
 
 	if (!tree_list)
 		return ;
-	set_redir_struct(&r);
+	set_redir_struct(&redir);
 	pipes.read[0] = -1;
 	pipes.read[1] = -1;
 	pipes.write[0] = -1;
@@ -166,14 +128,14 @@ static void	execute_tree_list(t_ast **tree_list, t_state *state)
 	i = 0;
 	while (tree_list[i] != NULL)
 	{
-		execute_tree(tree_list[i], state, &pipes, 0);
+		waitpid(execute_tree(tree_list[i], state, &redir, &pipes, 0), NULL, 0);
 		i++;
 	}
 
 	close(pipes.read[PIPE_READ]);
 	close(pipes.read[PIPE_WRITE]);
 
-	print_ast(tree_list);
+	// print_ast(tree_list);
 	ast_free(tree_list);
 }
 
