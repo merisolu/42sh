@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_sequence.c                                    :+:      :+:    :+:   */
+/*   ast_pipe_sequence.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 12:55:17 by amann             #+#    #+#             */
-/*   Updated: 2022/10/25 14:37:48 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/26 14:10:30 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static int	add_redirects(t_token **cursor, t_ast **node)
 	if (!node)
 		return (print_error(ERR_MALLOC_FAIL, 0));
 	(*node)->node_type = AST_REDIRECTIONS;
-	(*node)->token = *cursor;
 	if (!ast_redirect_recursion(*node, cursor))
 		return (0);
 	return (1);
@@ -48,7 +47,6 @@ static t_ast	*create_cmd_args_node(t_token **cursor)
 		return (NULL);
 	}
 	res->node_type = AST_COMMAND_ARGS;
-	res->token = *cursor;
 	res->arg_list = ast_add_args(cursor);
 	if (!(res->arg_list))
 		return (NULL);

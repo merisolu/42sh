@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/26 12:47:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/26 14:10:20 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,7 +234,6 @@ typedef enum e_ast_node_type
 typedef struct s_ast
 {
 	t_ast_node_type	node_type;
-	t_token			*token;
 	char			**arg_list;
 	char			*in_file;
 	char			*out_file;
