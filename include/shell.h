@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/26 14:10:20 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/26 14:16:03 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,13 @@
 
 # define TRUE 1
 # define FALSE 0
+
+# define CC_SUSPEND VDSUSP
+
+# if __linux__
+#  undef CC_SUSPEND
+#  define CC_SUSPEND VSUSP
+# endif
 
 /* Keys */
 
