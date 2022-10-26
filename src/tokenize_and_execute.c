@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/25 14:44:43 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/26 11:27:51 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static pid_t	execute_simple_command(t_ast_execution *context, t_state *state)
 	else
 		pipe_reset(context->pipes->write);
 	result = execute(
-			context->node->left->arg_list, &(state->env), context->pipes);
+			context->node->left->arg_list, state, context->pipes);
 	pipe_close(context->pipes->read);
 	pipes_copy(context->pipes->read, context->pipes->write);
 	return (result);

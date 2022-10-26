@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:18:43 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/25 14:05:44 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/26 11:54:52 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,27 @@ t_cmd	*get_built_in(const char *name)
 	return (NULL);
 }
 
-int	run_built_in(t_cmd cmd, char *const *args, t_state *state)
+/*
+ * Runs the given built-in. Forks if necessary. Returning -1 when not forking
+ * is intentional to avoid calling waitpid() in execute_tree_list(). It should
+ * not cause issues with error handling (at least right now).
+ */
+pid_t	run_built_in(t_cmd cmd, char *const *args, t_state *state, \
+	t_pipes *pipes)
 {
-	int	return_value;
+	pid_t	result;
+	int		should_fork;
 
-	return_value = cmd(args, state);
-	set_return_value(return_value, state);
-	return (return_value);
+	should_fork = !(pipes->read[0] == -1 && pipes->read[1] == -1
+			&& pipes->write[0] == -1 && pipes->write[1] == -1);
+	if (should_fork)
+	{
+		result = start_fork(pipes);
+		if (result == 0)
+			exit(cmd(args, state));
+		else
+			return (result);
+	}
+	set_return_value(cmd(args, state), state);
+	return (-1);
 }

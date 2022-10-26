@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:29:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/25 13:28:29 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/26 11:32:24 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,17 +90,11 @@ pid_t	bin_execute(char *path, char **args, char *const *env, t_pipes *pipes)
 
 	if (!path)
 		return (-1);
-	if (pipes->read[0] != -1 && pipes->write[0] != -1)
-		dup2(pipes->write[PIPE_READ], pipes->read[PIPE_WRITE]);
-	result = fork();
-	if (result == -1)
-		return (print_error(ERR_CHILD_PROC_FAIL, -1));
-	if (result != 0)
-		return (result);
-	if (!pipes_connect(pipes->read, pipes->write))
-		exit(print_error(ERR_CHILD_PIPE_FAIL, 1));
-	signal(SIGINT, SIG_DFL);
-	if (execve(path, args, env) == -1)
-		exit(print_error(ERR_CHILD_PROC_FAIL, 1));
+	result = start_fork(pipes);
+	if (result == 0)
+	{
+		if (execve(path, args, env) == -1)
+			exit(print_error(ERR_CHILD_PROC_FAIL, 1));
+	}
 	return (result);
 }
