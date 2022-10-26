@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2022/10/21 18:15:50 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/26 16:03:37 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,16 @@
 
 static int	add_redir_out(t_ast *node, t_token **cursor)
 {
+	if (node->out_type)
+		ft_strdel(&(node->out_type));
 	node->out_type = ft_strdup((*cursor)->value);
 	if (!node->out_type)
 		return (print_error(ERR_MALLOC_FAIL, 0));
 	*cursor = (*cursor)->next;
 	if (!(*cursor) || (*cursor)->type != TOKEN_WORD)
 		return (print_error(ERR_SYNTAX, 0));
+	if (node->out_file)
+		ft_strdel(&(node->out_file));
 	node->out_file = ft_strdup((*cursor)->value);
 	if (!node->out_file)
 		return (print_error(ERR_MALLOC_FAIL, 0));
@@ -29,12 +33,16 @@ static int	add_redir_out(t_ast *node, t_token **cursor)
 
 static int	add_redir_in(t_ast *node, t_token **cursor)
 {
+	if (node->in_type)
+		ft_strdel(&(node->in_type));
 	node->in_type = ft_strdup((*cursor)->value);
 	if (!node->in_type)
 		return (print_error(ERR_MALLOC_FAIL, 0));
 	*cursor = (*cursor)->next;
 	if (!(*cursor) || (*cursor)->type != TOKEN_WORD)
 		return (print_error(ERR_SYNTAX, 0));
+	if (node->in_file)
+		ft_strdel(&(node->in_file));
 	node->in_file = ft_strdup((*cursor)->value);
 	if (!node->in_file)
 		return (print_error(ERR_MALLOC_FAIL, 0));
