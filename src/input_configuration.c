@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 11:20:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/26 14:16:13 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/26 15:21:15 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 int	set_input_config(t_state *state)
 {
-	if (tcsetattr(STDIN_FILENO, TCSANOW, &(state->input_conf)) == -1)
+	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &(state->input_conf)) == -1)
 		return (0);
 	return (1);
 }
 
 int	set_orig_config(t_state *state)
 {
-	if (tcsetattr(STDIN_FILENO, TCSANOW, &(state->orig_conf)) == -1)
+	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &(state->orig_conf)) == -1)
 		return (0);
 	return (1);
 }
