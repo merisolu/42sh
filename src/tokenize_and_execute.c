@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/26 14:09:08 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/26 15:36:50 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static void	execute_tree_list(t_ast **tree_list, t_state *state)
 	while (tree_list[i] != NULL)
 	{
 		tree_pid = execute_tree(
-				&(t_ast_execution){tree_list[0], &redir, &pipes, 0}, state);
+				&(t_ast_execution){tree_list[i], &redir, &pipes, 0}, state);
 		if (tree_pid != -1)
 			waitpid(tree_pid, NULL, 0);
 		i++;
