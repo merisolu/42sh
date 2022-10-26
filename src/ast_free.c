@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_free.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 12:58:11 by amann             #+#    #+#             */
-/*   Updated: 2022/10/21 12:00:53 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/26 14:03:51 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,16 @@
 
 static void	tree_free_recursion(t_ast *root)
 {
-	if (root)
-	{
-		tree_free_recursion(root->right);
-		ft_free_null_array((void **) root->arg_list);
-		free(root->in_file);
-		free(root->out_file);
-		free(root->in_type);
-		free(root->out_type);
-		tree_free_recursion(root->left);
-		free(root);
-	}
-	else
-		return ;
+	if (!root)
+		return;
+	tree_free_recursion(root->left);
+	tree_free_recursion(root->right);
+	ft_free_null_array((void **) root->arg_list);
+	free(root->in_file);
+	free(root->out_file);
+	free(root->in_type);
+	free(root->out_type);
+	free(root);
 }
 
 void	ast_free(t_ast **tree_list)
