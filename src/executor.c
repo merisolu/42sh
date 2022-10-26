@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/19 13:27:14 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/26 10:35:03 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,25 @@ static int	check_path_validity(char *path)
 	return (0);
 }
 
-int	execute(char *const *args, t_state *state)
+pid_t	execute(char *const *args, t_state *state, t_pipes *pipes)
 {
 	char	*path;
 	int		return_value;
 
-	if (!args || !(args[0]) || !env_set("_", args[0], &state->env))
-		return (print_error(ERR_MALLOC_FAIL, 1));
+	if (!args || !(args[0]) || !env_set("_", args[0], &(state->env)))
+		return (print_error(ERR_MALLOC_FAIL, -1));
+	// if (access(path, X_OK) == -1)
+	// 	return (print_named_error(
+	// 			(char *)path, ERR_NO_PERMISSION, RETURN_NO_ACCESS
+	// 		));
 	if (get_built_in(args[0]))
-		return (run_built_in(get_built_in(args[0]), args, state));
+		return (run_built_in(get_built_in(args[0]), args, state, pipes));
 	if (ft_strchr(args[0], '/') || (args[0][0] == '.'))
 	{
 		return_value = check_path_validity(args[0]);
 		if (return_value != 0)
 			return (return_value);
-		return (bin_execute(args[0], (char **)args, state->env, 1));
+		return (bin_execute(args[0], (char **)args, state->env, pipes));
 	}
 	return_value = bin_env_find(args[0], state->env, &path);
 	if (return_value == 0)
@@ -49,7 +53,7 @@ int	execute(char *const *args, t_state *state)
 		return (return_value);
 	return_value = env_set("_", path, &(state->env));
 	if (return_value)
-		return_value = bin_execute(path, (char **)args, state->env, 1);
+		return_value = bin_execute(path, (char **)args, state->env, pipes);
 	free(path);
 	return (return_value);
 }

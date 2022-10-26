@@ -3,97 +3,92 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_and_execute.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/25 14:09:07 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/26 12:47:40 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-/*
- * check start == pipe_sequence node
- * check if right node is null (if not, we need to pipe something...)
- * check if left node contains a simple command (if not... bad things... exit)
- * move to command node.
- * check if right node is null (if not, we have to handle a redirection)
- * check if left node is command_args node
- * return a pointer to the arg_list from that node to the args variable
- *
- */
-
-static int	check_node_type(t_ast *node, t_ast_node_type type)
+static int	is_at_end_check(t_ast *node)
 {
-	if (node && node->node_type == type)
-		return (TRUE);
-	return (FALSE);
+	return (!node->right || node->right->node_type == AST_SIMPLE_COMMAND);
 }
 
-/*
- * TODO handle piping under (tree->right)..? maybe
- * TODO check malloc protection in redirects works correctly.
- */
-
-static int	get_args_from_tree(t_ast *tree, char ***args, t_redir *r)
+static pid_t	execute_simple_command(t_ast_execution *context, t_state *state)
 {
-	t_ast	*cmd_node;
+	pid_t	result;
 
-	if (!check_node_type(tree, AST_PIPE_SEQUENCE))
-		return (0);
-	if (tree->right)
-		return (0);
-	if (!tree->left || !check_node_type(tree->left, AST_SIMPLE_COMMAND))
-		return (0);
-	cmd_node = tree->left;
-	if (cmd_node->right && (!handle_redirects(cmd_node->right, r)
-			|| !check_node_type(cmd_node->right, AST_REDIRECTIONS)))
-		return (0);
-	if (!cmd_node->left || !check_node_type(cmd_node->left, AST_COMMAND_ARGS))
-		return (0);
-	*args = cmd_node->left->arg_list;
-	return (1);
+	if (!context->is_at_end)
+	{
+		if (pipe(context->pipes->write) == -1)
+			print_error(ERR_PIPE_FAIL, 1);
+	}
+	else
+		pipe_reset(context->pipes->write);
+	result = execute(
+			context->node->left->arg_list, state, context->pipes);
+	pipe_close(context->pipes->read);
+	pipes_copy(context->pipes->read, context->pipes->write);
+	return (result);
 }
 
-static void	set_redir_struct(t_redir *r)
+static pid_t	execute_tree(t_ast_execution *context, t_state *state)
 {
-	r->fd_out = -1;
-	r->fd_in = -1;
-	r->saved_out = -1;
-	r->saved_in = -1;
+	pid_t			result;
+
+	result = -1;
+	if (context->node->node_type == AST_SIMPLE_COMMAND)
+	{
+		if (context->node->right)
+			handle_redirects(context->node->right, context->redirect);
+		result = execute_simple_command(context, state);
+		reset_io(*(context->redirect));
+	}
+	else if (context->node->node_type == AST_PIPE_SEQUENCE)
+	{
+		result = execute_tree(
+				&(t_ast_execution){
+				context->node->left, context->redirect,
+				context->pipes, !context->node->right
+			}, state);
+		if (context->node->right)
+			result = execute_tree(
+					&(t_ast_execution){
+					context->node->right, context->redirect,
+					context->pipes, is_at_end_check(context->node)
+				}, state);
+	}
+	return (result);
 }
 
 static void	execute_tree_list(t_ast **tree_list, t_state *state)
 {
-	t_redir	r;
+	t_redir	redir;
+	t_pipes	pipes;
+	pid_t	tree_pid;
 	char	**args;
 	int		i;
 
 	if (!tree_list)
 		return ;
-	set_redir_struct(&r);
+	initialize_redir_struct(&redir);
+	pipes_reset(pipes.read, pipes.write);
 	args = NULL;
 	i = 0;
-	while (get_args_from_tree(tree_list[i], &args, &r))
+	while (tree_list[i] != NULL)
 	{
-		set_return_value(execute(args, state), state);
-		if (args)
-			env_set(
-				"_",
-				args[ft_null_array_len((void **)args) - 1],
-				&(state->env)
-				);
-		if (!reset_io(r))
-			return ;
-		set_redir_struct(&r);
+		tree_pid = execute_tree(
+				&(t_ast_execution){tree_list[0], &redir, &pipes, 0}, state);
+		if (tree_pid != -1)
+			waitpid(tree_pid, NULL, 0);
 		i++;
 	}
+	pipe_close(pipes.read);
 	ast_free(tree_list);
 }
-
-/*
- * TODO We will also need our tree-freeing function here
- */
 
 void	tokenize_and_execute(t_state *state)
 {

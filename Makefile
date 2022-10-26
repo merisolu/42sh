@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/10/25 12:44:35 by amann            ###   ########.fr        #
+#    Updated: 2022/10/26 12:48:10 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,8 @@ SRC_FILES = main.c \
 			ast_redir_recursion.c ast_retokenize.c ast_parse_expansions.c \
 			token.c token_list.c get_token_type.c \
 			environment.c environment_getters.c \
-			redirects.c \
+			redirects.c pipes.c \
+			fork.c \
 			bin.c executor.c return_value.c tokenize_and_execute.c \
 			built_ins.c cmd_cd.c cmd_echo.c cmd_env.c cmd_setenv.c \
 			cmd_unsetenv.c cmd_exit.c \
@@ -46,7 +47,7 @@ SRCS := $(patsubst %, $(SRC_DIR)/%, $(SRC_FILES))
 OBJ_DIR = ./obj
 OBJS := $(patsubst %, $(OBJ_DIR)/%, $(SRC_FILES:.c=.o))
 
-GCC_FLAGS = -O2 -Wall -Wextra -Werror
+GCC_FLAGS = -g -Wall -Wextra -Werror
 
 $(NAME): $(LIB_PATH) $(OBJS)
 	$(CC) $(GCC_FLAGS) $(OBJS) -o $(NAME) -ltermcap -L $(LIB_DIR) -lft

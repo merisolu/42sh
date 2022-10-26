@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/10/21 18:52:16 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/25 14:00:16 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
+
+void	initialize_redir_struct(t_redir *r)
+{
+	r->fd_out = -1;
+	r->fd_in = -1;
+	r->saved_out = -1;
+	r->saved_in = -1;
+}
 
 int	reset_io(t_redir r)
 {

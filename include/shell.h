@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/25 13:49:07 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/26 12:47:53 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@
 # if __linux__
 #  include <sys/wait.h>
 # endif
+
+# define PIPE_READ 0
+# define PIPE_WRITE 1
 
 # define PROMPT "$> "
 # define MULTILINE_PROMPT "> "
@@ -79,6 +82,9 @@
 # define ERR_LINE_READ "input read error"
 # define ERR_HISTORY_RECALL "history recall error"
 # define ERR_CHILD_PROC_FAIL "cannot make child process"
+# define ERR_CHILD_PIPE_FAIL "cannot make child pipes"
+# define ERR_PIPE_FAIL "failed to create pipe"
+# define ERR_DUP_FAIL "failed to duplicate file descriptor"
 # define ERR_COM_NOT_FOUND "command not found"
 # define ERR_NO_PERMISSION "Permission denied"
 # define ERR_TOO_FEW_ARGS "too few arguments"
@@ -246,6 +252,20 @@ typedef struct s_redir
 	int	saved_in;
 }	t_redir;
 
+typedef struct s_pipes
+{
+	int	read[2];
+	int	write[2];
+}	t_pipes;
+
+typedef struct s_ast_execution
+{
+	t_ast	*node;
+	t_redir	*redirect;
+	t_pipes	*pipes;
+	int		is_at_end;
+}	t_ast_execution;
+
 /* DEBUG FUNCTION - DELETE ME */
 /* ast_print_debug.c */
 void			print_ast(t_ast **tree);
@@ -278,8 +298,16 @@ t_token			*ast_retokenize(char *line);
 t_ast			**construct_ast_list(t_token **cursor);
 
 /* redirects.c */
+void			initialize_redir_struct(t_redir *r);
 int				reset_io(t_redir r);
 int				handle_redirects(t_ast *redir_node, t_redir *r);
+
+/* pipes.c */
+void			pipe_reset(int pipe[2]);
+void			pipe_close(int pipe[2]);
+void			pipes_reset(int pipe1[2], int pipe2[2]);
+int				pipes_connect(int read_pipe[2], int write_pipe[2]);
+void			pipes_copy(int target[2], int source[2]);
 
 /* signal.c */
 void			check_signal(t_state *state);
@@ -389,16 +417,18 @@ char			**env_get_pointer(const char *name, char *const *env);
 
 /* bin.c */
 int				bin_env_find(const char *name, char *const *env, char **result);
-int				bin_execute(\
-	char *path, char **args, char *const *env, int underscore);
+pid_t			bin_execute(char *path, char **args, char *const *env, t_pipes *pipes);
 
 /* built_ins.c */
 t_cmd			*get_built_in(const char *name);
 char			*search_for_built_in(const char *partial_name);
-int				run_built_in(t_cmd cmd, char *const *args, t_state *state);
+pid_t			run_built_in(t_cmd cmd, char *const *args, t_state *state, t_pipes *pipes);
 
 /* executor.c */
-int				execute(char *const *args, t_state *state);
+pid_t			execute(char *const *args, t_state *state, t_pipes *pipes);
+
+/* fork.c */
+pid_t			start_fork(t_pipes *pipes);
 
 /* return_value.c */
 int				get_return_value_from_status(int status);
