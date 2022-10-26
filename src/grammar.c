@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:27:35 by amann             #+#    #+#             */
-/*   Updated: 2022/10/26 14:01:23 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/26 15:36:29 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,30 +34,31 @@ static size_t	sc_count(t_token *list)
  * nothing is being piped.
  */
 
-t_ast	**construct_ast_list(t_token **list)
+t_ast	**construct_ast_list(t_token **cursor)
 {
 	t_ast	**tree_list;
 	size_t	idx;
 	size_t	len;
-	t_token	*cursor;
+	t_token	*reset;
 
-	cursor = *list;
-	len = sc_count(cursor);
+	reset = *cursor;
+	len = sc_count(*cursor);
 	tree_list = (t_ast **) ft_memalloc(sizeof(t_ast *) * (len + 1));
 	if (!tree_list)
 		return (NULL);
 	idx = 0;
 	while (idx < len)
 	{
-		tree_list[idx] = ast_pipe_sequence(&cursor);
+		tree_list[idx] = ast_pipe_sequence(cursor);
 		if (!tree_list[idx])
 		{
 			ast_free(tree_list);
 			return (NULL);
 		}
 		idx++;
-		if (cursor)
-			cursor = cursor->next;
+		if (*cursor)
+			*cursor = (*cursor)->next;
 	}
+	*cursor = reset;
 	return (tree_list);
 }

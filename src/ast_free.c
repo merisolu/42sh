@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 12:58:11 by amann             #+#    #+#             */
-/*   Updated: 2022/10/26 14:03:51 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/26 15:52:57 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 static void	tree_free_recursion(t_ast *root)
 {
 	if (!root)
-		return;
+		return ;
 	tree_free_recursion(root->left);
 	tree_free_recursion(root->right);
 	ft_free_null_array((void **) root->arg_list);

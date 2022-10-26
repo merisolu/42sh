@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/10/26 12:48:10 by jumanner         ###   ########.fr        #
+#    Updated: 2022/10/26 15:43:04 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ SRC_FILES = main.c \
 			eat_read_token.c \
 			grammar.c ast_add_args.c ast_pipe_sequence.c ast_free.c \
 			ast_redir_recursion.c ast_retokenize.c ast_parse_expansions.c \
+			ast_cleanse_ws.c \
 			token.c token_list.c get_token_type.c \
 			environment.c environment_getters.c \
 			redirects.c pipes.c \

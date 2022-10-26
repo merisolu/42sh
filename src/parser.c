@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:11:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/25 14:13:43 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/26 15:44:43 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,35 +55,6 @@ void	reset_state(t_state *state)
 	state->in_double_quotes = 0;
 }
 
-void	clense_ws(t_token **list)
-{
-	t_token	*cursor;
-	t_token	*temp;
-
-	cursor = *list;
-	while (cursor)
-	{
-		if (cursor->type == TOKEN_WHITESPACE)
-		{
-			if (cursor->previous == NULL)
-				temp = cursor->next;
-			else if (cursor->next == NULL)
-				temp = NULL;
-			else
-			{
-				cursor->previous->next = cursor->next;
-				cursor->next->previous = cursor->previous;
-				temp = cursor->next;
-			}
-			free(cursor->value);
-			free(cursor);
-			cursor = temp;
-		}
-		else
-			cursor = cursor->next;
-	}
-}
-
 t_ast	**parse(t_token *list, t_state *state)
 {
 	t_ast	**tree;
@@ -92,7 +63,7 @@ t_ast	**parse(t_token *list, t_state *state)
 	if (!list || !state)
 		return (NULL);
 	reset_state(state);
-	clense_ws(&list);
+	ast_cleanse_ws(&list);
 	tree = construct_ast_list(&list);
 	token_list_free(&list);
 	if (!tree)
