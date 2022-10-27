@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/19 14:10:50 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/27 15:23:46 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	setup(char *const **env, t_state *state)
 		return (print_error(ERR_TERMCAP_NO_ENTRY, 0));
 	if (!get_state_struct(env, state))
 		return (print_error(ERR_MALLOC_FAIL, 0));
-	if (!configure_input(state))
+	if (!configure_terminal(state))
 		return (print_error(ERR_TERMIOS_FAIL, 0));
 	if (!set_shlvl(&(state->env)))
 		return (0);

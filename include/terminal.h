@@ -1,29 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell.h                                            :+:      :+:    :+:   */
+/*   terminal.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 15:23:29 by jumanner         ###   ########.fr       */
+/*   Created: 2022/10/27 15:22:23 by jumanner          #+#    #+#             */
+/*   Updated: 2022/10/27 15:22:59 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SHELL_H
-# define SHELL_H
+#ifndef TERMINAL_H
+# define TERMINAL_H
+
+/* Includes */
 
 # include <termcap.h>
 
 # include "libft.h"
 # include "general.h"
-# include "utils.h"
-# include "terminal.h"
-# include "state.h"
-# include "cursor.h"
-# include "input.h"
-# include "environment.h"
-# include "signals.h"
-# include "execution.h"
+
+/* Constants */
+
+# define CC_SUSPEND VDSUSP
+
+# if __linux__
+#  undef CC_SUSPEND
+#  define CC_SUSPEND VSUSP
+# endif
+
+/* Files */
+
+/* terminal_configuration.c */
+int				configure_terminal(t_state *state);
+int				set_input_config(t_state *state);
+int				set_orig_config(t_state *state);
 
 #endif

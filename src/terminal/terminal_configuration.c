@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_configuration.c                              :+:      :+:    :+:   */
+/*   terminal_configuration.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/29 11:20:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 12:53:58 by jumanner         ###   ########.fr       */
+/*   Created: 2022/10/27 15:21:26 by jumanner          #+#    #+#             */
+/*   Updated: 2022/10/27 15:21:40 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "input.h"
+#include "terminal.h"
 
 int	set_input_config(t_state *state)
 {
@@ -27,7 +27,7 @@ int	set_orig_config(t_state *state)
 }
 
 /*
- * Configures the terminal input with the following settings:
+ * Configures the terminal with the following settings:
  * - Enables continuous input from STDIN (O_NONBLOCK).
  * - Disables input canonicalization and echoing (ICANON and ECHO).
  * - Enables signal generation (ISIG).
@@ -41,7 +41,7 @@ int	set_orig_config(t_state *state)
  * 
  * Returns 1 on success, 0 on error.
  */
-int	configure_input(t_state *state)
+int	configure_terminal(t_state *state)
 {
 	if (tcgetattr(STDIN_FILENO, &(state->input_conf)) == -1)
 		return (0);

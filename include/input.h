@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:14 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 15:18:29 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 15:23:13 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,6 @@
 # include "general.h"
 # include "state.h"
 # include "autocomplete.h"
-
-/* Constants */
-
-# define CC_SUSPEND VDSUSP
-
-# if __linux__
-#  undef CC_SUSPEND
-#  define CC_SUSPEND VSUSP
-# endif
 
 /* Keys */
 
@@ -94,11 +85,6 @@ int				ctrl_d(t_state *state);
 
 /* input.c */
 t_input_result	get_input(t_state *state);
-
-/* input_configuration.c */
-int				configure_input(t_state *state);
-int				set_input_config(t_state *state);
-int				set_orig_config(t_state *state);
 
 /* input_handlers.c */
 t_input_result	handle_key(char *buf, t_state *state);

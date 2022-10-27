@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/10/27 15:17:26 by jumanner         ###   ########.fr        #
+#    Updated: 2022/10/27 15:24:30 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,8 +54,7 @@ HISTORY_DIR = history
 HISTORY_FILES = history.c
 
 INPUT_DIR = input
-INPUT_FILES = clipboard.c ctrl_d.c \
-				input.c input_configuration.c input_handlers.c \
+INPUT_FILES = clipboard.c ctrl_d.c input.c input_handlers.c \
 				movement.c movement_alt.c
 
 PARSING_DIR = parsing
@@ -67,6 +66,9 @@ SIGNALS_FILES = signal.c
 
 STATE_DIR = state
 STATE_FILES = state.c
+
+TERMINAL_DIR = terminal
+TERMINAL_FILES = terminal_configuration.c
 
 UTILS_DIR = utils
 UTILS_FILES = error.c utils.c utils_input.c return_value.c
@@ -85,6 +87,7 @@ SRC_FILES = main.c \
 			$(patsubst %, $(PARSING_DIR)/%, $(PARSING_FILES)) \
 			$(patsubst %, $(SIGNALS_DIR)/%, $(SIGNALS_FILES)) \
 			$(patsubst %, $(STATE_DIR)/%, $(STATE_FILES)) \
+			$(patsubst %, $(TERMINAL_DIR)/%, $(TERMINAL_FILES)) \
 			$(patsubst %, $(UTILS_DIR)/%, $(UTILS_FILES)) \
 
 SRCS := $(patsubst %, $(SRC_DIR)/%, $(SRC_FILES))
