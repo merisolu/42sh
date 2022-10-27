@@ -6,11 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:17:05 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 15:08:38 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "input.h"
+#include "autocomplete.h"
 
 static int	check_execution_rights(char *path, char *name)
 {

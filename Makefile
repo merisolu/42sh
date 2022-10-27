@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/10/27 15:04:47 by jumanner         ###   ########.fr        #
+#    Updated: 2022/10/27 15:12:51 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,9 @@ AST_DIR = ast
 AST_FILES = ast_add_args.c ast_pipe_sequence.c ast_free.c \
 				ast_redir_recursion.c ast_retokenize.c ast_parse_expansions.c \
 				ast_cleanse_ws.c grammar.c
+
+AUTOCOMPLETE_DIR = autocomplete
+AUTOCOMPLETE_FILES = autocomplete.c
 
 BUILT_INS_DIR = built-ins
 BUILT_INS_FILES = built_ins.c cmd_cd.c cmd_echo.c cmd_env.c cmd_setenv.c \
@@ -48,7 +51,7 @@ EXPANSION_DIR = expansion
 EXPANSION_FILES = expand_tilde.c expand_variables.c
 
 INPUT_DIR = input
-INPUT_FILES = autocomplete.c clipboard.c ctrl_d.c history.c \
+INPUT_FILES = clipboard.c ctrl_d.c history.c \
 				input.c input_configuration.c input_handlers.c \
 				movement.c movement_alt.c
 
@@ -67,6 +70,7 @@ UTILS_FILES = error.c utils.c utils_input.c return_value.c
 
 SRC_FILES = main.c \
 			$(patsubst %, $(AST_DIR)/%, $(AST_FILES)) \
+			$(patsubst %, $(AUTOCOMPLETE_DIR)/%, $(AUTOCOMPLETE_FILES)) \
 			$(patsubst %, $(BUILT_INS_DIR)/%, $(BUILT_INS_FILES)) \
 			$(patsubst %, $(CURSOR_DIR)/%, $(CURSOR_FILES)) \
 			$(patsubst %, $(DEBUG_DIR)/%, $(DEBUG_FILES)) \

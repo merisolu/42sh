@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:14 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:56:44 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 15:11:15 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,11 @@
 /* Includes */
 
 # include <termcap.h>
-# include <dirent.h>
 
 # include "libft.h"
 # include "general.h"
 # include "state.h"
-# include "built_ins.h"
+# include "autocomplete.h"
 
 /* Constants */
 
@@ -83,9 +82,6 @@ typedef struct s_movement_handler_dispatch
 }	t_movement_handler_dispatch;
 
 /* Files */
-
-/* autocomplete.c */
-int				autocomplete(t_state *state);
 
 /* clipboard.c */
 t_input_result	cut_word(t_state *state);
