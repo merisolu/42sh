@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:55:42 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 15:17:11 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include "environment.h"
 # include "built_ins.h"
 # include "ast.h"
+# include "history.h"
 # include "input.h"
 
 /* Constants */

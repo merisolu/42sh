@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/10/27 15:12:51 by jumanner         ###   ########.fr        #
+#    Updated: 2022/10/27 15:17:26 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,8 +50,11 @@ EXECUTION_FILES = bin.c executor.c fork.c pipes.c redirects.c \
 EXPANSION_DIR = expansion
 EXPANSION_FILES = expand_tilde.c expand_variables.c
 
+HISTORY_DIR = history
+HISTORY_FILES = history.c
+
 INPUT_DIR = input
-INPUT_FILES = clipboard.c ctrl_d.c history.c \
+INPUT_FILES = clipboard.c ctrl_d.c \
 				input.c input_configuration.c input_handlers.c \
 				movement.c movement_alt.c
 
@@ -77,6 +80,7 @@ SRC_FILES = main.c \
 			$(patsubst %, $(ENVIRONMENT_DIR)/%, $(ENVIRONMENT_FILES)) \
 			$(patsubst %, $(EXECUTION_DIR)/%, $(EXECUTION_FILES)) \
 			$(patsubst %, $(EXPANSION_DIR)/%, $(EXPANSION_FILES)) \
+			$(patsubst %, $(HISTORY_DIR)/%, $(HISTORY_FILES)) \
 			$(patsubst %, $(INPUT_DIR)/%, $(INPUT_FILES)) \
 			$(patsubst %, $(PARSING_DIR)/%, $(PARSING_FILES)) \
 			$(patsubst %, $(SIGNALS_DIR)/%, $(SIGNALS_FILES)) \

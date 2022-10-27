@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:14 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 15:11:15 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 15:18:29 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,6 @@ t_input_result	paste(t_state *state);
 
 /* ctrl_d.c */
 int				ctrl_d(t_state *state);
-
-/* history.c */
-int				history_store(char *input, t_state *state);
-int				history_recall(int diff, t_state *state);
 
 /* input.c */
 t_input_result	get_input(t_state *state);
