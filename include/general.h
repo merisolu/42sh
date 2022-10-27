@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:01:21 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 14:27:16 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@
 
 # define PIPE_READ 0
 # define PIPE_WRITE 1
+
+# define BUF_SIZE 16
+# define INPUT_MAX_SIZE LINE_MAX
+
+# define PROMPT "$> "
+# define MULTILINE_PROMPT "> "
 
 /* Return values */
 

@@ -1,33 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expansion.h                                        :+:      :+:    :+:   */
+/*   cursor.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/27 11:32:12 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:55:51 by jumanner         ###   ########.fr       */
+/*   Created: 2022/10/27 14:43:34 by jumanner          #+#    #+#             */
+/*   Updated: 2022/10/27 15:05:10 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXPANSION_H
-# define EXPANSION_H
+#ifndef CURSOR_H
+# define CURSOR_H
 
 /* Includes */
 
-# include <pwd.h>
+# include <termcap.h>
 
 # include "libft.h"
 # include "general.h"
-# include "parsing.h"
-# include "environment.h"
+# include "utils.h"
 
 /* Files */
 
-/* expand_tilde.c */
-int	expand_tilde(t_token **cursor, t_state *state, char **result);
+/* cursor.c */
+void	save_cursor(t_state *state);
+void	load_cursor(t_state *state);
 
-/* expand_variables.c */
-int	expand_variable(t_token **cursor, t_state *state, char **result);
+/* cursor_utils.c */
+void	move_cursor_to_saved_position(t_state *state);
+size_t	cursor_get_column(t_state *state, size_t index);
+size_t	cursor_get_row(t_state *state, size_t index);
 
 #endif

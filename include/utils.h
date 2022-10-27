@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:20 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:15:39 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 15:07:28 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 
 # include <sys/ioctl.h>
 # include <termcap.h>
+
 # include "libft.h"
 # include "general.h"
-# include "input.h"
 
 /* Files */
 
@@ -34,7 +34,11 @@ void	set_return_value(int return_value, t_state *state);
 /* utils.c */
 void	update_window_size(t_state *state);
 void	clear_input(t_state *state, int newline);
-void	print_state(t_state *state);
 void	*var_copy(void *var);
+
+/* utils_input.c */
+size_t	input_get_row_count(t_state *state, size_t index);
+void	input_get_line_properties(t_state *state, size_t index, size_t *start, \
+		size_t *length);
 
 #endif

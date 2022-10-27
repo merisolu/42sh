@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_utils.c                                      :+:      :+:    :+:   */
+/*   utils_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/13 12:53:40 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 12:54:02 by jumanner         ###   ########.fr       */
+/*   Created: 2022/10/27 15:04:07 by jumanner          #+#    #+#             */
+/*   Updated: 2022/10/27 15:04:26 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "input.h"
+#include "utils.h"
 
 /*
  * Returns the properties of a line of text contained in state->input at

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:14 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:14:28 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 14:56:44 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,13 @@
 
 # include <termcap.h>
 # include <dirent.h>
+
 # include "libft.h"
 # include "general.h"
-# include "environment.h"
+# include "state.h"
 # include "built_ins.h"
 
 /* Constants */
-
-# define BUF_SIZE 16
-# define INPUT_MAX_SIZE LINE_MAX
-
-# define PROMPT "$> "
-# define MULTILINE_PROMPT "> "
 
 # define CC_SUSPEND VDSUSP
 
@@ -101,15 +96,6 @@ t_input_result	paste(t_state *state);
 /* ctrl_d.c */
 int				ctrl_d(t_state *state);
 
-/* cursor.c */
-void			save_cursor(t_state *state);
-void			load_cursor(t_state *state);
-
-/* cursor_utils.c */
-void			move_cursor_to_saved_position(t_state *state);
-size_t			cursor_get_column(t_state *state, size_t index);
-size_t			cursor_get_row(t_state *state, size_t index);
-
 /* history.c */
 int				history_store(char *input, t_state *state);
 int				history_recall(int diff, t_state *state);
@@ -124,11 +110,6 @@ int				set_orig_config(t_state *state);
 
 /* input_handlers.c */
 t_input_result	handle_key(char *buf, t_state *state);
-
-/* input_utils.c */
-size_t			input_get_row_count(t_state *state, size_t index);
-void			input_get_line_properties(\
-	t_state *state, size_t index, size_t *start, size_t *length);
 
 /* movement.c */
 int				check_movement(char *buf, t_state *state);

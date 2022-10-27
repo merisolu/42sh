@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/10/27 14:12:51 by jumanner         ###   ########.fr        #
+#    Updated: 2022/10/27 15:04:47 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,9 @@ BUILT_INS_DIR = built-ins
 BUILT_INS_FILES = built_ins.c cmd_cd.c cmd_echo.c cmd_env.c cmd_setenv.c \
 				cmd_unsetenv.c cmd_exit.c
 
+CURSOR_DIR = cursor
+CURSOR_FILES = cursor.c cursor_utils.c
+
 DEBUG_DIR = debug
 DEBUG_FILES = ast_print_debug.c print_tokens.c
 
@@ -45,9 +48,9 @@ EXPANSION_DIR = expansion
 EXPANSION_FILES = expand_tilde.c expand_variables.c
 
 INPUT_DIR = input
-INPUT_FILES = autocomplete.c clipboard.c ctrl_d.c cursor.c cursor_utils.c \
-				history.c input.c input_configuration.c input_handlers.c \
-				input_utils.c movement.c movement_alt.c
+INPUT_FILES = autocomplete.c clipboard.c ctrl_d.c history.c \
+				input.c input_configuration.c input_handlers.c \
+				movement.c movement_alt.c
 
 PARSING_DIR = parsing
 PARSING_FILES = eat_read_token.c get_token_type.c lexer.c literals.c parser.c \
@@ -56,12 +59,16 @@ PARSING_FILES = eat_read_token.c get_token_type.c lexer.c literals.c parser.c \
 SIGNALS_DIR = signals
 SIGNALS_FILES = signal.c
 
+STATE_DIR = state
+STATE_FILES = state.c
+
 UTILS_DIR = utils
-UTILS_FILES = error.c utils.c return_value.c
+UTILS_FILES = error.c utils.c utils_input.c return_value.c
 
 SRC_FILES = main.c \
 			$(patsubst %, $(AST_DIR)/%, $(AST_FILES)) \
 			$(patsubst %, $(BUILT_INS_DIR)/%, $(BUILT_INS_FILES)) \
+			$(patsubst %, $(CURSOR_DIR)/%, $(CURSOR_FILES)) \
 			$(patsubst %, $(DEBUG_DIR)/%, $(DEBUG_FILES)) \
 			$(patsubst %, $(ENVIRONMENT_DIR)/%, $(ENVIRONMENT_FILES)) \
 			$(patsubst %, $(EXECUTION_DIR)/%, $(EXECUTION_FILES)) \
@@ -69,6 +76,7 @@ SRC_FILES = main.c \
 			$(patsubst %, $(INPUT_DIR)/%, $(INPUT_FILES)) \
 			$(patsubst %, $(PARSING_DIR)/%, $(PARSING_FILES)) \
 			$(patsubst %, $(SIGNALS_DIR)/%, $(SIGNALS_FILES)) \
+			$(patsubst %, $(STATE_DIR)/%, $(STATE_FILES)) \
 			$(patsubst %, $(UTILS_DIR)/%, $(UTILS_FILES)) \
 
 SRCS := $(patsubst %, $(SRC_DIR)/%, $(SRC_FILES))
