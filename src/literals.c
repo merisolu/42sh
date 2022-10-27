@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   literals.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 15:05:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/25 11:58:53 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/27 10:36:07 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ int	check_literals(t_token **cursor, t_state *state, char **result)
 		if (state->in_double_quotes)
 			return (add_to_result(result, original->value, state));
 		state->continue_previous_node = 0;
-		state->has_seen_tilde_in_word = 0;
-		state->in_assignment = 0;
 		return (1);
 	}
 	if (eat_token(cursor, TOKEN_DOUBLE_QUOTE, original))

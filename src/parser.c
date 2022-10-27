@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:11:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/26 15:44:43 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/27 10:36:10 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ void	reset_state(t_state *state)
 	if (!state)
 		return ;
 	state->continue_previous_node = 0;
-	state->in_assignment = 0;
-	state->has_seen_tilde_in_word = 0;
 	state->in_double_quotes = 0;
 }
 

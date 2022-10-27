@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/26 15:43:19 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/27 10:46:53 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@
 # define ERR_TERMCAP_NO_ACCESS "Unable to access termcap database."
 # define ERR_TERMCAP_NO_ENTRY "No database entry for current terminal type."
 # define ERR_LINE_READ "input read error"
-# define ERR_HISTORY_RECALL "history recall error"
 # define ERR_CHILD_PROC_FAIL "cannot make child process"
 # define ERR_CHILD_PIPE_FAIL "cannot make child pipes"
 # define ERR_PIPE_FAIL "failed to create pipe"
@@ -95,7 +94,6 @@
 # define ERR_COM_NOT_FOUND "command not found"
 # define ERR_NO_PERMISSION "Permission denied"
 # define ERR_TOO_FEW_ARGS "too few arguments"
-# define ERR_TOO_MANY_ARGS "too many arguments"
 # define ERR_NO_SUCH_FILE_OR_DIR "No such file or directory"
 # define ERR_IS_DIR "is a directory"
 # define ERR_IS_NOT_DIR "Not a directory"
@@ -103,7 +101,6 @@
 # define ERR_INVALID_PATH "path is invalid"
 # define ERR_MALLOC_FAIL "memory allocation failed"
 # define ERR_TERMIOS_FAIL "failed to set terminal attributes"
-# define ERR_SIZE_GET_FAIL "failed to read terminal size"
 # define ERR_NO_HOME "HOME not set"
 # define ERR_NO_OLDPWD "OLDPWD not set"
 # define ERR_SYNTAX "syntax error, unexpected token"
@@ -121,8 +118,6 @@ typedef struct s_state
 	char			*clipboard;
 	int				continue_previous_node;
 	int				in_double_quotes;
-	int				in_assignment;
-	int				has_seen_tilde_in_word;
 	size_t			cursor;
 	size_t			input_start_x;
 	size_t			input_start_y;
