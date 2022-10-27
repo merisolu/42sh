@@ -6,11 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 13:56:40 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/03 17:45:25 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/27 13:57:57 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "built_in.h"
 
 static int	free_env_args(t_cmd_env *env_args, int return_value)
 {

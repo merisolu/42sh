@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ast_cleanse_ws.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 15:39:45 by amann             #+#    #+#             */
-/*   Updated: 2022/10/26 15:46:53 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/27 11:35:04 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "ast.h"
 
 static void	set_pointers(t_token **cursor, t_token **temp)
 {

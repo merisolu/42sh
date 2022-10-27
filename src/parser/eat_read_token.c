@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   eat_read_token.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 11:59:39 by amann             #+#    #+#             */
-/*   Updated: 2022/10/25 12:43:05 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/27 13:02:03 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "parser.h"
+
 /*
  * Checks if the cursor is currently on a token with the type of 'type'.
  *

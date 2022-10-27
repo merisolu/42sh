@@ -6,11 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 10:55:10 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/25 11:33:57 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 12:49:26 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "execution.h"
 
 /*
  * Sets both ends of pipe to -1.

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ast_add_args.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:55:34 by amann             #+#    #+#             */
-/*   Updated: 2022/10/21 18:23:28 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/27 11:35:01 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "ast.h"
 
 /*
  * NB: the below process will result in trailing NULL pointers in our args

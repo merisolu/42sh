@@ -6,11 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:13:18 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 13:16:29 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 12:53:52 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "input.h"
 
 /*
  * Parses the ANSI escape sequence which reports the current cursor's position.

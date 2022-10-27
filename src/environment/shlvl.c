@@ -6,11 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 10:16:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/03 17:52:34 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/27 12:47:01 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "environment.h"
 
 static void	print_shlvl_error(int target_shlvl)
 {

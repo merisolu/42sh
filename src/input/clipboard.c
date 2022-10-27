@@ -6,11 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 14:21:42 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/07 11:45:45 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 12:53:44 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "input.h"
 
 t_input_result	cut_word(t_state *state)
 {

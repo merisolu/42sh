@@ -6,11 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 15:05:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 10:36:07 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 13:01:49 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "parser.h"
 
 int	check_literals(t_token **cursor, t_state *state, char **result)
 {

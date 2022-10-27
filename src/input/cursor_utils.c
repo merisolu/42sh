@@ -6,11 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:01:54 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/18 15:21:54 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 12:53:49 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "input.h"
 
 size_t	cursor_get_column(t_state *state, size_t index)
 {

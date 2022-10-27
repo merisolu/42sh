@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_exit.c                                         :+:      :+:    :+:   */
+/*   debug.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/31 16:37:52 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 13:57:57 by jumanner         ###   ########.fr       */
+/*   Created: 2022/10/27 11:32:07 by jumanner          #+#    #+#             */
+/*   Updated: 2022/10/27 14:01:14 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "built_in.h"
+#ifndef DEBUG_H
+# define DEBUG_H
 
-int	cmd_exit(char *const *args, t_state *state)
-{
-	state->exit_return_value = 0;
-	if (args[1])
-		state->exit_return_value = ft_atoi(args[1]);
-	state->exiting = 1;
-	return (0);
-}
+/* Includes */
+
+# include "libft.h"
+# include "general.h"
+
+/* Files */
+
+/* ast_print_debug.c */
+void	print_ast(t_ast **tree);
+
+/* print_tokens.c */
+void	print_tokens(t_token *result);
+
+#endif

@@ -6,11 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:57:36 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/05 14:11:17 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 12:53:46 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "input.h"
 
 int	ctrl_d(t_state *state)
 {

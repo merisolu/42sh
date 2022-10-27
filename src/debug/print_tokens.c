@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   print_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:35:59 by amann             #+#    #+#             */
-/*   Updated: 2022/10/25 14:09:44 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/27 11:59:28 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "debug.h"
 
 void	print_tokens(t_token *result)
 {

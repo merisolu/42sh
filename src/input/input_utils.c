@@ -6,11 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 12:53:40 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/14 12:34:37 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 12:54:02 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "input.h"
 
 /*
  * Returns the properties of a line of text contained in state->input at

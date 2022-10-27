@@ -1,22 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_exit.c                                         :+:      :+:    :+:   */
+/*   expansion.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/31 16:37:52 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 13:57:57 by jumanner         ###   ########.fr       */
+/*   Created: 2022/10/27 11:32:12 by jumanner          #+#    #+#             */
+/*   Updated: 2022/10/27 14:01:14 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "built_in.h"
+#ifndef EXPANSION_H
+# define EXPANSION_H
 
-int	cmd_exit(char *const *args, t_state *state)
-{
-	state->exit_return_value = 0;
-	if (args[1])
-		state->exit_return_value = ft_atoi(args[1]);
-	state->exiting = 1;
-	return (0);
-}
+/* Includes */
+
+# include <pwd.h>
+# include "libft.h"
+# include "general.h"
+# include "parser.h"
+# include "environment.h"
+
+/* Files */
+
+/* expand_tilde.c */
+int	expand_tilde(t_token **cursor, t_state *state, char **result);
+
+/* expand_variables.c */
+int	expand_variable(t_token **cursor, t_state *state, char **result);
+
+#endif

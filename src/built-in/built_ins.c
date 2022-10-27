@@ -6,11 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:18:43 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/26 11:54:52 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 13:57:57 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "built_in.h"
 
 static const t_cmd_dispatch	*get_built_in_dispatch(void)
 {
@@ -61,7 +61,7 @@ t_cmd	*get_built_in(const char *name)
 }
 
 /*
- * Runs the given built-in. Forks if necessary. Returning -1 when not forking
+ * Runs the given built_in. Forks if necessary. Returning -1 when not forking
  * is intentional to avoid calling waitpid() in execute_tree_list(). It should
  * not cause issues with error handling (at least right now).
  */

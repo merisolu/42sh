@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ast_retokenize.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:21:06 by amann             #+#    #+#             */
-/*   Updated: 2022/10/25 14:36:58 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/27 11:35:17 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "ast.h"
 
 static const t_token_dispatch	*get_parse_token_dispatch(void)
 {

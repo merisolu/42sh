@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ast_redir_recursion.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2022/10/26 16:03:37 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/27 11:35:16 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "ast.h"
 
 static int	add_redir_out(t_ast *node, t_token **cursor)
 {

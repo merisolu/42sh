@@ -6,11 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 13:40:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/18 18:14:46 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 12:54:08 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "input.h"
 
 int	handle_alt_left_right(char buf[BUF_SIZE], t_state *state)
 {

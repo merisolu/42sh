@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ast_parse_expansions.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:18:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/25 14:38:13 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/27 11:35:10 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "ast.h"
 
 static int	run_functions(t_token **cursor, t_state *state, char **result)
 {
