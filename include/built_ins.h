@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:15:32 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 14:17:13 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ typedef struct s_cmd_env
 /* Files */
 
 /* built_ins.c */
-t_cmd	*get_built_in(const char *name);
-char	*search_for_built_in(const char *partial_name);
-pid_t	run_built_in(t_cmd cmd, char *const *args, t_state *state, \
+t_cmd	*built_in_get(const char *name);
+char	*built_in_search(const char *partial_name);
+pid_t	built_in_run(t_cmd cmd, char *const *args, t_state *state, \
 		t_pipes *pipes);
 
 /* cmd_echo.c */

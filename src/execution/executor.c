@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 12:49:21 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 14:17:08 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ pid_t	execute(char *const *args, t_state *state, t_pipes *pipes)
 	// 	return (print_named_error(
 	// 			(char *)path, ERR_NO_PERMISSION, RETURN_NO_ACCESS
 	// 		));
-	if (get_built_in(args[0]))
-		return (run_built_in(get_built_in(args[0]), args, state, pipes));
+	if (built_in_get(args[0]))
+		return (built_in_run(built_in_get(args[0]), args, state, pipes));
 	if (ft_strchr(args[0], '/') || (args[0][0] == '.'))
 	{
 		return_value = check_path_validity(args[0]);

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 12:53:41 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 14:17:05 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int	autocomplete(t_state *state)
 		free(trimmed_input);
 		return (0);
 	}
-	temp = search_for_built_in(trimmed_input);
+	temp = built_in_search(trimmed_input);
 	if (!temp)
 		search_from_paths(state->env, trimmed_input, &temp);
 	if (temp)

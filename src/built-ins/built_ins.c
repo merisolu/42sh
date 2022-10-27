@@ -6,13 +6,13 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:18:43 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:14:28 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 14:19:14 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "built_ins.h"
 
-static const t_cmd_dispatch	*get_built_in_dispatch(void)
+static const t_cmd_dispatch	*get_dispatch(void)
 {
 	static const t_cmd_dispatch	dispatch_table[] = {
 	{"cd", &cmd_cd},
@@ -27,12 +27,12 @@ static const t_cmd_dispatch	*get_built_in_dispatch(void)
 	return (&(dispatch_table[0]));
 }
 
-char	*search_for_built_in(const char *partial_name)
+char	*built_in_search(const char *partial_name)
 {
 	const t_cmd_dispatch	*dispatch_table;
 	size_t					i;
 
-	dispatch_table = get_built_in_dispatch();
+	dispatch_table = get_dispatch();
 	i = 0;
 	while (dispatch_table[i].run != NULL)
 	{
@@ -44,12 +44,12 @@ char	*search_for_built_in(const char *partial_name)
 	return (NULL);
 }
 
-t_cmd	*get_built_in(const char *name)
+t_cmd	*built_in_get(const char *name)
 {
 	const t_cmd_dispatch	*dispatch_table;
 	size_t					i;
 
-	dispatch_table = get_built_in_dispatch();
+	dispatch_table = get_dispatch();
 	i = 0;
 	while (dispatch_table[i].run != NULL)
 	{
@@ -65,7 +65,7 @@ t_cmd	*get_built_in(const char *name)
  * is intentional to avoid calling waitpid() in execute_tree_list(). It should
  * not cause issues with error handling (at least right now).
  */
-pid_t	run_built_in(t_cmd cmd, char *const *args, t_state *state, \
+pid_t	built_in_run(t_cmd cmd, char *const *args, t_state *state, \
 	t_pipes *pipes)
 {
 	pid_t	result;
