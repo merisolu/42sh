@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/10/25 14:00:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 18:30:55 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,35 @@ static int	redirect_input(t_ast *redir_node, t_redir *r)
 	return (1);
 }
 
+/*
+ * >&- or <&-
+ * >&2 or <&2
+ * 2>&1
+ *
+ * can use fcntl(fd, F_GETFD) to check if a fd is available but this
+ * is not an allowed function in this project.
+ */
+
+static int	filedes_aggregation(t_ast *redir_node, t_redir *r)
+{
+	ft_printf("agg_from: %d | agg_to: %d\n", redir_node->agg_from, redir_node->agg_to);
+	r->saved_out = dup(redir_node->agg_from);
+	if (redir_node->agg_close)
+	{
+		close(redir_node->agg_from);
+		return (1);
+	}
+	return (1);
+}
+
 int	handle_redirects(t_ast *redir_node, t_redir *r)
 {
+	if (redir_node->aggregation)
+	{
+		if (!filedes_aggregation(redir_node, r))
+			return (0);
+		return (1);
+	}
 	if (redir_node->out_type)
 	{
 		if (!redirect_output(redir_node, r))

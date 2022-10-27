@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/26 15:36:50 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 17:53:58 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ static void	execute_tree_list(t_ast **tree_list, t_state *state)
 		return ;
 	initialize_redir_struct(&redir);
 	pipes_reset(pipes.read, pipes.write);
+	//print_ast(tree_list);
 	i = 0;
 	while (tree_list[i] != NULL)
 	{

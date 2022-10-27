@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/26 15:43:19 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/27 17:48:55 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@
 
 # define REDIR_APPEND ">>"
 # define REDIR_HEREDOC "<<"
+# define FD_AGG_IN "<&"
+# define FD_AGG_OUT ">&"
 
 # define BUF_SIZE 16
 # define INPUT_MAX_SIZE LINE_MAX
@@ -246,6 +248,10 @@ typedef struct s_ast
 	char			*out_file;
 	char			*in_type;
 	char			*out_type;
+	int				aggregation;
+	int				agg_from;
+	int				agg_to;
+	int				agg_close;
 	struct s_ast	*left;
 	struct s_ast	*right;
 }	t_ast;
@@ -287,6 +293,9 @@ char			**ast_add_args(t_token **cursor);
 
 /* ast_cleanse_args.c */
 void	ast_cleanse_ws(t_token **list);
+
+
+int		ast_fd_agg_format_check(t_token **cursor);
 
 /* ast_free.c */
 void			ast_free(t_ast **tree_list);

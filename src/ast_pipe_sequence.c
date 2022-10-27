@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 12:55:17 by amann             #+#    #+#             */
-/*   Updated: 2022/10/26 14:10:30 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 17:46:26 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,12 @@ static t_ast	*simple_command(t_token **cursor)
 		return (0);
 	}
 	res->node_type = AST_SIMPLE_COMMAND;
+
+//TODO the below needs to become some sort of loop to properly mimic bash behaviour
 	res->left = create_cmd_args_node(cursor);
 	if (*cursor && ((*cursor)->type == TOKEN_LT
-			|| (*cursor)->type == TOKEN_GT))
+			|| (*cursor)->type == TOKEN_GT
+			|| ast_fd_agg_format_check(cursor)))
 	{
 		if (!add_redirects(cursor, &(res->right)))
 			return (NULL);
