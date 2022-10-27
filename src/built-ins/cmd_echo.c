@@ -1,22 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_exit.c                                         :+:      :+:    :+:   */
+/*   cmd_echo.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/31 16:37:52 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 13:57:57 by jumanner         ###   ########.fr       */
+/*   Created: 2022/03/31 12:12:18 by jumanner          #+#    #+#             */
+/*   Updated: 2022/10/27 14:14:28 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "built_in.h"
+#include "built_ins.h"
 
-int	cmd_exit(char *const *args, t_state *state)
+int	cmd_echo(char *const *args, t_state *state)
 {
-	state->exit_return_value = 0;
-	if (args[1])
-		state->exit_return_value = ft_atoi(args[1]);
-	state->exiting = 1;
+	int		no_newline;
+	size_t	len;
+	size_t	i;
+
+	(void)state;
+	len = ft_null_array_len((void **)args);
+	i = 1;
+	no_newline = ft_strequ(args[i], "-n");
+	i += no_newline;
+	while (i < len)
+	{
+		ft_putstr(args[i]);
+		if (i != len - 1)
+			ft_putchar(' ');
+		i++;
+	}
+	if (!no_newline)
+		ft_putchar('\n');
 	return (0);
 }

@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_in.h                                         :+:      :+:    :+:   */
+/*   built_ins.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:01:14 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 14:15:32 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILT_IN_H
-# define BUILT_IN_H
+#ifndef BUILT_INS_H
+# define BUILT_INS_H
 
 /* Includes */
 
 # include "libft.h"
 # include "general.h"
 # include "execution.h"
-# include "util.h"
+# include "utils.h"
 # include "environment.h"
 
 /* Types */

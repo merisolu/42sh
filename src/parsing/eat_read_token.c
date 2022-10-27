@@ -6,11 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 11:59:39 by amann             #+#    #+#             */
-/*   Updated: 2022/10/27 13:02:03 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 14:14:37 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "parsing.h"
 
 /*
  * Checks if the cursor is currently on a token with the type of 'type'.

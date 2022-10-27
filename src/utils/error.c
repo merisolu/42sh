@@ -6,11 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:57:03 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 13:05:59 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 14:14:49 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "util.h"
+#include "utils.h"
 
 /*
  * Prints the given error message to stderr, and returns the given value.

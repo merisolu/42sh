@@ -6,11 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 12:54:56 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 13:01:43 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 14:14:37 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "parsing.h"
 
 static t_token	*token_new(t_token_type type, char *value, t_token *previous)
 {

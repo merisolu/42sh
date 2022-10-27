@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:12 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:01:14 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/27 14:14:37 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <pwd.h>
 # include "libft.h"
 # include "general.h"
-# include "parser.h"
+# include "parsing.h"
 # include "environment.h"
 
 /* Files */

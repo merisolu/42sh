@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_unsetenv.c                                     :+:      :+:    :+:   */
+/*   token_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/05 16:24:10 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 13:57:57 by jumanner         ###   ########.fr       */
+/*   Created: 2022/03/28 15:11:09 by jumanner          #+#    #+#             */
+/*   Updated: 2022/10/27 14:14:37 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "built_in.h"
+#include "parsing.h"
 
-int	cmd_unsetenv(char *const *args, t_state *state)
+void	token_list_free(t_token **list)
 {
-	char	*name;
+	t_token	*cursor;
+	t_token	*temp;
 
-	name = args[1];
-	if (!name)
-		return (print_named_error("unsetenv", ERR_TOO_FEW_ARGS, 0));
-	env_unset(name, &(state->env));
-	return (0);
+	cursor = *list;
+	while (cursor)
+	{
+		temp = cursor->next;
+		token_free(&cursor);
+		cursor = temp;
+	}
+	*list = NULL;
 }
