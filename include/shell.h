@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 17:48:55 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/28 12:48:55 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,6 +262,8 @@ typedef struct s_redir
 	int	fd_in;
 	int	saved_out;
 	int	saved_in;
+	int saved_fd;
+	int fd_agg;
 }	t_redir;
 
 typedef struct s_pipes
@@ -317,7 +319,7 @@ t_ast			**construct_ast_list(t_token **cursor);
 
 /* redirects.c */
 void			initialize_redir_struct(t_redir *r);
-int				reset_io(t_redir r);
+int				reset_io(t_redir *r);
 int				handle_redirects(t_ast *redir_node, t_redir *r);
 
 /* pipes.c */

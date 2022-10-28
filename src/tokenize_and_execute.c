@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/27 17:53:58 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/28 16:10:12 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,11 @@ static pid_t	execute_tree(t_ast_execution *context, t_state *state)
 	result = -1;
 	if (context->node->node_type == AST_SIMPLE_COMMAND)
 	{
-		if (context->node->right)
-			handle_redirects(context->node->right, context->redirect);
+		if (context->node->right
+			&& !handle_redirects(context->node->right, context->redirect))
+				return (result);
 		result = execute_simple_command(context, state);
-		reset_io(*(context->redirect));
+		reset_io(context->redirect);
 	}
 	else if (context->node->node_type == AST_PIPE_SEQUENCE)
 	{
@@ -66,27 +67,29 @@ static pid_t	execute_tree(t_ast_execution *context, t_state *state)
 
 static void	execute_tree_list(t_ast **tree_list, t_state *state)
 {
-	t_redir	redir;
+	t_redir	*redir;
 	t_pipes	pipes;
 	pid_t	tree_pid;
 	int		i;
 
 	if (!tree_list)
 		return ;
-	initialize_redir_struct(&redir);
+	redir = (t_redir *) ft_memalloc(sizeof(t_redir));
+	initialize_redir_struct(redir);
 	pipes_reset(pipes.read, pipes.write);
 	//print_ast(tree_list);
 	i = 0;
 	while (tree_list[i] != NULL)
 	{
 		tree_pid = execute_tree(
-				&(t_ast_execution){tree_list[i], &redir, &pipes, 0}, state);
+				&(t_ast_execution){tree_list[i], redir, &pipes, 0}, state);
 		if (tree_pid != -1)
 			waitpid(tree_pid, NULL, 0);
 		i++;
 	}
 	pipe_close(pipes.read);
 	ast_free(tree_list);
+	free(redir);
 }
 
 void	tokenize_and_execute(t_state *state)

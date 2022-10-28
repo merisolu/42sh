@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2022/10/27 18:38:24 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/28 15:05:56 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	add_fd_agg(t_ast *node, t_token **cursor)
 	node->aggregation = TRUE;
 	if (read_token(cursor, TOKEN_GT | TOKEN_LT, reset))
 	{
-		print_tokens(*cursor);
+		//print_tokens(*cursor);
 		if ((*cursor)->value[0] == '>')
 			node->agg_from = STDOUT_FILENO;
 		if ((*cursor)->value[0] == '<')
@@ -76,7 +76,10 @@ static int	add_fd_agg(t_ast *node, t_token **cursor)
 	node->agg_from = ft_atoi((*cursor)->value);
 	eat_token(cursor, TOKEN_WORD, reset);
 	eat_token(cursor, TOKEN_GT | TOKEN_LT, reset);
-	node->agg_to = ft_atoi((*cursor)->value);
+	if ((*cursor)->value[0] == '-')
+		node->agg_close = TRUE;
+	else
+		node->agg_to = ft_atoi((*cursor)->value);
 	eat_token(cursor, TOKEN_WORD, reset);
 	return (TRUE);
 }
