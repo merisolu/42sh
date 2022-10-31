@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 14:28:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:28:33 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/31 13:30:08 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,6 @@ void	print_state(t_state *state)
 	rows = ft_min_size_t(
 			input_get_row_count(state, ft_strlen(state->input)),
 			state->height);
-	if (state->input_start_y + rows > state->height)
+	if (state->input_start_y + rows >= state->height)
 		state->input_start_y -= (state->input_start_y + rows) - state->height;
 }
