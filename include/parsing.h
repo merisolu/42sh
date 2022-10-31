@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:16 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:15:37 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/31 10:57:24 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int				read_token(\
 t_token_type	get_token_type(char value, int in_quotes);
 
 /* lexer.c */
-t_token			*tokenize(char *line);
+t_token			*tokenize(t_state *state);
 
 /* literals.c */
 int				check_literals(\

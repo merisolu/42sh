@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:14:37 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/31 11:33:05 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,25 +96,27 @@ static void	t_loop(char *lc, t_tokenizer *t, t_token_type *type, t_token **r)
 	(t->buff_idx)++;
 }
 
-t_token	*tokenize(char *line)
+t_token	*tokenize(t_state *state)
 {
 	t_token			*result;
 	t_token_type	type;
 	t_tokenizer		t;
 	int				i;
 
-	if (!tokenize_init(&t, line))
+	if (!tokenize_init(&t, state->input))
 		return (NULL);
+	state->in_quotes = 0;
 	result = NULL;
-	i = skip_whitespace(line);
-	type = get_token_type(line[i], FALSE);
-	while (line[i])
+	i = skip_whitespace(state->input);
+	type = get_token_type(state->input[i], FALSE);
+	while (state->input[i])
 	{
-		check_quotes(line[i], &t);
-		t_loop(line + i, &t, &type, &result);
+		check_quotes(state->input[i], &t);
+		t_loop(state->input + i, &t, &type, &result);
 		i++;
 	}
 	token_add(&result, type, ft_strdup(t.buff));
 	free(t.buff);
+	state->in_quotes = t.in_quotes;
 	return (result);
 }

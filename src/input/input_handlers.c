@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:29:22 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 12:54:00 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/31 11:30:33 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,18 @@
 
 static t_input_result	handle_newline(t_state *state)
 {
-	if (state->input[ft_strlen(state->input) - 1] != '\\')
+	t_token	*tokens;
+
+	tokens = tokenize(state);
+	if (!tokens)
+		return (INPUT_READ_ERROR);
+	if (state->input[ft_strlen(state->input) - 1] != '\\' && !state->in_quotes)
 	{
 		state->cursor = 0;
+		token_list_free(&tokens);
 		return (INPUT_NEWLINE_FOUND);
 	}
+	token_list_free(&tokens);
 	return (INPUT_NO_NEWLINE_FOUND);
 }
 

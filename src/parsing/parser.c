@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:11:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:14:37 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/31 11:33:45 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void	reset_state(t_state *state)
 	if (!state)
 		return ;
 	state->continue_previous_node = 0;
-	state->in_double_quotes = 0;
 }
 
 t_ast	**parse(t_token *list, t_state *state)
