@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 14:21:42 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 12:53:44 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/31 11:47:33 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,6 @@ t_input_result	paste(t_state *state)
 		ft_strlen(state->clipboard));
 	state->cursor += ft_strlen(state->clipboard);
 	if (limit_reached)
-	{
 		ft_putstr(tgetstr("bl", NULL));
-		ft_putstr(tgetstr("vb", NULL));
-	}
 	return (INPUT_NO_NEWLINE_FOUND);
 }

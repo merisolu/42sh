@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 12:54:06 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/31 11:47:45 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static void	append_input(t_state *state, char character)
 	if (ft_strlen(state->input) == INPUT_MAX_SIZE)
 	{
 		ft_putstr(tgetstr("bl", NULL));
-		ft_putstr(tgetstr("vb", NULL));
 		return ;
 	}
 	ft_memmove(state->input + state->cursor + 1, state->input + state->cursor,

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:57:36 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 12:53:46 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/10/31 11:47:38 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ int	ctrl_d(t_state *state)
 		return (-2);
 	}
 	if (state->cursor == ft_strlen(state->input))
-	{
 		ft_putstr(tgetstr("bl", NULL));
-		ft_putstr(tgetstr("vb", NULL));
-	}
 	else
 	{
 		ft_strcpy(state->input + state->cursor,
