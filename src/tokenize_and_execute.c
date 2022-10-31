@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/28 16:10:12 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/31 14:54:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,32 +35,30 @@ static pid_t	execute_simple_command(t_ast_execution *context, t_state *state)
 	return (result);
 }
 
-static pid_t	execute_tree(t_ast_execution *context, t_state *state)
+static pid_t	execute_tree(t_ast_execution *ctx, t_state *state)
 {
 	pid_t			result;
 
 	result = -1;
-	if (context->node->node_type == AST_SIMPLE_COMMAND)
+	if (ctx->node->node_type == AST_SIMPLE_COMMAND)
 	{
-		if (context->node->right
-			&& !handle_redirects(context->node->right, context->redirect))
-				return (result);
-		result = execute_simple_command(context, state);
-		reset_io(context->redirect);
+		if (ctx->node->right
+			&& !handle_redirects(ctx->node->right, ctx->redirect))
+			return (result);
+		result = execute_simple_command(ctx, state);
+		if (ctx->node->right)
+			reset_io(ctx->redirect);
 	}
-	else if (context->node->node_type == AST_PIPE_SEQUENCE)
+	else if (ctx->node->node_type == AST_PIPE_SEQUENCE)
 	{
 		result = execute_tree(
 				&(t_ast_execution){
-				context->node->left, context->redirect,
-				context->pipes, !context->node->right
+				ctx->node->left, ctx->redirect, ctx->pipes, !ctx->node->right
 			}, state);
-		if (context->node->right)
+		if (ctx->node->right)
 			result = execute_tree(
-					&(t_ast_execution){
-					context->node->right, context->redirect,
-					context->pipes, is_at_end_check(context->node)
-				}, state);
+					&(t_ast_execution){ctx->node->right, ctx->redirect,
+					ctx->pipes, is_at_end_check(ctx->node)}, state);
 	}
 	return (result);
 }
@@ -75,12 +73,12 @@ static void	execute_tree_list(t_ast **tree_list, t_state *state)
 	if (!tree_list)
 		return ;
 	redir = (t_redir *) ft_memalloc(sizeof(t_redir));
-	initialize_redir_struct(redir);
 	pipes_reset(pipes.read, pipes.write);
 	//print_ast(tree_list);
 	i = 0;
 	while (tree_list[i] != NULL)
 	{
+		initialize_redir_struct(redir);
 		tree_pid = execute_tree(
 				&(t_ast_execution){tree_list[i], redir, &pipes, 0}, state);
 		if (tree_pid != -1)
