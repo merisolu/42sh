@@ -6,11 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-<<<<<<< HEAD:src/ast_redir_control.c
-/*   Updated: 2022/11/01 15:19:32 by amann            ###   ########.fr       */
-=======
-/*   Updated: 2022/10/27 11:35:16 by jumanner         ###   ########.fr       */
->>>>>>> 4190cba636b43b43492621ad29a26056b428f6ff:src/ast/ast_redir_recursion.c
+/*   Updated: 2022/11/01 16:27:27 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

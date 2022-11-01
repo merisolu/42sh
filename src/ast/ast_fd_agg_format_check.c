@@ -6,13 +6,13 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 14:54:25 by amann             #+#    #+#             */
-/*   Updated: 2022/11/01 15:05:57 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/01 16:07:23 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int	ft_isdigit_str(char *s)
+static int	ft_isdigit_str(char *s)
 {
 	int	i;
 

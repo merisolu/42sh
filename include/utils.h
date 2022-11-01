@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:20 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 15:07:28 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/01 16:15:59 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 /* error.c */
 int		print_error(char *message, int return_value);
 int		print_named_error(char *name, char *message, int return_value);
+t_ast	*print_error_ast(char *message, t_ast *return_value);
 
 /* return_value.c */
 int		get_return_value_from_status(int status);

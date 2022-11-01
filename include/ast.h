@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:04 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:25:59 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/01 16:15:18 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,13 @@ typedef int	t_parse_function(t_token **cursor, t_state *state, char **result);
 /* Files */
 
 /* ast_add_args.c */
-char	**ast_add_args(t_token **cursor);
+int		allocate_args_array(char ***res, t_token **cursor);
 
 /* ast_cleanse_args.c */
 void	ast_cleanse_ws(t_token **list);
+
+/* ast_fd_agg_format_check.c */
+int		ast_fd_agg_format_check(t_token **cursor);
 
 /* ast_free.c */
 void	ast_free(t_ast **tree_list);
@@ -49,7 +52,7 @@ int		ast_parse_expansions(t_ast *root, t_state *state);
 t_ast	*ast_pipe_sequence(t_token **cursor);
 
 /* ast_redirect_recursion.c */
-int		ast_redirect_recursion(t_ast *node, t_token **cursor);
+int		ast_redirect_control(t_ast *node, t_token **cursor);
 
 /* ast_retokenize.c */
 t_token	*ast_retokenize(char *line);

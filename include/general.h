@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/01 13:16:28 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/01 16:25:17 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@
 
 # define PROMPT "$> "
 # define MULTILINE_PROMPT "> "
+
+# define FD_AGG_IN "<&"
+# define FD_AGG_OUT ">&"
 
 /* Return values */
 
@@ -153,6 +156,10 @@ typedef struct s_ast
 	char			*out_file;
 	char			*in_type;
 	char			*out_type;
+	int				aggregation;
+	int				agg_to;
+	int				agg_from;
+	int				agg_close;
 	struct s_ast	*left;
 	struct s_ast	*right;
 }	t_ast;

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/01 13:29:50 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/01 16:23:48 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ typedef struct s_redir
 	int	fd_in;
 	int	saved_out;
 	int	saved_in;
+	int saved_fd;
+	int	fd_agg;
 }	t_redir;
 
 typedef struct s_ast_execution
@@ -63,6 +65,9 @@ pid_t	bin_execute(char *path, char **args, char *const *env, t_pipes *pipes);
 /* executor.c */
 pid_t	execute(char *const *args, t_state *state, t_pipes *pipes);
 
+/* execute_fd_aggregation.c */
+int		execute_filedes_aggregation(t_ast *node, t_redir *r);
+
 /* fork.c */
 pid_t	start_fork(t_pipes *pipes);
 
@@ -75,7 +80,7 @@ void	pipes_copy(int target[2], int source[2]);
 
 /* redirects.c */
 void	initialize_redir_struct(t_redir *r);
-int		reset_io(t_redir r);
+int		reset_io(t_redir *r);
 int		handle_redirects(t_ast *redir_node, t_redir *r);
 
 /* tokenize_and_execute.c */

@@ -22,9 +22,9 @@ LIB_PATH = ./libft/libft.a
 SRC_DIR = ./src
 
 AST_DIR = ast
-AST_FILES = ast_add_args.c ast_pipe_sequence.c ast_free.c \
-				ast_redir_recursion.c ast_retokenize.c ast_parse_expansions.c \
-				ast_cleanse_ws.c grammar.c
+AST_FILES = ast_add_args.c ast_pipe_sequence.c ast_parse_expansions.c \
+				ast_redir_control.c ast_retokenize.c ast_free.c \
+				ast_cleanse_ws.c ast_fd_agg_format_check.c grammar.c
 
 AUTOCOMPLETE_DIR = autocomplete
 AUTOCOMPLETE_FILES = autocomplete.c
@@ -44,7 +44,7 @@ ENVIRONMENT_FILES = environment.c environment_getters.c shlvl.c
 
 EXECUTION_DIR = execution
 EXECUTION_FILES = bin.c executor.c fork.c pipes.c redirects.c \
-					tokenize_and_execute.c
+					tokenize_and_execute.c execute_fd_aggregation.c
 
 EXPANSION_DIR = expansion
 EXPANSION_FILES = expand_tilde.c expand_variables.c
