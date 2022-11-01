@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 11:20:31 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 15:17:54 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/01 11:55:16 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ static void	history_move_up(t_state *state)
 int	history_store(char *input, t_state *state)
 {
 	state->history_index = 0;
+	if (ft_strlen(input) == 0)
+		return (1);
 	if (ft_strequ(state->history[0], input))
 		return (1);
 	history_move_down(state);
