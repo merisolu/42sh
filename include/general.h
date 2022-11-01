@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/31 10:54:41 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/01 13:16:28 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@
 # define ERR_ENV_MISSING_TERM "No TERM environment variable set."
 # define ERR_TERMCAP_NO_ACCESS "Unable to access termcap database."
 # define ERR_TERMCAP_NO_ENTRY "No database entry for current terminal type."
+# define ERR_WINDOW_TOO_SMALL "Window size is too small."
 # define ERR_LINE_READ "input read error"
 # define ERR_CHILD_PROC_FAIL "cannot make child process"
 # define ERR_CHILD_PIPE_FAIL "cannot make child pipes"
