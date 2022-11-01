@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:27:35 by amann             #+#    #+#             */
-/*   Updated: 2022/10/27 17:13:17 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/01 13:15:55 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,15 @@ t_ast	**construct_ast_list(t_token **cursor)
 		tree_list[idx] = ast_pipe_sequence(cursor);
 		if (!tree_list[idx])
 		{
+			ft_putendl("not here");
 			ast_free(tree_list);
 			return (NULL);
 		}
 		idx++;
-		if (*cursor)
-			*cursor = (*cursor)->next;
+		if (!*cursor)
+			break ;
 	}
+	print_ast(tree_list);
 	*cursor = reset;
 	return (tree_list);
 }

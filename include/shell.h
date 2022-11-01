@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/28 12:48:55 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/01 11:31:46 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,13 +291,14 @@ void	print_tokens(t_token *result);
 /* Files */
 
 /* ast_add_args.c */
-char			**ast_add_args(t_token **cursor);
+//void			ast_add_args(t_token **cursor, char ***res);
+int				allocate_args_array(char ***res, t_token **cursor);
 
 /* ast_cleanse_args.c */
-void	ast_cleanse_ws(t_token **list);
+void			ast_cleanse_ws(t_token **list);
 
 
-int		ast_fd_agg_format_check(t_token **cursor);
+int				ast_fd_agg_format_check(t_token **cursor);
 
 /* ast_free.c */
 void			ast_free(t_ast **tree_list);

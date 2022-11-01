@@ -6,28 +6,28 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2022/10/28 15:05:56 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/01 13:41:18 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static int	add_redir_out(t_ast *node, t_token **cursor)
+static int	add_redir_out(t_ast *node, t_token *cursor)
 {
 	if (node->out_type)
 		ft_strdel(&(node->out_type));
-	node->out_type = ft_strdup((*cursor)->value);
+	node->out_type = ft_strdup(cursor->value);
 	if (!node->out_type)
 		return (print_error(ERR_MALLOC_FAIL, 0));
-	*cursor = (*cursor)->next;
-	if (!(*cursor) || (*cursor)->type != TOKEN_WORD)
+	cursor = cursor->next;
+	if (!cursor || cursor->type != TOKEN_WORD)
 		return (print_error(ERR_SYNTAX, 0));
 	if (node->out_file)
 		ft_strdel(&(node->out_file));
-	node->out_file = ft_strdup((*cursor)->value);
+	node->out_file = ft_strdup(cursor->value);
 	if (!node->out_file)
 		return (print_error(ERR_MALLOC_FAIL, 0));
-	*cursor = (*cursor)->next;
+	cursor = cursor->next;
 	return (1);
 }
 
@@ -50,7 +50,7 @@ static int	add_redir_in(t_ast *node, t_token **cursor)
 	return (1);
 }
 
-static int	add_fd_agg(t_ast *node, t_token **cursor)
+static void	add_fd_agg(t_ast *node, t_token **cursor)
 {
 	t_token	*reset;
 	//word or gt/lt
@@ -71,7 +71,7 @@ static int	add_fd_agg(t_ast *node, t_token **cursor)
 		else
 			node->agg_to = ft_atoi((*cursor)->value);
 		eat_token(cursor, TOKEN_WORD, reset);
-		return (TRUE);
+		return ;
 	}
 	node->agg_from = ft_atoi((*cursor)->value);
 	eat_token(cursor, TOKEN_WORD, reset);
@@ -81,28 +81,31 @@ static int	add_fd_agg(t_ast *node, t_token **cursor)
 	else
 		node->agg_to = ft_atoi((*cursor)->value);
 	eat_token(cursor, TOKEN_WORD, reset);
-	return (TRUE);
 }
 
 int	ast_redirect_recursion(t_ast *node, t_token **cursor)
 {
-	if (*cursor && ast_fd_agg_format_check(cursor))
+	t_token	*reset;
+
+	reset = *cursor;
+	if (ast_fd_agg_format_check(cursor))
+		add_fd_agg(node, cursor);
+	if (eat_token(cursor, TOKEN_GT, reset)
+		&& eat_token(cursor, TOKEN_WORD, reset))
 	{
-		if (!add_fd_agg(node, cursor))
+		if (!add_redir_out(node, reset))
 			return (0);
 	}
-	if (*cursor && (*cursor)->type == TOKEN_GT)
+	reset = *cursor;
+	if (eat_token(cursor, TOKEN_LT, reset)
+		&& eat_token(cursor, TOKEN_WORD, reset))
 	{
-		if (!add_redir_out(node, cursor))
+		if (!add_redir_in(node, &reset))
 			return (0);
 	}
-	if (*cursor && (*cursor)->type == TOKEN_LT)
-	{
-		if (!add_redir_in(node, cursor))
-			return (0);
-	}
-	if (*cursor
-		&& ((*cursor)->type == TOKEN_GT || (*cursor)->type == TOKEN_LT))
-		ast_redirect_recursion(node, cursor);
+//	print_tokens(*cursor);
+//	if (*cursor && (read_token(cursor, TOKEN_GT | TOKEN_LT, reset)
+//		|| ast_fd_agg_format_check(cursor)))
+//		ast_redirect_recursion(node, cursor);
 	return (1);
 }

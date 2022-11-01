@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/10/31 17:00:16 by amann            ###   ########.fr       */
+/*   Updated: 2022/10/31 17:45:47 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ static int	redirect_input(t_ast *redir_node, t_redir *r)
 		return (print_error("could not dup2! (paceholder)\n", 0));
 	close(r->fd_in);
 	r->fd_in = -1;
+	
 	return (1);
 }
 
@@ -159,6 +160,8 @@ static int	filedes_aggregation(t_ast *node, t_redir *r)
 	}
 	return (1);
 }
+
+//redirecting both input and output now does nothing.
 
 int	handle_redirects(t_ast *redir_node, t_redir *r)
 {

@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:55:34 by amann             #+#    #+#             */
-/*   Updated: 2022/10/27 15:40:26 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/01 13:31:12 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ int	ast_fd_agg_format_check(t_token **cursor)
 {
 	t_token	*reset;
 
+	if (!cursor || !*cursor)
+		return (FALSE);
 	reset = *cursor;
 	if (eat_token(cursor, TOKEN_WORD, reset)
 		&& eat_token(cursor, TOKEN_GT | TOKEN_LT, reset)
@@ -99,13 +101,18 @@ static int	check_cmd_end(t_token **cursor)
 	return (FALSE);
 }
 
-static int	allocate_args_array(char ***res, t_token **cursor)
+int	allocate_args_array(char ***res, t_token **cursor)
 {
 	size_t	idx;
 	size_t	size;
+	size_t	len;
 
-	size = 2;
-	idx = 0;
+	//check array length. Set size to length, or 2 if len < 2
+	len = ft_null_array_len((void **) *res);
+	size = len;
+	if (len < 2)
+		size = 2;
+	idx = len;
 	while (*cursor)
 	{
 		if (check_cmd_end(cursor))
@@ -126,22 +133,4 @@ static int	allocate_args_array(char ***res, t_token **cursor)
 		*cursor = (*cursor)->next;
 	}
 	return (1);
-}
-
-char	**ast_add_args(t_token **cursor)
-{
-	char	**res;
-
-	res = (char **) ft_memalloc(sizeof(char *) * 3);
-	if (!res)
-	{
-		print_error(ERR_MALLOC_FAIL, 0);
-		return (NULL);
-	}
-	if (!(allocate_args_array(&res, cursor)))
-	{
-		ft_free_null_array((void **)res);
-		return (NULL);
-	}
-	return (res);
 }
