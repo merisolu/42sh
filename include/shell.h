@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/01 15:33:55 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/01 15:46:32 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@
 # include <termcap.h>
 
 //only needed in redirects.c maybe put this in a separate header file
-#include <fcntl.h>
+# include <fcntl.h>
 
 //only needed in expand_tildes.c for finding usernames, see above comment
-#include <pwd.h>
+# include <pwd.h>
 
 # if __linux__
 #  include <sys/wait.h>
