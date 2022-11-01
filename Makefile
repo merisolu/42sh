@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/10/26 15:43:04 by amann            ###   ########.fr        #
+#    Updated: 2022/11/01 15:34:39 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,11 +31,11 @@ SRC_FILES = main.c \
 			lexer.c parser.c expand_tilde.c expand_variables.c \
 			eat_read_token.c \
 			grammar.c ast_add_args.c ast_pipe_sequence.c ast_free.c \
-			ast_redir_recursion.c ast_retokenize.c ast_parse_expansions.c \
-			ast_cleanse_ws.c \
+			ast_redir_control.c ast_retokenize.c ast_parse_expansions.c \
+			ast_cleanse_ws.c ast_fd_agg_format_check.c \
 			token.c token_list.c get_token_type.c \
 			environment.c environment_getters.c \
-			redirects.c pipes.c \
+			redirects.c pipes.c execute_fd_aggregation.c \
 			fork.c \
 			bin.c executor.c return_value.c tokenize_and_execute.c \
 			built_ins.c cmd_cd.c cmd_echo.c cmd_env.c cmd_setenv.c \

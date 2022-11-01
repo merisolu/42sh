@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:57:03 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/03 17:49:38 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/01 14:37:12 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,11 @@ int	print_error(char *message, int return_value)
 int	print_named_error(char *name, char *message, int return_value)
 {
 	ft_dprintf(STDERR_FILENO, "21sh: %s: %s\n", name, message);
+	return (return_value);
+}
+
+t_ast	*print_error_ast(char *message, t_ast *return_value)
+{
+	ft_dprintf(STDERR_FILENO, "21sh: %s\n", message);
 	return (return_value);
 }

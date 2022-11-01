@@ -6,11 +6,28 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 15:07:12 by amann             #+#    #+#             */
-/*   Updated: 2022/10/21 12:57:22 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/01 15:35:13 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
+
+static void	print_redirs(t_ast *node)
+{
+	if (node->in_type)
+		ft_printf(
+			"input (type: %s file: %s)",
+			node->in_type,
+			node->in_file
+			);
+	if (node->out_type)
+		ft_printf(
+			" output (type: %s file: %s)",
+			node->out_type,
+			node->out_file
+			);
+	ft_putchar('\n');
+}
 
 static void	print_ast_node(t_ast *node, int space, int count)
 {
@@ -35,13 +52,7 @@ static void	print_ast_node(t_ast *node, int space, int count)
 		ft_putchar('\n');
 	}
 	else if (node->node_type == AST_REDIRECTIONS)
-	{
-		if (node->in_type)
-			ft_printf("input (type: %s file: %s)", node->in_type, node->in_file);
-		if (node->out_type)
-			ft_printf(" output (type: %s file: %s)", node->out_type, node->out_file);
-		ft_putchar('\n');
-	}
+		print_redirs(node);
 }
 
 static void	tree_iterate(t_ast *root, int space)

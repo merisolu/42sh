@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:55:34 by amann             #+#    #+#             */
-/*   Updated: 2022/11/01 13:31:12 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/01 15:14:14 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,84 +39,42 @@ static int	realloc_array(char ***arr, size_t size)
 	return (1);
 }
 
-int	ft_isdigit_str(char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		if (!ft_isdigit(s[i]))
-			return (FALSE);
-		i++;
-	}
-	return (TRUE);
-}
-
-int	ast_fd_agg_format_check(t_token **cursor)
-{
-	t_token	*reset;
-
-	if (!cursor || !*cursor)
-		return (FALSE);
-	reset = *cursor;
-	if (eat_token(cursor, TOKEN_WORD, reset)
-		&& eat_token(cursor, TOKEN_GT | TOKEN_LT, reset)
-		&& eat_token(cursor, TOKEN_WORD , reset))
-	{
-		*cursor = reset;
-		if (ft_isdigit_str((*cursor)->value)
-			&& (ft_strequ((*cursor)->next->value, FD_AGG_IN)
-				|| ft_strequ((*cursor)->next->value, FD_AGG_OUT))
-			&& (ft_isdigit_str((*cursor)->next->next->value)
-				|| ft_strequ((*cursor)->next->next->value, "-")))
-			return (TRUE);
-	}
-	if (read_token(cursor, TOKEN_GT | TOKEN_LT, reset)
-		&& (ft_strequ((*cursor)->value, FD_AGG_OUT)
-			|| (ft_strequ((*cursor)->value, FD_AGG_IN))))
-	{
-		if (eat_token(cursor, TOKEN_GT | TOKEN_LT, reset)
-			&& (ft_isdigit_str((*cursor)->value)
-				|| ft_strequ((*cursor)->value, "-")))
-		{
-			*cursor = reset;
-			return (TRUE);
-		}
-	}
-	return (FALSE);
-}
-
 static int	check_cmd_end(t_token **cursor)
 {
 	t_token	*reset;
 
 	reset = *cursor;
-	if (read_token(cursor, TOKEN_SEMICOLON, reset) || read_token(cursor, TOKEN_PIPE, reset)
-		|| (read_token(cursor, TOKEN_LT, reset) && !ft_strequ((*cursor)->value, FD_AGG_IN))
-		|| (read_token(cursor, TOKEN_GT, reset) && !ft_strequ((*cursor)->value, FD_AGG_OUT)))
+	if (read_token(cursor, TOKEN_SEMICOLON, reset)
+		|| read_token(cursor, TOKEN_PIPE, reset)
+		|| (read_token(cursor, TOKEN_LT, reset)
+			&& !ft_strequ((*cursor)->value, FD_AGG_IN))
+		|| (read_token(cursor, TOKEN_GT, reset)
+			&& !ft_strequ((*cursor)->value, FD_AGG_OUT)))
 		return (TRUE);
 	if (ast_fd_agg_format_check(cursor))
 		return (TRUE);
 	return (FALSE);
 }
 
+static size_t	set_size(size_t idx)
+{
+	size_t	ret;
+
+	ret = idx;
+	if (idx < 2)
+		ret = 2;
+	return (ret);
+}
+
 int	allocate_args_array(char ***res, t_token **cursor)
 {
 	size_t	idx;
 	size_t	size;
-	size_t	len;
 
-	//check array length. Set size to length, or 2 if len < 2
-	len = ft_null_array_len((void **) *res);
-	size = len;
-	if (len < 2)
-		size = 2;
-	idx = len;
-	while (*cursor)
+	idx = ft_null_array_len((void **) *res);
+	size = set_size(idx);
+	while (*cursor && !check_cmd_end(cursor))
 	{
-		if (check_cmd_end(cursor))
-			return (1);
 		if ((*cursor)->type == TOKEN_WORD)
 		{
 			if (idx >= size)

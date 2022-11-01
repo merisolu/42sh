@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/01 11:31:46 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/01 15:33:55 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -297,7 +297,7 @@ int				allocate_args_array(char ***res, t_token **cursor);
 /* ast_cleanse_args.c */
 void			ast_cleanse_ws(t_token **list);
 
-
+/* ast_fd_agg_format_check.c */
 int				ast_fd_agg_format_check(t_token **cursor);
 
 /* ast_free.c */
@@ -309,8 +309,8 @@ int				ast_parse_expansions(t_ast *root, t_state *state);
 /* ast_pipe_sequence.c */
 t_ast			*ast_pipe_sequence(t_token **cursor);
 
-/* ast_redirect_recursion.c */
-int				ast_redirect_recursion(t_ast *node, t_token **cursor);
+/* ast_redir_control.c */
+int				ast_redirect_control(t_ast *node, t_token **cursor);
 
 /* ast_retokenize.c */
 t_token			*ast_retokenize(char *line);
@@ -322,6 +322,9 @@ t_ast			**construct_ast_list(t_token **cursor);
 void			initialize_redir_struct(t_redir *r);
 int				reset_io(t_redir *r);
 int				handle_redirects(t_ast *redir_node, t_redir *r);
+
+/* execute_fd_aggregation.c */
+int				execute_filedes_aggregation(t_ast *node, t_redir *r);
 
 /* pipes.c */
 void			pipe_reset(int pipe[2]);
@@ -486,5 +489,6 @@ void			*var_copy(void *var);
 /* error.c */
 int				print_error(char *message, int return_value);
 int				print_named_error(char *name, char *message, int return_value);
+t_ast			*print_error_ast(char *message, t_ast *return_value);
 
 #endif

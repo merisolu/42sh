@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 12:55:17 by amann             #+#    #+#             */
-/*   Updated: 2022/11/01 13:49:34 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/01 15:24:09 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,12 @@
 
 static int	last_pipe(t_token **cursor)
 {
-	t_token *reset;
+	t_token	*reset;
 	t_token	*check;
 
 	reset = *cursor;
 	eat_token(cursor, TOKEN_PIPE, reset);
 	check = *cursor;
-	print_tokens(*cursor);
 	while (check)
 	{
 		if (check->type == TOKEN_PIPE)
@@ -40,7 +39,7 @@ static int	redirects_node(t_token **cursor, t_ast **node)
 		return (print_error(ERR_MALLOC_FAIL, 0));
 	if (!(*node)->node_type)
 		(*node)->node_type = AST_REDIRECTIONS;
-	return (ast_redirect_recursion(*node, cursor));
+	return (ast_redirect_control(*node, cursor));
 }
 
 static int	args_node(t_token **cursor, t_ast **node)
@@ -70,10 +69,7 @@ static t_ast	*simple_command(t_token **cursor)
 	reset = *cursor;
 	node = (t_ast *) ft_memalloc(sizeof(t_ast));
 	if (!node)
-	{
-		print_error(ERR_MALLOC_FAIL, 0);
-		return (NULL);
-	}
+		return (print_error_ast(ERR_MALLOC_FAIL, NULL));
 	node->node_type = AST_SIMPLE_COMMAND;
 	while (*cursor)
 	{
@@ -98,7 +94,7 @@ t_ast	*ast_pipe_sequence(t_token **cursor)
 	reset = *cursor;
 	node = (t_ast *) ft_memalloc(sizeof(t_ast));
 	if (!node)
-		return (NULL);
+		return (print_error_ast(ERR_MALLOC_FAIL, NULL));
 	node->node_type = AST_PIPE_SEQUENCE;
 	node->left = simple_command(cursor);
 	if (!node->left)
@@ -110,44 +106,7 @@ t_ast	*ast_pipe_sequence(t_token **cursor)
 		node->right = simple_command(cursor);
 	else
 		node->right = ast_pipe_sequence(cursor);
+	if (*cursor && (*cursor)->type == TOKEN_SEMICOLON)
+		*cursor = (*cursor)->next;
 	return (node);
 }
-/*
-if (*cursor && ((*cursor)->type == TOKEN_LT || (*cursor)->type == TOKEN_GT
-				|| ast_fd_agg_format_check(cursor)))
-		{
-			if (!add_redirects(cursor, &(node->right)))
-			{
-				return (NULL);
-			}
-		}
-*/
-/*
-t_ast	*ast_pipe_sequence(t_token **cursor)
-{
-	t_ast	*new_node;
-
-	print_tokens(*cursor);
-	new_node = (t_ast *) ft_memalloc(sizeof(t_ast));
-	if (!new_node)
-	{
-		print_error(ERR_MALLOC_FAIL, 0);
-		return (NULL);
-	}
-	new_node->node_type = AST_PIPE_SEQUENCE;
-	new_node->left = simple_command(cursor);
-	if (!(new_node->left))
-		return (NULL);
-	if (!(*cursor) || (*cursor && (*cursor)->type == TOKEN_SEMICOLON))
-	{
-		ft_putendl("here");
-		return (new_node);
-	}
-	if ((*cursor)->type != TOKEN_WORD)
-		*cursor = (*cursor)->next;
-	if (*cursor && pipes_in_queue(*cursor))
-		new_node->right = ast_pipe_sequence(cursor);
-	else if (*cursor)
-		new_node->right = simple_command(cursor);
-	return (new_node);
-}*/

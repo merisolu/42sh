@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/26 10:35:03 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/01 14:39:46 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,6 @@ pid_t	execute(char *const *args, t_state *state, t_pipes *pipes)
 
 	if (!args || !(args[0]) || !env_set("_", args[0], &(state->env)))
 		return (print_error(ERR_MALLOC_FAIL, -1));
-	// if (access(path, X_OK) == -1)
-	// 	return (print_named_error(
-	// 			(char *)path, ERR_NO_PERMISSION, RETURN_NO_ACCESS
-	// 		));
 	if (get_built_in(args[0]))
 		return (run_built_in(get_built_in(args[0]), args, state, pipes));
 	if (ft_strchr(args[0], '/') || (args[0][0] == '.'))
@@ -57,3 +53,8 @@ pid_t	execute(char *const *args, t_state *state, t_pipes *pipes)
 	free(path);
 	return (return_value);
 }
+/*
+	 if (access(path, X_OK) == -1)
+		return (print_named_error(
+			(char *)path, ERR_NO_PERMISSION, RETURN_NO_ACCESS
+			));*/

@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2022/11/01 13:41:18 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/01 15:19:32 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,28 +53,21 @@ static int	add_redir_in(t_ast *node, t_token **cursor)
 static void	add_fd_agg(t_ast *node, t_token **cursor)
 {
 	t_token	*reset;
-	//word or gt/lt
-	//if word, format is "from >& to"
-	//if word following gt/lt is "-", we close the first word
+
 	reset = *cursor;
 	node->aggregation = TRUE;
 	if (read_token(cursor, TOKEN_GT | TOKEN_LT, reset))
 	{
-		//print_tokens(*cursor);
 		if ((*cursor)->value[0] == '>')
 			node->agg_from = STDOUT_FILENO;
 		if ((*cursor)->value[0] == '<')
 			node->agg_from = STDIN_FILENO;
-		eat_token(cursor, TOKEN_GT | TOKEN_LT, reset);
-		if ((*cursor)->value[0] == '-')
-			node->agg_close = TRUE;
-		else
-			node->agg_to = ft_atoi((*cursor)->value);
-		eat_token(cursor, TOKEN_WORD, reset);
-		return ;
 	}
-	node->agg_from = ft_atoi((*cursor)->value);
-	eat_token(cursor, TOKEN_WORD, reset);
+	else
+	{
+		node->agg_from = ft_atoi((*cursor)->value);
+		eat_token(cursor, TOKEN_WORD, reset);
+	}
 	eat_token(cursor, TOKEN_GT | TOKEN_LT, reset);
 	if ((*cursor)->value[0] == '-')
 		node->agg_close = TRUE;
@@ -83,13 +76,13 @@ static void	add_fd_agg(t_ast *node, t_token **cursor)
 	eat_token(cursor, TOKEN_WORD, reset);
 }
 
-int	ast_redirect_recursion(t_ast *node, t_token **cursor)
+int	ast_redirect_control(t_ast *node, t_token **cursor)
 {
 	t_token	*reset;
 
-	reset = *cursor;
 	if (ast_fd_agg_format_check(cursor))
 		add_fd_agg(node, cursor);
+	reset = *cursor;
 	if (eat_token(cursor, TOKEN_GT, reset)
 		&& eat_token(cursor, TOKEN_WORD, reset))
 	{
@@ -103,9 +96,5 @@ int	ast_redirect_recursion(t_ast *node, t_token **cursor)
 		if (!add_redir_in(node, &reset))
 			return (0);
 	}
-//	print_tokens(*cursor);
-//	if (*cursor && (read_token(cursor, TOKEN_GT | TOKEN_LT, reset)
-//		|| ast_fd_agg_format_check(cursor)))
-//		ast_redirect_recursion(node, cursor);
 	return (1);
 }
