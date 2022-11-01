@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell.h                                            :+:      :+:    :+:   */
+/*   token_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/01 16:02:37 by amann            ###   ########.fr       */
+/*   Created: 2022/03/28 15:11:09 by jumanner          #+#    #+#             */
+/*   Updated: 2022/10/27 14:14:37 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SHELL_H
-# define SHELL_H
+#include "parsing.h"
 
-# include <termcap.h>
-# include "libft.h"
-# include "general.h"
-# include "utils.h"
-# include "terminal.h"
-# include "state.h"
-# include "cursor.h"
-# include "input.h"
-# include "environment.h"
-# include "signals.h"
-# include "execution.h"
+void	token_list_free(t_token **list)
+{
+	t_token	*cursor;
+	t_token	*temp;
 
-#endif
+	cursor = *list;
+	while (cursor)
+	{
+		temp = cursor->next;
+		token_free(&cursor);
+		cursor = temp;
+	}
+	*list = NULL;
+}

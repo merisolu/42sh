@@ -1,28 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell.h                                            :+:      :+:    :+:   */
+/*   expansion.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/01 16:02:37 by amann            ###   ########.fr       */
+/*   Created: 2022/10/27 11:32:12 by jumanner          #+#    #+#             */
+/*   Updated: 2022/10/27 14:55:51 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SHELL_H
-# define SHELL_H
+#ifndef EXPANSION_H
+# define EXPANSION_H
 
-# include <termcap.h>
+/* Includes */
+
+# include <pwd.h>
+
 # include "libft.h"
 # include "general.h"
-# include "utils.h"
-# include "terminal.h"
-# include "state.h"
-# include "cursor.h"
-# include "input.h"
+# include "parsing.h"
 # include "environment.h"
-# include "signals.h"
-# include "execution.h"
+
+/* Files */
+
+/* expand_tilde.c */
+int	expand_tilde(t_token **cursor, t_state *state, char **result);
+
+/* expand_variables.c */
+int	expand_variable(t_token **cursor, t_state *state, char **result);
 
 #endif

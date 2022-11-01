@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell.h                                            :+:      :+:    :+:   */
+/*   history.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/01 16:02:37 by amann            ###   ########.fr       */
+/*   Created: 2022/10/27 15:14:31 by jumanner          #+#    #+#             */
+/*   Updated: 2022/10/27 15:15:58 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SHELL_H
-# define SHELL_H
+#ifndef HISTORY_H
+# define HISTORY_H
 
-# include <termcap.h>
+/* Includes */
+
 # include "libft.h"
 # include "general.h"
-# include "utils.h"
-# include "terminal.h"
-# include "state.h"
-# include "cursor.h"
-# include "input.h"
-# include "environment.h"
-# include "signals.h"
-# include "execution.h"
+
+/* Files */
+
+/* history.c */
+int				history_store(char *input, t_state *state);
+int				history_recall(int diff, t_state *state);
 
 #endif

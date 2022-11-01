@@ -1,28 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell.h                                            :+:      :+:    :+:   */
+/*   cmd_echo.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/01 16:02:37 by amann            ###   ########.fr       */
+/*   Created: 2022/03/31 12:12:18 by jumanner          #+#    #+#             */
+/*   Updated: 2022/10/27 14:14:28 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SHELL_H
-# define SHELL_H
+#include "built_ins.h"
 
-# include <termcap.h>
-# include "libft.h"
-# include "general.h"
-# include "utils.h"
-# include "terminal.h"
-# include "state.h"
-# include "cursor.h"
-# include "input.h"
-# include "environment.h"
-# include "signals.h"
-# include "execution.h"
+int	cmd_echo(char *const *args, t_state *state)
+{
+	int		no_newline;
+	size_t	len;
+	size_t	i;
 
-#endif
+	(void)state;
+	len = ft_null_array_len((void **)args);
+	i = 1;
+	no_newline = ft_strequ(args[i], "-n");
+	i += no_newline;
+	while (i < len)
+	{
+		ft_putstr(args[i]);
+		if (i != len - 1)
+			ft_putchar(' ');
+		i++;
+	}
+	if (!no_newline)
+		ft_putchar('\n');
+	return (0);
+}

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/19 14:10:50 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/01 13:23:30 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,9 @@ static int	setup(char *const **env, t_state *state)
 		return (print_error(ERR_TERMCAP_NO_ENTRY, 0));
 	if (!get_state_struct(env, state))
 		return (print_error(ERR_MALLOC_FAIL, 0));
-	if (!configure_input(state))
+	if (state->width == 0 || state->height == 0)
+		return (print_error(ERR_WINDOW_TOO_SMALL, 0));
+	if (!configure_terminal(state))
 		return (print_error(ERR_TERMIOS_FAIL, 0));
 	if (!set_shlvl(&(state->env)))
 		return (0);
@@ -66,7 +68,7 @@ static int	setup(char *const **env, t_state *state)
 	return (1);
 }
 
-static int	cleanup(t_state *state)
+static int	cleanup(t_state *state, int return_value)
 {
 	if (!set_orig_config(state))
 		return (print_error(ERR_TERMIOS_FAIL, 1));
@@ -74,7 +76,7 @@ static int	cleanup(t_state *state)
 	ft_free_null_array((void **)(state->env));
 	free(state->input);
 	free(state->clipboard);
-	return (state->exit_return_value);
+	return (return_value);
 }
 
 int	main(const int argc, const char **argv, char *const *env)
@@ -84,7 +86,7 @@ int	main(const int argc, const char **argv, char *const *env)
 	(void)argc;
 	(void)argv;
 	if (!setup(&env, &state))
-		return (1);
+		return (cleanup(&state, 1));
 	while (!state.exiting)
 	{
 		check_signal(&state);
@@ -102,5 +104,5 @@ int	main(const int argc, const char **argv, char *const *env)
 		}
 	}
 	ft_putendl("exit");
-	return (cleanup(&state));
+	return (cleanup(&state, state.exit_return_value));
 }

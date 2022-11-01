@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell.h                                            :+:      :+:    :+:   */
+/*   autocomplete.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/01 16:02:37 by amann            ###   ########.fr       */
+/*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
+/*   Updated: 2022/10/27 15:11:18 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SHELL_H
-# define SHELL_H
+#ifndef AUTOCOMPLETE_H
+# define AUTOCOMPLETE_H
 
-# include <termcap.h>
+/* Includes */
+
+# include <dirent.h>
+
 # include "libft.h"
 # include "general.h"
-# include "utils.h"
-# include "terminal.h"
-# include "state.h"
-# include "cursor.h"
-# include "input.h"
-# include "environment.h"
-# include "signals.h"
-# include "execution.h"
+# include "built_ins.h"
+
+/* Files */
+
+/* autocomplete.c */
+int	autocomplete(t_state *state);
 
 #endif

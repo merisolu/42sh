@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell.h                                            :+:      :+:    :+:   */
+/*   cmd_unsetenv.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/01 16:02:37 by amann            ###   ########.fr       */
+/*   Created: 2022/04/05 16:24:10 by jumanner          #+#    #+#             */
+/*   Updated: 2022/10/27 14:14:28 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SHELL_H
-# define SHELL_H
+#include "built_ins.h"
 
-# include <termcap.h>
-# include "libft.h"
-# include "general.h"
-# include "utils.h"
-# include "terminal.h"
-# include "state.h"
-# include "cursor.h"
-# include "input.h"
-# include "environment.h"
-# include "signals.h"
-# include "execution.h"
+int	cmd_unsetenv(char *const *args, t_state *state)
+{
+	char	*name;
 
-#endif
+	name = args[1];
+	if (!name)
+		return (print_named_error("unsetenv", ERR_TOO_FEW_ARGS, 0));
+	env_unset(name, &(state->env));
+	return (0);
+}

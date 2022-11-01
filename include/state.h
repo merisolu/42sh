@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell.h                                            :+:      :+:    :+:   */
+/*   state.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/01 16:02:37 by amann            ###   ########.fr       */
+/*   Created: 2022/10/27 14:28:46 by jumanner          #+#    #+#             */
+/*   Updated: 2022/10/27 14:47:11 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SHELL_H
-# define SHELL_H
+#ifndef STATE_H
+# define STATE_H
+
+/* Includes */
 
 # include <termcap.h>
+
 # include "libft.h"
 # include "general.h"
 # include "utils.h"
-# include "terminal.h"
-# include "state.h"
 # include "cursor.h"
-# include "input.h"
-# include "environment.h"
-# include "signals.h"
-# include "execution.h"
+
+/* Files */
+
+/* state.c */
+void	print_state(t_state *state);
 
 #endif
