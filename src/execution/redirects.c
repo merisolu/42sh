@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/11/01 15:56:27 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/02 13:49:01 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,21 +36,21 @@ int	reset_io(t_redir *r)
 	if (r->saved_fd != -1)
 	{
 		if (dup2(r->saved_fd, r->fd_agg) == -1)
-			return (print_error("could not dup2! (paceholder)\n", 0));
+			return (print_error(ERR_DUP_FAIL, 0));
 		close(r->saved_fd);
 		r->saved_fd = -1;
 	}
 	if (r->saved_out != -1)
 	{
 		if (dup2(r->saved_out, STDOUT_FILENO) == -1)
-			return (print_error("could not dup2 (paceholder)\n", 0));
+			return (print_error(ERR_DUP_FAIL, 0));
 		close(r->saved_out);
 		r->saved_out = -1;
 	}
 	if (r->saved_in != -1)
 	{
 		if (dup2(r->saved_in, STDIN_FILENO) == -1)
-			return (print_error("could not dup2! (paceholder)\n", 0));
+			return (print_error(ERR_DUP_FAIL, 0));
 		close(r->saved_in);
 		r->saved_in = -1;
 	}
@@ -70,12 +70,12 @@ static int	redirect_output(t_ast *redir_node, t_redir *r)
 		append = O_APPEND;
 	r->fd_out = open(redir_node->out_file, o_flags | append, permissions);
 	if (r->fd_out == -1)
-		return (print_error("could not open! (paceholder)\n", 0));
+		return (print_error(ERR_DUP_FAIL, 0));
 	r->saved_out = dup(STDOUT_FILENO);
 	if (r->saved_out == -1)
-		return (print_error("could not dup! (paceholder)\n", 0));
+		return (print_error(ERR_DUP_FAIL, 0));
 	if (dup2(r->fd_out, STDOUT_FILENO) == -1)
-		return (print_error("could not dup2! (paceholder)\n", 0));
+		return (print_error(ERR_DUP_FAIL, 0));
 	close(r->fd_out);
 	r->fd_out = -1;
 	return (1);
@@ -94,9 +94,9 @@ static int	redirect_input(t_ast *redir_node, t_redir *r)
 		return (print_error(ERR_NO_SUCH_FILE_OR_DIR, 0));
 	r->saved_in = dup(STDIN_FILENO);
 	if (r->saved_in == -1)
-		return (print_error("could not dup! (paceholder)\n", 0));
+		return (print_error(ERR_DUP_FAIL, 0));
 	if (dup2(r->fd_in, STDIN_FILENO) == -1)
-		return (print_error("could not dup2! (paceholder)\n", 0));
+		return (print_error(ERR_DUP_FAIL, 0));
 	close(r->fd_in);
 	r->fd_in = -1;
 	return (1);

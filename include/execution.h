@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/01 16:23:48 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/02 15:21:49 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,38 +38,21 @@
 
 /* Types */
 
-typedef struct s_redir
-{
-	int	fd_out;
-	int	fd_in;
-	int	saved_out;
-	int	saved_in;
-	int saved_fd;
-	int	fd_agg;
-}	t_redir;
-
-typedef struct s_ast_execution
-{
-	t_ast	*node;
-	t_redir	*redirect;
-	t_pipes	*pipes;
-	int		is_at_end;
-}	t_ast_execution;
-
 /* Files */
 
 /* bin.c */
 int		bin_env_find(const char *name, char *const *env, char **result);
-pid_t	bin_execute(char *path, char **args, char *const *env, t_pipes *pipes);
+pid_t	bin_execute(char *path, char **args, char *const *env, \
+	t_ast_execution *ast);
 
 /* executor.c */
-pid_t	execute(char *const *args, t_state *state, t_pipes *pipes);
+pid_t	execute(char *const *args, t_state *state, t_ast_execution *ast);
 
 /* execute_fd_aggregation.c */
 int		execute_filedes_aggregation(t_ast *node, t_redir *r);
 
 /* fork.c */
-pid_t	start_fork(t_pipes *pipes);
+pid_t	start_fork(t_ast_execution *ast);
 
 /* pipes.c */
 void	pipe_reset(int pipe[2]);

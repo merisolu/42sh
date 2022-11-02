@@ -6,11 +6,18 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:18:51 by amann             #+#    #+#             */
-/*   Updated: 2022/10/27 11:35:10 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/02 14:47:07 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
+
+static void	reset_state(t_state *state)
+{
+	if (!state)
+		return ;
+	state->continue_previous_node = 0;
+}
 
 static int	run_functions(t_token **cursor, t_state *state, char **result)
 {

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/01 15:58:43 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/02 15:18:08 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,13 @@ static int	check_path_validity(char *path)
 	return (0);
 }
 
-pid_t	execute(char *const *args, t_state *state, t_pipes *pipes)
+pid_t	execute(char *const *args, t_state *state, t_ast_execution *ast)
 {
 	char	*path;
 	int		return_value;
+	t_pipes	*pipes;
 
+	pipes = ast->pipes;
 	if (!args || !(args[0]) || !env_set("_", args[0], &(state->env)))
 		return (print_error(ERR_MALLOC_FAIL, -1));
 	// if (access(path, X_OK) == -1)
@@ -37,13 +39,13 @@ pid_t	execute(char *const *args, t_state *state, t_pipes *pipes)
 	// 			(char *)path, ERR_NO_PERMISSION, RETURN_NO_ACCESS
 	// 		));
 	if (built_in_get(args[0]))
-		return (built_in_run(built_in_get(args[0]), args, state, pipes));
+		return (built_in_run(built_in_get(args[0]), args, state, ast));
 	if (ft_strchr(args[0], '/') || (args[0][0] == '.'))
 	{
 		return_value = check_path_validity(args[0]);
 		if (return_value != 0)
 			return (return_value);
-		return (bin_execute(args[0], (char **)args, state->env, pipes));
+		return (bin_execute(args[0], (char **)args, state->env, ast));
 	}
 	return_value = bin_env_find(args[0], state->env, &path);
 	if (return_value == 0)
@@ -53,7 +55,7 @@ pid_t	execute(char *const *args, t_state *state, t_pipes *pipes)
 		return (return_value);
 	return_value = env_set("_", path, &(state->env));
 	if (return_value)
-		return_value = bin_execute(path, (char **)args, state->env, pipes);
+		return_value = bin_execute(path, (char **)args, state->env, ast);
 	free(path);
 	return (return_value);
 }

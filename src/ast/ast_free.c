@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 12:58:11 by amann             #+#    #+#             */
-/*   Updated: 2022/10/27 11:35:08 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/02 15:12:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,9 @@ void	ast_free(t_ast **tree_list)
 	while (tree_list[i])
 	{
 		tree_free_recursion(tree_list[i]);
+		tree_list[i] = NULL;
 		i++;
 	}
 	free(tree_list);
+	tree_list = NULL;
 }

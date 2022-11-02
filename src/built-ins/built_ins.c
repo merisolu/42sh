@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:18:43 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:19:14 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/02 13:48:22 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,20 +66,28 @@ t_cmd	*built_in_get(const char *name)
  * not cause issues with error handling (at least right now).
  */
 pid_t	built_in_run(t_cmd cmd, char *const *args, t_state *state, \
-	t_pipes *pipes)
+	t_ast_execution *ast)
 {
 	pid_t	result;
 	int		should_fork;
+	t_pipes	*pipes;
 
+	pipes = ast->pipes;
 	should_fork = !(pipes->read[0] == -1 && pipes->read[1] == -1
 			&& pipes->write[0] == -1 && pipes->write[1] == -1);
 	if (should_fork)
 	{
-		result = start_fork(pipes);
+		result = start_fork(ast);
 		if (result == 0)
 			exit(cmd(args, state));
 		else
 			return (result);
+	}
+	else
+	{
+		if (ast->node->right
+			&& !handle_redirects(ast->node->right, ast->redirect))
+			exit(1);
 	}
 	set_return_value(cmd(args, state), state);
 	return (-1);

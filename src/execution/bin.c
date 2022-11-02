@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:29:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 12:49:11 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/02 15:19:46 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,16 +84,16 @@ int	bin_env_find(const char *name, char *const *env, char **result)
  *
  * If fork or execve calls fail, an error message is printed to stderr.
  */
-pid_t	bin_execute(char *path, char **args, char *const *env, t_pipes *pipes)
+pid_t	bin_execute(char *p, char **arg, char *const *env, t_ast_execution *ast)
 {
 	pid_t	result;
 
-	if (!path)
+	if (!p)
 		return (-1);
-	result = start_fork(pipes);
+	result = start_fork(ast);
 	if (result == 0)
 	{
-		if (execve(path, args, env) == -1)
+		if (execve(p, arg, env) == -1)
 			exit(print_error(ERR_CHILD_PROC_FAIL, 1));
 	}
 	return (result);

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:04 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/01 16:15:18 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/02 14:56:47 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,6 @@ int		ast_redirect_control(t_ast *node, t_token **cursor);
 t_token	*ast_retokenize(char *line);
 
 /* grammar.c */
-t_ast	**construct_ast_list(t_token **cursor);
+t_ast	**construct_ast_list(t_token *cursor);
 
 #endif

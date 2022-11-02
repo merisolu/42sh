@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:27:35 by amann             #+#    #+#             */
-/*   Updated: 2022/11/01 16:01:01 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/02 15:12:39 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,31 +34,41 @@ static size_t	sc_count(t_token *list)
  * nothing is being piped.
  */
 
-t_ast	**construct_ast_list(t_token **cursor)
+static void	tree_list_loop(t_ast ***tree_list, t_token **cursor, size_t len)
 {
-	t_ast	**tree_list;
 	size_t	idx;
-	size_t	len;
-	t_token	*reset;
 
-	reset = *cursor;
-	len = sc_count(*cursor);
-	tree_list = (t_ast **) ft_memalloc(sizeof(t_ast *) * (len + 1));
-	if (!tree_list)
-		return (NULL);
 	idx = 0;
 	while (idx < len)
 	{
-		tree_list[idx] = ast_pipe_sequence(cursor);
-		if (!tree_list[idx])
+		(*tree_list)[idx] = ast_pipe_sequence(cursor);
+		if (!(*tree_list)[idx])
 		{
-			ast_free(tree_list);
-			return (NULL);
+			ast_free(*tree_list);
+			return ;
 		}
-		idx++;
 		if (!*cursor)
-			break ;
+			return ;
+		idx++;
 	}
-	*cursor = reset;
+}
+
+t_ast	**construct_ast_list(t_token *cursor)
+{
+	t_ast	**tree_list;
+	size_t	len;
+	t_token	*reset;
+
+	if (!cursor)
+		return (NULL);
+	ast_cleanse_ws(&cursor);
+	reset = cursor;
+	len = sc_count(cursor);
+	tree_list = (t_ast **) ft_memalloc(sizeof(t_ast *) * (len + 1));
+	if (!tree_list)
+		return (NULL);
+	tree_list_loop(&tree_list, &cursor, len);
+	cursor = reset;
+	token_list_free(&cursor);
 	return (tree_list);
 }

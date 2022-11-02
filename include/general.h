@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/01 16:25:17 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/02 15:22:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ typedef struct s_tokenizer
 
 typedef enum e_ast_node_type
 {
-	AST_PIPE_SEQUENCE,
+	AST_PIPE_SEQUENCE = 100,
 	AST_SIMPLE_COMMAND,
 	AST_COMMAND_ARGS,
 	AST_REDIRECTIONS
@@ -169,5 +169,23 @@ typedef struct s_pipes
 	int	read[2];
 	int	write[2];
 }	t_pipes;
+
+typedef struct s_redir
+{
+	int	fd_out;
+	int	fd_in;
+	int	saved_out;
+	int	saved_in;
+	int	saved_fd;
+	int	fd_agg;
+}	t_redir;
+
+typedef struct s_ast_execution
+{
+	t_ast	*node;
+	t_redir	*redirect;
+	t_pipes	*pipes;
+	int		is_at_end;
+}	t_ast_execution;
 
 #endif

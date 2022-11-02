@@ -57,8 +57,8 @@ INPUT_FILES = clipboard.c ctrl_d.c input.c input_handlers.c \
 				movement.c movement_alt.c
 
 PARSING_DIR = parsing
-PARSING_FILES = eat_read_token.c get_token_type.c lexer.c literals.c parser.c \
-				token.c token_list.c
+PARSING_FILES = eat_read_token.c get_token_type.c lexer.c literals.c \
+				token.c token_list.c add_to_result.c
 
 SIGNALS_DIR = signals
 SIGNALS_FILES = signal.c

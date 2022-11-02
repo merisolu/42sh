@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:17:13 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/02 12:02:23 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct s_cmd_env
 t_cmd	*built_in_get(const char *name);
 char	*built_in_search(const char *partial_name);
 pid_t	built_in_run(t_cmd cmd, char *const *args, t_state *state, \
-		t_pipes *pipes);
+		t_ast_execution *ast);
 
 /* cmd_echo.c */
 int		cmd_echo(char *const *args, t_state *state);

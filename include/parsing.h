@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:16 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/31 10:57:24 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/02 15:01:53 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,8 @@ t_token			*tokenize(t_state *state);
 int				check_literals(\
 	t_token **cursor, t_state *state, char **result);
 
-/* parser.c */
-t_ast			**parse(t_token *list, t_state *state);
+/* add_to_result.c */
 int				add_to_result(char **result, char *value, t_state *state);
-void			reset_state(t_state *state);
 
 /* token.c */
 t_token			*token_add(t_token **list, t_token_type type, char *value);

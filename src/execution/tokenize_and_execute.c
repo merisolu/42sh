@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/11/01 15:56:07 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/02 15:17:09 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static pid_t	execute_simple_command(t_ast_execution *context, t_state *state)
 {
 	pid_t	result;
 
+	result = -1;
 	if (!context->is_at_end)
 	{
 		if (pipe(context->pipes->write) == -1)
@@ -28,8 +29,11 @@ static pid_t	execute_simple_command(t_ast_execution *context, t_state *state)
 	}
 	else
 		pipe_reset(context->pipes->write);
-	result = execute(
-			context->node->left->arg_list, state, context->pipes);
+	if (context->node->left && context->node->left->arg_list)
+	{
+		result = execute(
+				context->node->left->arg_list, state, context);
+	}
 	pipe_close(context->pipes->read);
 	pipes_copy(context->pipes->read, context->pipes->write);
 	return (result);
@@ -42,9 +46,6 @@ static pid_t	execute_tree(t_ast_execution *ctx, t_state *state)
 	result = -1;
 	if (ctx->node->node_type == AST_SIMPLE_COMMAND)
 	{
-		if (ctx->node->right
-			&& !handle_redirects(ctx->node->right, ctx->redirect))
-			return (result);
 		result = execute_simple_command(ctx, state);
 		if (ctx->node->right)
 			reset_io(ctx->redirect);
@@ -78,6 +79,7 @@ static void	execute_tree_list(t_ast **tree_list, t_state *state)
 	while (tree_list[i] != NULL)
 	{
 		initialize_redir_struct(redir);
+		ast_parse_expansions(tree_list[i], state);
 		tree_pid = execute_tree(
 				&(t_ast_execution){tree_list[i], redir, &pipes, 0}, state);
 		if (tree_pid != -1)
@@ -105,7 +107,7 @@ void	tokenize_and_execute(t_state *state)
 	state->cursor = ft_strlen(state->input);
 	move_cursor_to_saved_position(state);
 	ft_putchar('\n');
-	execute_tree_list(parse(tokenize(state), state), state);
+	execute_tree_list(construct_ast_list(tokenize(state)), state);
 	clear_input(state, 0);
 	if (!set_input_config(state))
 		print_error(ERR_TERMIOS_FAIL, 1);
