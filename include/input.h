@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:14 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 15:23:13 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/03 13:33:29 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 
 # include "libft.h"
 # include "general.h"
-# include "state.h"
 # include "autocomplete.h"
 
 /* Keys */
@@ -56,7 +55,7 @@ typedef enum e_input_result
 	INPUT_NEWLINE_FOUND = 1
 }	t_input_result;
 
-typedef t_input_result	t_key_handler(t_state *state);
+typedef t_input_result	t_key_handler(t_input_context *ctx);
 
 typedef struct s_key_handler_dispatch
 {
@@ -64,7 +63,7 @@ typedef struct s_key_handler_dispatch
 	t_key_handler	*run;
 }	t_key_handler_dispatch;
 
-typedef int				t_movement_handler(char buf[16], t_state *state);
+typedef int				t_movement_handler(char buf[16], t_input_context *ctx);
 
 typedef struct s_movement_handler_dispatch
 {
@@ -75,26 +74,26 @@ typedef struct s_movement_handler_dispatch
 /* Files */
 
 /* clipboard.c */
-t_input_result	cut_word(t_state *state);
-t_input_result	cut_to_cursor(t_state *state);
-t_input_result	cut_from_cursor(t_state *state);
-t_input_result	paste(t_state *state);
+t_input_result	cut_word(t_input_context *ctx);
+t_input_result	cut_to_cursor(t_input_context *ctx);
+t_input_result	cut_from_cursor(t_input_context *ctx);
+t_input_result	paste(t_input_context *ctx);
 
 /* ctrl_d.c */
 int				ctrl_d(t_state *state);
 
 /* input.c */
-t_input_result	get_input(t_state *state);
+t_input_result	get_line(t_input_context *ctx);
 
 /* input_handlers.c */
-t_input_result	handle_key(char *buf, t_state *state);
+t_input_result	handle_key(char *buf, t_input_context *ctx);
 
 /* movement.c */
-int				check_movement(char *buf, t_state *state);
+int				check_movement(char *buf, t_input_context *ctx);
 
 /* movement_alt.c */
-int				handle_alt_left_right(char buf[BUF_SIZE], t_state *state);
-int				handle_alt_up(char buf[BUF_SIZE], t_state *state);
-int				handle_alt_down(char buf[BUF_SIZE], t_state *state);
+int				handle_alt_left_right(char buf[BUF_SIZE], t_input_context *ctx);
+int				handle_alt_up(char buf[BUF_SIZE], t_input_context *ctx);
+int				handle_alt_down(char buf[BUF_SIZE], t_input_context *ctx);
 
 #endif

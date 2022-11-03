@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   state.c                                            :+:      :+:    :+:   */
+/*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 14:28:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/31 13:30:08 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/03 13:37:56 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "state.h"
+#include "display.h"
 
 /*
  * Returns the currently stored input in a form that can be printed to
  * the screen (has prompts, etc).
  */
-static char	*get_formatted_input(t_state *state)
+static char	*get_formatted_input(t_input_context *context)
 {
 	size_t	start;
 	size_t	length;
@@ -25,18 +25,18 @@ static char	*get_formatted_input(t_state *state)
 
 	result = ft_strjoin(tgetstr("cd", NULL), PROMPT);
 	index = 0;
-	while (result && index < ft_strlen(state->input))
+	while (result && index < ft_strlen(context->input))
 	{
-		input_get_line_properties(state, index, &start, &length);
+		input_get_line_properties(context, index, &start, &length);
 		if (start != 0)
 			result = ft_strjoinfree(result, MULTILINE_PROMPT);
 		if (!result)
 			break ;
-		result = ft_strnjoinfree(result, state->input + index, length + 1);
+		result = ft_strnjoinfree(result, context->input + index, length + 1);
 		if (!result)
 			break ;
 		index += length + 1;
-		if (index == ft_strlen(state->input))
+		if (index == ft_strlen(context->input))
 			result = ft_strjoinfree(result, MULTILINE_PROMPT);
 	}
 	if (result)
@@ -57,13 +57,13 @@ static char	*get_formatted_input(t_state *state)
  * 		- Finally, input_start_y position is updated (the position that's
  * 			set now will be used the next time load_cursor() is called).
  */
-void	print_state(t_state *state)
+void	display(t_input_context *context)
 {
 	size_t	rows;
 	char	*formatted_input;
 
-	load_cursor(state);
-	formatted_input = get_formatted_input(state);
+	load_cursor(context);
+	formatted_input = get_formatted_input(context);
 	if (formatted_input)
 	{
 		ft_putstr(formatted_input);
@@ -71,10 +71,11 @@ void	print_state(t_state *state)
 	}
 	else
 		ft_printf("%s%s%s", PROMPT, tgetstr("cd", NULL), ERR_MALLOC_FAIL);
-	move_cursor_to_saved_position(state);
+	move_cursor_to_saved_position(context);
 	rows = ft_min_size_t(
-			input_get_row_count(state, ft_strlen(state->input)),
-			state->height);
-	if (state->input_start_y + rows >= state->height)
-		state->input_start_y -= (state->input_start_y + rows) - state->height;
+			input_get_row_count(context, ft_strlen(context->input)),
+			context->height);
+	if (context->input_start_y + rows >= context->height)
+		context->input_start_y -= (context->input_start_y + rows)
+			- context->height;
 }

@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   state.h                                            :+:      :+:    :+:   */
+/*   display.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 14:28:46 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:47:11 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/03 11:50:10 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STATE_H
-# define STATE_H
+#ifndef DISPLAY_H
+# define DISPLAY_H
 
 /* Includes */
 
@@ -19,12 +19,13 @@
 
 # include "libft.h"
 # include "general.h"
+# include "input.h"
 # include "utils.h"
 # include "cursor.h"
 
 /* Files */
 
-/* state.c */
-void	print_state(t_state *state);
+/* display.c */
+void	display(t_input_context *context);
 
 #endif

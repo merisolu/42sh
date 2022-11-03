@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/01 16:02:37 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/03 11:44:32 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include "general.h"
 # include "utils.h"
 # include "terminal.h"
-# include "state.h"
+# include "display.h"
 # include "cursor.h"
 # include "input.h"
 # include "environment.h"

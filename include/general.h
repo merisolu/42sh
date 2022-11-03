@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/02 15:22:16 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/03 13:37:11 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,24 @@ extern int				g_last_signal;
 
 /* Types */
 
+typedef struct e_input_context
+{
+	char	*input;
+	size_t	max_length;
+	char	*clipboard;
+	size_t	cursor;
+	size_t	input_start_x;
+	size_t	input_start_y;
+	size_t	width;
+	size_t	height;
+}	t_input_context;
+
 typedef struct s_state
 {
 	char *const		*env;
-	char			*input;
-	char			*clipboard;
+	t_input_context	input_context;
 	int				continue_previous_node;
 	int				in_quotes;
-	size_t			cursor;
-	size_t			input_start_x;
-	size_t			input_start_y;
-	size_t			width;
-	size_t			height;
 	struct termios	input_conf;
 	struct termios	orig_conf;
 	char			*history[HISTORY_SIZE];

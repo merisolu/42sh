@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/01 13:23:30 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/03 13:42:29 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,15 @@ static int	get_state_struct(char *const **env, t_state *result)
 
 	i = 0;
 	ft_bzero(result, sizeof(t_state));
-	update_window_size(result);
-	result->input = ft_memalloc(INPUT_MAX_SIZE + 1);
-	if (!result->input)
+	ft_bzero(&(result->input_context), sizeof(t_state));
+	update_window_size(&(result->input_context));
+	result->input_context.input = ft_memalloc(INPUT_MAX_SIZE + 1);
+	if (!result->input_context.input)
 		return (0);
-	result->clipboard = ft_memalloc(INPUT_MAX_SIZE + 1);
-	if (!result->clipboard)
+	result->input_context.clipboard = ft_memalloc(INPUT_MAX_SIZE + 1);
+	if (!result->input_context.clipboard)
 		return (0);
+	result->input_context.max_length = INPUT_MAX_SIZE;
 	while (i < HISTORY_SIZE)
 	{
 		result->history[i] = ft_memalloc(INPUT_MAX_SIZE + 1);
@@ -56,15 +58,15 @@ static int	setup(char *const **env, t_state *state)
 		return (print_error(ERR_TERMCAP_NO_ENTRY, 0));
 	if (!get_state_struct(env, state))
 		return (print_error(ERR_MALLOC_FAIL, 0));
-	if (state->width == 0 || state->height == 0)
+	if (state->input_context.width == 0 || state->input_context.height == 0)
 		return (print_error(ERR_WINDOW_TOO_SMALL, 0));
 	if (!configure_terminal(state))
 		return (print_error(ERR_TERMIOS_FAIL, 0));
 	if (!set_shlvl(&(state->env)))
 		return (0);
 	set_signal_handling();
-	save_cursor(state);
-	print_state(state);
+	save_cursor(&(state->input_context));
+	display(&(state->input_context));
 	return (1);
 }
 
@@ -74,14 +76,28 @@ static int	cleanup(t_state *state, int return_value)
 		return (print_error(ERR_TERMIOS_FAIL, 1));
 	ft_free_array_elements((void **)state->history, HISTORY_SIZE);
 	ft_free_null_array((void **)(state->env));
-	free(state->input);
-	free(state->clipboard);
+	free(state->input_context.input);
+	free(state->input_context.clipboard);
 	return (return_value);
+}
+
+t_input_result	get_input(t_state *state)
+{
+	t_input_result	result;
+
+	result = get_line(&(state->input_context));
+	if (result == INPUT_NO_NEWLINE_FOUND)
+		display(&(state->input_context));
+	if (result == INPUT_NEWLINE_FOUND)
+		return (INPUT_NEWLINE_FOUND);
+	else if (result == INPUT_READ_ERROR)
+		return (print_error(ERR_LINE_READ, 1));
+	return (result);
 }
 
 int	main(const int argc, const char **argv, char *const *env)
 {
-	t_state		state;
+	t_state	state;
 
 	(void)argc;
 	(void)argv;
@@ -97,8 +113,8 @@ int	main(const int argc, const char **argv, char *const *env)
 			{
 				if (g_last_signal != 0 && state.last_return_value > 128)
 					ft_putchar('\n');
-				save_cursor(&state);
-				print_state(&state);
+				save_cursor(&(state.input_context));
+				display(&(state.input_context));
 			}
 			g_last_signal = 0;
 		}

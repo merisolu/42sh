@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/11/02 15:17:09 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/03 13:10:09 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,9 @@ static void	execute_tree_list(t_ast **tree_list, t_state *state)
 
 void	tokenize_and_execute(t_state *state)
 {
-	if (ft_strisempty(state->input))
+	if (ft_strisempty(state->input_context.input))
 	{
-		clear_input(state, 1);
+		clear_input(&(state->input_context), 1);
 		return ;
 	}
 	if (!set_orig_config(state))
@@ -103,12 +103,12 @@ void	tokenize_and_execute(t_state *state)
 		print_error(ERR_TERMIOS_FAIL, 1);
 		return ;
 	}
-	history_store(state->input, state);
-	state->cursor = ft_strlen(state->input);
-	move_cursor_to_saved_position(state);
+	history_store(state->input_context.input, state);
+	state->input_context.cursor = ft_strlen(state->input_context.input);
+	move_cursor_to_saved_position(&(state->input_context));
 	ft_putchar('\n');
 	execute_tree_list(construct_ast_list(tokenize(state)), state);
-	clear_input(state, 0);
+	clear_input(&(state->input_context), 0);
 	if (!set_input_config(state))
 		print_error(ERR_TERMIOS_FAIL, 1);
 }

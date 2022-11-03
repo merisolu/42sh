@@ -6,15 +6,14 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:29:22 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/31 11:30:33 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/03 13:41:46 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-static t_input_result	handle_newline(t_state *state)
-{
-	t_token	*tokens;
+// TODO: This needs to be moved elsewhere
+/*
 
 	tokens = tokenize(state);
 	if (!tokens)
@@ -27,27 +26,35 @@ static t_input_result	handle_newline(t_state *state)
 	}
 	token_list_free(&tokens);
 	return (INPUT_NO_NEWLINE_FOUND);
+
+*/
+
+static t_input_result	handle_newline(t_input_context *ctx)
+{
+	(void)ctx;
+	return (INPUT_NEWLINE_FOUND);
 }
 
-static t_input_result	handle_delete_char(t_state *state)
+static t_input_result	handle_delete_char(t_input_context *ctx)
 {
-	if (state->cursor == 0)
+	if (ctx->cursor == 0)
 		return (INPUT_NO_NEWLINE_FOUND);
-	ft_strcpy(state->input + state->cursor - 1, state->input + state->cursor);
-	ft_bzero(state->input + ft_strlen(state->input),
-		INPUT_MAX_SIZE - ft_strlen(state->input));
-	state->cursor--;
+	ft_strcpy(ctx->input + ctx->cursor - 1, ctx->input + ctx->cursor);
+	ft_bzero(ctx->input + ft_strlen(ctx->input),
+		INPUT_MAX_SIZE - ft_strlen(ctx->input));
+	ctx->cursor--;
 	return (INPUT_NO_NEWLINE_FOUND);
 }
 
-t_input_result	handle_key(char *buf, t_state *state)
+// TODO: Missing
+	// {TAB, &autocomplete},
+	// {CTRL_D, &ctrl_d},
+t_input_result	handle_key(char *buf, t_input_context *ctx)
 {
 	size_t								i;
 	static const t_key_handler_dispatch	dispatch_table[] = {
 	{RETURN_KEY, &handle_newline},
 	{BACKSPACE, &handle_delete_char},
-	{TAB, &autocomplete},
-	{CTRL_D, &ctrl_d},
 	{CTRL_K, &cut_from_cursor},
 	{CTRL_U, &cut_to_cursor},
 	{CTRL_W, &cut_word},
@@ -60,7 +67,7 @@ t_input_result	handle_key(char *buf, t_state *state)
 	{
 		if (ft_strnequ(dispatch_table[i].activator, buf,
 				ft_strlen(dispatch_table[i].activator)))
-			return (dispatch_table[i].run(state));
+			return (dispatch_table[i].run(ctx));
 		i++;
 	}
 	return (INPUT_NO_NEWLINE_FOUND);

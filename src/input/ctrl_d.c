@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:57:36 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/31 11:47:38 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/03 13:38:56 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,23 @@
 
 int	ctrl_d(t_state *state)
 {
-	if (ft_strlen(state->input) == 0)
+	size_t	input_length;
+
+	input_length = ft_strlen(state->input_context.input);
+	if (input_length == 0)
 	{
 		state->exiting = 1;
 		state->exit_return_value = RETURN_CTRL_D;
 		return (-2);
 	}
-	if (state->cursor == ft_strlen(state->input))
+	if (state->input_context.cursor == input_length)
 		ft_putstr(tgetstr("bl", NULL));
 	else
 	{
-		ft_strcpy(state->input + state->cursor,
-			state->input + state->cursor + 1);
-		ft_bzero(state->input + ft_strlen(state->input),
-			INPUT_MAX_SIZE - ft_strlen(state->input));
+		ft_strcpy(state->input_context.input + state->input_context.cursor,
+			state->input_context.input + state->input_context.cursor + 1);
+		ft_bzero(state->input_context.input + input_length,
+			INPUT_MAX_SIZE - input_length);
 	}
 	return (0);
 }
