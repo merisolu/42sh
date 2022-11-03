@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:14 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/03 13:54:54 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/03 14:39:27 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@
 # define ARROW_DOWN_ALT "\x1B[1;3B"
 # define ARROW_LEFT_ALT "\033b"
 # define ARROW_RIGHT_ALT "\033f"
-# define RETURN_KEY "\x0A"
 # define BACKSPACE "\x7F"
 # define HOME_KEY "\x1B[H"
 # define END_KEY "\x1B[F"
@@ -51,8 +50,8 @@ typedef enum e_input_result
 {
 	INPUT_NOTHING_READ = -2,
 	INPUT_READ_ERROR = -1,
-	INPUT_NO_NEWLINE_FOUND = 0,
-	INPUT_NEWLINE_FOUND = 1
+	INPUT_NO_MARK_FOUND = 0,
+	INPUT_MARK_FOUND = 1
 }	t_input_result;
 
 typedef t_input_result	t_key_handler(t_input_context *ctx);
@@ -89,7 +88,7 @@ t_input_result	get_line(t_input_context *ctx);
 t_input_result	handle_key(char *buf, t_input_context *ctx);
 
 /* input_context.c */
-int				input_context_set(t_input_context *context);
+int				input_context_set(t_input_context *context, char *mark);
 void			input_context_free(t_input_context *context);
 
 /* movement.c */

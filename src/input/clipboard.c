@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 14:21:42 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/03 13:34:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/03 14:28:45 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_input_result	cut_word(t_input_context *ctx)
 	size_t	start;
 
 	if (!(ft_strlen(ctx->input) > 0 && ctx->cursor > 0))
-		return (INPUT_NO_NEWLINE_FOUND);
+		return (INPUT_NO_MARK_FOUND);
 	len = ft_strlen(ctx->input);
 	end = ctx->cursor - 1;
 	start = end;
@@ -36,7 +36,7 @@ t_input_result	cut_word(t_input_context *ctx)
 	ft_bzero(ctx->input + ft_strlen(ctx->input),
 		INPUT_MAX_SIZE - ft_strlen(ctx->input));
 	ctx->cursor -= end - start + 1;
-	return (INPUT_NO_NEWLINE_FOUND);
+	return (INPUT_NO_MARK_FOUND);
 }
 
 t_input_result	cut_to_cursor(t_input_context *ctx)
@@ -47,7 +47,7 @@ t_input_result	cut_to_cursor(t_input_context *ctx)
 	ft_bzero(ctx->input + ft_strlen(ctx->input),
 		INPUT_MAX_SIZE - ctx->cursor);
 	ctx->cursor = 0;
-	return (INPUT_NO_NEWLINE_FOUND);
+	return (INPUT_NO_MARK_FOUND);
 }
 
 t_input_result	cut_from_cursor(t_input_context *ctx)
@@ -57,7 +57,7 @@ t_input_result	cut_from_cursor(t_input_context *ctx)
 	ctx->clipboard[ft_strlen(ctx->input + ctx->cursor)] = '\0';
 	ft_bzero(ctx->input + ctx->cursor,
 		ft_strlen(ctx->input) - ctx->cursor);
-	return (INPUT_NO_NEWLINE_FOUND);
+	return (INPUT_NO_MARK_FOUND);
 }
 
 t_input_result	paste(t_input_context *ctx)
@@ -77,5 +77,5 @@ t_input_result	paste(t_input_context *ctx)
 	ctx->cursor += ft_strlen(ctx->clipboard);
 	if (limit_reached)
 		ft_putstr(tgetstr("bl", NULL));
-	return (INPUT_NO_NEWLINE_FOUND);
+	return (INPUT_NO_MARK_FOUND);
 }

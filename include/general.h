@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/03 13:37:11 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/03 14:29:25 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct e_input_context
 {
 	char	*input;
 	size_t	max_length;
+	char	*mark;
 	char	*clipboard;
 	size_t	cursor;
 	size_t	input_start_x;

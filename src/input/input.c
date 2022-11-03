@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/03 13:39:23 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/03 14:40:39 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,13 @@ t_input_result	get_line(t_input_context *ctx)
 		i += check_movement(buf + i, ctx);
 		if (i >= BUF_SIZE)
 			break ;
-		if (handle_key(buf + i, ctx) == INPUT_NEWLINE_FOUND)
-			return (INPUT_NEWLINE_FOUND);
+		if (handle_key(buf + i, ctx) == INPUT_MARK_FOUND)
+			return (INPUT_MARK_FOUND);
+		else if (ft_strequ(buf, ctx->mark))
+			return (INPUT_MARK_FOUND);
 		else if (ft_isprint(buf[i]) || buf[i] == '\n')
 			append_input(ctx, buf[i]);
 		i++;
 	}
-	return (INPUT_NO_NEWLINE_FOUND);
+	return (INPUT_NO_MARK_FOUND);
 }

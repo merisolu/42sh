@@ -6,13 +6,13 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:51:48 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/03 13:58:38 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/03 14:42:11 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-int	input_context_set(t_input_context *context)
+int	input_context_set(t_input_context *context, char *mark)
 {
 	ft_bzero(context, sizeof(t_input_context));
 	context->input = ft_memalloc(INPUT_MAX_SIZE + 1);
@@ -23,6 +23,7 @@ int	input_context_set(t_input_context *context)
 		return (0);
 	context->max_length = INPUT_MAX_SIZE;
 	update_window_size(context);
+	context->mark = mark;
 	return (1);
 }
 

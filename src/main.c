@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/03 13:55:41 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/03 14:40:13 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	get_state_struct(char *const **env, t_state *result)
 
 	i = 0;
 	ft_bzero(result, sizeof(t_state));
-	if (!input_context_set(&(result->input_context)))
+	if (!input_context_set(&(result->input_context), "\n"))
 		return (0);
 	while (i < HISTORY_SIZE)
 	{
@@ -73,15 +73,15 @@ static int	cleanup(t_state *state, int return_value)
 	return (return_value);
 }
 
-t_input_result	get_input(t_state *state)
+static t_input_result	get_input(t_state *state)
 {
 	t_input_result	result;
 
 	result = get_line(&(state->input_context));
-	if (result == INPUT_NO_NEWLINE_FOUND)
+	if (result == INPUT_NO_MARK_FOUND)
 		display(&(state->input_context));
-	if (result == INPUT_NEWLINE_FOUND)
-		return (INPUT_NEWLINE_FOUND);
+	if (result == INPUT_MARK_FOUND)
+		return (INPUT_MARK_FOUND);
 	else if (result == INPUT_READ_ERROR)
 		return (print_error(ERR_LINE_READ, 1));
 	return (result);
@@ -98,7 +98,7 @@ int	main(const int argc, const char **argv, char *const *env)
 	while (!state.exiting)
 	{
 		check_signal(&state);
-		if (get_input(&state) == INPUT_NEWLINE_FOUND)
+		if (get_input(&state) == INPUT_MARK_FOUND)
 		{
 			tokenize_and_execute(&state);
 			if (!state.exiting)
