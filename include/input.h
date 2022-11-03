@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:14 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/03 13:33:29 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/03 13:54:54 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,10 @@ t_input_result	get_line(t_input_context *ctx);
 
 /* input_handlers.c */
 t_input_result	handle_key(char *buf, t_input_context *ctx);
+
+/* input_context.c */
+int				input_context_set(t_input_context *context);
+void			input_context_free(t_input_context *context);
 
 /* movement.c */
 int				check_movement(char *buf, t_input_context *ctx);

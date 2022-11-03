@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/03 13:42:29 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/03 13:55:41 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,8 @@ static int	get_state_struct(char *const **env, t_state *result)
 
 	i = 0;
 	ft_bzero(result, sizeof(t_state));
-	ft_bzero(&(result->input_context), sizeof(t_state));
-	update_window_size(&(result->input_context));
-	result->input_context.input = ft_memalloc(INPUT_MAX_SIZE + 1);
-	if (!result->input_context.input)
+	if (!input_context_set(&(result->input_context)))
 		return (0);
-	result->input_context.clipboard = ft_memalloc(INPUT_MAX_SIZE + 1);
-	if (!result->input_context.clipboard)
-		return (0);
-	result->input_context.max_length = INPUT_MAX_SIZE;
 	while (i < HISTORY_SIZE)
 	{
 		result->history[i] = ft_memalloc(INPUT_MAX_SIZE + 1);
@@ -76,8 +69,7 @@ static int	cleanup(t_state *state, int return_value)
 		return (print_error(ERR_TERMIOS_FAIL, 1));
 	ft_free_array_elements((void **)state->history, HISTORY_SIZE);
 	ft_free_null_array((void **)(state->env));
-	free(state->input_context.input);
-	free(state->input_context.clipboard);
+	input_context_free(&(state->input_context));
 	return (return_value);
 }
 
