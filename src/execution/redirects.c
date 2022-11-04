@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/11/02 13:49:01 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/04 15:56:47 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,16 @@ static int	redirect_output(t_ast *redir_node, t_redir *r)
 
 static int	redirect_input(t_ast *redir_node, t_redir *r)
 {
+	if (ft_strequ(redir_node->in_type, REDIR_HEREDOC))
+	{
+		ft_printf("HEREDOC!\n");
+		t_input_context	context;
+		input_context_set(&context, redir_node->in_file); // TODO: Check error
+		// TODO: Non-canonical input mode
+		while (get_line(&context, 1) != INPUT_MARK_FOUND)
+		{ }
+		ft_printf("HEREDOC DONE!\n");
+	}
 	r->fd_in = open(redir_node->in_file, O_RDONLY);
 	if (r->fd_in == -1)
 		return (print_error(ERR_NO_SUCH_FILE_OR_DIR, 0));
