@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 16:24:04 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/14 13:02:15 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/04 12:46:26 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ char		*ft_strnstr(const char *stack, const char *n, size_t len);
 char		*ft_strstr(const char *stack, const char *n);
 int			ft_strnequ(char const *s1, char const *s2, size_t n);
 int			ft_strequ(char const *s1, char const *s2);
+int			ft_strendequ(char const *s1, char const *s2);
 void		ft_striter(char *s, void (*f)(char *));
 void		ft_striteri(char *s, void (*f)(unsigned int, char *));
 char		*ft_strmap(char const *s, char (*f)(char));
