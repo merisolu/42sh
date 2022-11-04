@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:14 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/03 14:39:27 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/04 15:47:52 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef enum e_input_result
 	INPUT_MARK_FOUND = 1
 }	t_input_result;
 
-typedef t_input_result	t_key_handler(t_input_context *ctx);
+typedef int		t_key_handler(t_input_context *ctx);
 
 typedef struct s_key_handler_dispatch
 {
@@ -62,7 +62,7 @@ typedef struct s_key_handler_dispatch
 	t_key_handler	*run;
 }	t_key_handler_dispatch;
 
-typedef int				t_movement_handler(char buf[16], t_input_context *ctx);
+typedef int		t_movement_handler(char buf[16], t_input_context *ctx);
 
 typedef struct s_movement_handler_dispatch
 {
@@ -73,19 +73,19 @@ typedef struct s_movement_handler_dispatch
 /* Files */
 
 /* clipboard.c */
-t_input_result	cut_word(t_input_context *ctx);
-t_input_result	cut_to_cursor(t_input_context *ctx);
-t_input_result	cut_from_cursor(t_input_context *ctx);
-t_input_result	paste(t_input_context *ctx);
+int				cut_word(t_input_context *ctx);
+int				cut_to_cursor(t_input_context *ctx);
+int				cut_from_cursor(t_input_context *ctx);
+int				paste(t_input_context *ctx);
 
 /* ctrl_d.c */
 int				ctrl_d(t_state *state);
 
 /* input.c */
-t_input_result	get_line(t_input_context *ctx);
+t_input_result	get_line(t_input_context *ctx, int whole_line);
 
 /* input_handlers.c */
-t_input_result	handle_key(char *buf, t_input_context *ctx);
+int				handle_key(char *buf, t_input_context *ctx);
 
 /* input_context.c */
 int				input_context_set(t_input_context *context, char *mark);

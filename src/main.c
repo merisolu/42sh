@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/03 14:40:13 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/04 15:48:07 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static t_input_result	get_input(t_state *state)
 {
 	t_input_result	result;
 
-	result = get_line(&(state->input_context));
+	result = get_line(&(state->input_context), 0);
 	if (result == INPUT_NO_MARK_FOUND)
 		display(&(state->input_context));
 	if (result == INPUT_MARK_FOUND)

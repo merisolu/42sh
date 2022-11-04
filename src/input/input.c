@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/03 14:40:39 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/04 15:55:23 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	append_input(t_input_context *ctx, char character)
 	ctx->cursor++;
 }
 
-t_input_result	get_line(t_input_context *ctx)
+t_input_result	get_line(t_input_context *ctx, int canonical)
 {
 	int		read_count;
 	char	buf[BUF_SIZE + 1];
@@ -44,12 +44,16 @@ t_input_result	get_line(t_input_context *ctx)
 		i += check_movement(buf + i, ctx);
 		if (i >= BUF_SIZE)
 			break ;
-		if (handle_key(buf + i, ctx) == INPUT_MARK_FOUND)
-			return (INPUT_MARK_FOUND);
-		else if (ft_strequ(buf, ctx->mark))
-			return (INPUT_MARK_FOUND);
-		else if (ft_isprint(buf[i]) || buf[i] == '\n')
+		if (handle_key(buf + i, ctx))
+			break ;
+		if (ft_isprint(buf[i]) || buf[i] == '\n')
+		{
+			if (canonical && ft_strnequ(buf, ctx->mark, ft_strlen(ctx->mark)))
+				return (INPUT_MARK_FOUND);
 			append_input(ctx, buf[i]);
+			if (!canonical && ft_strendequ(ctx->input, ctx->mark))
+				return (INPUT_MARK_FOUND);
+		}
 		i++;
 	}
 	return (INPUT_NO_MARK_FOUND);
