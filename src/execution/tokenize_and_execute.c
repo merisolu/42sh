@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/11/08 13:11:30 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/08 13:25:00 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	tokenize_and_execute(t_state *state)
 		clear_input(&(state->input_context), 1);
 		return ;
 	}
-	if (!apply_terminal_config(&(state->orig_conf)))
+	if (!terminal_apply_config(&(state->orig_conf)))
 	{
 		print_error(ERR_TERMIOS_FAIL, 1);
 		return ;
@@ -115,6 +115,6 @@ void	tokenize_and_execute(t_state *state)
 	ft_putchar('\n');
 	execute_tree_list(construct_ast_list(tokenize(state)), state);
 	clear_input(&(state->input_context), 0);
-	if (!apply_terminal_config(&(state->input_conf)))
+	if (!terminal_apply_config(&(state->input_conf)))
 		print_error(ERR_TERMIOS_FAIL, 1);
 }

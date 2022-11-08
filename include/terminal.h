@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:22:23 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/08 13:14:26 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/08 13:25:08 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 /* Files */
 
 /* terminal_configuration.c */
-int	apply_terminal_config(struct termios *config);
-int	configure_terminal(struct termios *input, struct termios *original);
+int	terminal_apply_config(struct termios *config);
+int	terminal_get_configs(struct termios *input, struct termios *original);
 
 #endif
