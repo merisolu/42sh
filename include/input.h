@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:14 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/08 13:41:36 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/08 14:24:12 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int				paste(t_input_context *ctx);
 int				ctrl_d(t_state *state);
 
 /* input.c */
-t_input_result	get_line(t_input_context *ctx, int whole_line);
+t_input_result	get_line(t_input_context *ctx);
 
 /* input_handlers.c */
 int				handle_key(char *buf, t_input_context *ctx);

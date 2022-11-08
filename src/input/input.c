@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/08 13:00:01 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/08 14:24:51 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	append_input(t_input_context *ctx, char character)
 	ctx->cursor++;
 }
 
-t_input_result	get_line(t_input_context *ctx, int canonical)
+t_input_result	get_line(t_input_context *ctx)
 {
 	int		read_count;
 	char	buf[BUF_SIZE + 1];
@@ -48,10 +48,8 @@ t_input_result	get_line(t_input_context *ctx, int canonical)
 			break ;
 		if (ft_isprint(buf[i]) || buf[i] == '\n')
 		{
-			if (canonical && ft_strnequ(buf, ctx->mark, ft_strlen(ctx->mark)))
-				return (INPUT_MARK_FOUND);
 			append_input(ctx, buf[i]);
-			if (!canonical && ft_strendequ(ctx->input, ctx->mark))
+			if (ft_strendequ(ctx->input, ctx->mark))
 				return (INPUT_MARK_FOUND);
 		}
 		i++;
