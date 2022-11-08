@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/04 15:55:23 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/08 13:00:01 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	append_input(t_input_context *ctx, char character)
 	}
 	ft_memmove(ctx->input + ctx->cursor + 1,
 		ctx->input + ctx->cursor,
-		ft_strlen(ctx->input - ctx->cursor));
+		ft_strlen(ctx->input) - ctx->cursor);
 	ctx->input[ctx->cursor] = character;
 	ctx->cursor++;
 }
