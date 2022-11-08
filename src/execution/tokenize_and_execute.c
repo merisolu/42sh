@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/11/03 13:10:09 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/08 12:51:29 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,31 @@ static int	is_at_end_check(t_ast *node)
 	return (!node->right || node->right->node_type == AST_SIMPLE_COMMAND);
 }
 
-static pid_t	execute_simple_command(t_ast_execution *context, t_state *state)
+static pid_t	execute_simple_command(t_ast_execution *ctx, t_state *state)
 {
 	pid_t	result;
 
 	result = -1;
-	if (!context->is_at_end)
+	if (!ctx->is_at_end)
 	{
-		if (pipe(context->pipes->write) == -1)
+		if (pipe(ctx->pipes->write) == -1)
+			print_error(ERR_PIPE_FAIL, 1);
+	}
+	else if (ctx->node->right
+		&& ft_strequ(ctx->node->right->in_type, REDIR_HEREDOC))
+	{
+		if (pipe(ctx->pipes->read) == -1)
 			print_error(ERR_PIPE_FAIL, 1);
 	}
 	else
-		pipe_reset(context->pipes->write);
-	if (context->node->left && context->node->left->arg_list)
+		pipe_reset(ctx->pipes->write);
+	if (ctx->node->left && ctx->node->left->arg_list)
 	{
 		result = execute(
-				context->node->left->arg_list, state, context);
+				ctx->node->left->arg_list, state, ctx);
 	}
-	pipe_close(context->pipes->read);
-	pipes_copy(context->pipes->read, context->pipes->write);
+	pipe_close(ctx->pipes->read);
+	pipes_copy(ctx->pipes->read, ctx->pipes->write);
 	return (result);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/03 14:29:25 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/08 11:05:45 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@
 # define ERR_CHILD_PROC_FAIL "cannot make child process"
 # define ERR_CHILD_PIPE_FAIL "cannot make child pipes"
 # define ERR_PIPE_FAIL "failed to create pipe"
+# define ERR_HEREDOC_FAIL "failed to create heredoc"
 # define ERR_DUP_FAIL "failed to duplicate file descriptor"
 # define ERR_COM_NOT_FOUND "command not found"
 # define ERR_NO_PERMISSION "Permission denied"

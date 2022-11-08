@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/11/03 13:52:43 by jumanner         ###   ########.fr        #
+#    Updated: 2022/11/08 10:57:12 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ ENVIRONMENT_DIR = environment
 ENVIRONMENT_FILES = environment.c environment_getters.c shlvl.c
 
 EXECUTION_DIR = execution
-EXECUTION_FILES = bin.c executor.c fork.c pipes.c redirects.c \
+EXECUTION_FILES = bin.c executor.c fork.c pipes.c heredocs.c redirects.c \
 					tokenize_and_execute.c execute_fd_aggregation.c
 
 EXPANSION_DIR = expansion
