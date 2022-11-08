@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/04 15:48:07 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/08 13:10:57 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	setup(char *const **env, t_state *state)
 		return (print_error(ERR_MALLOC_FAIL, 0));
 	if (state->input_context.width == 0 || state->input_context.height == 0)
 		return (print_error(ERR_WINDOW_TOO_SMALL, 0));
-	if (!configure_terminal(state))
+	if (!configure_terminal(&(state->input_conf), &(state->orig_conf)))
 		return (print_error(ERR_TERMIOS_FAIL, 0));
 	if (!set_shlvl(&(state->env)))
 		return (0);
@@ -65,7 +65,7 @@ static int	setup(char *const **env, t_state *state)
 
 static int	cleanup(t_state *state, int return_value)
 {
-	if (!set_orig_config(state))
+	if (!apply_terminal_config(&(state->orig_conf)))
 		return (print_error(ERR_TERMIOS_FAIL, 1));
 	ft_free_array_elements((void **)state->history, HISTORY_SIZE);
 	ft_free_null_array((void **)(state->env));
