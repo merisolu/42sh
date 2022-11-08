@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/08 11:05:45 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/08 13:36:21 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ typedef struct e_input_context
 	size_t	max_length;
 	char	*mark;
 	char	*clipboard;
+	char	*start_prompt;
+	char	*multiline_prompt;
 	size_t	cursor;
 	size_t	input_start_x;
 	size_t	input_start_y;

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/08 13:26:04 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/08 13:38:28 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static int	get_state_struct(char *const **env, t_state *result)
 
 	i = 0;
 	ft_bzero(result, sizeof(t_state));
-	if (!input_context_set(&(result->input_context), "\n"))
+	if (!input_context_set(&(result->input_context),
+			PROMPT, MULTILINE_PROMPT, "\n"))
 		return (0);
 	while (i < HISTORY_SIZE)
 	{

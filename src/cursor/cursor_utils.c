@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:01:54 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/03 13:36:55 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/08 13:59:22 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ size_t	cursor_get_column(t_input_context *context, size_t index)
 
 	input_get_line_properties(context, index, &start, &length);
 	if (start == 0)
-		return (((index - start) + ft_strlen(PROMPT)) % context->width);
-	return (((index - start) + ft_strlen(MULTILINE_PROMPT)) % context->width);
+		return (((index - start) + ft_strlen(context->start_prompt))
+			% context->width);
+	return (((index - start) + ft_strlen(context->multiline_prompt))
+		% context->width);
 }
 
 size_t	cursor_get_row(t_input_context *context, size_t index)

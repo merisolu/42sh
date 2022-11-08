@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 14:28:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/03 13:37:56 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/08 13:58:43 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ static char	*get_formatted_input(t_input_context *context)
 	size_t	index;
 	char	*result;
 
-	result = ft_strjoin(tgetstr("cd", NULL), PROMPT);
+	result = ft_strjoin(tgetstr("cd", NULL), context->start_prompt);
 	index = 0;
 	while (result && index < ft_strlen(context->input))
 	{
 		input_get_line_properties(context, index, &start, &length);
 		if (start != 0)
-			result = ft_strjoinfree(result, MULTILINE_PROMPT);
+			result = ft_strjoinfree(result, context->multiline_prompt);
 		if (!result)
 			break ;
 		result = ft_strnjoinfree(result, context->input + index, length + 1);
@@ -37,7 +37,7 @@ static char	*get_formatted_input(t_input_context *context)
 			break ;
 		index += length + 1;
 		if (index == ft_strlen(context->input))
-			result = ft_strjoinfree(result, MULTILINE_PROMPT);
+			result = ft_strjoinfree(result, context->multiline_prompt);
 	}
 	if (result)
 		result = ft_strjoinfree(result, " ");
@@ -70,7 +70,8 @@ void	display(t_input_context *context)
 		free(formatted_input);
 	}
 	else
-		ft_printf("%s%s%s", PROMPT, tgetstr("cd", NULL), ERR_MALLOC_FAIL);
+		ft_printf("%s%s%s", context->start_prompt, tgetstr("cd", NULL),
+			ERR_MALLOC_FAIL);
 	move_cursor_to_saved_position(context);
 	rows = ft_min_size_t(
 			input_get_row_count(context, ft_strlen(context->input)),

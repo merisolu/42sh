@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/08 12:47:01 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/08 13:23:23 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include "general.h"
 # include "utils.h"
 # include "cursor.h"
+# include "display.h"
 # include "environment.h"
 # include "built_ins.h"
 # include "ast.h"
