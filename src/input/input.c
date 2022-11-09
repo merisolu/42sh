@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/08 14:24:51 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/09 11:31:12 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	append_input(t_input_context *ctx, char character)
 	ctx->cursor++;
 }
 
-t_input_result	get_line(t_input_context *ctx)
+static t_input_result	get_line(t_input_context *ctx)
 {
 	int		read_count;
 	char	buf[BUF_SIZE + 1];
@@ -55,4 +55,18 @@ t_input_result	get_line(t_input_context *ctx)
 		i++;
 	}
 	return (INPUT_NO_MARK_FOUND);
+}
+
+t_input_result	get_input(t_input_context *ctx)
+{
+	t_input_result	result;
+
+	result = get_line(ctx);
+	if (result == INPUT_NO_MARK_FOUND)
+		display(ctx);
+	if (result == INPUT_MARK_FOUND)
+		return (INPUT_MARK_FOUND);
+	else if (result == INPUT_READ_ERROR)
+		return (print_error(ERR_LINE_READ, 1));
+	return (result);
 }

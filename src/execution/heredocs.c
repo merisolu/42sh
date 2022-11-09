@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 10:56:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/09 11:24:19 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/09 11:34:10 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ struct termios *original)
 	return (1);
 }
 
-// TODO: Check get_line error
 int	heredoc_run(t_ast *redir_node, t_pipes *pipes)
 {
 	t_input_context	ctx;
@@ -68,8 +67,10 @@ int	heredoc_run(t_ast *redir_node, t_pipes *pipes)
 		return (1);
 	if (!heredoc_setup(&ctx, redir_node->in_file, &mark, &original))
 		return (0);
-	while (get_line(&ctx) != INPUT_MARK_FOUND)
-		display(&ctx);
+	display(&ctx);
+	while (get_input(&ctx) != INPUT_MARK_FOUND)
+	{
+	}
 	ft_putchar('\n');
 	if (!terminal_apply_config(&original))
 	{

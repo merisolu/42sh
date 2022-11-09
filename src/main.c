@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/08 14:24:36 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/09 11:29:52 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,20 +76,6 @@ static int	cleanup(t_state *state, int return_value)
 	return (return_value);
 }
 
-static t_input_result	get_input(t_state *state)
-{
-	t_input_result	result;
-
-	result = get_line(&(state->input_context));
-	if (result == INPUT_NO_MARK_FOUND)
-		display(&(state->input_context));
-	if (result == INPUT_MARK_FOUND)
-		return (INPUT_MARK_FOUND);
-	else if (result == INPUT_READ_ERROR)
-		return (print_error(ERR_LINE_READ, 1));
-	return (result);
-}
-
 int	main(const int argc, const char **argv, char *const *env)
 {
 	t_state	state;
@@ -101,7 +87,7 @@ int	main(const int argc, const char **argv, char *const *env)
 	while (!state.exiting)
 	{
 		check_signal(&state);
-		if (get_input(&state) == INPUT_MARK_FOUND)
+		if (get_input(&(state.input_context)) == INPUT_MARK_FOUND)
 		{
 			tokenize_and_execute(&state);
 			if (!state.exiting)
