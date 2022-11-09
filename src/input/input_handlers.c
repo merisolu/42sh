@@ -6,28 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:29:22 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/04 14:34:26 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/09 12:41:24 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
-
-// TODO: This needs to be moved elsewhere
-/*
-
-	tokens = tokenize(state);
-	if (!tokens)
-		return (INPUT_READ_ERROR);
-	if (state->input[ft_strlen(state->input) - 1] != '\\' && !state->in_quotes)
-	{
-		state->cursor = 0;
-		token_list_free(&tokens);
-		return (INPUT_NEWLINE_FOUND);
-	}
-	token_list_free(&tokens);
-	return (INPUT_NO_NEWLINE_FOUND);
-
-*/
 
 static int	handle_delete_char(t_input_context *ctx)
 {

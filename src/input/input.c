@@ -6,13 +6,25 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/09 11:31:12 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/09 13:42:22 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
 extern int	g_last_signal;
+
+static int	is_inhibited(char *input)
+{
+	t_tokenizer	tokenizer;
+	t_token		*tokens;
+
+	tokens = tokenize(input, &tokenizer);
+	if (!tokens)
+		return (print_error(ERR_MALLOC_FAIL, 0));
+	token_list_free(&tokens);
+	return (tokenizer.in_quotes);
+}
 
 static void	append_input(t_input_context *ctx, char character)
 {
@@ -49,7 +61,8 @@ static t_input_result	get_line(t_input_context *ctx)
 		if (ft_isprint(buf[i]) || buf[i] == '\n')
 		{
 			append_input(ctx, buf[i]);
-			if (ft_strendequ(ctx->input, ctx->mark))
+			if (ft_strendequ(ctx->input, ctx->mark)
+				&& !is_inhibited(ctx->input))
 				return (INPUT_MARK_FOUND);
 		}
 		i++;

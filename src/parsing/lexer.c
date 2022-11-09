@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/03 13:11:06 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/09 12:45:31 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,28 +96,24 @@ static void	t_loop(char *lc, t_tokenizer *t, t_token_type *type, t_token **r)
 	(t->buff_idx)++;
 }
 
-// TODO: This should be re-worked so that we only need to pass the input.
-t_token	*tokenize(t_state *state)
+t_token	*tokenize(char *input, t_tokenizer *tokenizer)
 {
 	t_token			*result;
 	t_token_type	type;
-	t_tokenizer		t;
 	int				i;
 
-	if (!tokenize_init(&t, state->input_context.input))
+	if (!tokenize_init(tokenizer, input))
 		return (NULL);
-	state->in_quotes = 0;
 	result = NULL;
-	i = skip_whitespace(state->input_context.input);
-	type = get_token_type(state->input_context.input[i], FALSE);
-	while (state->input_context.input[i])
+	i = skip_whitespace(input);
+	type = get_token_type(input[i], FALSE);
+	while (input[i])
 	{
-		check_quotes(state->input_context.input[i], &t);
-		t_loop(state->input_context.input + i, &t, &type, &result);
+		check_quotes(input[i], tokenizer);
+		t_loop(input + i, tokenizer, &type, &result);
 		i++;
 	}
-	token_add(&result, type, ft_strdup(t.buff));
-	free(t.buff);
-	state->in_quotes = t.in_quotes;
+	token_add(&result, type, ft_strdup(tokenizer->buff));
+	free(tokenizer->buff);
 	return (result);
 }
