@@ -22,16 +22,16 @@ static int	get_state_struct(char *const **env, t_state *result)
 	ft_bzero(result, sizeof(t_state));
 	if (!input_context_set(&(result->input_context),
 			PROMPT, MULTILINE_PROMPT, "\n"))
-		return (0);
+		return (print_error(ERR_INPUT_CONTEXT_FAIL, 0));
 	while (i < HISTORY_SIZE)
 	{
 		result->history[i] = ft_memalloc(INPUT_MAX_SIZE + 1);
 		if (!result->history[i])
-			return (0);
+			return (print_error(ERR_MALLOC_FAIL, 0));
 		i++;
 	}
 	if (!ft_dup_null_array((void **)*env, (void ***)&(result->env), var_copy))
-		return (0);
+		return (print_error(ERR_MALLOC_FAIL, 0));
 	return (
 		env_unset("OLDPWD", &(result->env))
 	);
@@ -51,13 +51,13 @@ static int	setup(char *const **env, t_state *state)
 	else if (database_result == 0)
 		return (print_error(ERR_TERMCAP_NO_ENTRY, 0));
 	if (!get_state_struct(env, state))
-		return (print_error(ERR_MALLOC_FAIL, 0));
+		return (0);
 	if (state->input_context.width == 0 || state->input_context.height == 0)
 		return (print_error(ERR_WINDOW_TOO_SMALL, 0));
 	if (!terminal_get_configs(&(state->input_conf), &(state->orig_conf)))
 		return (print_error(ERR_TERMIOS_FAIL, 0));
 	if (!terminal_apply_config(&(state->input_conf)))
-		return (0);
+		return (print_error(ERR_TERMIOS_FAIL, 0));
 	if (!set_shlvl(&(state->env)))
 		return (0);
 	set_signal_handling();
