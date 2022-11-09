@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/08 13:36:21 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/09 11:24:12 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@
 # define ERR_TERMCAP_NO_ENTRY "No database entry for current terminal type."
 # define ERR_WINDOW_TOO_SMALL "Window size is too small."
 # define ERR_LINE_READ "input read error"
+# define ERR_INPUT_CONTEXT_FAIL "failed to create input context"
 # define ERR_CHILD_PROC_FAIL "cannot make child process"
 # define ERR_CHILD_PIPE_FAIL "cannot make child pipes"
 # define ERR_PIPE_FAIL "failed to create pipe"

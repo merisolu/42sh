@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 10:56:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/09 11:16:09 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/09 11:24:19 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ char *mark)
 {
 	free(mark);
 	input_context_free(ctx);
-	terminal_apply_config(original); // TODO: Check error
+	if (!terminal_apply_config(original))
+		print_error(ERR_INPUT_CONTEXT_FAIL, 0);
 }
 
 static int	heredoc_setup(t_input_context *ctx, char *base_mark, char **mark, \
@@ -44,13 +45,13 @@ struct termios *original)
 	if (!input_context_set(ctx,
 			MULTILINE_PROMPT, MULTILINE_PROMPT, *mark))
 	{
-		heredoc_cleanup(ctx, original, *mark); // TODO: Print error
-		return (0);
+		heredoc_cleanup(ctx, original, *mark);
+		return (print_error(ERR_INPUT_CONTEXT_FAIL, 0));
 	}
 	if (!terminal_apply_config(&input))
 	{
-		heredoc_cleanup(ctx, original, *mark); // TODO: Print error
-		return (0);
+		heredoc_cleanup(ctx, original, *mark);
+		return (print_error(ERR_TERMIOS_FAIL, 0));
 	}
 	save_cursor(ctx);
 	return (1);
@@ -73,15 +74,10 @@ int	heredoc_run(t_ast *redir_node, t_pipes *pipes)
 	if (!terminal_apply_config(&original))
 	{
 		heredoc_cleanup(&ctx, &original, mark);
-		return (0);
+		return (print_error(ERR_TERMIOS_FAIL, 0));
 	}
 	ctx.input[ft_strlen(ctx.input) - (ft_strlen(ctx.mark) - 1)] = '\0';
-	if (write(pipes->read[PIPE_WRITE], ctx.input,
-			ft_strlen(ctx.input)) == -1)
-	{
-		heredoc_cleanup(&ctx, &original, mark);
-		return (0);
-	}
+	ft_putstr_fd(ctx.input, pipes->read[PIPE_WRITE]);
 	heredoc_cleanup(&ctx, &original, mark);
 	return (1);
 }
