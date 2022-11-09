@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:29:22 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/09 12:41:24 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/09 15:23:44 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,18 @@ static int	handle_delete_char(t_input_context *ctx)
 	return (1);
 }
 
-// TODO: Missing
-	// {TAB, &autocomplete},
-	// {CTRL_D, &ctrl_d},
-int	handle_key(char *buf, t_input_context *ctx)
+static t_key_handler_dispatch	*get_dispatch_table(void)
 {
-	size_t								i;
 	static const t_key_handler_dispatch	dispatch_table[] = {
 	{BACKSPACE, &handle_delete_char},
+	{ARROW_LEFT, &handle_left},
+	{ARROW_RIGHT, &handle_right},
+	{HOME_KEY, &handle_home},
+	{END_KEY, &handle_end},
+	{ARROW_UP_ALT, &handle_alt_up},
+	{ARROW_DOWN_ALT, &handle_alt_down},
+	{ARROW_LEFT_ALT, &handle_alt_left},
+	{ARROW_RIGHT_ALT, &handle_alt_right},
 	{CTRL_K, &cut_from_cursor},
 	{CTRL_U, &cut_to_cursor},
 	{CTRL_W, &cut_word},
@@ -38,12 +42,30 @@ int	handle_key(char *buf, t_input_context *ctx)
 	{0, NULL}
 	};
 
+	return ((t_key_handler_dispatch *)dispatch_table);
+}
+
+// TODO: Missing
+	// {TAB, &autocomplete},
+	// {CTRL_D, &ctrl_d},
+	// {ARROW_UP, &handle_history},
+	// {ARROW_DOWN, &handle_history},
+int	handle_key(char *buffer, t_input_context *ctx)
+{
+	size_t					i;
+	t_key_handler_dispatch	*dispatch_table;
+
+	dispatch_table = get_dispatch_table();
 	i = 0;
 	while (dispatch_table[i].run != NULL)
 	{
-		if (ft_strnequ(dispatch_table[i].activator, buf,
+		if (ft_strnequ(dispatch_table[i].activator, buffer,
 				ft_strlen(dispatch_table[i].activator)))
-			return (dispatch_table[i].run(ctx));
+		{
+			if (dispatch_table[i].run(ctx))
+				return (ft_strlen(dispatch_table[i].activator));
+			return (0);
+		}
 		i++;
 	}
 	return (0);

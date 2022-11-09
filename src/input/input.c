@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/09 13:42:22 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/09 15:21:36 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,24 +43,22 @@ static void	append_input(t_input_context *ctx, char character)
 static t_input_result	get_line(t_input_context *ctx)
 {
 	int		read_count;
-	char	buf[BUF_SIZE + 1];
+	char	buffer[BUF_SIZE + 1];
 	int		i;
 
-	ft_bzero(&buf, BUF_SIZE + 1);
-	read_count = read(STDIN_FILENO, &buf, BUF_SIZE);
+	ft_bzero(&buffer, BUF_SIZE + 1);
+	read_count = read(STDIN_FILENO, &buffer, BUF_SIZE);
 	if (read_count == 0)
 		return (INPUT_NOTHING_READ);
 	i = 0;
 	while (i < read_count)
 	{
-		i += check_movement(buf + i, ctx);
+		i += handle_key(buffer + i, ctx);
 		if (i >= BUF_SIZE)
 			break ;
-		if (handle_key(buf + i, ctx))
-			break ;
-		if (ft_isprint(buf[i]) || buf[i] == '\n')
+		if (ft_isprint(buffer[i]) || buffer[i] == '\n')
 		{
-			append_input(ctx, buf[i]);
+			append_input(ctx, buffer[i]);
 			if (ft_strendequ(ctx->input, ctx->mark)
 				&& !is_inhibited(ctx->input))
 				return (INPUT_MARK_FOUND);

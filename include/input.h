@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:14 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/09 11:31:18 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/09 15:14:28 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,6 @@ typedef struct s_key_handler_dispatch
 	t_key_handler	*run;
 }	t_key_handler_dispatch;
 
-typedef int		t_movement_handler(char buf[16], t_input_context *ctx);
-
-typedef struct s_movement_handler_dispatch
-{
-	char				*activator;
-	t_movement_handler	*run;
-}	t_movement_handler_dispatch;
-
 /* Files */
 
 /* clipboard.c */
@@ -85,7 +77,7 @@ int				ctrl_d(t_state *state);
 t_input_result	get_input(t_input_context *ctx);
 
 /* input_handlers.c */
-int				handle_key(char *buf, t_input_context *ctx);
+int				handle_key(char *buffer, t_input_context *ctx);
 
 /* input_context.c */
 int				input_context_set(t_input_context *context, \
@@ -93,11 +85,15 @@ char *start_prompt, char *multiline_prompt, char *mark);
 void			input_context_free(t_input_context *context);
 
 /* movement.c */
-int				check_movement(char *buf, t_input_context *ctx);
+int				handle_left(t_input_context *ctx);
+int				handle_right(t_input_context *ctx);
+int				handle_home(t_input_context *ctx);
+int				handle_end(t_input_context *ctx);
 
 /* movement_alt.c */
-int				handle_alt_left_right(char buf[BUF_SIZE], t_input_context *ctx);
-int				handle_alt_up(char buf[BUF_SIZE], t_input_context *ctx);
-int				handle_alt_down(char buf[BUF_SIZE], t_input_context *ctx);
+int				handle_alt_left(t_input_context *ctx);
+int				handle_alt_right(t_input_context *ctx);
+int				handle_alt_up(t_input_context *ctx);
+int				handle_alt_down(t_input_context *ctx);
 
 #endif
