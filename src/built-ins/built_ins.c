@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:18:43 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/10 16:30:21 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/10 16:38:25 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,7 @@ pid_t	built_in_run(t_cmd cmd, char *const *args, t_state *state, \
 		else
 			return (result);
 	}
-	if (ast->node->right
-		&& !handle_redirects(ast->node->right, ast->redirect))
+	if (ast->node->right && !handle_redirects(ast->node->right, ast->redirect))
 		set_return_value(1, state);
 	else
 		set_return_value(cmd(args, state), state);
