@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/11/02 15:17:09 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/10 15:53:46 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ static void	execute_tree_list(t_ast **tree_list, t_state *state)
 	t_redir	*redir;
 	t_pipes	pipes;
 	pid_t	tree_pid;
+	int		ret;
 	int		i;
 
 	if (!tree_list)
@@ -82,8 +83,8 @@ static void	execute_tree_list(t_ast **tree_list, t_state *state)
 		ast_parse_expansions(tree_list[i], state);
 		tree_pid = execute_tree(
 				&(t_ast_execution){tree_list[i], redir, &pipes, 0}, state);
-		if (tree_pid != -1)
-			waitpid(tree_pid, NULL, 0);
+		if (tree_pid != -1 && waitpid(tree_pid, &ret, 0) != -1)
+			set_return_value(get_return_value_from_status(ret), state);
 		i++;
 	}
 	pipe_close(pipes.read);
