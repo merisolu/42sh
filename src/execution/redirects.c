@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/11/02 13:49:01 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/10 16:30:43 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static int	redirect_output(t_ast *redir_node, t_redir *r)
 		append = O_APPEND;
 	r->fd_out = open(redir_node->out_file, o_flags | append, permissions);
 	if (r->fd_out == -1)
-		return (print_error(ERR_DUP_FAIL, 0));
+		return (print_error(ERR_NO_PERMISSION, 0));
 	r->saved_out = dup(STDOUT_FILENO);
 	if (r->saved_out == -1)
 		return (print_error(ERR_DUP_FAIL, 0));
