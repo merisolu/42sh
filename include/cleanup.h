@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell.h                                            :+:      :+:    :+:   */
+/*   cleanup.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/10 13:37:18 by jumanner         ###   ########.fr       */
+/*   Created: 2022/11/10 13:37:40 by jumanner          #+#    #+#             */
+/*   Updated: 2022/11/10 13:40:54 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SHELL_H
-# define SHELL_H
+#ifndef CLEANUP_H
+# define CLEANUP_H
 
-# include <termcap.h>
 # include "libft.h"
 # include "general.h"
 # include "utils.h"
-# include "setup.h"
-# include "cleanup.h"
-# include "terminal.h"
-# include "display.h"
-# include "cursor.h"
 # include "input.h"
-# include "environment.h"
-# include "signals.h"
-# include "execution.h"
+# include "terminal.h"
+
+int	cleanup(t_state *state, int return_value);
 
 #endif

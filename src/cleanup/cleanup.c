@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell.h                                            :+:      :+:    :+:   */
+/*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/10 13:37:18 by jumanner         ###   ########.fr       */
+/*   Created: 2022/11/10 13:22:48 by jumanner          #+#    #+#             */
+/*   Updated: 2022/11/10 13:38:56 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SHELL_H
-# define SHELL_H
+#include "cleanup.h"
 
-# include <termcap.h>
-# include "libft.h"
-# include "general.h"
-# include "utils.h"
-# include "setup.h"
-# include "cleanup.h"
-# include "terminal.h"
-# include "display.h"
-# include "cursor.h"
-# include "input.h"
-# include "environment.h"
-# include "signals.h"
-# include "execution.h"
-
-#endif
+int	cleanup(t_state *state, int return_value)
+{
+	if (!terminal_apply_config(&(state->orig_conf)))
+		return (print_error(ERR_TERMIOS_FAIL, 1));
+	ft_free_array_elements((void **)state->history, HISTORY_SIZE);
+	ft_free_null_array((void **)(state->env));
+	input_context_free(&(state->input_context));
+	return (return_value);
+}

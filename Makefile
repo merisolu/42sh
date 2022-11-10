@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/11/08 10:57:12 by jumanner         ###   ########.fr        #
+#    Updated: 2022/11/10 13:39:51 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,9 @@ AUTOCOMPLETE_FILES = autocomplete.c
 BUILT_INS_DIR = built-ins
 BUILT_INS_FILES = built_ins.c cmd_cd.c cmd_echo.c cmd_env.c cmd_setenv.c \
 				cmd_unsetenv.c cmd_exit.c
+
+CLEANUP_DIR = cleanup
+CLEANUP_FILES = cleanup.c
 
 CURSOR_DIR = cursor
 CURSOR_FILES = cursor.c cursor_utils.c
@@ -64,6 +67,9 @@ PARSING_DIR = parsing
 PARSING_FILES = eat_read_token.c get_token_type.c lexer.c literals.c \
 				token.c token_list.c add_to_result.c
 
+SETUP_DIR = setup
+SETUP_FILES = setup.c
+
 SIGNALS_DIR = signals
 SIGNALS_FILES = signal.c
 
@@ -77,6 +83,7 @@ SRC_FILES = main.c \
 			$(patsubst %, $(AST_DIR)/%, $(AST_FILES)) \
 			$(patsubst %, $(AUTOCOMPLETE_DIR)/%, $(AUTOCOMPLETE_FILES)) \
 			$(patsubst %, $(BUILT_INS_DIR)/%, $(BUILT_INS_FILES)) \
+			$(patsubst %, $(CLEANUP_DIR)/%, $(CLEANUP_FILES)) \
 			$(patsubst %, $(CURSOR_DIR)/%, $(CURSOR_FILES)) \
 			$(patsubst %, $(DEBUG_DIR)/%, $(DEBUG_FILES)) \
 			$(patsubst %, $(DISPLAY_DIR)/%, $(DISPLAY_FILES)) \
@@ -86,6 +93,7 @@ SRC_FILES = main.c \
 			$(patsubst %, $(HISTORY_DIR)/%, $(HISTORY_FILES)) \
 			$(patsubst %, $(INPUT_DIR)/%, $(INPUT_FILES)) \
 			$(patsubst %, $(PARSING_DIR)/%, $(PARSING_FILES)) \
+			$(patsubst %, $(SETUP_DIR)/%, $(SETUP_FILES)) \
 			$(patsubst %, $(SIGNALS_DIR)/%, $(SIGNALS_FILES)) \
 			$(patsubst %, $(TERMINAL_DIR)/%, $(TERMINAL_FILES)) \
 			$(patsubst %, $(UTILS_DIR)/%, $(UTILS_FILES))
