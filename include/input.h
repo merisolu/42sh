@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:14 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/09 15:14:28 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/09 15:37:41 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,11 @@
 
 typedef enum e_input_result
 {
-	INPUT_NOTHING_READ = -2,
-	INPUT_READ_ERROR = -1,
+	INPUT_CALLED_FOR_EXIT = -1,
 	INPUT_NO_MARK_FOUND = 0,
-	INPUT_MARK_FOUND = 1
+	INPUT_MARK_FOUND = 1,
+	INPUT_READ_ERROR = 2,
+	INPUT_NOTHING_READ = 3
 }	t_input_result;
 
 typedef int		t_key_handler(t_input_context *ctx);
@@ -71,7 +72,7 @@ int				cut_from_cursor(t_input_context *ctx);
 int				paste(t_input_context *ctx);
 
 /* ctrl_d.c */
-int				ctrl_d(t_state *state);
+int				ctrl_d(t_input_context *context);
 
 /* input.c */
 t_input_result	get_input(t_input_context *ctx);

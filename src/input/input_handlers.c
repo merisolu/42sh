@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:29:22 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/09 15:23:44 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/09 15:46:28 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static t_key_handler_dispatch	*get_dispatch_table(void)
 	{ARROW_DOWN_ALT, &handle_alt_down},
 	{ARROW_LEFT_ALT, &handle_alt_left},
 	{ARROW_RIGHT_ALT, &handle_alt_right},
+	{CTRL_D, &ctrl_d},
 	{CTRL_K, &cut_from_cursor},
 	{CTRL_U, &cut_to_cursor},
 	{CTRL_W, &cut_word},
@@ -47,12 +48,12 @@ static t_key_handler_dispatch	*get_dispatch_table(void)
 
 // TODO: Missing
 	// {TAB, &autocomplete},
-	// {CTRL_D, &ctrl_d},
 	// {ARROW_UP, &handle_history},
 	// {ARROW_DOWN, &handle_history},
 int	handle_key(char *buffer, t_input_context *ctx)
 {
 	size_t					i;
+	int						command_result;
 	t_key_handler_dispatch	*dispatch_table;
 
 	dispatch_table = get_dispatch_table();
@@ -62,8 +63,11 @@ int	handle_key(char *buffer, t_input_context *ctx)
 		if (ft_strnequ(dispatch_table[i].activator, buffer,
 				ft_strlen(dispatch_table[i].activator)))
 		{
-			if (dispatch_table[i].run(ctx))
+			command_result = dispatch_table[i].run(ctx);
+			if (command_result > 0)
 				return (ft_strlen(dispatch_table[i].activator));
+			else if (command_result < 0)
+				return (command_result);
 			return (0);
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/09 15:21:36 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/09 15:41:45 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static t_input_result	get_line(t_input_context *ctx)
 	int		read_count;
 	char	buffer[BUF_SIZE + 1];
 	int		i;
+	int		handle_key_result;
 
 	ft_bzero(&buffer, BUF_SIZE + 1);
 	read_count = read(STDIN_FILENO, &buffer, BUF_SIZE);
@@ -53,7 +54,10 @@ static t_input_result	get_line(t_input_context *ctx)
 	i = 0;
 	while (i < read_count)
 	{
-		i += handle_key(buffer + i, ctx);
+		handle_key_result = handle_key(buffer + i, ctx);
+		if (handle_key_result == -1)
+			return (INPUT_CALLED_FOR_EXIT);
+		i += handle_key_result;
 		if (i >= BUF_SIZE)
 			break ;
 		if (ft_isprint(buffer[i]) || buffer[i] == '\n')

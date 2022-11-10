@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/09 11:29:52 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/09 16:03:01 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,19 @@ static int	cleanup(t_state *state, int return_value)
 	return (return_value);
 }
 
+static t_input_result	input_handler(t_state *state)
+{
+	t_input_result	result;
+
+	result = get_input(&(state->input_context));
+	if (result == INPUT_CALLED_FOR_EXIT)
+	{
+		state->exiting = 1;
+		state->exit_return_value = RETURN_CTRL_D;
+	}
+	return (result);
+}
+
 int	main(const int argc, const char **argv, char *const *env)
 {
 	t_state	state;
@@ -87,7 +100,7 @@ int	main(const int argc, const char **argv, char *const *env)
 	while (!state.exiting)
 	{
 		check_signal(&state);
-		if (get_input(&(state.input_context)) == INPUT_MARK_FOUND)
+		if (input_handler(&state) == INPUT_MARK_FOUND)
 		{
 			tokenize_and_execute(&state);
 			if (!state.exiting)
