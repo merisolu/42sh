@@ -6,22 +6,15 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:21:26 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 15:21:40 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/08 13:25:08 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "terminal.h"
 
-int	set_input_config(t_state *state)
+int	terminal_apply_config(struct termios *config)
 {
-	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &(state->input_conf)) == -1)
-		return (0);
-	return (1);
-}
-
-int	set_orig_config(t_state *state)
-{
-	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &(state->orig_conf)) == -1)
+	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, config) == -1)
 		return (0);
 	return (1);
 }
@@ -32,24 +25,20 @@ int	set_orig_config(t_state *state)
  * - Disables input canonicalization and echoing (ICANON and ECHO).
  * - Enables signal generation (ISIG).
  * 
- * The original termios struct is stored in state->orig_conf, and the new one
- * in state->input_conf. Similarly state->orig_flags is set to the earlier fcntl
- * flags and the new ones are stored in state->input_flags.
- * 
- * At the end of the function, set_input_config() is called to set the proper
- * input state for the shell.
+ * The original termios struct is stored in *original, and the new one
+ * in *input.
  * 
  * Returns 1 on success, 0 on error.
  */
-int	configure_terminal(t_state *state)
+int	terminal_get_configs(struct termios *input, struct termios *original)
 {
-	if (tcgetattr(STDIN_FILENO, &(state->input_conf)) == -1)
+	if (tcgetattr(STDIN_FILENO, input) == -1)
 		return (0);
-	state->orig_conf = state->input_conf;
-	state->input_conf.c_lflag &= ~(ICANON | ECHO);
-	state->input_conf.c_lflag |= ISIG;
-	state->input_conf.c_cc[VMIN] = 0;
-	state->input_conf.c_cc[VTIME] = 1;
-	state->input_conf.c_cc[CC_SUSPEND] = '\0';
-	return (set_input_config(state));
+	*original = *input;
+	input->c_lflag &= ~(ICANON | ECHO);
+	input->c_lflag |= ISIG;
+	input->c_cc[VMIN] = 0;
+	input->c_cc[VTIME] = 1;
+	input->c_cc[CC_SUSPEND] = '\0';
+	return (1);
 }

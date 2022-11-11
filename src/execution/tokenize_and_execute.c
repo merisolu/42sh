@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/11/10 15:53:46 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/11 14:45:01 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,31 @@ static int	is_at_end_check(t_ast *node)
 	return (!node->right || node->right->node_type == AST_SIMPLE_COMMAND);
 }
 
-static pid_t	execute_simple_command(t_ast_execution *context, t_state *state)
+static pid_t	execute_simple_command(t_ast_execution *ctx, t_state *state)
 {
 	pid_t	result;
 
 	result = -1;
-	if (!context->is_at_end)
+	if (!ctx->is_at_end)
 	{
-		if (pipe(context->pipes->write) == -1)
+		if (pipe(ctx->pipes->write) == -1)
+			print_error(ERR_PIPE_FAIL, 1);
+	}
+	else if (ctx->node->right
+		&& ft_strequ(ctx->node->right->in_type, REDIR_HEREDOC))
+	{
+		if (pipe(ctx->pipes->read) == -1)
 			print_error(ERR_PIPE_FAIL, 1);
 	}
 	else
-		pipe_reset(context->pipes->write);
-	if (context->node->left && context->node->left->arg_list)
+		pipe_reset(ctx->pipes->write);
+	if (ctx->node->left && ctx->node->left->arg_list)
 	{
 		result = execute(
-				context->node->left->arg_list, state, context);
+				ctx->node->left->arg_list, state, ctx);
 	}
-	pipe_close(context->pipes->read);
-	pipes_copy(context->pipes->read, context->pipes->write);
+	pipe_close(ctx->pipes->read);
+	pipes_copy(ctx->pipes->read, ctx->pipes->write);
 	return (result);
 }
 
@@ -94,22 +100,27 @@ static void	execute_tree_list(t_ast **tree_list, t_state *state)
 
 void	tokenize_and_execute(t_state *state)
 {
-	if (ft_strisempty(state->input))
+	t_tokenizer	tokenizer;
+	t_token		*tokens;
+
+	if (ft_strisempty(state->input_context.input))
 	{
-		clear_input(state, 1);
+		clear_input(&(state->input_context), 1);
 		return ;
 	}
-	if (!set_orig_config(state))
+	if (!terminal_apply_config(&(state->orig_conf)))
 	{
 		print_error(ERR_TERMIOS_FAIL, 1);
 		return ;
 	}
-	history_store(state->input, state);
-	state->cursor = ft_strlen(state->input);
-	move_cursor_to_saved_position(state);
+	history_store(state->input_context.input, state);
+	state->input_context.cursor = ft_strlen(state->input_context.input);
+	move_cursor_to_saved_position(&(state->input_context));
 	ft_putchar('\n');
-	execute_tree_list(construct_ast_list(tokenize(state)), state);
-	clear_input(state, 0);
-	if (!set_input_config(state))
+	tokens = tokenize(state->input_context.input, &tokenizer);
+	state->in_quotes = tokenizer.in_quotes;
+	execute_tree_list(construct_ast_list(tokens), state);
+	clear_input(&(state->input_context), 0);
+	if (!terminal_apply_config(&(state->input_conf)))
 		print_error(ERR_TERMIOS_FAIL, 1);
 }

@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shell.h                                            :+:      :+:    :+:   */
+/*   ft_strendequ.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/25 13:15:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/10 13:37:18 by jumanner         ###   ########.fr       */
+/*   Created: 2022/11/04 12:43:16 by jumanner          #+#    #+#             */
+/*   Updated: 2022/11/04 15:35:34 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SHELL_H
-# define SHELL_H
+#include "libft.h"
 
-# include <termcap.h>
-# include "libft.h"
-# include "general.h"
-# include "utils.h"
-# include "setup.h"
-# include "cleanup.h"
-# include "terminal.h"
-# include "display.h"
-# include "cursor.h"
-# include "input.h"
-# include "environment.h"
-# include "signals.h"
-# include "execution.h"
+/*
+ * Checks the end of s1 and returns 1 if it matches s2. Returns 0 otherwise.
+ */
+int	ft_strendequ(char const *s1, char const *s2)
+{
+	size_t	s1_len;
+	size_t	s2_len;
 
-#endif
+	s1_len = ft_strlen(s1);
+	s2_len = ft_strlen(s2);
+	if (s1_len < s2_len)
+		return (0);
+	return (ft_strequ((s1 + s1_len) - s2_len, s2));
+}

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:14 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 15:23:13 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/11 14:00:11 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 
 # include "libft.h"
 # include "general.h"
-# include "state.h"
 # include "autocomplete.h"
 
 /* Keys */
@@ -32,7 +31,6 @@
 # define ARROW_DOWN_ALT "\x1B[1;3B"
 # define ARROW_LEFT_ALT "\033b"
 # define ARROW_RIGHT_ALT "\033f"
-# define RETURN_KEY "\x0A"
 # define BACKSPACE "\x7F"
 # define HOME_KEY "\x1B[H"
 # define END_KEY "\x1B[F"
@@ -50,13 +48,15 @@
 
 typedef enum e_input_result
 {
-	INPUT_NOTHING_READ = -2,
-	INPUT_READ_ERROR = -1,
-	INPUT_NO_NEWLINE_FOUND = 0,
-	INPUT_NEWLINE_FOUND = 1
+	INPUT_CALLED_FOR_EXIT = -1,
+	INPUT_NO_MARK_FOUND = 0,
+	INPUT_MARK_FOUND = 1,
+	INPUT_FOUND_RESERVED_SEQUENCE = 2,
+	INPUT_READ_ERROR = 3,
+	INPUT_NOTHING_READ = 4
 }	t_input_result;
 
-typedef t_input_result	t_key_handler(t_state *state);
+typedef int		t_key_handler(t_input_context *ctx);
 
 typedef struct s_key_handler_dispatch
 {
@@ -64,37 +64,38 @@ typedef struct s_key_handler_dispatch
 	t_key_handler	*run;
 }	t_key_handler_dispatch;
 
-typedef int				t_movement_handler(char buf[16], t_state *state);
-
-typedef struct s_movement_handler_dispatch
-{
-	char				*activator;
-	t_movement_handler	*run;
-}	t_movement_handler_dispatch;
-
 /* Files */
 
 /* clipboard.c */
-t_input_result	cut_word(t_state *state);
-t_input_result	cut_to_cursor(t_state *state);
-t_input_result	cut_from_cursor(t_state *state);
-t_input_result	paste(t_state *state);
+int				cut_word(t_input_context *ctx);
+int				cut_to_cursor(t_input_context *ctx);
+int				cut_from_cursor(t_input_context *ctx);
+int				paste(t_input_context *ctx);
 
 /* ctrl_d.c */
-int				ctrl_d(t_state *state);
+int				ctrl_d(t_input_context *context);
 
 /* input.c */
-t_input_result	get_input(t_state *state);
+t_input_result	get_input(t_input_context *ctx);
 
 /* input_handlers.c */
-t_input_result	handle_key(char *buf, t_state *state);
+int				handle_key(char *buffer, t_input_context *ctx);
+
+/* input_context.c */
+int				input_context_set(t_input_context *context, \
+t_input_initializer *init);
+void			input_context_free(t_input_context *context);
 
 /* movement.c */
-int				check_movement(char *buf, t_state *state);
+int				handle_left(t_input_context *ctx);
+int				handle_right(t_input_context *ctx);
+int				handle_home(t_input_context *ctx);
+int				handle_end(t_input_context *ctx);
 
 /* movement_alt.c */
-int				handle_alt_left_right(char buf[BUF_SIZE], t_state *state);
-int				handle_alt_up(char buf[BUF_SIZE], t_state *state);
-int				handle_alt_down(char buf[BUF_SIZE], t_state *state);
+int				handle_alt_left(t_input_context *ctx);
+int				handle_alt_right(t_input_context *ctx);
+int				handle_alt_up(t_input_context *ctx);
+int				handle_alt_down(t_input_context *ctx);
 
 #endif

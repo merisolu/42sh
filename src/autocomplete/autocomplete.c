@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 15:08:38 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/11 14:23:43 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,17 +108,18 @@ static void	search_from_paths(char *const *env, char *input, char **result)
 }
 
 /*
- * Attempts to autocomplete a partical binary name in state->input. If a match
- * is found, the partial name will be replaced with the full name.
+ * Attempts to autocomplete a partical binary name in
+ * state->input_context.input. If a match is found, the partial name will be
+ * replaced with the full name.
  */
 int	autocomplete(t_state *state)
 {
 	char	*trimmed_input;
 	char	*temp;
 
-	if (!state || ft_strlen(state->input) == 0)
+	if (!state || ft_strlen(state->input_context.input) == 0)
 		return (0);
-	trimmed_input = ft_strtrim(state->input);
+	trimmed_input = ft_strtrim(state->input_context.input);
 	if (ft_strlen(trimmed_input) == 0)
 	{
 		if (!trimmed_input)
@@ -131,8 +132,8 @@ int	autocomplete(t_state *state)
 		search_from_paths(state->env, trimmed_input, &temp);
 	if (temp)
 	{
-		ft_strcpy(state->input, temp);
-		state->cursor = ft_strlen(state->input);
+		ft_strcpy(state->input_context.input, temp);
+		state->input_context.cursor = ft_strlen(state->input_context.input);
 		free(temp);
 	}
 	free(trimmed_input);

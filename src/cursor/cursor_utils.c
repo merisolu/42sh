@@ -6,36 +6,38 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:01:54 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:48:49 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/08 13:59:22 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cursor.h"
 
-size_t	cursor_get_column(t_state *state, size_t index)
+size_t	cursor_get_column(t_input_context *context, size_t index)
 {
 	size_t	start;
 	size_t	length;
 
-	input_get_line_properties(state, index, &start, &length);
+	input_get_line_properties(context, index, &start, &length);
 	if (start == 0)
-		return (((index - start) + ft_strlen(PROMPT)) % state->width);
-	return (((index - start) + ft_strlen(MULTILINE_PROMPT)) % state->width);
+		return (((index - start) + ft_strlen(context->start_prompt))
+			% context->width);
+	return (((index - start) + ft_strlen(context->multiline_prompt))
+		% context->width);
 }
 
-size_t	cursor_get_row(t_state *state, size_t index)
+size_t	cursor_get_row(t_input_context *context, size_t index)
 {
 	size_t	result;
 
-	result = input_get_row_count(state, index);
-	result += state->input_start_y - 1;
+	result = input_get_row_count(context, index);
+	result += context->input_start_y - 1;
 	return (result);
 }
 
-void	move_cursor_to_saved_position(t_state *state)
+void	move_cursor_to_saved_position(t_input_context *context)
 {
 	ft_putstr(
 		tgoto(tgetstr("cm", NULL),
-			cursor_get_column(state, state->cursor),
-			cursor_get_row(state, state->cursor)));
+			cursor_get_column(context, context->cursor),
+			cursor_get_row(context, context->cursor)));
 }

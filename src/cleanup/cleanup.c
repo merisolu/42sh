@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   state.h                                            :+:      :+:    :+:   */
+/*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/27 14:28:46 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:47:11 by jumanner         ###   ########.fr       */
+/*   Created: 2022/11/10 13:22:48 by jumanner          #+#    #+#             */
+/*   Updated: 2022/11/10 13:38:56 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STATE_H
-# define STATE_H
+#include "cleanup.h"
 
-/* Includes */
-
-# include <termcap.h>
-
-# include "libft.h"
-# include "general.h"
-# include "utils.h"
-# include "cursor.h"
-
-/* Files */
-
-/* state.c */
-void	print_state(t_state *state);
-
-#endif
+int	cleanup(t_state *state, int return_value)
+{
+	if (!terminal_apply_config(&(state->orig_conf)))
+		return (print_error(ERR_TERMIOS_FAIL, 1));
+	ft_free_array_elements((void **)state->history, HISTORY_SIZE);
+	ft_free_null_array((void **)(state->env));
+	input_context_free(&(state->input_context));
+	return (return_value);
+}

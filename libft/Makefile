@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/28 16:25:00 by jumanner          #+#    #+#              #
-#    Updated: 2022/10/14 12:56:22 by jumanner         ###   ########.fr        #
+#    Updated: 2022/11/04 12:46:38 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ SRC_FILES = ft_tolower.c ft_toupper.c \
 		ft_strlen.c ft_strdup.c ft_strndup.c ft_strnew.c ft_strdel.c ft_strdelchar.c ft_strdelword.c ft_strclr.c \
 		ft_strncmp.c ft_strcmp.c \
 		ft_strncpy.c ft_strcpy.c ft_strncat.c ft_strcat.c ft_strlcat.c \
-		ft_strchr.c ft_strrchr.c ft_strnstr.c ft_strstr.c ft_strnequ.c ft_strequ.c \
+		ft_strchr.c ft_strrchr.c ft_strnstr.c ft_strstr.c ft_strnequ.c ft_strequ.c ft_strendequ.c \
 		ft_strins.c \
 		ft_striter.c ft_striteri.c ft_strmap.c ft_strmapi.c ft_strsub.c ft_strjoin.c ft_strjoinfree.c ft_strtrim.c ft_strsplit.c \
 		ft_strtolower.c ft_strtoupper.c ft_strisempty.c \

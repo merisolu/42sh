@@ -6,47 +6,35 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:29:22 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/31 11:30:33 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/11 14:23:50 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-static t_input_result	handle_newline(t_state *state)
+static int	handle_delete_char(t_input_context *ctx)
 {
-	t_token	*tokens;
-
-	tokens = tokenize(state);
-	if (!tokens)
-		return (INPUT_READ_ERROR);
-	if (state->input[ft_strlen(state->input) - 1] != '\\' && !state->in_quotes)
-	{
-		state->cursor = 0;
-		token_list_free(&tokens);
-		return (INPUT_NEWLINE_FOUND);
-	}
-	token_list_free(&tokens);
-	return (INPUT_NO_NEWLINE_FOUND);
+	if (ctx->cursor == 0)
+		return (0);
+	ft_strcpy(ctx->input + ctx->cursor - 1, ctx->input + ctx->cursor);
+	ft_bzero(ctx->input + ft_strlen(ctx->input),
+		INPUT_MAX_SIZE - ft_strlen(ctx->input));
+	ctx->cursor--;
+	return (1);
 }
 
-static t_input_result	handle_delete_char(t_state *state)
+static t_key_handler_dispatch	*get_dispatch_table(void)
 {
-	if (state->cursor == 0)
-		return (INPUT_NO_NEWLINE_FOUND);
-	ft_strcpy(state->input + state->cursor - 1, state->input + state->cursor);
-	ft_bzero(state->input + ft_strlen(state->input),
-		INPUT_MAX_SIZE - ft_strlen(state->input));
-	state->cursor--;
-	return (INPUT_NO_NEWLINE_FOUND);
-}
-
-t_input_result	handle_key(char *buf, t_state *state)
-{
-	size_t								i;
 	static const t_key_handler_dispatch	dispatch_table[] = {
-	{RETURN_KEY, &handle_newline},
 	{BACKSPACE, &handle_delete_char},
-	{TAB, &autocomplete},
+	{ARROW_LEFT, &handle_left},
+	{ARROW_RIGHT, &handle_right},
+	{HOME_KEY, &handle_home},
+	{END_KEY, &handle_end},
+	{ARROW_UP_ALT, &handle_alt_up},
+	{ARROW_DOWN_ALT, &handle_alt_down},
+	{ARROW_LEFT_ALT, &handle_alt_left},
+	{ARROW_RIGHT_ALT, &handle_alt_right},
 	{CTRL_D, &ctrl_d},
 	{CTRL_K, &cut_from_cursor},
 	{CTRL_U, &cut_to_cursor},
@@ -55,13 +43,30 @@ t_input_result	handle_key(char *buf, t_state *state)
 	{0, NULL}
 	};
 
+	return ((t_key_handler_dispatch *)dispatch_table);
+}
+
+int	handle_key(char *buffer, t_input_context *ctx)
+{
+	size_t					i;
+	int						command_result;
+	t_key_handler_dispatch	*dispatch_table;
+
+	dispatch_table = get_dispatch_table();
 	i = 0;
 	while (dispatch_table[i].run != NULL)
 	{
-		if (ft_strnequ(dispatch_table[i].activator, buf,
+		if (ft_strnequ(dispatch_table[i].activator, buffer,
 				ft_strlen(dispatch_table[i].activator)))
-			return (dispatch_table[i].run(state));
+		{
+			command_result = dispatch_table[i].run(ctx);
+			if (command_result > 0)
+				return (ft_strlen(dispatch_table[i].activator));
+			else if (command_result < 0)
+				return (command_result);
+			return (0);
+		}
 		i++;
 	}
-	return (INPUT_NO_NEWLINE_FOUND);
+	return (0);
 }

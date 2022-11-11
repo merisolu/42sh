@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 11:20:31 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/01 11:55:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/11 14:32:33 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	history_store(char *input, t_state *state)
 	if (ft_strequ(state->history[0], input))
 		return (1);
 	history_move_down(state);
-	ft_strcpy(state->history[0], input);
+	ft_strncpy(state->history[0], input, ft_strlen(input) - 1);
 	return (1);
 }
 
@@ -76,15 +76,15 @@ int	history_recall(int diff, t_state *state)
 
 	new_index = state->history_index + diff;
 	if (state->history_index == 0 && diff > 0)
-		history_store(state->input, state);
+		history_store(state->input_context.input, state);
 	if (new_index < 0 || new_index > HISTORY_SIZE - 1
 		|| (new_index != 0 && state->history[new_index][0] == '\0'))
 		return (1);
-	ft_strclr(state->input);
-	ft_strcpy(state->input, state->history[new_index]);
+	ft_strclr(state->input_context.input);
+	ft_strcpy(state->input_context.input, state->history[new_index]);
 	if (new_index == 0 && diff < 0)
 		history_move_up(state);
-	state->cursor = ft_strlen(state->input);
+	state->input_context.cursor = ft_strlen(state->input_context.input);
 	state->history_index = new_index;
 	return (1);
 }

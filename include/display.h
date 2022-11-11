@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   terminal.h                                         :+:      :+:    :+:   */
+/*   display.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/27 15:22:23 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/08 13:25:08 by jumanner         ###   ########.fr       */
+/*   Created: 2022/10/27 14:28:46 by jumanner          #+#    #+#             */
+/*   Updated: 2022/11/03 11:50:10 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TERMINAL_H
-# define TERMINAL_H
+#ifndef DISPLAY_H
+# define DISPLAY_H
 
 /* Includes */
 
@@ -19,20 +19,13 @@
 
 # include "libft.h"
 # include "general.h"
-
-/* Constants */
-
-# define CC_SUSPEND VDSUSP
-
-# if __linux__
-#  undef CC_SUSPEND
-#  define CC_SUSPEND VSUSP
-# endif
+# include "input.h"
+# include "utils.h"
+# include "cursor.h"
 
 /* Files */
 
-/* terminal_configuration.c */
-int	terminal_apply_config(struct termios *config);
-int	terminal_get_configs(struct termios *input, struct termios *original);
+/* display.c */
+void	display(t_input_context *context);
 
 #endif

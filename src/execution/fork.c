@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 11:28:16 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/02 15:17:31 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/08 12:47:01 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ pid_t	start_fork(t_ast_execution *ast)
 		if (dup2(pipes->write[PIPE_READ], pipes->read[PIPE_WRITE]) == -1)
 			return (print_error(ERR_DUP_FAIL, -1));
 	}
+	if (ast->node->right && !heredoc_run(ast->node->right, pipes))
+		return (print_error(ERR_HEREDOC_FAIL, -1));
 	result = fork();
 	if (result == -1)
 		return (print_error(ERR_CHILD_PROC_FAIL, -1));

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/11/11 13:54:21 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/11 14:47:56 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ int	handle_redirects(t_ast *redir_node, t_redir *r)
 	}
 	if (redir_node->in_type)
 	{
-		if (!redirect_input(redir_node, r))
+		if (!ft_strequ(redir_node->in_type, REDIR_HEREDOC)
+			&& !redirect_input(redir_node, r))
 			return (0);
 	}
 	if (redir_node->aggregation)

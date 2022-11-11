@@ -6,76 +6,76 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 14:21:42 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/31 11:47:33 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/04 14:33:52 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-t_input_result	cut_word(t_state *state)
+int	cut_word(t_input_context *ctx)
 {
 	size_t	len;
 	size_t	end;
 	size_t	start;
 
-	if (!(ft_strlen(state->input) > 0 && state->cursor > 0))
-		return (INPUT_NO_NEWLINE_FOUND);
-	len = ft_strlen(state->input);
-	end = state->cursor - 1;
+	if (!(ft_strlen(ctx->input) > 0 && ctx->cursor > 0))
+		return (0);
+	len = ft_strlen(ctx->input);
+	end = ctx->cursor - 1;
 	start = end;
-	while (start > 0 && start < len && ft_is_whitespace(state->input[start]))
+	while (start > 0 && start < len && ft_is_whitespace(ctx->input[start]))
 		start--;
-	while (start > 0 && start < len && !ft_is_whitespace(state->input[start]))
+	while (start > 0 && start < len && !ft_is_whitespace(ctx->input[start]))
 		start--;
 	if (start > 0)
 		start++;
-	ft_strncpy(state->clipboard, state->input + start, end - start + 1);
-	state->clipboard[end - start + 1] = '\0';
-	ft_strncpy(state->input, state->input, start);
-	ft_strcpy(state->input + start, state->input + end + 1);
-	ft_bzero(state->input + ft_strlen(state->input),
-		INPUT_MAX_SIZE - ft_strlen(state->input));
-	state->cursor -= end - start + 1;
-	return (INPUT_NO_NEWLINE_FOUND);
+	ft_strncpy(ctx->clipboard, ctx->input + start, end - start + 1);
+	ctx->clipboard[end - start + 1] = '\0';
+	ft_strncpy(ctx->input, ctx->input, start);
+	ft_strcpy(ctx->input + start, ctx->input + end + 1);
+	ft_bzero(ctx->input + ft_strlen(ctx->input),
+		INPUT_MAX_SIZE - ft_strlen(ctx->input));
+	ctx->cursor -= end - start + 1;
+	return (1);
 }
 
-t_input_result	cut_to_cursor(t_state *state)
+int	cut_to_cursor(t_input_context *ctx)
 {
-	ft_strncpy(state->clipboard, state->input, state->cursor);
-	state->clipboard[state->cursor] = '\0';
-	ft_strcpy(state->input, state->input + state->cursor);
-	ft_bzero(state->input + ft_strlen(state->input),
-		INPUT_MAX_SIZE - state->cursor);
-	state->cursor = 0;
-	return (INPUT_NO_NEWLINE_FOUND);
+	ft_strncpy(ctx->clipboard, ctx->input, ctx->cursor);
+	ctx->clipboard[ctx->cursor] = '\0';
+	ft_strcpy(ctx->input, ctx->input + ctx->cursor);
+	ft_bzero(ctx->input + ft_strlen(ctx->input),
+		INPUT_MAX_SIZE - ctx->cursor);
+	ctx->cursor = 0;
+	return (1);
 }
 
-t_input_result	cut_from_cursor(t_state *state)
+int	cut_from_cursor(t_input_context *ctx)
 {
-	ft_strncpy(state->clipboard, state->input + state->cursor,
-		ft_strlen(state->input + state->cursor));
-	state->clipboard[ft_strlen(state->input + state->cursor)] = '\0';
-	ft_bzero(state->input + state->cursor,
-		ft_strlen(state->input) - state->cursor);
-	return (INPUT_NO_NEWLINE_FOUND);
+	ft_strncpy(ctx->clipboard, ctx->input + ctx->cursor,
+		ft_strlen(ctx->input + ctx->cursor));
+	ctx->clipboard[ft_strlen(ctx->input + ctx->cursor)] = '\0';
+	ft_bzero(ctx->input + ctx->cursor,
+		ft_strlen(ctx->input) - ctx->cursor);
+	return (1);
 }
 
-t_input_result	paste(t_state *state)
+int	paste(t_input_context *ctx)
 {
 	int	limit_reached;
 
-	limit_reached = ft_strlen(state->input) + ft_strlen(state->clipboard)
+	limit_reached = ft_strlen(ctx->input) + ft_strlen(ctx->clipboard)
 		>= INPUT_MAX_SIZE;
 	if (limit_reached)
-		state->clipboard[INPUT_MAX_SIZE - ft_strlen(state->input)] = '\0';
+		ctx->clipboard[INPUT_MAX_SIZE - ft_strlen(ctx->input)] = '\0';
 	ft_memmove(
-		state->input + state->cursor + ft_strlen(state->clipboard),
-		state->input + state->cursor,
-		ft_strlen(state->input + state->cursor));
-	ft_memcpy(state->input + state->cursor, state->clipboard,
-		ft_strlen(state->clipboard));
-	state->cursor += ft_strlen(state->clipboard);
+		ctx->input + ctx->cursor + ft_strlen(ctx->clipboard),
+		ctx->input + ctx->cursor,
+		ft_strlen(ctx->input + ctx->cursor));
+	ft_memcpy(ctx->input + ctx->cursor, ctx->clipboard,
+		ft_strlen(ctx->clipboard));
+	ctx->cursor += ft_strlen(ctx->clipboard);
 	if (limit_reached)
 		ft_putstr(tgetstr("bl", NULL));
-	return (INPUT_NO_NEWLINE_FOUND);
+	return (1);
 }

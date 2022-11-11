@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/11 14:24:24 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/11 14:47:28 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,11 @@
 # define ERR_TERMCAP_NO_ENTRY "No database entry for current terminal type."
 # define ERR_WINDOW_TOO_SMALL "Window size is too small."
 # define ERR_LINE_READ "input read error"
+# define ERR_INPUT_CONTEXT_FAIL "failed to create input context"
 # define ERR_CHILD_PROC_FAIL "cannot make child process"
 # define ERR_CHILD_PIPE_FAIL "cannot make child pipes"
 # define ERR_PIPE_FAIL "failed to create pipe"
+# define ERR_HEREDOC_FAIL "failed to create heredoc"
 # define ERR_DUP_FAIL "failed to duplicate file descriptor"
 # define ERR_WRITE_BAD_FD "write error: Bad file descriptor"
 # define ERR_COM_NOT_FOUND "command not found"
@@ -75,18 +77,37 @@ extern int				g_last_signal;
 
 /* Types */
 
+typedef struct e_input_initializer
+{
+	char	*start_prompt;
+	char	*multiline_prompt;
+	char	*mark;
+	char	**reserved_sequences;
+}	t_input_initializer;
+
+typedef struct e_input_context
+{
+	char	*input;
+	size_t	max_length;
+	char	*mark;
+	char	**reserved_sequences;
+	char	found_reserved_sequence[BUF_SIZE + 1];
+	char	*clipboard;
+	char	*start_prompt;
+	char	*multiline_prompt;
+	size_t	cursor;
+	size_t	input_start_x;
+	size_t	input_start_y;
+	size_t	width;
+	size_t	height;
+}	t_input_context;
+
 typedef struct s_state
 {
 	char *const		*env;
-	char			*input;
-	char			*clipboard;
+	t_input_context	input_context;
 	int				continue_previous_node;
 	int				in_quotes;
-	size_t			cursor;
-	size_t			input_start_x;
-	size_t			input_start_y;
-	size_t			width;
-	size_t			height;
 	struct termios	input_conf;
 	struct termios	orig_conf;
 	char			*history[HISTORY_SIZE];

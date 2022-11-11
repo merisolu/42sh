@@ -6,6 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
+#    Updated: 2022/11/11 14:50:39 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,18 +34,24 @@ BUILT_INS_DIR = built-ins
 BUILT_INS_FILES = built_ins.c cmd_cd.c cmd_echo.c cmd_env.c cmd_setenv.c \
 				cmd_unsetenv.c cmd_exit.c
 
+CLEANUP_DIR = cleanup
+CLEANUP_FILES = cleanup.c
+
 CURSOR_DIR = cursor
 CURSOR_FILES = cursor.c cursor_utils.c
 
 DEBUG_DIR = debug
 DEBUG_FILES = ast_print_debug.c print_tokens.c
 
+DISPLAY_DIR = display
+DISPLAY_FILES = display.c
+
 ENVIRONMENT_DIR = environment
 ENVIRONMENT_FILES = environment.c environment_getters.c shlvl.c
 
 EXECUTION_DIR = execution
-EXECUTION_FILES = bin.c executor.c fork.c pipes.c redirects.c reset_io.c \
-					tokenize_and_execute.c execute_fd_aggregation.c \
+EXECUTION_FILES = bin.c executor.c fork.c pipes.c heredocs.c reset_io.c \
+					redirects.c tokenize_and_execute.c execute_fd_aggregation.c
 
 EXPANSION_DIR = expansion
 EXPANSION_FILES = expand_tilde.c expand_variables.c
@@ -53,18 +60,18 @@ HISTORY_DIR = history
 HISTORY_FILES = history.c
 
 INPUT_DIR = input
-INPUT_FILES = clipboard.c ctrl_d.c input.c input_handlers.c \
+INPUT_FILES = clipboard.c ctrl_d.c input.c input_handlers.c input_context.c \
 				movement.c movement_alt.c
 
 PARSING_DIR = parsing
 PARSING_FILES = eat_read_token.c get_token_type.c lexer.c literals.c \
 				token.c token_list.c add_to_result.c
 
+SETUP_DIR = setup
+SETUP_FILES = setup.c
+
 SIGNALS_DIR = signals
 SIGNALS_FILES = signal.c
-
-STATE_DIR = state
-STATE_FILES = state.c
 
 TERMINAL_DIR = terminal
 TERMINAL_FILES = terminal_configuration.c
@@ -76,18 +83,20 @@ SRC_FILES = main.c \
 			$(patsubst %, $(AST_DIR)/%, $(AST_FILES)) \
 			$(patsubst %, $(AUTOCOMPLETE_DIR)/%, $(AUTOCOMPLETE_FILES)) \
 			$(patsubst %, $(BUILT_INS_DIR)/%, $(BUILT_INS_FILES)) \
+			$(patsubst %, $(CLEANUP_DIR)/%, $(CLEANUP_FILES)) \
 			$(patsubst %, $(CURSOR_DIR)/%, $(CURSOR_FILES)) \
 			$(patsubst %, $(DEBUG_DIR)/%, $(DEBUG_FILES)) \
+			$(patsubst %, $(DISPLAY_DIR)/%, $(DISPLAY_FILES)) \
 			$(patsubst %, $(ENVIRONMENT_DIR)/%, $(ENVIRONMENT_FILES)) \
 			$(patsubst %, $(EXECUTION_DIR)/%, $(EXECUTION_FILES)) \
 			$(patsubst %, $(EXPANSION_DIR)/%, $(EXPANSION_FILES)) \
 			$(patsubst %, $(HISTORY_DIR)/%, $(HISTORY_FILES)) \
 			$(patsubst %, $(INPUT_DIR)/%, $(INPUT_FILES)) \
 			$(patsubst %, $(PARSING_DIR)/%, $(PARSING_FILES)) \
+			$(patsubst %, $(SETUP_DIR)/%, $(SETUP_FILES)) \
 			$(patsubst %, $(SIGNALS_DIR)/%, $(SIGNALS_FILES)) \
-			$(patsubst %, $(STATE_DIR)/%, $(STATE_FILES)) \
 			$(patsubst %, $(TERMINAL_DIR)/%, $(TERMINAL_FILES)) \
-			$(patsubst %, $(UTILS_DIR)/%, $(UTILS_FILES)) \
+			$(patsubst %, $(UTILS_DIR)/%, $(UTILS_FILES))
 
 SRCS := $(patsubst %, $(SRC_DIR)/%, $(SRC_FILES))
 
