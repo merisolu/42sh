@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/02 15:22:16 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/11 14:24:24 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@
 # define ERR_CHILD_PIPE_FAIL "cannot make child pipes"
 # define ERR_PIPE_FAIL "failed to create pipe"
 # define ERR_DUP_FAIL "failed to duplicate file descriptor"
+# define ERR_WRITE_BAD_FD "write error: Bad file descriptor"
 # define ERR_COM_NOT_FOUND "command not found"
 # define ERR_NO_PERMISSION "Permission denied"
 # define ERR_TOO_FEW_ARGS "too few arguments"
