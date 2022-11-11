@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 11:20:31 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/11 16:55:42 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/11 17:00:58 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static void	history_move_down(t_state *state)
 	while (i > 0)
 	{
 		ft_strcpy(state->history[i], state->history[i - 1]);
+		ft_strclr(state->history[i - 1]);
 		i--;
 	}
 	ft_bzero(state->history[0], INPUT_MAX_SIZE);
