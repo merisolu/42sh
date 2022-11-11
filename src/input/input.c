@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/09 15:41:45 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/11 14:35:15 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,26 @@ static void	append_input(t_input_context *ctx, char character)
 	ctx->cursor++;
 }
 
+static int	check_for_reserved_sequence(char *buffer, t_input_context *ctx)
+{
+	size_t	i;
+	size_t	length;
+
+	i = 0;
+	length = ft_null_array_len((void **)ctx->reserved_sequences);
+	while (i < length)
+	{
+		if (ft_strequ(buffer, ctx->reserved_sequences[i]))
+		{
+			ft_bzero(ctx->found_reserved_sequence, BUF_SIZE + 1);
+			ft_strcpy(ctx->found_reserved_sequence, buffer);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 static t_input_result	get_line(t_input_context *ctx)
 {
 	int		read_count;
@@ -51,6 +71,8 @@ static t_input_result	get_line(t_input_context *ctx)
 	read_count = read(STDIN_FILENO, &buffer, BUF_SIZE);
 	if (read_count == 0)
 		return (INPUT_NOTHING_READ);
+	if (check_for_reserved_sequence(buffer, ctx))
+		return (INPUT_FOUND_RESERVED_SEQUENCE);
 	i = 0;
 	while (i < read_count)
 	{

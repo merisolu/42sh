@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:14 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/09 15:37:41 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/11 14:00:11 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,9 @@ typedef enum e_input_result
 	INPUT_CALLED_FOR_EXIT = -1,
 	INPUT_NO_MARK_FOUND = 0,
 	INPUT_MARK_FOUND = 1,
-	INPUT_READ_ERROR = 2,
-	INPUT_NOTHING_READ = 3
+	INPUT_FOUND_RESERVED_SEQUENCE = 2,
+	INPUT_READ_ERROR = 3,
+	INPUT_NOTHING_READ = 4
 }	t_input_result;
 
 typedef int		t_key_handler(t_input_context *ctx);
@@ -82,7 +83,7 @@ int				handle_key(char *buffer, t_input_context *ctx);
 
 /* input_context.c */
 int				input_context_set(t_input_context *context, \
-char *start_prompt, char *multiline_prompt, char *mark);
+t_input_initializer *init);
 void			input_context_free(t_input_context *context);
 
 /* movement.c */

@@ -6,20 +6,43 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:21:45 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/10 15:10:37 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/11 14:39:39 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "setup.h"
 
+static char	**get_reserved_sequences(void)
+{
+	char	**result;
+
+	result = ft_memalloc(sizeof(char **));
+	if (!result)
+		return (NULL);
+	ft_add_to_null_array((void ***)&result, var_copy(ARROW_UP));
+	if (!result)
+		return (NULL);
+	ft_add_to_null_array((void ***)&result, var_copy(ARROW_DOWN));
+	if (!result)
+		return (NULL);
+	ft_add_to_null_array((void ***)&result, var_copy(TAB));
+	return (result);
+}
+
 static int	get_state_struct(char *const **env, t_state *result)
 {
 	size_t	i;
+	char	**reserved_sequences;
 
 	i = 0;
 	ft_bzero(result, sizeof(t_state));
+	reserved_sequences = get_reserved_sequences();
+	if (!reserved_sequences)
+		return (print_error(ERR_MALLOC_FAIL, 0));
 	if (!input_context_set(&(result->input_context),
-			PROMPT, MULTILINE_PROMPT, "\n"))
+			&(t_input_initializer){
+			PROMPT, MULTILINE_PROMPT, "\n",
+			reserved_sequences}))
 		return (print_error(ERR_INPUT_CONTEXT_FAIL, 0));
 	while (i < HISTORY_SIZE)
 	{

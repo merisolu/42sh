@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 10:56:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/10 12:01:10 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/11 14:35:33 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ struct termios *original)
 	if (!*mark)
 		return (print_error(ERR_MALLOC_FAIL, 0));
 	if (!input_context_set(ctx,
-			MULTILINE_PROMPT, MULTILINE_PROMPT, *mark))
+			&(t_input_initializer){
+			MULTILINE_PROMPT, MULTILINE_PROMPT, *mark, NULL}))
 	{
 		heredoc_cleanup(ctx, original, *mark);
 		return (print_error(ERR_INPUT_CONTEXT_FAIL, 0));

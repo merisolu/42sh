@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:29:22 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/09 15:46:28 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/11 14:23:50 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,6 @@ static t_key_handler_dispatch	*get_dispatch_table(void)
 	return ((t_key_handler_dispatch *)dispatch_table);
 }
 
-// TODO: Missing
-	// {TAB, &autocomplete},
-	// {ARROW_UP, &handle_history},
-	// {ARROW_DOWN, &handle_history},
 int	handle_key(char *buffer, t_input_context *ctx)
 {
 	size_t					i;

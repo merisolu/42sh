@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/09 11:24:12 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/11 14:25:17 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,21 @@ extern int				g_last_signal;
 
 /* Types */
 
+typedef struct e_input_initializer
+{
+	char	*start_prompt;
+	char	*multiline_prompt;
+	char	*mark;
+	char	**reserved_sequences;
+}	t_input_initializer;
+
 typedef struct e_input_context
 {
 	char	*input;
 	size_t	max_length;
 	char	*mark;
+	char	**reserved_sequences;
+	char	found_reserved_sequence[BUF_SIZE + 1];
 	char	*clipboard;
 	char	*start_prompt;
 	char	*multiline_prompt;
