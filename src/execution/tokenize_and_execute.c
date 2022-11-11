@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/11/11 14:45:01 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/11 15:02:01 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ static void	execute_tree_list(t_ast **tree_list, t_state *state)
 void	tokenize_and_execute(t_state *state)
 {
 	t_tokenizer	tokenizer;
-	t_token		*tokens;
 
 	if (ft_strisempty(state->input_context.input))
 	{
@@ -117,9 +116,8 @@ void	tokenize_and_execute(t_state *state)
 	state->input_context.cursor = ft_strlen(state->input_context.input);
 	move_cursor_to_saved_position(&(state->input_context));
 	ft_putchar('\n');
-	tokens = tokenize(state->input_context.input, &tokenizer);
-	state->in_quotes = tokenizer.in_quotes;
-	execute_tree_list(construct_ast_list(tokens), state);
+	execute_tree_list(construct_ast_list(
+			tokenize(state->input_context.input, &tokenizer)), state);
 	clear_input(&(state->input_context), 0);
 	if (!terminal_apply_config(&(state->input_conf)))
 		print_error(ERR_TERMIOS_FAIL, 1);
