@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/11 14:47:28 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/11 16:26:53 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,21 +102,6 @@ typedef struct e_input_context
 	size_t	height;
 }	t_input_context;
 
-typedef struct s_state
-{
-	char *const		*env;
-	t_input_context	input_context;
-	int				continue_previous_node;
-	int				in_quotes;
-	struct termios	input_conf;
-	struct termios	orig_conf;
-	char			*history[HISTORY_SIZE];
-	int				history_index;
-	int				last_return_value;
-	int				exit_return_value;
-	int				exiting;
-}	t_state;
-
 typedef enum e_token_type
 {
 	TOKEN_WORD = 1 << 0,
@@ -145,6 +130,22 @@ typedef enum e_token_type
 	TOKEN_EQUALS = 1 << 24,
 	TOKEN_NULL = 1 << 25
 }	t_token_type;
+
+typedef struct s_state
+{
+	char *const		*env;
+	t_input_context	input_context;
+	int				continue_previous_node;
+	int				in_quotes;
+	t_token_type	quote_type;
+	struct termios	input_conf;
+	struct termios	orig_conf;
+	char			*history[HISTORY_SIZE];
+	int				history_index;
+	int				last_return_value;
+	int				exit_return_value;
+	int				exiting;
+}	t_state;
 
 typedef struct s_token
 {
