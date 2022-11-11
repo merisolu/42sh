@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 11:20:31 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/11 16:51:09 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/11 16:55:42 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ static void	history_move_down(t_state *state)
  */
 int	history_store(char *input, t_state *state, int into_temp)
 {
-	int	target_index;
+	int		target_index;
+	size_t	copy_length;
 
 	if (into_temp)
 		target_index = 0;
@@ -54,7 +55,11 @@ int	history_store(char *input, t_state *state, int into_temp)
 	if (!into_temp)
 		history_move_down(state);
 	ft_strclr(state->history[target_index]);
-	ft_strncpy(state->history[target_index], input, ft_strlen(input) - 1);
+	if (into_temp)
+		copy_length = ft_strlen(input);
+	else
+		copy_length = ft_strlen(input) - 1;
+	ft_strncpy(state->history[target_index], input, copy_length);
 	return (1);
 }
 
