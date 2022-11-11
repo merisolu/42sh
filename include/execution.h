@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/02 15:21:49 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/11 13:07:57 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,10 @@ void	pipes_copy(int target[2], int source[2]);
 
 /* redirects.c */
 void	initialize_redir_struct(t_redir *r);
-int		reset_io(t_redir *r);
 int		handle_redirects(t_ast *redir_node, t_redir *r);
+
+/* reset_io.c */
+int		reset_io(t_redir *r);
 
 /* tokenize_and_execute.c */
 void	tokenize_and_execute(t_state *state);

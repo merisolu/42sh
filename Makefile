@@ -43,8 +43,8 @@ ENVIRONMENT_DIR = environment
 ENVIRONMENT_FILES = environment.c environment_getters.c shlvl.c
 
 EXECUTION_DIR = execution
-EXECUTION_FILES = bin.c executor.c fork.c pipes.c redirects.c \
-					tokenize_and_execute.c execute_fd_aggregation.c
+EXECUTION_FILES = bin.c executor.c fork.c pipes.c redirects.c reset_io.c \
+					tokenize_and_execute.c execute_fd_aggregation.c \
 
 EXPANSION_DIR = expansion
 EXPANSION_FILES = expand_tilde.c expand_variables.c

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/11/10 16:30:43 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/11 13:54:21 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,41 +20,6 @@ void	initialize_redir_struct(t_redir *r)
 	r->saved_in = -1;
 	r->saved_fd = -1;
 	r->fd_agg = -1;
-}
-/*
-	int fd;
-	int permissions = S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR | S_IROTH;
-	fd = open("svout", O_WRONLY | O_CREAT | O_APPEND, permissions);
-	ft_dprintf(fd, "\n***\nsvout = %d\nsvin = %d\nsvfd = %d\nfdout = \
-	%d\nfdin = %d\n", r->saved_out, r->saved_in, r->saved_fd,
-	r->fd_out, r->fd_in);
-	close(fd);
-*/
-
-int	reset_io(t_redir *r)
-{
-	if (r->saved_fd != -1)
-	{
-		if (dup2(r->saved_fd, r->fd_agg) == -1)
-			return (print_error(ERR_DUP_FAIL, 0));
-		close(r->saved_fd);
-		r->saved_fd = -1;
-	}
-	if (r->saved_out != -1)
-	{
-		if (dup2(r->saved_out, STDOUT_FILENO) == -1)
-			return (print_error(ERR_DUP_FAIL, 0));
-		close(r->saved_out);
-		r->saved_out = -1;
-	}
-	if (r->saved_in != -1)
-	{
-		if (dup2(r->saved_in, STDIN_FILENO) == -1)
-			return (print_error(ERR_DUP_FAIL, 0));
-		close(r->saved_in);
-		r->saved_in = -1;
-	}
-	return (1);
 }
 
 static int	redirect_output(t_ast *redir_node, t_redir *r)
@@ -70,7 +35,11 @@ static int	redirect_output(t_ast *redir_node, t_redir *r)
 		append = O_APPEND;
 	r->fd_out = open(redir_node->out_file, o_flags | append, permissions);
 	if (r->fd_out == -1)
-		return (print_error(ERR_NO_PERMISSION, 0));
+	{
+		if (ft_is_dir(redir_node->out_file))
+			return (print_named_error(redir_node->out_file, ERR_IS_DIR, 0));
+		return (print_named_error(redir_node->out_file, ERR_NO_PERMISSION, 0));
+	}
 	r->saved_out = dup(STDOUT_FILENO);
 	if (r->saved_out == -1)
 		return (print_error(ERR_DUP_FAIL, 0));
@@ -81,17 +50,19 @@ static int	redirect_output(t_ast *redir_node, t_redir *r)
 	return (1);
 }
 
-/*
- * TODO heredocs
- * check permissions if file cannot be opened or read
- * check error messages needed for issues with dup...
- */
-
 static int	redirect_input(t_ast *redir_node, t_redir *r)
 {
 	r->fd_in = open(redir_node->in_file, O_RDONLY);
 	if (r->fd_in == -1)
-		return (print_error(ERR_NO_SUCH_FILE_OR_DIR, 0));
+	{
+		if (access(redir_node->in_file, F_OK) == 0)
+		{
+			return (print_named_error(redir_node->in_file,
+					ERR_NO_PERMISSION, 0));
+		}
+		return (print_named_error(redir_node->in_file,
+				ERR_NO_SUCH_FILE_OR_DIR, 0));
+	}
 	r->saved_in = dup(STDIN_FILENO);
 	if (r->saved_in == -1)
 		return (print_error(ERR_DUP_FAIL, 0));
