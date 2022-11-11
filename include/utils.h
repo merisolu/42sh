@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:20 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/03 13:34:47 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/11 15:21:48 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	set_return_value(int return_value, t_state *state);
 
 /* utils.c */
 void	update_window_size(t_input_context *context);
-void	clear_input(t_input_context *context, int newline);
+void	clear_input(t_input_context *context);
 void	*var_copy(void *var);
 
 /* utils_input.c */
