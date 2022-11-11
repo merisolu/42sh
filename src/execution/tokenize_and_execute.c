@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/11/11 15:36:57 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/11 16:12:05 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void	tokenize_and_execute(t_state *state)
 		print_error(ERR_TERMIOS_FAIL, 1);
 		return ;
 	}
-	history_store(state->input_context.input, state);
+	history_store(state->input_context.input, state, 0);
 	state->input_context.cursor = ft_strlen(state->input_context.input);
 	move_cursor_to_saved_position(&(state->input_context));
 	ft_putchar('\n');

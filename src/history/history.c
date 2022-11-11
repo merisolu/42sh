@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 11:20:31 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/11 14:32:33 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/11 16:51:09 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,6 @@ static void	history_move_down(t_state *state)
 	ft_bzero(state->history[0], INPUT_MAX_SIZE);
 }
 
-static void	history_move_up(t_state *state)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < HISTORY_SIZE - 2)
-	{
-		ft_strcpy(state->history[i], state->history[i + 1]);
-		i++;
-	}
-}
-
 /*
  * Stores *input to state->history[0], as long it's not a duplicate of
  * previous history entry.
@@ -50,15 +38,23 @@ static void	history_move_up(t_state *state)
  *
  * Returns 1 on success, 0 on error.
  */
-int	history_store(char *input, t_state *state)
+int	history_store(char *input, t_state *state, int into_temp)
 {
+	int	target_index;
+
+	if (into_temp)
+		target_index = 0;
+	else
+		target_index = 1;
 	state->history_index = 0;
 	if (ft_strlen(input) == 0)
 		return (1);
-	if (ft_strequ(state->history[0], input))
+	if (ft_strequ(state->history[target_index], input))
 		return (1);
-	history_move_down(state);
-	ft_strncpy(state->history[0], input, ft_strlen(input) - 1);
+	if (!into_temp)
+		history_move_down(state);
+	ft_strclr(state->history[target_index]);
+	ft_strncpy(state->history[target_index], input, ft_strlen(input) - 1);
 	return (1);
 }
 
@@ -75,15 +71,13 @@ int	history_recall(int diff, t_state *state)
 	int	new_index;
 
 	new_index = state->history_index + diff;
-	if (state->history_index == 0 && diff > 0)
-		history_store(state->input_context.input, state);
 	if (new_index < 0 || new_index > HISTORY_SIZE - 1
 		|| (new_index != 0 && state->history[new_index][0] == '\0'))
 		return (1);
+	if (state->history_index == 0 && diff > 0)
+		history_store(state->input_context.input, state, 1);
 	ft_strclr(state->input_context.input);
 	ft_strcpy(state->input_context.input, state->history[new_index]);
-	if (new_index == 0 && diff < 0)
-		history_move_up(state);
 	state->input_context.cursor = ft_strlen(state->input_context.input);
 	state->history_index = new_index;
 	return (1);
