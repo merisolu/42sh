@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:21:06 by amann             #+#    #+#             */
-/*   Updated: 2022/10/27 11:35:17 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/11 14:58:19 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ t_token	*ast_retokenize(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (get_parser_token_type(line[i]) != type)
+		if (get_parser_token_type(line[i]) != type
+			|| type | (TOKEN_DOUBLE_QUOTE | TOKEN_SINGLE_QUOTE))
 			rt_loop(&t, &result, &type, line + i);
 		t.buff[t.buff_idx] = line[i];
 		(t.buff_idx)++;
