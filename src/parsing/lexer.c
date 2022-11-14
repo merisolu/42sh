@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/09 12:45:31 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/14 14:15:25 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,7 @@ static int	tokenize_init(t_tokenizer *t, char *line)
  *
  * Exceptional case is that we are looking at an & when expecting a > or <
  * This is needed in situations when we are dealing with fd aggregation
- *
- * TODO add a process for handling empty strings
- * (i.e. echo "" hello <- should result in 3 word tokens.)
  */
-
 static void	t_loop(char *lc, t_tokenizer *t, t_token_type *type, t_token **r)
 {
 	if (get_token_type(*lc, t->in_quotes) != *type
