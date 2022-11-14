@@ -6,22 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 10:58:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/09 15:17:17 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/11 16:58:47 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
-
-// int	handle_history(char buf[BUF_SIZE], t_state *state)
-// {
-// 	if (ft_strnequ(buf, ARROW_UP, ft_strlen(ARROW_UP)))
-// 		history_recall(1, state);
-// 	else if (ft_strnequ(buf, ARROW_DOWN, ft_strlen(ARROW_DOWN)))
-// 		history_recall(-1, state);
-// 	else
-// 		return (0);
-// 	return (3);
-// }
 
 int	handle_left(t_input_context *ctx)
 {
