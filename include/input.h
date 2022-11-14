@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:14 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/11 14:00:11 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/14 13:18:32 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,11 @@ int				handle_key(char *buffer, t_input_context *ctx);
 int				input_context_set(t_input_context *context, \
 t_input_initializer *init);
 void			input_context_free(t_input_context *context);
+
+/* input_utils.c */
+int				is_inhibited(char *input);
+void			append_input(t_input_context *ctx, char character);
+int				check_for_reserved_sequence(char *buffer, t_input_context *ctx);
 
 /* movement.c */
 int				handle_left(t_input_context *ctx);
