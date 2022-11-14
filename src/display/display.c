@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 14:28:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/08 13:58:43 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/14 11:52:58 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ void	display(t_input_context *context)
 			ERR_MALLOC_FAIL);
 	move_cursor_to_saved_position(context);
 	rows = ft_min_size_t(
-			input_get_row_count(context, ft_strlen(context->input)),
+			input_get_row_count(context, ft_strlen(context->input)
+				+ (context->input_start_x - 1)),
 			context->height);
 	if (context->input_start_y + rows >= context->height)
 		context->input_start_y -= (context->input_start_y + rows)
