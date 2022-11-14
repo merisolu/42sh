@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 15:28:55 by amann             #+#    #+#             */
-/*   Updated: 2022/11/14 15:35:16 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/14 16:40:09 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	cmd_execute_script(char *const *args, t_state *state)
 	if (!line)
 		return (1);
 	ft_strdel(&line);
+	state->running_script = TRUE;
 	while (ft_get_next_line(fd, &line))
 	{
 		if (!line)
@@ -33,6 +34,7 @@ int	cmd_execute_script(char *const *args, t_state *state)
 		tokenize_and_execute(state);
 		ft_strdel(&line);
 	}
+	state->running_script = FALSE;
 	close(fd);
 	return (0);
 }

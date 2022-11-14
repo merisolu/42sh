@@ -1,11 +1,3 @@
 #!21
-echo hello
-ls -l -t /
-ls src/built-ins | grep cmd | wc -l
-cd ~
-pwd
-cd -
-echo my name is $USER
-echo "" hello
-cat < author
-echo done
+echo this is a test
+echo done 

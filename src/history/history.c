@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 11:20:31 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/11 17:00:58 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/14 16:39:09 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	history_move_down(t_state *state)
 
 /*
  * Stores *input to state->history[0], as long it's not a duplicate of
- * previous history entry.
+ * previous history entry or we are running a script.
  *
  * Attempting to store a duplicate entry is not an error. The function will
  * instead just return 1 without adding the entry to the array.
@@ -44,6 +44,8 @@ int	history_store(char *input, t_state *state, int into_temp)
 	int		target_index;
 	size_t	copy_length;
 
+	if (state->running_script)
+		return (1);
 	if (into_temp)
 		target_index = 0;
 	else

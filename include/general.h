@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/14 15:34:02 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/14 16:50:21 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ typedef struct s_state
 	int				last_return_value;
 	int				exit_return_value;
 	int				exiting;
+	int				running_script;
 }	t_state;
 
 typedef struct s_token
