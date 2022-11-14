@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/11/11 16:12:05 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/14 10:48:02 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,10 @@ void	tokenize_and_execute(t_state *state)
 	history_store(state->input_context.input, state, 0);
 	state->input_context.cursor = ft_strlen(state->input_context.input);
 	move_cursor_to_saved_position(&(state->input_context));
-	ft_putchar('\n');
+	if (state->input_context.input_start_y == state->input_context.height)
+		ft_putchar('\n');
+	else
+		ft_putchar('\r');
 	execute_tree_list(construct_ast_list(
 			tokenize(state->input_context.input, &tokenizer)), state);
 	clear_input(&(state->input_context));
