@@ -6,13 +6,48 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/14 13:18:15 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/14 14:03:32 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
 extern int	g_last_signal;
+
+static int	check_mark_validity(t_input_context *ctx)
+{
+	int	result;
+	int	end_matches;
+	int	mark_on_separate_line;
+	int	mark_length;
+	int	input_length;
+
+	result = ft_strequ(ctx->mark, "\n");
+	if (!result)
+	{
+		mark_length = ft_strlen(ctx->mark);
+		input_length = ft_strlen(ctx->input);
+		end_matches = ft_strendequ(ctx->input, ctx->mark);
+		mark_on_separate_line = (input_length <= mark_length
+				|| ctx->input[input_length - mark_length - 1] == '\n');
+		result = (end_matches && mark_on_separate_line);
+	}
+	return (result);
+}
+
+static t_input_result	append_char(char c, t_input_context *ctx)
+{
+	if (ft_isprint(c))
+		append_input(ctx, c);
+	else if (c == '\n')
+	{
+		if (check_mark_validity(ctx) && !is_inhibited(ctx->input))
+			return (INPUT_MARK_FOUND);
+		else
+			append_input(ctx, c);
+	}
+	return (INPUT_NO_MARK_FOUND);
+}
 
 static t_input_result	get_line(t_input_context *ctx)
 {
@@ -36,13 +71,8 @@ static t_input_result	get_line(t_input_context *ctx)
 		i += handle_key_result;
 		if (i >= BUF_SIZE)
 			break ;
-		if (ft_isprint(buffer[i]) || buffer[i] == '\n')
-		{
-			append_input(ctx, buffer[i]);
-			if (ft_strendequ(ctx->input, ctx->mark)
-				&& !is_inhibited(ctx->input))
-				return (INPUT_MARK_FOUND);
-		}
+		if (append_char(buffer[i], ctx) == INPUT_MARK_FOUND)
+			return (INPUT_MARK_FOUND);
 		i++;
 	}
 	return (INPUT_NO_MARK_FOUND);
