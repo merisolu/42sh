@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 11:20:31 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/11 17:00:58 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/14 14:42:23 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,7 @@ int	history_store(char *input, t_state *state, int into_temp)
 	if (!into_temp)
 		history_move_down(state);
 	ft_strclr(state->history[target_index]);
-	if (into_temp)
-		copy_length = ft_strlen(input);
-	else
-		copy_length = ft_strlen(input) - 1;
+	copy_length = ft_strlen(input);
 	ft_strncpy(state->history[target_index], input, copy_length);
 	return (1);
 }
