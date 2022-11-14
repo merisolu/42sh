@@ -1,3 +1,4 @@
+#!/bin/sh
 while true
 do
 	leaks 21sh;

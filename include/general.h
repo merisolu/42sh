@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/11 16:26:53 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/14 15:34:02 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@
 # define FD_AGG_IN "<&"
 # define FD_AGG_OUT ">&"
 
+# define MAGIC_NUMBER "#!21\n"
+
 /* Return values */
 
 # define RETURN_NO_ACCESS 126
@@ -66,6 +68,7 @@
 # define ERR_CANNOT_GET_CWD "error retrieving current directory"
 # define ERR_INVALID_PATH "path is invalid"
 # define ERR_MALLOC_FAIL "memory allocation failed"
+# define ERR_OPEN_FAIL "open failed"
 # define ERR_TERMIOS_FAIL "failed to set terminal attributes"
 # define ERR_NO_HOME "HOME not set"
 # define ERR_NO_OLDPWD "OLDPWD not set"
@@ -77,7 +80,7 @@ extern int				g_last_signal;
 
 /* Types */
 
-typedef struct e_input_initializer
+typedef struct s_input_initializer
 {
 	char	*start_prompt;
 	char	*multiline_prompt;
@@ -85,7 +88,7 @@ typedef struct e_input_initializer
 	char	**reserved_sequences;
 }	t_input_initializer;
 
-typedef struct e_input_context
+typedef struct s_input_context
 {
 	char	*input;
 	size_t	max_length;

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:18:43 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/10 16:38:25 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/14 15:34:41 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,32 @@ char	*built_in_search(const char *partial_name)
 	return (NULL);
 }
 
+static int	check_magic_num(const char *name)
+{
+	char	magic[6];
+	int		fd;
+	int		ret;
+
+	fd = open(name, O_RDONLY);
+	if (fd == -1)
+		return (FALSE);
+	ft_bzero(magic, 6);
+	ret = read(fd, magic, 5);
+	if (ret == -1)
+		return (FALSE);
+	close(fd);
+	if (ft_strequ(magic, MAGIC_NUMBER))
+		return (TRUE);
+	return (FALSE);
+}
+
 t_cmd	*built_in_get(const char *name)
 {
 	const t_cmd_dispatch	*dispatch_table;
 	size_t					i;
 
+	if (ft_strnequ(name, "./", 2) && check_magic_num(name + 2))
+		return (&cmd_execute_script);
 	dispatch_table = get_dispatch();
 	i = 0;
 	while (dispatch_table[i].run != NULL)
