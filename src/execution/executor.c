@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/02 15:18:08 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/15 15:46:18 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,6 @@ pid_t	execute(char *const *args, t_state *state, t_ast_execution *ast)
 	pipes = ast->pipes;
 	if (!args || !(args[0]) || !env_set("_", args[0], &(state->env)))
 		return (print_error(ERR_MALLOC_FAIL, -1));
-	// if (access(path, X_OK) == -1)
-	// 	return (print_named_error(
-	// 			(char *)path, ERR_NO_PERMISSION, RETURN_NO_ACCESS
-	// 		));
 	if (built_in_get(args[0]))
 		return (built_in_run(built_in_get(args[0]), args, state, ast));
 	if (ft_strchr(args[0], '/') || (args[0][0] == '.'))
@@ -53,14 +49,13 @@ pid_t	execute(char *const *args, t_state *state, t_ast_execution *ast)
 				args[0], ERR_COM_NOT_FOUND, RETURN_COMMAND_NOT_FOUND));
 	else if (return_value == -1)
 		return (return_value);
+	if (access(path, X_OK) == -1)
+		return (print_named_error(
+				(char *)path, ERR_NO_PERMISSION, RETURN_NO_ACCESS
+			));
 	return_value = env_set("_", path, &(state->env));
 	if (return_value)
 		return_value = bin_execute(path, (char **)args, state->env, ast);
 	free(path);
 	return (return_value);
 }
-/*
-	 if (access(path, X_OK) == -1)
-		return (print_named_error(
-			(char *)path, ERR_NO_PERMISSION, RETURN_NO_ACCESS
-			));*/
