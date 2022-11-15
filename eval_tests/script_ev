@@ -1,0 +1,89 @@
+#!/bin/bash
+#!21
+
+set -x
+norminette
+echo $?
+cat -e author
+
+echo Minishell stuff....
+
+echo "Fork & execve"
+foo
+/bin/ls
+/bin/ls -laF
+/bin/ls -l -a -F
+
+echo Builtins
+echo "it works"
+echo it works
+echo -n it works
+echo he"llo     'w'o"rld
+echo "" hello
+
+setenv temp $PWD
+cd /Users
+/bin/pwd
+cd bocal
+/bin/pwd
+cd
+/bin/pwd
+cd -
+/bin/pwd
+cd ~/Documents
+/bin/pwd
+cd $temp
+unsetenv temp
+
+echo Environment management
+env
+setenv FOO bar
+env
+echo $FOO
+/usr/bin/env
+unsetenv FOO
+env
+echo $FOO
+/usr/bin/env
+
+echo PATH management
+setenv temp $PATH
+unsetenv PATH
+setenv PATH "/bin:/usr/bin"
+ls
+unsetenv PATH
+ls
+/bin/ls
+setenv PATH $temp
+unsetenv temp
+
+echo cmd line management
+" "
+"	    	"
+    /bin/ls     -l       -A
+
+echo pipes:
+ls | cat -e
+ls | sort -r | cat -e
+base64 /dev/urandom | head -c 1000 | grep 42 | wc -l | sed -e 's/1/Yes/g' -e 's/0/No/g'
+
+echo redirections:
+echo "testing redirections," > test.txt
+echo "with multiple lines" >> test.txt
+wc -c < test.txt
+rm test.txt
+
+echo separators:
+echo no newfile; ls -1; touch newfile ; echo ; echo newfile; ls -1
+rm newfile
+
+echo A lil bit of everything:
+mkdir test ; cd test ; ls -a ; ls | cat | wc -c > fifi ; cat fifi
+cd .. ; rm -rf test
+
+echo file descriptor aggregation
+rm nosuchfile 2>&-
+rm nosuchfile 2>&1 | cat -e
+echo "No dollar character" 1>&2 | cat -e
+
+echo remember to check exit, signals, heredocs...
