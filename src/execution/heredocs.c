@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 10:56:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/14 13:53:50 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/15 10:59:44 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ int	heredoc_run(t_ast *redir_node, t_pipes *pipes)
 
 	if (!ft_strequ(redir_node->in_type, REDIR_HEREDOC))
 		return (1);
+	if (pipe(pipes->read) == -1)
+		return (0);
 	if (!heredoc_setup(&ctx, redir_node->in_file, &original))
 		return (0);
 	display(&ctx);
