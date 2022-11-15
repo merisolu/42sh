@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:04:07 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/09 14:55:45 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/15 15:13:46 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,11 @@ void	input_get_line_properties(\
 	section_end = ft_dstchr(context->input + section_start, '\n',
 			ft_strlen(context->input));
 	if (section_end == ft_strlen(context->input) + 1)
-			section_end = ft_strlen(context->input);
-	section_end += section_start;
+		section_end = ft_strlen(context->input);
+	if (section_start == 0 && section_end == 0 && index > 0)
+		section_start = index;
 	if (length)
-		*length = section_end - section_start;
+		*length = section_end;
 	if (start)
 		*start = section_start;
 }
