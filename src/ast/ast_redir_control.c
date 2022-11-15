@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2022/11/01 16:27:27 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/15 16:52:30 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ static int	add_redir_out(t_ast *node, t_token *cursor)
 	if (!node->out_type)
 		return (print_error(ERR_MALLOC_FAIL, 0));
 	cursor = cursor->next;
-	if (!cursor || cursor->type != TOKEN_WORD)
-		return (print_error(ERR_SYNTAX, 0));
 	if (node->out_file)
 		ft_strdel(&(node->out_file));
 	node->out_file = ft_strdup(cursor->value);
@@ -89,6 +87,8 @@ int	ast_redirect_control(t_ast *node, t_token **cursor)
 		if (!add_redir_out(node, reset))
 			return (0);
 	}
+	else if (eat_token(cursor, TOKEN_GT, reset))
+		return (print_syntax_error(ERR_SYNTAX, reset, 0));
 	reset = *cursor;
 	if (eat_token(cursor, TOKEN_LT, reset)
 		&& eat_token(cursor, TOKEN_WORD, reset))
@@ -96,5 +96,7 @@ int	ast_redirect_control(t_ast *node, t_token **cursor)
 		if (!add_redir_in(node, &reset))
 			return (0);
 	}
+	else if (eat_token(cursor, TOKEN_LT, reset))
+		return (print_syntax_error(ERR_SYNTAX, reset, 0));
 	return (1);
 }

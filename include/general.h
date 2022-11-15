@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/14 16:50:21 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/15 17:19:30 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@
 # define ERR_TERMIOS_FAIL "failed to set terminal attributes"
 # define ERR_NO_HOME "HOME not set"
 # define ERR_NO_OLDPWD "OLDPWD not set"
-# define ERR_SYNTAX "syntax error, unexpected token"
+# define ERR_SYNTAX "syntax error near unexpected token"
 
 /* Globals */
 

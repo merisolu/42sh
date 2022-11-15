@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/11/15 15:20:32 by amann            ###   ########.fr        #
+#    Updated: 2022/11/15 17:41:14 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ SRC_DIR = ./src
 AST_DIR = ast
 AST_FILES = ast_add_args.c ast_pipe_sequence.c ast_parse_expansions.c \
 				ast_redir_control.c ast_retokenize.c ast_free.c \
-				ast_cleanse_ws.c ast_fd_agg_format_check.c grammar.c
+				ast_cleanse_ws.c ast_fd_agg_format_check.c grammar.c \
+				ast_simple_command.c
 
 AUTOCOMPLETE_DIR = autocomplete
 AUTOCOMPLETE_FILES = autocomplete.c

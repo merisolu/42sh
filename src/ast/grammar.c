@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:27:35 by amann             #+#    #+#             */
-/*   Updated: 2022/11/02 15:12:39 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/15 18:10:43 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,15 @@ static size_t	sc_count(t_token *list)
 static void	tree_list_loop(t_ast ***tree_list, t_token **cursor, size_t len)
 {
 	size_t	idx;
+	int		ret;
 
 	idx = 0;
 	while (idx < len)
 	{
-		(*tree_list)[idx] = ast_pipe_sequence(cursor);
-		if (!(*tree_list)[idx])
+		ret = ast_pipe_sequence(cursor, &((*tree_list)[idx]));
+		if (!ret)
 		{
-			ast_free(*tree_list);
+			ast_free(tree_list);
 			return ;
 		}
 		if (!*cursor)

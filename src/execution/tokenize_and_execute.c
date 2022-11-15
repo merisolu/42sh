@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/11/15 15:20:10 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/15 16:57:00 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static void	execute_tree_list(t_ast **tree_list, t_state *state)
 		i++;
 	}
 	pipe_close(pipes.read);
-	ast_free(tree_list);
+	ast_free(&tree_list);
 	free(redir);
 }
 

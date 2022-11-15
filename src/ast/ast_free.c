@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 12:58:11 by amann             #+#    #+#             */
-/*   Updated: 2022/11/02 15:12:16 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/15 16:57:52 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@
  *
  */
 
-static void	tree_free_recursion(t_ast *root)
+void	ast_free_recursion(t_ast *root)
 {
 	if (!root)
 		return ;
-	tree_free_recursion(root->left);
-	tree_free_recursion(root->right);
+	ast_free_recursion(root->left);
+	ast_free_recursion(root->right);
 	ft_free_null_array((void **) root->arg_list);
 	free(root->in_file);
 	free(root->out_file);
@@ -38,17 +38,17 @@ static void	tree_free_recursion(t_ast *root)
 	free(root);
 }
 
-void	ast_free(t_ast **tree_list)
+void	ast_free(t_ast ***tree_list)
 {
 	int	i;
 
 	i = 0;
-	while (tree_list[i])
+	while ((*tree_list)[i])
 	{
-		tree_free_recursion(tree_list[i]);
-		tree_list[i] = NULL;
+		ast_free_recursion((*tree_list)[i]);
+		(*tree_list)[i] = NULL;
 		i++;
 	}
-	free(tree_list);
-	tree_list = NULL;
+	free(*tree_list);
+	*tree_list = NULL;
 }
