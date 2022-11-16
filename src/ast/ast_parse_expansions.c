@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:18:51 by amann             #+#    #+#             */
-/*   Updated: 2022/11/11 17:02:32 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 17:28:33 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,37 +61,37 @@ static char	*expansions_loop(t_token *cursor, t_state *state)
 	return (result);
 }
 
-static int	expand_node(char **word, t_state *state)
+static bool	expand_node(char **word, t_state *state)
 {
 	t_token	*list;
 	char	*result;
 
 	if (!*word)
-		return (1);
+		return (true);
 	list = ast_retokenize(*word);
 	if (!list)
-		return (print_error(ERR_MALLOC_FAIL, 0));
+		return (print_bool_error(ERR_MALLOC_FAIL, false));
 	result = expansions_loop(list, state);
 	token_list_free(&list);
 	reset_state(state);
 	if (!result)
-		return (0);
+		return (false);
 	if (ft_strequ(*word, result))
 	{
 		free(result);
-		return (1);
+		return (true);
 	}
 	ft_strdel(word);
 	*word = result;
-	return (1);
+	return (true);
 }
 
-int	ast_parse_expansions(t_ast *root, t_state *state)
+bool	ast_parse_expansions(t_ast *root, t_state *state)
 {
 	int	i;
 
 	if (!root)
-		return (1);
+		return (true);
 	ast_parse_expansions(root->right, state);
 	if (root->node_type == AST_COMMAND_ARGS)
 	{
@@ -99,18 +99,18 @@ int	ast_parse_expansions(t_ast *root, t_state *state)
 		while (root->arg_list[i])
 		{
 			if (!expand_node(&(root->arg_list[i]), state))
-				return (0);
+				return (false);
 			i++;
 		}
-		return (1);
+		return (true);
 	}
 	if (root->node_type == AST_REDIRECTIONS)
 	{
 		if (!expand_node(&root->in_file, state)
 			|| !expand_node(&root->out_file, state))
-			return (0);
-		return (1);
+			return (false);
+		return (true);
 	}
 	ast_parse_expansions(root->left, state);
-	return (1);
+	return (true);
 }

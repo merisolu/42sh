@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:55:34 by amann             #+#    #+#             */
-/*   Updated: 2022/11/01 16:01:33 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 14:29:25 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * array, maybe this should be tidied up...
  */
 
-static int	realloc_array(char ***arr, size_t size)
+static bool	realloc_array(char ***arr, size_t size)
 {
 	char	**res;
 	size_t	i;
@@ -26,7 +26,7 @@ static int	realloc_array(char ***arr, size_t size)
 	if (!res)
 	{
 		ft_free_null_array((void **) *arr);
-		return (print_error(ERR_MALLOC_FAIL, 0));
+		return (print_bool_error(ERR_MALLOC_FAIL, false));
 	}
 	i = 0;
 	while ((*arr)[i])
@@ -36,10 +36,10 @@ static int	realloc_array(char ***arr, size_t size)
 	}
 	free(*arr);
 	*arr = res;
-	return (1);
+	return (true);
 }
 
-static int	check_cmd_end(t_token **cursor)
+static bool	check_cmd_end(t_token **cursor)
 {
 	t_token	*reset;
 
@@ -50,10 +50,10 @@ static int	check_cmd_end(t_token **cursor)
 			&& !ft_strequ((*cursor)->value, FD_AGG_IN))
 		|| (read_token(cursor, TOKEN_GT, reset)
 			&& !ft_strequ((*cursor)->value, FD_AGG_OUT)))
-		return (TRUE);
+		return (true);
 	if (ast_fd_agg_format_check(cursor))
-		return (TRUE);
-	return (FALSE);
+		return (true);
+	return (false);
 }
 
 static size_t	set_size(size_t idx)
@@ -66,7 +66,7 @@ static size_t	set_size(size_t idx)
 	return (ret);
 }
 
-int	allocate_args_array(char ***res, t_token **cursor)
+bool	allocate_args_array(char ***res, t_token **cursor)
 {
 	size_t	idx;
 	size_t	size;
@@ -81,14 +81,14 @@ int	allocate_args_array(char ***res, t_token **cursor)
 			{
 				size *= 2;
 				if (!realloc_array(res, size))
-					return (0);
+					return (false);
 			}
 			(*res)[idx] = ft_strdup((*cursor)->value);
 			if (!(*res)[idx])
-				return (print_error(ERR_MALLOC_FAIL, 0));
+				return (print_error(ERR_MALLOC_FAIL, false));
 			idx++;
 		}
 		*cursor = (*cursor)->next;
 	}
-	return (1);
+	return (true);
 }

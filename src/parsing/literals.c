@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 15:05:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/11 17:01:56 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 14:16:47 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ static int	manage_quotes(t_token *original, t_state *state, char **result)
 {
 	if (!state->in_quotes)
 	{
-		state->in_quotes = TRUE;
+		state->in_quotes = true;
 		state->quote_type = original->type;
 	}
 	else if (original->type == state->quote_type)
-		state->in_quotes = FALSE;
+		state->in_quotes = false;
 	else
 		return (add_to_result(result, original->value, state));
 	if (original && original->previous

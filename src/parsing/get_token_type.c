@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 15:49:38 by amann             #+#    #+#             */
-/*   Updated: 2022/10/27 14:14:37 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/16 14:14:56 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static const t_token_dispatch	*get_token_dispatch(void)
 	return (dispatch_table);
 }
 
-t_token_type	get_token_type(char value, int in_quotes)
+t_token_type	get_token_type(char value, bool in_quotes)
 {
 	const t_token_dispatch	*dispatch_table;
 	size_t					i;

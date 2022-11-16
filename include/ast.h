@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:04 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/15 17:42:17 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 14:45:07 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,34 +34,34 @@ typedef int	t_parse_function(t_token **cursor, t_state *state, char **result);
 /* Files */
 
 /* ast_add_args.c */
-int		allocate_args_array(char ***res, t_token **cursor);
+bool	allocate_args_array(char ***res, t_token **cursor);
 
 /* ast_cleanse_args.c */
 void	ast_cleanse_ws(t_token **list);
 
 /* ast_fd_agg_format_check.c */
-int		ast_fd_agg_format_check(t_token **cursor);
+bool	ast_fd_agg_format_check(t_token **cursor);
 
 /* ast_free.c */
 void	ast_free(t_ast ***tree_list);
 void	ast_free_recursion(t_ast *node);
 
 /* ast_parse_expansions.c */
-int		ast_parse_expansions(t_ast *root, t_state *state);
+bool	ast_parse_expansions(t_ast *root, t_state *state);
 
 /* ast_pipe_sequence.c */
-int		ast_pipe_sequence(t_token **cursor, t_ast **node);
+bool	ast_pipe_sequence(t_token **cursor, t_ast **node);
 
 /* ast_redirect_recursion.c */
-int		ast_redirect_control(t_ast *node, t_token **cursor);
+bool	ast_redirect_control(t_ast *node, t_token **cursor);
 
 /* ast_retokenize.c */
 t_token	*ast_retokenize(char *line);
 
 /* ast_simple_command.c */
-int		ast_simple_command(t_token **cursor, t_ast **node);
+bool	ast_simple_command(t_token **cursor, t_ast **node);
 
-/* grammar.c */
+/* construct_ast_list.c */
 t_ast	**construct_ast_list(t_token *cursor);
 
 #endif

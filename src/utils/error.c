@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:57:03 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/15 18:04:02 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 17:19:38 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
  * Prints the given error message to stderr, and returns the given value.
  */
 int	print_error(char *message, int return_value)
+{
+	ft_dprintf(STDERR_FILENO, "21sh: %s\n", message);
+	return (return_value);
+}
+
+bool	print_bool_error(char *message, bool return_value)
 {
 	ft_dprintf(STDERR_FILENO, "21sh: %s\n", message);
 	return (return_value);
@@ -31,16 +37,8 @@ int	print_named_error(char *name, char *message, int return_value)
 	return (return_value);
 }
 
-int	print_syntax_error(char *message, t_token *token, int return_value)
+bool	print_bool_named_error(char *name, char *message, bool return_value)
 {
-	if (token->next == NULL)
-		ft_dprintf(STDERR_FILENO, "21sh: %s `newline'\n", message);
-	else
-		ft_dprintf(
-			STDERR_FILENO,
-			"21sh: %s `%s'\n",
-			message,
-			token->next->value
-			);
+	ft_dprintf(STDERR_FILENO, "21sh: %s: %s\n", name, message);
 	return (return_value);
 }

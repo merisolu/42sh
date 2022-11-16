@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 11:59:39 by amann             #+#    #+#             */
-/*   Updated: 2022/10/27 14:14:37 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/16 14:09:56 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,19 @@
  * another sequence of tokens) without having to handle it in the calling
  * function.
  */
-int	eat_token(t_token **cursor, t_token_type type, t_token *on_fail)
+bool	eat_token(t_token **cursor, t_token_type type, t_token *on_fail)
 {
-	int	result;
+	bool	result;
 
 	if (!cursor || !(*cursor))
 	{
 		if (cursor)
 		{
 			if (type & TOKEN_NULL)
-				return (TRUE);
+				return (true);
 			*cursor = on_fail;
 		}
-		return (FALSE);
+		return (false);
 	}
 	result = (*cursor)->type & type;
 	if (result)
@@ -48,19 +48,19 @@ int	eat_token(t_token **cursor, t_token_type type, t_token *on_fail)
 	return (result);
 }
 
-int	read_token(t_token **cursor, t_token_type type, t_token *on_fail)
+bool	read_token(t_token **cursor, t_token_type type, t_token *on_fail)
 {
-	int	result;
+	bool	result;
 
 	if (!cursor || !(*cursor))
 	{
 		if (cursor)
 		{
 			if (type & TOKEN_NULL)
-				return (TRUE);
+				return (true);
 			*cursor = on_fail;
 		}
-		return (FALSE);
+		return (false);
 	}
 	result = (*cursor)->type & type;
 	if (!result)

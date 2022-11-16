@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:27:35 by amann             #+#    #+#             */
-/*   Updated: 2022/11/15 18:10:43 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 14:42:53 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static size_t	sc_count(t_token *list)
  * nothing is being piped.
  */
 
-static void	tree_list_loop(t_ast ***tree_list, t_token **cursor, size_t len)
+static void	ast_list_loop(t_ast ***ast_list, t_token **cursor, size_t len)
 {
 	size_t	idx;
 	int		ret;
@@ -42,10 +42,10 @@ static void	tree_list_loop(t_ast ***tree_list, t_token **cursor, size_t len)
 	idx = 0;
 	while (idx < len)
 	{
-		ret = ast_pipe_sequence(cursor, &((*tree_list)[idx]));
+		ret = ast_pipe_sequence(cursor, &((*ast_list)[idx]));
 		if (!ret)
 		{
-			ast_free(tree_list);
+			ast_free(ast_list);
 			return ;
 		}
 		if (!*cursor)
@@ -56,7 +56,7 @@ static void	tree_list_loop(t_ast ***tree_list, t_token **cursor, size_t len)
 
 t_ast	**construct_ast_list(t_token *cursor)
 {
-	t_ast	**tree_list;
+	t_ast	**ast_list;
 	size_t	len;
 	t_token	*reset;
 
@@ -65,11 +65,11 @@ t_ast	**construct_ast_list(t_token *cursor)
 	ast_cleanse_ws(&cursor);
 	reset = cursor;
 	len = sc_count(cursor);
-	tree_list = (t_ast **) ft_memalloc(sizeof(t_ast *) * (len + 1));
-	if (!tree_list)
+	ast_list = (t_ast **) ft_memalloc(sizeof(t_ast *) * (len + 1));
+	if (!ast_list)
 		return (NULL);
-	tree_list_loop(&tree_list, &cursor, len);
+	ast_list_loop(&ast_list, &cursor, len);
 	cursor = reset;
 	token_list_free(&cursor);
-	return (tree_list);
+	return (ast_list);
 }

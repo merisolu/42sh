@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/14 14:15:25 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/16 14:15:56 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,20 @@
  * multi-line input mode.
  */
 
-static int	check_quotes(char c, t_tokenizer *t)
+static bool	check_quotes(char c, t_tokenizer *t)
 {
 	if ((c == '\'' || c == '\"') && !(t->in_quotes))
 	{
-		t->in_quotes = TRUE;
+		t->in_quotes = true;
 		t->quote_type = c;
-		return (1);
+		return (true);
 	}
 	else if (c == t->quote_type && t->in_quotes)
 	{
-		t->in_quotes = FALSE;
-		return (1);
+		t->in_quotes = false;
+		return (true);
 	}
-	return (0);
+	return (true);
 }
 
 static int	skip_whitespace(char *line)
@@ -50,20 +50,20 @@ static int	skip_whitespace(char *line)
 	int	i;
 
 	i = 0;
-	while (line[i] && get_token_type(line[i], FALSE) == TOKEN_WHITESPACE)
+	while (line[i] && get_token_type(line[i], false) == TOKEN_WHITESPACE)
 		i++;
 	return (i);
 }
 
-static int	tokenize_init(t_tokenizer *t, char *line)
+static bool	tokenize_init(t_tokenizer *t, char *line)
 {
-	t->in_quotes = FALSE;
+	t->in_quotes = false;
 	t->quote_type = '\0';
 	t->buff_idx = 0;
 	t->buff = ft_strnew(sizeof(char) * (ft_strlen(line) + 1));
 	if (!(t->buff))
-		return (0);
-	return (1);
+		return (false);
+	return (true);
 }
 
 /*
@@ -102,7 +102,7 @@ t_token	*tokenize(char *input, t_tokenizer *tokenizer)
 		return (NULL);
 	result = NULL;
 	i = skip_whitespace(input);
-	type = get_token_type(input[i], FALSE);
+	type = get_token_type(input[i], false);
 	while (input[i])
 	{
 		check_quotes(input[i], tokenizer);

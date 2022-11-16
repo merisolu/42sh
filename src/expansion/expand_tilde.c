@@ -6,38 +6,35 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:47:12 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 12:52:39 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/16 14:08:27 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expansion.h"
 
-static int	check_first_equals(t_token *cursor)
+static bool	check_first_equals(t_token *cursor)
 {
-	int	first;
-
 	if ((cursor && cursor->type != TOKEN_EQUALS)
 		|| (cursor && cursor->type == TOKEN_EQUALS
 			&& (!cursor->previous || cursor->previous->type != TOKEN_WORD)))
-		return (FALSE);
-	first = TRUE;
+		return (false);
 	cursor = cursor->previous;
 	while (cursor)
 	{
 		if (cursor->type == TOKEN_EQUALS)
-			return (FALSE);
+			return (false);
 		cursor = cursor->previous;
 	}
-	return (first);
+	return (true);
 }
 
-static int	check_colon(t_token *cursor)
+static bool	check_colon(t_token *cursor)
 {
 	if (cursor && cursor->type != TOKEN_COLON)
-		return (FALSE);
+		return (false);
 	cursor = cursor->previous;
 	if (!cursor)
-		return (FALSE);
+		return (false);
 	while (cursor->previous)
 		cursor = cursor->previous;
 	return (eat_token(&cursor, TOKEN_WORD, cursor)

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/11 14:50:20 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/16 15:07:40 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # include "ast.h"
 # include "history.h"
 # include "terminal.h"
+# include "debug.h"
 
 /* Constants */
 # define REDIR_APPEND ">>"
@@ -67,7 +68,7 @@ int		heredoc_run(t_ast *redir_node, t_pipes *pipes);
 
 /* redirects.c */
 void	initialize_redir_struct(t_redir *r);
-int		handle_redirects(t_ast *redir_node, t_redir *r);
+bool	handle_redirects(t_ast *redir_node, t_redir *r);
 
 /* reset_io.c */
 int		reset_io(t_redir *r);

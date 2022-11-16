@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:20 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/15 18:03:10 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 17:21:37 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,12 @@
 
 /* error.c */
 int		print_error(char *message, int return_value);
+bool	print_bool_error(char *message, bool return_value);
 int		print_named_error(char *name, char *message, int return_value);
-int		print_syntax_error(char *message, t_token *token, int return_value);
+bool	print_bool_named_error(char *name, char *message, bool return_value);
+
+/* syntax_error.c */
+bool	print_bool_syntax_error(char *message, t_token *token, bool ret);
 
 /* return_value.c */
 int		get_return_value_from_status(int status);
