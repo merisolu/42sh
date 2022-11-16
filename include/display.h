@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 14:28:46 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/03 11:50:10 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/16 15:34:13 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,6 @@
 /* Files */
 
 /* display.c */
-void	display(t_input_context *context);
+void	display(t_input_context *context, int force);
 
 #endif

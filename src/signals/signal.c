@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 12:20:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/11 15:21:39 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/16 15:41:47 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ static void	handle_interrupt(t_state *state)
 	ft_putchar('\n');
 	clear_input(&(state->input_context));
 	save_cursor(&(state->input_context));
-	display(&(state->input_context));
+	display(&(state->input_context), 1);
 }
 
 static void	handle_size_change(t_state *state)
 {
 	update_window_size(&(state->input_context));
-	display(&(state->input_context));
+	display(&(state->input_context), 1);
 }
 
 void	set_signal_handling(void)

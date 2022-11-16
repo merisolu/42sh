@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/14 14:03:32 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/16 15:41:06 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ t_input_result	get_input(t_input_context *ctx)
 
 	result = get_line(ctx);
 	if (result == INPUT_NO_MARK_FOUND)
-		display(ctx);
+		display(ctx, 0);
 	if (result == INPUT_MARK_FOUND)
 		return (INPUT_MARK_FOUND);
 	else if (result == INPUT_READ_ERROR)

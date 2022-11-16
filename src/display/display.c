@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 14:28:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/14 11:52:58 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/16 15:34:42 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,34 +44,49 @@ static char	*get_formatted_input(t_input_context *context)
 	return (result);
 }
 
+void	draw(t_input_context *context, int force)
+{
+	char	*formatted_input;
+	size_t	formatted_input_length;
+
+	formatted_input = get_formatted_input(context);
+	if (formatted_input)
+	{
+		formatted_input_length = ft_strlen(formatted_input);
+		if (force || context->last_displayed_length != formatted_input_length)
+		{
+			load_cursor(context);
+			ft_putstr(formatted_input);
+		}
+		context->last_displayed_length = formatted_input_length;
+		free(formatted_input);
+	}
+	else
+	{
+		ft_printf("%s%s%s", context->start_prompt, tgetstr("cd", NULL),
+			ERR_MALLOC_FAIL);
+		context->last_displayed_length = 0;
+	}
+}
+
 /*
  * Redraws the prompt and current input.
  *
  * Redraw process:
  * 		- First the cursor position is moved back to where the start of the
- * 			prompt was printed with load_cursor().
+ * 			prompt was printed with load_cursor(). (This happens inside draw()).
  * 		- Then, the everything from the cursor to the end of the screen is
  * 			erased, and the prompt and the input are printed back on to
- * 			the screen.
+ * 			the screen. (This also happens inside draw()).
  * 		- After that, the cursor is moved to stored cursor position.
  * 		- Finally, input_start_y position is updated (the position that's
  * 			set now will be used the next time load_cursor() is called).
  */
-void	display(t_input_context *context)
+void	display(t_input_context *context, int force)
 {
 	size_t	rows;
-	char	*formatted_input;
 
-	load_cursor(context);
-	formatted_input = get_formatted_input(context);
-	if (formatted_input)
-	{
-		ft_putstr(formatted_input);
-		free(formatted_input);
-	}
-	else
-		ft_printf("%s%s%s", context->start_prompt, tgetstr("cd", NULL),
-			ERR_MALLOC_FAIL);
+	draw(context, force);
 	move_cursor_to_saved_position(context);
 	rows = ft_min_size_t(
 			input_get_row_count(context, ft_strlen(context->input)

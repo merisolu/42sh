@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/14 16:50:21 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 15:34:05 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct s_input_initializer
 typedef struct s_input_context
 {
 	char	*input;
+	size_t	last_displayed_length;
 	size_t	max_length;
 	char	*mark;
 	char	**reserved_sequences;

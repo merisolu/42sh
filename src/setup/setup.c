@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:21:45 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/14 17:01:51 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 15:41:19 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,6 @@ int	setup(char *const **env, t_state *state)
 		return (0);
 	set_signal_handling();
 	save_cursor(&(state->input_context));
-	display(&(state->input_context));
+	display(&(state->input_context), 1);
 	return (1);
 }
