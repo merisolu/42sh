@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:14 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/14 13:18:32 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/16 11:06:16 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,12 @@ typedef struct s_key_handler_dispatch
 
 /* Files */
 
-/* clipboard.c */
+/* clipboard_cut.c */
 int				cut_word(t_input_context *ctx);
 int				cut_to_cursor(t_input_context *ctx);
 int				cut_from_cursor(t_input_context *ctx);
+
+/* clipboard_paste.c */
 int				paste(t_input_context *ctx);
 
 /* ctrl_d.c */
