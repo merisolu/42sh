@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:14 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 11:06:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/16 14:39:44 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,11 @@
 
 /* Key sequences */
 
+# define CTRL_B "\x02"
 # define CTRL_D "\x04"
+# define CTRL_F "\x06"
 # define CTRL_K "\x0b"
+# define CTRL_P "\x10"
 # define CTRL_U "\x15"
 # define CTRL_W "\x17"
 # define CTRL_Y "\x19"
@@ -66,6 +69,11 @@ typedef struct s_key_handler_dispatch
 
 /* Files */
 
+/* clipboard_copy.c */
+int				copy_word(t_input_context *ctx);
+int				copy_to_cursor(t_input_context *ctx);
+int				copy_from_cursor(t_input_context *ctx);
+
 /* clipboard_cut.c */
 int				cut_word(t_input_context *ctx);
 int				cut_to_cursor(t_input_context *ctx);
@@ -73,6 +81,10 @@ int				cut_from_cursor(t_input_context *ctx);
 
 /* clipboard_paste.c */
 int				paste(t_input_context *ctx);
+
+/* clipboard_utils.c */
+void			get_word_at_cursor(t_input_context *ctx, \
+size_t *start, size_t *end);
 
 /* ctrl_d.c */
 int				ctrl_d(t_input_context *context);

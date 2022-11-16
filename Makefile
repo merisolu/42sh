@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/11/16 11:06:53 by jumanner         ###   ########.fr        #
+#    Updated: 2022/11/16 13:58:50 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,7 +60,8 @@ HISTORY_DIR = history
 HISTORY_FILES = history.c
 
 INPUT_DIR = input
-INPUT_FILES = clipboard_cut.c clipboard_paste.c ctrl_d.c \
+INPUT_FILES = clipboard_copy.c clipboard_cut.c clipboard_paste.c \
+				clipboard_utils.c ctrl_d.c \
 				input.c input_handlers.c input_context.c input_utils.c \
 				movement.c movement_alt.c
 

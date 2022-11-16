@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:29:22 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/11 14:23:50 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/16 13:35:14 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ static t_key_handler_dispatch	*get_dispatch_table(void)
 	{CTRL_K, &cut_from_cursor},
 	{CTRL_U, &cut_to_cursor},
 	{CTRL_W, &cut_word},
+	{CTRL_F, &copy_from_cursor},
+	{CTRL_B, &copy_to_cursor},
+	{CTRL_P, &copy_word},
 	{CTRL_Y, &paste},
 	{0, NULL}
 	};
