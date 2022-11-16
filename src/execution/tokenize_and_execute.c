@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/11/16 17:23:05 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 17:37:41 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	is_at_end_check(t_ast *node)
 	return (!node->right || node->right->node_type == AST_SIMPLE_COMMAND);
 }
 
-static pid_t	execute_simple_command(t_ast_execution *ctx, t_state *state)
+static pid_t	execute_simple_command(t_ast_context *ctx, t_state *state)
 {
 	pid_t	result;
 
@@ -41,7 +41,7 @@ static pid_t	execute_simple_command(t_ast_execution *ctx, t_state *state)
 	return (result);
 }
 
-static pid_t	execute_ast(t_ast_execution *ctx, t_state *state)
+static pid_t	execute_ast(t_ast_context *ctx, t_state *state)
 {
 	pid_t			result;
 
@@ -55,12 +55,12 @@ static pid_t	execute_ast(t_ast_execution *ctx, t_state *state)
 	else if (ctx->node->node_type == AST_PIPE_SEQUENCE)
 	{
 		result = execute_ast(
-				&(t_ast_execution){
+				&(t_ast_context){
 				ctx->node->left, ctx->redirect, ctx->pipes, !ctx->node->right
 			}, state);
 		if (ctx->node->right)
 			result = execute_ast(
-					&(t_ast_execution){ctx->node->right, ctx->redirect,
+					&(t_ast_context){ctx->node->right, ctx->redirect,
 					ctx->pipes, is_at_end_check(ctx->node)}, state);
 	}
 	return (result);
@@ -84,7 +84,7 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 	{
 		initialize_redir_struct(redir);
 		ast_parse_expansions(ast[i], state);
-		pid = execute_ast(&(t_ast_execution){ast[i], redir, &pipes, 0}, state);
+		pid = execute_ast(&(t_ast_context){ast[i], redir, &pipes, 0}, state);
 		if (pid != -1 && waitpid(pid, &ret, 0) != -1)
 			set_return_value(get_return_value_from_status(ret), state);
 		i++;

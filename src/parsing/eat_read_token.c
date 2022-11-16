@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 11:59:39 by amann             #+#    #+#             */
-/*   Updated: 2022/11/16 14:09:56 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 17:50:13 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
  * another sequence of tokens) without having to handle it in the calling
  * function.
  */
+
 bool	eat_token(t_token **cursor, t_token_type type, t_token *on_fail)
 {
 	bool	result;

@@ -6,16 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:55:34 by amann             #+#    #+#             */
-/*   Updated: 2022/11/16 14:29:25 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 18:15:41 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
-
-/*
- * NB: the below process will result in trailing NULL pointers in our args
- * array, maybe this should be tidied up...
- */
 
 static bool	realloc_array(char ***arr, size_t size)
 {

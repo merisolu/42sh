@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 14:15:56 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 17:49:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ static bool	tokenize_init(t_tokenizer *t, char *line)
  * Exceptional case is that we are looking at an & when expecting a > or <
  * This is needed in situations when we are dealing with fd aggregation
  */
+
 static void	t_loop(char *lc, t_tokenizer *t, t_token_type *type, t_token **r)
 {
 	if (get_token_type(*lc, t->in_quotes) != *type

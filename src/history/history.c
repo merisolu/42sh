@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 11:20:31 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/15 15:19:45 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 17:50:45 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static void	history_move_down(t_state *state)
  *
  * Returns 1 on success, 0 on error.
  */
+
 int	history_store(char *input, t_state *state, int into_temp)
 {
 	int		target_index;
@@ -68,9 +69,10 @@ int	history_store(char *input, t_state *state, int into_temp)
  * command is at index 0).
  *
  * Range is clamped between -1 and HISTORY_SIZE -1.
- * 
+ *
  * Returns 1 on success, 0 on error.
  */
+
 int	history_recall(int diff, t_state *state)
 {
 	int	new_index;

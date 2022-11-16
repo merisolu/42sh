@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 09:52:18 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 12:46:30 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/16 17:55:46 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
  * Returns a pointer to an environment variable string with the given name
  * in the environment variable array. Returns NULL if nothing was found.
  */
+
 char	**env_get_pointer(const char *name, char *const *env)
 {
 	size_t	i;
@@ -41,6 +42,7 @@ char	**env_get_pointer(const char *name, char *const *env)
  * Attempts to return the value of the environment variable matching the given
  * name. Returns NULL if nothing was found.
  */
+
 char	*env_get(const char *name, char *const *env)
 {
 	char	**temp;
@@ -55,6 +57,7 @@ char	*env_get(const char *name, char *const *env)
  * Attempts to return the value of the environment variable matching the given
  * name. Returns on_fail if nothing was found.
  */
+
 char	*env_get_or(char *name, char *on_fail, char *const *env)
 {
 	char	*temp;

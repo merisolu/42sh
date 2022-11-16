@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:18:43 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 14:03:06 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 17:57:45 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,9 @@ t_cmd	*built_in_get(const char *name)
  * is intentional to avoid calling waitpid() in execute_tree_list(). It should
  * not cause issues with error handling (at least right now).
  */
+
 pid_t	built_in_run(t_cmd cmd, char *const *args, t_state *state, \
-	t_ast_execution *ast)
+	t_ast_context *ast)
 {
 	pid_t	result;
 	int		should_fork;

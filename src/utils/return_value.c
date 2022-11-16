@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 15:16:34 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:14:49 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/16 17:47:32 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
  * Parses the given status code returned by wait() and sets
  * the last_return_value of the given state accordingly.
  */
+
 int	get_return_value_from_status(int status)
 {
 	if (WIFSIGNALED(status))
@@ -26,6 +27,7 @@ int	get_return_value_from_status(int status)
 /*
  * Sets the state's last_return_value to return_value.
  */
+
 void	set_return_value(int return_value, t_state *state)
 {
 	state->last_return_value = return_value;

@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 15:31:16 by amann             #+#    #+#             */
-/*   Updated: 2022/11/02 15:18:22 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 17:52:59 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,21 +36,6 @@ static int	check_fd_errors(t_ast *node)
 	}
 	return (1);
 }
-
-/*
- * >&- or <&-
- * >&2 or <&2
- * 2>&1
- *
- * if there are several redirections, they are processed from left to right
- *
- * [n]>&word
- * If word evaluates to one or more digits, the file descriptor denoted by n,
- * or standard output if n is not specified, shall be made to be a copy of the
- * file descriptor denoted by word;
- *
- * >& alone causes segfault
- */
 
 int	execute_filedes_aggregation(t_ast *node, t_redir *r)
 {

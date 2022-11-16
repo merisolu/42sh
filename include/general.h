@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 14:17:24 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 17:42:29 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,12 +205,12 @@ typedef struct s_redir
 	int	fd_agg;
 }	t_redir;
 
-typedef struct s_ast_execution
+typedef struct s_ast_context
 {
 	t_ast	*node;
 	t_redir	*redirect;
 	t_pipes	*pipes;
 	int		is_at_end;
-}	t_ast_execution;
+}	t_ast_context;
 
 #endif

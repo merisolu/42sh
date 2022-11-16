@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 15:07:40 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 17:41:58 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,16 @@
 /* bin.c */
 int		bin_env_find(const char *name, char *const *env, char **result);
 pid_t	bin_execute(char *path, char **args, char *const *env, \
-	t_ast_execution *ast);
+	t_ast_context *ast);
 
 /* executor.c */
-pid_t	execute(char *const *args, t_state *state, t_ast_execution *ast);
+pid_t	execute(char *const *args, t_state *state, t_ast_context *ast);
 
 /* execute_fd_aggregation.c */
 int		execute_filedes_aggregation(t_ast *node, t_redir *r);
 
 /* fork.c */
-pid_t	start_fork(t_ast_execution *ast);
+pid_t	start_fork(t_ast_context *ast);
 
 /* pipes.c */
 void	pipe_reset(int pipe[2]);

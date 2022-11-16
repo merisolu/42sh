@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/02 15:18:08 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 17:54:19 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	check_path_validity(char *path)
 	return (0);
 }
 
-pid_t	execute(char *const *args, t_state *state, t_ast_execution *ast)
+pid_t	execute(char *const *args, t_state *state, t_ast_context *ast)
 {
 	char	*path;
 	int		return_value;
@@ -59,8 +59,3 @@ pid_t	execute(char *const *args, t_state *state, t_ast_execution *ast)
 	free(path);
 	return (return_value);
 }
-/*
-	 if (access(path, X_OK) == -1)
-		return (print_named_error(
-			(char *)path, ERR_NO_PERMISSION, RETURN_NO_ACCESS
-			));*/

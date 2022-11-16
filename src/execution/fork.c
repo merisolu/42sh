@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 11:28:16 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/15 10:44:21 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/16 17:52:19 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
  * Calls fork(), sets up pipes, and resets signal handlers. Used to run both
  * built-ins and binaries.
  */
-pid_t	start_fork(t_ast_execution *ast)
+
+pid_t	start_fork(t_ast_context *ast)
 {
 	pid_t	result;
 	t_pipes	*pipes;
