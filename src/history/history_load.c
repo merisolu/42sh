@@ -6,18 +6,27 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 11:35:56 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/17 12:42:23 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/17 14:18:13 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "history.h"
 
+static void	add_lines_to_history(int file, t_state *state)
+{
+	char	*line;
+
+	while (ft_get_next_line(file, &line) != 0)
+	{
+		history_store(line, state, 0);
+		free(line);
+	}
+}
+
 void	history_load(t_state *state)
 {
 	int		file;
 	char	*path;
-	char	*line;
-	int		i;
 
 	path = get_history_file_path();
 	if (!path)
@@ -34,9 +43,7 @@ void	history_load(t_state *state)
 		print_error(ERR_CANNOT_OPEN_HISTORY, 0);
 		return ;
 	}
-	i = 0;
-	while (ft_get_next_line(file, &line) != 0)
-		history_store(line, state, 0);
+	add_lines_to_history(file, state);
 	close(file);
 	free(path);
 }
