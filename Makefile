@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/11/16 13:58:50 by jumanner         ###   ########.fr        #
+#    Updated: 2022/11/17 11:04:45 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,7 @@ EXPANSION_DIR = expansion
 EXPANSION_FILES = expand_tilde.c expand_variables.c
 
 HISTORY_DIR = history
-HISTORY_FILES = history.c
+HISTORY_FILES = history.c history_save.c
 
 INPUT_DIR = input
 INPUT_FILES = clipboard_copy.c clipboard_cut.c clipboard_paste.c \
