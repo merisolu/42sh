@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:21:26 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/08 13:25:08 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/16 17:48:48 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,13 @@ int	terminal_apply_config(struct termios *config)
  * - Enables continuous input from STDIN (O_NONBLOCK).
  * - Disables input canonicalization and echoing (ICANON and ECHO).
  * - Enables signal generation (ISIG).
- * 
+ *
  * The original termios struct is stored in *original, and the new one
  * in *input.
- * 
+ *
  * Returns 1 on success, 0 on error.
  */
+
 int	terminal_get_configs(struct termios *input, struct termios *original)
 {
 	if (tcgetattr(STDIN_FILENO, input) == -1)

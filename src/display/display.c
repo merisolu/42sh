@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 14:28:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 15:34:42 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/17 14:10:32 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
  * Returns the currently stored input in a form that can be printed to
  * the screen (has prompts, etc).
  */
+
 static char	*get_formatted_input(t_input_context *context)
 {
 	size_t	start;
@@ -73,15 +74,16 @@ void	draw(t_input_context *context, int force)
  * Redraws the prompt and current input.
  *
  * Redraw process:
- * 		- First the cursor position is moved back to where the start of the
- * 			prompt was printed with load_cursor(). (This happens inside draw()).
- * 		- Then, the everything from the cursor to the end of the screen is
- * 			erased, and the prompt and the input are printed back on to
- * 			the screen. (This also happens inside draw()).
- * 		- After that, the cursor is moved to stored cursor position.
- * 		- Finally, input_start_y position is updated (the position that's
- * 			set now will be used the next time load_cursor() is called).
+ *		- First the cursor position is moved back to where the start of the
+ *			prompt was printed with load_cursor().
+ *		- Then, the everything from the cursor to the end of the screen is
+ *			erased, and the prompt and the input are printed back on to
+ *			the screen.
+ *		- After that, the cursor is moved to stored cursor position.
+ *		- Finally, input_start_y position is updated (the position that's
+ *			set now will be used the next time load_cursor() is called).
  */
+
 void	display(t_input_context *context, int force)
 {
 	size_t	rows;

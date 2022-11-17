@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:18:43 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/14 17:27:37 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 17:57:45 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*built_in_search(const char *partial_name)
 	return (NULL);
 }
 
-static int	check_magic_num(const char *name)
+static bool	check_magic_num(const char *name)
 {
 	char	magic[6];
 	int		fd;
@@ -52,15 +52,15 @@ static int	check_magic_num(const char *name)
 
 	fd = open(name, O_RDONLY);
 	if (fd == -1)
-		return (FALSE);
+		return (false);
 	ft_bzero(magic, 6);
 	ret = read(fd, magic, 5);
 	if (ret == -1)
-		return (FALSE);
+		return (false);
 	close(fd);
 	if (ft_strequ(magic, MAGIC_NUMBER))
-		return (TRUE);
-	return (FALSE);
+		return (true);
+	return (false);
 }
 
 t_cmd	*built_in_get(const char *name)
@@ -86,8 +86,9 @@ t_cmd	*built_in_get(const char *name)
  * is intentional to avoid calling waitpid() in execute_tree_list(). It should
  * not cause issues with error handling (at least right now).
  */
+
 pid_t	built_in_run(t_cmd cmd, char *const *args, t_state *state, \
-	t_ast_execution *ast)
+	t_ast_context *ast)
 {
 	pid_t	result;
 	int		should_fork;

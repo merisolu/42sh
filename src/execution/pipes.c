@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 10:55:10 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 12:49:26 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/16 17:51:58 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 /*
  * Sets both ends of pipe to -1.
  */
+
 void	pipe_reset(int pipe[2])
 {
 	pipe[PIPE_READ] = -1;
@@ -24,6 +25,7 @@ void	pipe_reset(int pipe[2])
 /*
  * Calls close() on both ends of the pipe.
  */
+
 void	pipe_close(int pipe[2])
 {
 	close(pipe[PIPE_READ]);
@@ -33,6 +35,7 @@ void	pipe_close(int pipe[2])
 /*
  * Sets both ends of both pipes to -1.
  */
+
 void	pipes_reset(int pipe1[2], int pipe2[2])
 {
 	pipe_reset(pipe1);
@@ -43,6 +46,7 @@ void	pipes_reset(int pipe1[2], int pipe2[2])
  * Assigns target[PIPE_READ] to source[PIPE_READ], and target[PIPE_WRITE]
  * to source[PIPE_WRITE].
  */
+
 void	pipes_copy(int target[2], int source[2])
 {
 	target[PIPE_READ] = source[PIPE_READ];
@@ -53,6 +57,7 @@ void	pipes_copy(int target[2], int source[2])
  * Connects STDIN to the read end of read_pipe and STDOUT to the write end of
  * write_pipe. Returns 1 on success, 0 on error.
  */
+
 int	pipes_connect(int read_pipe[2], int write_pipe[2])
 {
 	if (read_pipe[PIPE_READ] != -1)

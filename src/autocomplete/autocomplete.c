@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/11 14:23:43 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/16 17:47:14 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static int	check_match_is_file(char *path, char *name)
  * need to be freed once it's not used. It will be NULL if no match is found,
  * or on error.
  */
+
 static int	search_path(char *path, char *partial_name, char **result)
 {
 	DIR				*dir;
@@ -78,6 +79,7 @@ static int	search_path(char *path, char *partial_name, char **result)
  *
  * *result will be NULL if no match was found, or if an error has occured.
  */
+
 static void	search_from_paths(char *const *env, char *input, char **result)
 {
 	int		search_return_value;
@@ -112,6 +114,7 @@ static void	search_from_paths(char *const *env, char *input, char **result)
  * state->input_context.input. If a match is found, the partial name will be
  * replaced with the full name.
  */
+
 int	autocomplete(t_state *state)
 {
 	char	*trimmed_input;

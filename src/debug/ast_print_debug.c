@@ -6,56 +6,58 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 15:07:12 by amann             #+#    #+#             */
-/*   Updated: 2022/11/01 15:59:10 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 17:08:38 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "debug.h"
 
-static void	print_redirs(t_ast *node)
+static void	print_redirs(t_ast *node, int fd)
 {
 	if (node->in_type)
-		ft_printf(
+		ft_dprintf(
+			fd,
 			"input (type: %s file: %s)",
 			node->in_type,
 			node->in_file
 			);
 	if (node->out_type)
-		ft_printf(
+		ft_dprintf(
+			fd,
 			" output (type: %s file: %s)",
 			node->out_type,
 			node->out_file
 			);
-	ft_putchar('\n');
+	ft_dprintf(fd, "\n");
 }
 
-static void	print_ast_node(t_ast *node, int space, int count)
+static void	print_ast_node(t_ast *node, int space, int count, int fd)
 {
 	int	i;
 
 	i = count;
-	ft_putchar('\n');
+	ft_dprintf(fd, "\n");
 	while (i < space)
 	{
-		ft_putchar(' ');
+		ft_dprintf(fd, " ");
 		i++;
 	}
 	if (node->node_type == AST_PIPE_SEQUENCE)
-		ft_putendl("PIPE_SEQUENCE");
+		ft_dprintf(fd, "PIPE_SEQUENCE\n");
 	else if (node->node_type == AST_SIMPLE_COMMAND)
-		ft_putendl("SIMPLE_COMMAND");
+		ft_dprintf(fd, "SIMPLE_COMMAND\n");
 	else if (node->node_type == AST_COMMAND_ARGS)
 	{
 		i = 0;
 		while ((node->arg_list)[i])
-			ft_printf("%s ", (char *)(node->arg_list)[i++]);
-		ft_putchar('\n');
+			ft_dprintf(fd, "%s ", (char *)(node->arg_list)[i++]);
+		ft_dprintf(fd, "\n");
 	}
 	else if (node->node_type == AST_REDIRECTIONS)
-		print_redirs(node);
+		print_redirs(node, fd);
 }
 
-static void	tree_iterate(t_ast *root, int space)
+static void	ast_iterate(t_ast *root, int space, int fd)
 {
 	int	count;
 
@@ -63,31 +65,31 @@ static void	tree_iterate(t_ast *root, int space)
 	if (root)
 	{
 		space += count;
-		tree_iterate(root->right, space);
-		print_ast_node(root, space, count);
-		tree_iterate(root->left, space);
+		ast_iterate(root->right, space, fd);
+		print_ast_node(root, space, count, fd);
+		ast_iterate(root->left, space, fd);
 	}
 	else
 		return ;
 }
 
-void	print_ast(t_ast **tree)
+void	print_ast(t_ast **ast, int fd)
 {
 	size_t	idx;
 	t_ast	*root;
 
-	ft_putendl("########## AST ##########");
-	if (!tree || !(tree[0]))
+	ft_dprintf(fd, "########## AST ##########\n");
+	if (!ast || !(ast[0]))
 	{
-		ft_putendl("something terrible happened");
+		ft_dprintf(fd, "something terrible happened");
 		return ;
 	}
 	idx = 0;
-	while (tree[idx])
+	while (ast[idx])
 	{
-		root = tree[idx];
-		tree_iterate(root, 0);
-		ft_printf("The above is tree number %zu\n", idx + 1);
+		ft_dprintf(fd, "AST number %zu:\n", idx + 1);
+		root = ast[idx];
+		ast_iterate(root, 0, fd);
 		idx++;
 	}
 }

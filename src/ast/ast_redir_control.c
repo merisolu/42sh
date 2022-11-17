@@ -6,48 +6,46 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2022/11/01 16:27:27 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 13:58:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
 
-static int	add_redir_out(t_ast *node, t_token *cursor)
+static bool	add_redir_out(t_ast *node, t_token *cursor)
 {
 	if (node->out_type)
 		ft_strdel(&(node->out_type));
 	node->out_type = ft_strdup(cursor->value);
 	if (!node->out_type)
-		return (print_error(ERR_MALLOC_FAIL, 0));
+		return (print_bool_error(ERR_MALLOC_FAIL, false));
 	cursor = cursor->next;
-	if (!cursor || cursor->type != TOKEN_WORD)
-		return (print_error(ERR_SYNTAX, 0));
 	if (node->out_file)
 		ft_strdel(&(node->out_file));
 	node->out_file = ft_strdup(cursor->value);
 	if (!node->out_file)
-		return (print_error(ERR_MALLOC_FAIL, 0));
+		return (print_bool_error(ERR_MALLOC_FAIL, false));
 	cursor = cursor->next;
-	return (1);
+	return (true);
 }
 
-static int	add_redir_in(t_ast *node, t_token **cursor)
+static bool	add_redir_in(t_ast *node, t_token **cursor)
 {
 	if (node->in_type)
 		ft_strdel(&(node->in_type));
 	node->in_type = ft_strdup((*cursor)->value);
 	if (!node->in_type)
-		return (print_error(ERR_MALLOC_FAIL, 0));
+		return (print_bool_error(ERR_MALLOC_FAIL, false));
 	*cursor = (*cursor)->next;
 	if (!(*cursor) || (*cursor)->type != TOKEN_WORD)
-		return (print_error(ERR_SYNTAX, 0));
+		return (print_bool_error(ERR_SYNTAX, false));
 	if (node->in_file)
 		ft_strdel(&(node->in_file));
 	node->in_file = ft_strdup((*cursor)->value);
 	if (!node->in_file)
-		return (print_error(ERR_MALLOC_FAIL, 0));
+		return (print_bool_error(ERR_MALLOC_FAIL, false));
 	*cursor = (*cursor)->next;
-	return (1);
+	return (true);
 }
 
 static void	add_fd_agg(t_ast *node, t_token **cursor)
@@ -55,7 +53,7 @@ static void	add_fd_agg(t_ast *node, t_token **cursor)
 	t_token	*reset;
 
 	reset = *cursor;
-	node->aggregation = TRUE;
+	node->aggregation = true;
 	if (read_token(cursor, TOKEN_GT | TOKEN_LT, reset))
 	{
 		if ((*cursor)->value[0] == '>')
@@ -70,13 +68,13 @@ static void	add_fd_agg(t_ast *node, t_token **cursor)
 	}
 	eat_token(cursor, TOKEN_GT | TOKEN_LT, reset);
 	if ((*cursor)->value[0] == '-')
-		node->agg_close = TRUE;
+		node->agg_close = true;
 	else
 		node->agg_to = ft_atoi((*cursor)->value);
 	eat_token(cursor, TOKEN_WORD, reset);
 }
 
-int	ast_redirect_control(t_ast *node, t_token **cursor)
+bool	ast_redirect_control(t_ast *node, t_token **cursor)
 {
 	t_token	*reset;
 
@@ -87,14 +85,18 @@ int	ast_redirect_control(t_ast *node, t_token **cursor)
 		&& eat_token(cursor, TOKEN_WORD, reset))
 	{
 		if (!add_redir_out(node, reset))
-			return (0);
+			return (false);
 	}
+	else if (eat_token(cursor, TOKEN_GT, reset))
+		return (print_bool_syntax_error(ERR_SYNTAX, reset, false));
 	reset = *cursor;
 	if (eat_token(cursor, TOKEN_LT, reset)
 		&& eat_token(cursor, TOKEN_WORD, reset))
 	{
 		if (!add_redir_in(node, &reset))
-			return (0);
+			return (false);
 	}
-	return (1);
+	else if (eat_token(cursor, TOKEN_LT, reset))
+		return (print_bool_syntax_error(ERR_SYNTAX, reset, false));
+	return (true);
 }

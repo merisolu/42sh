@@ -1,6 +1,4 @@
-#!/bin/bash
 #!21
-
 set -x
 norminette
 echo $?

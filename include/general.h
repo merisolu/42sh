@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 15:34:05 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/17 14:09:23 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,9 @@
 
 # include <stdlib.h>
 # include <termios.h>
+# include <stdbool.h>
 
 /* Constants */
-
-# define TRUE 1
-# define FALSE 0
 
 # define HISTORY_SIZE 50
 
@@ -72,7 +70,7 @@
 # define ERR_TERMIOS_FAIL "failed to set terminal attributes"
 # define ERR_NO_HOME "HOME not set"
 # define ERR_NO_OLDPWD "OLDPWD not set"
-# define ERR_SYNTAX "syntax error, unexpected token"
+# define ERR_SYNTAX "syntax error near unexpected token"
 
 /* Globals */
 
@@ -140,7 +138,7 @@ typedef struct s_state
 	char *const		*env;
 	t_input_context	input_context;
 	int				continue_previous_node;
-	int				in_quotes;
+	bool			in_quotes;
 	t_token_type	quote_type;
 	struct termios	input_conf;
 	struct termios	orig_conf;
@@ -149,7 +147,7 @@ typedef struct s_state
 	int				last_return_value;
 	int				exit_return_value;
 	int				exiting;
-	int				running_script;
+	bool			running_script;
 }	t_state;
 
 typedef struct s_token
@@ -162,7 +160,7 @@ typedef struct s_token
 
 typedef struct s_tokenizer
 {
-	int		in_quotes;
+	bool	in_quotes;
 	char	quote_type;
 	char	*buff;
 	size_t	buff_idx;
@@ -184,10 +182,10 @@ typedef struct s_ast
 	char			*out_file;
 	char			*in_type;
 	char			*out_type;
-	int				aggregation;
+	bool			aggregation;
 	int				agg_to;
 	int				agg_from;
-	int				agg_close;
+	bool			agg_close;
 	struct s_ast	*left;
 	struct s_ast	*right;
 }	t_ast;
@@ -208,12 +206,12 @@ typedef struct s_redir
 	int	fd_agg;
 }	t_redir;
 
-typedef struct s_ast_execution
+typedef struct s_ast_context
 {
 	t_ast	*node;
 	t_redir	*redirect;
 	t_pipes	*pipes;
 	int		is_at_end;
-}	t_ast_execution;
+}	t_ast_context;
 
 #endif

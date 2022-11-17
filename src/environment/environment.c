@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:39:49 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 12:46:56 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/16 17:56:15 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
  *
  * Returns zero if the given string is null.
  */
+
 size_t	valid_env_name_length(char *name)
 {
 	size_t	result;
@@ -46,6 +47,7 @@ size_t	valid_env_name_length(char *name)
  *
  * Returns one on success, zero otherwise.
  */
+
 int	env_set(const char *name, const char *value, char *const **env)
 {
 	size_t	new_size;
@@ -79,6 +81,7 @@ int	env_set(const char *name, const char *value, char *const **env)
  *
  * Returns one on success, zero otherwise.
  */
+
 int	env_unset(const char *name, char *const **env)
 {
 	char	**removeable;
@@ -95,6 +98,7 @@ int	env_unset(const char *name, char *const **env)
 /*
  * Prints all environment variables.
  */
+
 void	env_print_all(char *const *env)
 {
 	size_t	i;

@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/11/17 11:49:37 by jumanner         ###   ########.fr        #
+#    Updated: 2022/11/17 14:09:58 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ SRC_DIR = ./src
 AST_DIR = ast
 AST_FILES = ast_add_args.c ast_pipe_sequence.c ast_parse_expansions.c \
 				ast_redir_control.c ast_retokenize.c ast_free.c \
-				ast_cleanse_ws.c ast_fd_agg_format_check.c grammar.c
+				ast_cleanse_ws.c ast_fd_agg_format_check.c \
+				construct_ast_list.c ast_simple_command.c
 
 AUTOCOMPLETE_DIR = autocomplete
 AUTOCOMPLETE_FILES = autocomplete.c
@@ -41,7 +42,7 @@ CURSOR_DIR = cursor
 CURSOR_FILES = cursor.c cursor_utils.c
 
 DEBUG_DIR = debug
-DEBUG_FILES = ast_print_debug.c print_tokens.c
+DEBUG_FILES = ast_print_debug.c print_tokens.c check_print_ast.c
 
 DISPLAY_DIR = display
 DISPLAY_FILES = display.c
@@ -79,7 +80,7 @@ TERMINAL_DIR = terminal
 TERMINAL_FILES = terminal_configuration.c
 
 UTILS_DIR = utils
-UTILS_FILES = error.c utils.c utils_input.c return_value.c
+UTILS_FILES = error.c utils.c utils_input.c return_value.c syntax_error.c
 
 SRC_FILES = main.c \
 			$(patsubst %, $(AST_DIR)/%, $(AST_FILES)) \

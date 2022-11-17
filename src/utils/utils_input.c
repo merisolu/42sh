@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:04:07 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/15 15:13:46 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/16 17:46:28 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,15 @@
  * the given index.
  *
  * The values returned will indicate a line that either:
- * 		- Starts from the beginning of context->input and ends at '/0'.
- * 		- Starts from the beginning of context->input and ends in a '\n'.
- * 		- Starts and ends in a '\n'.
- * 		- Starts from a '\n' and ends at '/0'.
+ *		- Starts from the beginning of context->input and ends at '/0'.
+ *		- Starts from the beginning of context->input and ends in a '\n'.
+ *		- Starts and ends in a '\n'.
+ *		- Starts from a '\n' and ends at '/0'.
  *
  * The function sets the start index and the length of the line to *start and
  * *length respectively.
  */
+
 void	input_get_line_properties(\
 	t_input_context *context, size_t index, size_t *start, size_t *length)
 {
@@ -59,6 +60,7 @@ void	input_get_line_properties(\
  * starting from the given index. Manually entered newlines and line wrap
  * are both counted.
  */
+
 size_t	input_get_row_count(t_input_context *context, size_t index)
 {
 	size_t	result;

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:29:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/02 15:19:46 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/16 17:54:52 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
  *
  * Returns 1 on success, 0 on not found, -1 on failed malloc.
  */
+
 static int	bin_find(const char *name, char **paths, char **result)
 {
 	size_t	i;
@@ -60,6 +61,7 @@ static int	bin_find(const char *name, char **paths, char **result)
  *
  * Returns 1 on success, 0 on not found, -1 on malloc failure.
  */
+
 int	bin_env_find(const char *name, char *const *env, char **result)
 {
 	char	*path;
@@ -84,7 +86,8 @@ int	bin_env_find(const char *name, char *const *env, char **result)
  *
  * If fork or execve calls fail, an error message is printed to stderr.
  */
-pid_t	bin_execute(char *p, char **arg, char *const *env, t_ast_execution *ast)
+
+pid_t	bin_execute(char *p, char **arg, char *const *env, t_ast_context *ast)
 {
 	pid_t	result;
 

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:13:18 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/03 11:47:41 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/16 17:57:14 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
  *
  * After the output has been parsed, the row and column are stored in *state.
  */
+
 static int	parse_cursor(char buf[BUF_SIZE], t_input_context *context)
 {
 	size_t	x;
@@ -52,6 +53,7 @@ static int	parse_cursor(char buf[BUF_SIZE], t_input_context *context)
  *
  * The output is then parsed and saved by parse_cursor().
  */
+
 void	save_cursor(t_input_context *context)
 {
 	char	buf[BUF_SIZE];
@@ -65,6 +67,7 @@ void	save_cursor(t_input_context *context)
 /*
  * Restores the cursor to the position saved in *state.
  */
+
 void	load_cursor(t_input_context *context)
 {
 	ft_putstr(tgoto(

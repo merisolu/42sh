@@ -6,24 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 15:49:38 by amann             #+#    #+#             */
-/*   Updated: 2022/10/27 14:14:37 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/16 17:49:56 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
-/*
-expansions may need to happen after the construction of the AST, so tokens
-associated with these can be removed from this part of the process
-	{'$', TOKEN_DOLLAR},
-	{'~', TOKEN_TILDE},
-	{'"', TOKEN_DOUBLE_QUOTE},
-	{'\'', TOKEN_SINGLE_QUOTE},
-	{'{', TOKEN_CURLY_OPEN},
-	{'}', TOKEN_CURLY_CLOSED},
-	{'+', TOKEN_PLUS},
-	{'-', TOKEN_MINUS},
-*/
 
 static const t_token_dispatch	*get_token_dispatch(void)
 {
@@ -40,7 +27,7 @@ static const t_token_dispatch	*get_token_dispatch(void)
 	return (dispatch_table);
 }
 
-t_token_type	get_token_type(char value, int in_quotes)
+t_token_type	get_token_type(char value, bool in_quotes)
 {
 	const t_token_dispatch	*dispatch_table;
 	size_t					i;

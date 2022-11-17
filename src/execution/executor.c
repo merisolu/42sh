@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/15 16:06:29 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/17 14:07:38 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	find_path(char *const *args, t_state *state, char **path)
 }
 
 static int	execute_absolute_path(char *const *args, t_state *state, \
-t_ast_execution *ast)
+t_ast_context *ast)
 {
 	int	return_value;
 
@@ -49,11 +49,15 @@ t_ast_execution *ast)
 	return (bin_execute(args[0], (char **)args, state->env, ast));
 }
 
-pid_t	execute(char *const *args, t_state *state, t_ast_execution *ast)
+pid_t	execute(char *const *args, t_state *state, t_ast_context *ast)
 {
 	char	*path;
 	int		return_value;
 
+	if (args && !args[0])
+		return (-1);
+	if (!args || !(args[0]) || !env_set("_", args[0], &(state->env)))
+		return (print_error(ERR_MALLOC_FAIL, -1));
 	if (built_in_get(args[0]))
 		return (built_in_run(built_in_get(args[0]), args, state, ast));
 	if (ft_strchr(args[0], '/') || (args[0][0] == '.'))
