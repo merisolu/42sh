@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/17 14:09:23 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/17 17:35:31 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@
 # define ERR_NO_HOME "HOME not set"
 # define ERR_NO_OLDPWD "OLDPWD not set"
 # define ERR_SYNTAX "syntax error near unexpected token"
+# define ERR_BAD_FD "bad file descriptor"
 
 /* Globals */
 
@@ -174,18 +175,23 @@ typedef enum e_ast_node_type
 	AST_REDIRECTIONS
 }	t_ast_node_type;
 
+typedef struct s_ast_redir
+{
+	char	*in_file;
+	char	*out_file;
+	char	*in_type;
+	char	*out_type;
+	bool	aggregation;
+	int		agg_to;
+	int		agg_from;
+	bool	agg_close;
+}	t_ast_redir;
+
 typedef struct s_ast
 {
 	t_ast_node_type	node_type;
 	char			**arg_list;
-	char			*in_file;
-	char			*out_file;
-	char			*in_type;
-	char			*out_type;
-	bool			aggregation;
-	int				agg_to;
-	int				agg_from;
-	bool			agg_close;
+	t_ast_redir		**redirs;
 	struct s_ast	*left;
 	struct s_ast	*right;
 }	t_ast;

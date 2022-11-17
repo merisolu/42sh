@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 12:58:11 by amann             #+#    #+#             */
-/*   Updated: 2022/11/16 17:59:02 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/17 15:51:58 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ void	ast_free_recursion(t_ast *root)
 	ast_free_recursion(root->left);
 	ast_free_recursion(root->right);
 	ft_free_null_array((void **) root->arg_list);
-	free(root->in_file);
-	free(root->out_file);
-	free(root->in_type);
-	free(root->out_type);
+//	free(root->in_file);
+//	free(root->out_file);
+//	free(root->in_type);
+//	free(root->out_type);
 	free(root);
 }
 

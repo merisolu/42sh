@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/11/17 13:54:47 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/17 16:04:56 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ static pid_t	execute_simple_command(t_ast_context *ctx, t_state *state)
 		if (pipe(ctx->pipes->write) == -1)
 			print_error(ERR_PIPE_FAIL, 1);
 	}
-	if (ctx->node->right && !heredoc_run(ctx->node->right, ctx->pipes))
-		return (print_error(ERR_HEREDOC_FAIL, 1));
+//	if (ctx->node->right && !heredoc_run(ctx->node->right, ctx->pipes))
+//		return (print_error(ERR_HEREDOC_FAIL, 1));
 	if (ctx->is_at_end)
 		pipe_reset(ctx->pipes->write);
 	if (ctx->node->left && ctx->node->left->arg_list)

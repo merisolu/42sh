@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 17:41:58 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/17 17:35:49 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ pid_t	bin_execute(char *path, char **args, char *const *env, \
 pid_t	execute(char *const *args, t_state *state, t_ast_context *ast);
 
 /* execute_fd_aggregation.c */
-int		execute_filedes_aggregation(t_ast *node, t_redir *r);
+bool	execute_filedes_aggregation(t_ast_redir *redir, t_redir *r);
 
 /* fork.c */
 pid_t	start_fork(t_ast_context *ast);

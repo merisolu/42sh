@@ -6,12 +6,13 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 15:07:12 by amann             #+#    #+#             */
-/*   Updated: 2022/11/16 17:08:38 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/17 15:52:41 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "debug.h"
 
+/*
 static void	print_redirs(t_ast *node, int fd)
 {
 	if (node->in_type)
@@ -29,7 +30,7 @@ static void	print_redirs(t_ast *node, int fd)
 			node->out_file
 			);
 	ft_dprintf(fd, "\n");
-}
+}*/
 
 static void	print_ast_node(t_ast *node, int space, int count, int fd)
 {
@@ -53,8 +54,8 @@ static void	print_ast_node(t_ast *node, int space, int count, int fd)
 			ft_dprintf(fd, "%s ", (char *)(node->arg_list)[i++]);
 		ft_dprintf(fd, "\n");
 	}
-	else if (node->node_type == AST_REDIRECTIONS)
-		print_redirs(node, fd);
+//	else if (node->node_type == AST_REDIRECTIONS)
+//		print_redirs(node, fd);
 }
 
 static void	ast_iterate(t_ast *root, int space, int fd)

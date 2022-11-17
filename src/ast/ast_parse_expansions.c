@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:18:51 by amann             #+#    #+#             */
-/*   Updated: 2022/11/16 17:28:33 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/17 15:50:06 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,9 @@ bool	ast_parse_expansions(t_ast *root, t_state *state)
 	}
 	if (root->node_type == AST_REDIRECTIONS)
 	{
-		if (!expand_node(&root->in_file, state)
-			|| !expand_node(&root->out_file, state))
-			return (false);
+//		if (!expand_node(&root->in_file, state)
+//			|| !expand_node(&root->out_file, state))
+//			return (false);
 		return (true);
 	}
 	ast_parse_expansions(root->left, state);
