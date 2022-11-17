@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 17:54:19 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/17 13:54:37 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ pid_t	execute(char *const *args, t_state *state, t_ast_context *ast)
 	t_pipes	*pipes;
 
 	pipes = ast->pipes;
+	if (args && !args[0])
+		return (-1);
 	if (!args || !(args[0]) || !env_set("_", args[0], &(state->env)))
 		return (print_error(ERR_MALLOC_FAIL, -1));
 	// if (access(path, X_OK) == -1)

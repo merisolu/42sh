@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 17:39:33 by amann             #+#    #+#             */
-/*   Updated: 2022/11/16 18:10:35 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/17 14:00:49 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ bool	ast_simple_command(t_token **cursor, t_ast **node)
 		reset = *cursor;
 	}
 	ft_resize_null_array(
-			(void ***)&((*node)->left->arg_list),
-			ft_null_array_len((void **)(*node)->left->arg_list)
-			);
+		(void ***)&((*node)->left->arg_list),
+		ft_null_array_len((void **)(*node)->left->arg_list)
+		);
 	return (true);
 }
