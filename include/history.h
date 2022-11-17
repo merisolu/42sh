@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:14:31 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/17 11:04:19 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/17 12:51:38 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,15 @@
 
 # include "libft.h"
 # include "general.h"
+# include "utils.h"
+
+/* Constants */
+
+# define HISTORY_FILE ".21sh_history"
+
+/* Errors */
+
+# define ERR_CANNOT_OPEN_HISTORY "Unable to recover history from file."
 
 /* Files */
 
@@ -29,5 +38,11 @@ int		history_recall(int diff, t_state *state);
 
 /* history_save.c */
 void	history_save(t_state *state);
+
+/* history_load.c */
+void	history_load(t_state *state);
+
+/* history_utils.c */
+char	*get_history_file_path(void);
 
 #endif

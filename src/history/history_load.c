@@ -1,41 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   history_save.c                                     :+:      :+:    :+:   */
+/*   history_load.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/17 10:45:48 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/17 11:49:16 by jumanner         ###   ########.fr       */
+/*   Created: 2022/11/17 11:35:56 by jumanner          #+#    #+#             */
+/*   Updated: 2022/11/17 12:42:23 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "history.h"
 
-void	history_save(t_state *state)
+void	history_load(t_state *state)
 {
 	int		file;
 	char	*path;
+	char	*line;
 	int		i;
 
 	path = get_history_file_path();
 	if (!path)
 		return ;
-	file = open(path, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
-	if (file == -1)
+	if (!ft_is_file(path))
 	{
 		free(path);
 		return ;
 	}
-	i = HISTORY_SIZE - 1;
-	while (ft_strlen(state->history[i]) == 0 && i > 1)
-		i--;
-	while (i > 0)
+	file = open(path, O_RDONLY);
+	if (file == -1)
 	{
-		write(file, state->history[i], ft_strlen(state->history[i]));
-		write(file, "\n", 1);
-		i--;
+		free(path);
+		print_error(ERR_CANNOT_OPEN_HISTORY, 0);
+		return ;
 	}
+	i = 0;
+	while (ft_get_next_line(file, &line) != 0)
+		history_store(line, state, 0);
 	close(file);
 	free(path);
 }

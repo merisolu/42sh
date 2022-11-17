@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:21:45 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 15:41:19 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/17 12:49:14 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	setup(char *const **env, t_state *state)
 		return (print_error(ERR_TERMCAP_NO_ACCESS, 0));
 	else if (database_result == 0)
 		return (print_error(ERR_TERMCAP_NO_ENTRY, 0));
-	if (!get_state_struct(env, state))
+	if (!get_state_struct(env, state) || !set_shlvl(&(state->env)))
 		return (0);
 	if (state->input_context.width == 0 || state->input_context.height == 0)
 		return (print_error(ERR_WINDOW_TOO_SMALL, 0));
@@ -79,8 +79,7 @@ int	setup(char *const **env, t_state *state)
 		return (print_error(ERR_TERMIOS_FAIL, 0));
 	if (!terminal_apply_config(&(state->input_conf)))
 		return (print_error(ERR_TERMIOS_FAIL, 0));
-	if (!set_shlvl(&(state->env)))
-		return (0);
+	history_load(state);
 	set_signal_handling();
 	save_cursor(&(state->input_context));
 	display(&(state->input_context), 1);
