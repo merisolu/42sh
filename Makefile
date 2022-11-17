@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/11/17 14:09:58 by amann            ###   ########.fr        #
+#    Updated: 2022/11/17 15:55:13 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,8 +32,9 @@ AUTOCOMPLETE_DIR = autocomplete
 AUTOCOMPLETE_FILES = autocomplete.c
 
 BUILT_INS_DIR = built-ins
-BUILT_INS_FILES = built_ins.c cmd_cd.c cmd_echo.c cmd_env.c cmd_setenv.c \
-				cmd_unsetenv.c cmd_exit.c cmd_execute_script.c
+BUILT_INS_FILES = built_ins.c built_ins_flags.c cmd_cd.c cmd_echo.c cmd_env.c \
+				cmd_setenv.c cmd_unsetenv.c cmd_exit.c \
+				cmd_execute_script.c
 
 CLEANUP_DIR = cleanup
 CLEANUP_FILES = cleanup.c

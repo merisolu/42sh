@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 17:40:59 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/17 15:56:58 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@
 
 /* Types */
 
-typedef int	t_cmd(char *const *args, t_state *state);
+typedef void	t_arg_parse_error(char c);
+
+typedef int		t_cmd(char *const *args, t_state *state);
 
 typedef struct s_cmd_dispatch
 {
@@ -33,7 +35,7 @@ typedef struct s_cmd_dispatch
 
 typedef struct s_cmd_env
 {
-	int		exclusive;
+	char	flags[1];
 	char	**args;
 	char	**env;
 }	t_cmd_env;
@@ -45,6 +47,10 @@ t_cmd	*built_in_get(const char *name);
 char	*built_in_search(const char *partial_name);
 pid_t	built_in_run(t_cmd cmd, char *const *args, t_state *state, \
 		t_ast_context *ast);
+
+/* built_ins_flags.c */
+int		parse_flags(char *const *args, char *valid, char *found, \
+		t_arg_parse_error *on_error);
 
 /* cmd_echo.c */
 int		cmd_echo(char *const *args, t_state *state);
