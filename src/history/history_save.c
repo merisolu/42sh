@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 10:45:48 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/17 11:49:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/18 14:27:47 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	history_save(t_state *state)
 	path = get_history_file_path();
 	if (!path)
 		return ;
-	file = open(path, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
+	file = open(path, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
 	if (file == -1)
 	{
 		free(path);
