@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 10:56:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/17 15:54:28 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/18 13:23:21 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	heredoc_cleanup(t_input_context *ctx, struct termios *original)
 	if (!terminal_apply_config(original))
 		print_error(ERR_INPUT_CONTEXT_FAIL, 0);
 }
-/*
+
 static int	heredoc_setup(t_input_context *ctx, char *mark, \
 struct termios *original)
 {
@@ -40,7 +40,7 @@ struct termios *original)
 	}
 	save_cursor(ctx);
 	return (1);
-}*/
+}
 
 static void	input_loop(t_input_context *ctx)
 {
@@ -57,18 +57,39 @@ static void	input_loop(t_input_context *ctx)
 	}
 }
 
+static t_ast_redir	*find_heredoc_node(t_ast *node)
+{
+	t_ast_redir	*res;
+	size_t		i;
+
+	if (!node->redirs || !node->redirs[0])
+		return (NULL);
+	res = NULL;
+	i = 0;
+	while (node->redirs[i])
+	{
+		if (ft_strequ(node->redirs[i]->in_type, REDIR_HEREDOC))
+			res = node->redirs[i];
+		i++;
+	}
+	return (res);
+}
+
 int	heredoc_run(t_ast *redir_node, t_pipes *pipes)
 {
 	t_input_context	ctx;
 	struct termios	original;
+	t_ast_redir		*heredoc_node;
 
-	(void) redir_node;
-	//if (!ft_strequ(redir_node->in_type, REDIR_HEREDOC))
-	//	return (1);
+	heredoc_node = find_heredoc_node(redir_node);
+	if (!heredoc_node)
+		return (1);
+	if (!ft_strequ(heredoc_node->in_type, REDIR_HEREDOC))
+		return (1);
 	if (pipe(pipes->read) == -1)
 		return (0);
-//	if (!heredoc_setup(&ctx, redir_node->in_file, &original))
-//		return (0);
+	if (!heredoc_setup(&ctx, heredoc_node->in_file, &original))
+		return (0);
 	display(&ctx, 0);
 	input_loop(&ctx);
 	if (!terminal_apply_config(&original))

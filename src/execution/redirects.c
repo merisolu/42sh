@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/11/17 18:09:15 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/18 13:27:07 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,15 @@ bool	handle_redirects(t_ast *node, t_redir *r)
 	while (node->redirs[i])
 	{
 		if (node->redirs[i]->out_type
-				&& !redirect_output(node->redirs[i], r))
-				return (false);
+			&& !redirect_output(node->redirs[i], r))
+			return (false);
 		if (node->redirs[i]->in_type
-				&& !redirect_input(node->redirs[i], r))
-				return (false);
+			&& !ft_strequ(node->redirs[i]->in_type, REDIR_HEREDOC)
+			&& !redirect_input(node->redirs[i], r))
+			return (false);
 		if (node->redirs[i]->aggregation
-				&& !execute_filedes_aggregation(node->redirs[i], r))
-				return (false);
+			&& !execute_filedes_aggregation(node->redirs[i], r))
+			return (false);
 		i++;
 	}
 	return (true);
