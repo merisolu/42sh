@@ -6,31 +6,40 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 15:07:12 by amann             #+#    #+#             */
-/*   Updated: 2022/11/17 15:52:41 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/18 15:41:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "debug.h"
 
-/*
+
 static void	print_redirs(t_ast *node, int fd)
 {
-	if (node->in_type)
-		ft_dprintf(
-			fd,
-			"input (type: %s file: %s)",
-			node->in_type,
-			node->in_file
-			);
-	if (node->out_type)
-		ft_dprintf(
-			fd,
-			" output (type: %s file: %s)",
-			node->out_type,
-			node->out_file
-			);
-	ft_dprintf(fd, "\n");
-}*/
+	int i;
+	if (node->redirs)
+	{
+		i = 0;
+		while (node->redirs[i])
+		{
+			if (node->redirs[i]->in_type)
+				ft_dprintf(
+					fd,
+					"input (type: %s file: %s)",
+					node->redirs[i]->in_type,
+					node->redirs[i]->in_file
+					);
+			if (node->redirs[i]->out_type)
+				ft_dprintf(
+					fd,
+					" output (type: %s file: %s)",
+					node->redirs[i]->out_type,
+					node->redirs[i]->out_file
+					);
+			i++;
+		}
+			ft_dprintf(fd, "\n");
+	}
+}
 
 static void	print_ast_node(t_ast *node, int space, int count, int fd)
 {
@@ -54,8 +63,8 @@ static void	print_ast_node(t_ast *node, int space, int count, int fd)
 			ft_dprintf(fd, "%s ", (char *)(node->arg_list)[i++]);
 		ft_dprintf(fd, "\n");
 	}
-//	else if (node->node_type == AST_REDIRECTIONS)
-//		print_redirs(node, fd);
+	else if (node->node_type == AST_REDIRECTIONS)
+		print_redirs(node, fd);
 }
 
 static void	ast_iterate(t_ast *root, int space, int fd)

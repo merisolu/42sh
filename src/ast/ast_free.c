@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 12:58:11 by amann             #+#    #+#             */
-/*   Updated: 2022/11/18 13:38:01 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/18 13:59:38 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@
  * Heap memory:
  * - the node itself
  * - **arg_list (array of strings)
- * - *file (if a redirection node)
+ * - **redirs (array of structs)
+ * - *file (in the redir structs)
+ *
  *
  */
 
