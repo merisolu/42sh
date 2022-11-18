@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2022/11/18 16:02:25 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/18 18:03:42 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ static bool	add_fd_agg(t_ast *node, t_token **cursor, t_token *reset)
 	return (add_redir_struct(&(node->redirs), res));
 }
 
-//TODO update ast_free
-
 static bool	add_redir_in(t_ast *node, t_token **cursor)
 {
 	t_ast_redir	*res;
@@ -107,13 +105,12 @@ bool	ast_redirect_control(t_ast *node, t_token **cursor)
 {
 	t_token	*reset;
 
-	if ((*cursor)->type != TOKEN_GT && (*cursor)->type != TOKEN_LT
-		&& !ast_fd_agg_format_check(cursor))
-		return (true);
+//	if ((*cursor)->type != TOKEN_GT && (*cursor)->type != TOKEN_LT
+//		&& !ast_fd_agg_format_check(cursor))
+//		return (true);
 	reset = *cursor;
 	if (ast_fd_agg_format_check(cursor) && !add_fd_agg(node, cursor, reset))
 			return (false);
-//	print_tokens(*cursor);
 	reset = *cursor;
 	if (*cursor	&& !ast_fd_agg_format_check(cursor)
 		&& (!(*cursor)->next || (*cursor)->next->type != TOKEN_WORD))
