@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:55:34 by amann             #+#    #+#             */
-/*   Updated: 2022/11/18 18:15:45 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/18 18:20:05 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,8 @@ static bool	check_cmd_end(t_token **cursor)
 		*cursor = reset;
 		return (true);
 	}
-	if (eat_token(cursor, TOKEN_WORD, reset)
-		&& eat_token(cursor, TOKEN_GT | TOKEN_LT, reset)
-		&& eat_token(cursor, TOKEN_WORD, reset))
-	{
-		*cursor = reset;
-		if (ft_strequ((*cursor)->next->value, FD_AGG_IN) || ft_strequ((*cursor)->next->value, FD_AGG_OUT))
-		{
-			return (true);
-		}
-	}
+	if (ast_fd_agg_format_check(cursor))
+		return (true);
 	return (false);
 }
 
