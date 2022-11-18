@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/11/17 13:54:47 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/18 11:23:41 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,12 +110,12 @@ void	tokenize_and_execute(t_state *state)
 		print_error(ERR_TERMIOS_FAIL, 1);
 		return ;
 	}
-	history_store(state->input_context.input, state, 0);
 	state->input_context.cursor = ft_strlen(state->input_context.input);
 	move_cursor_to_saved_position(&(state->input_context));
 	ft_putchar('\n');
 	execute_ast_list(construct_ast_list(
 			tokenize(state->input_context.input, &tokenizer)), state);
+	history_store(state->input_context.input, state, 0);
 	clear_input(&(state->input_context));
 	if (!terminal_apply_config(&(state->input_conf)))
 		print_error(ERR_TERMIOS_FAIL, 1);
