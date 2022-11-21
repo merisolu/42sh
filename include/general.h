@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/17 17:35:31 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/21 13:03:36 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@
 # define ERR_NO_OLDPWD "OLDPWD not set"
 # define ERR_SYNTAX "syntax error near unexpected token"
 # define ERR_BAD_FD "bad file descriptor"
+# define ERR_AMBIGUOUS_REDIR "ambiguous redirect"
 
 /* Globals */
 

@@ -6,13 +6,13 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 14:54:25 by amann             #+#    #+#             */
-/*   Updated: 2022/11/18 18:02:10 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/21 13:31:10 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static bool	ft_isdigit_str(char *s)
+bool	ft_isdigit_str(char *s)
 {
 	int	i;
 
@@ -31,9 +31,12 @@ static bool	format_helper(t_token **cursor)
 	if (ft_isdigit_str((*cursor)->value)
 		&& (ft_strequ((*cursor)->next->value, FD_AGG_IN)
 			|| ft_strequ((*cursor)->next->value, FD_AGG_OUT))
-		&& (ft_isdigit_str((*cursor)->next->next->value)
-			|| ft_strequ((*cursor)->next->next->value, "-")))
+		&& (*cursor)->next->next->type == TOKEN_WORD)
+	{
+		if (ft_strequ((*cursor)->value, "1"))
+			*cursor = (*cursor)->next;
 		return (true);
+	}
 	return (false);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2022/11/18 18:21:43 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/21 13:24:39 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ bool	add_redir_struct(t_ast_redir ***redirs, t_ast_redir *new)
 	return (true);
 }
 
-
 static bool	add_fd_agg(t_ast *node, t_token **cursor, t_token *reset)
 {
 	t_ast_redir	*res;
@@ -60,7 +59,11 @@ static bool	add_fd_agg(t_ast *node, t_token **cursor, t_token *reset)
 	if ((*cursor)->value[0] == '-')
 		res->agg_close = true;
 	else
+	{
+		if (!ft_isdigit_str((*cursor)->value))
+			return (print_bool_named_error((*cursor)->value, ERR_AMBIGUOUS_REDIR, false));
 		res->agg_to = ft_atoi((*cursor)->value);
+	}
 	eat_token(cursor, TOKEN_WORD, reset);
 	return (add_redir_struct(&(node->redirs), res));
 }
