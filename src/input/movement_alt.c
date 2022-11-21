@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 13:40:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/09 15:17:34 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/21 13:11:22 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,10 @@ int	handle_alt_right(t_input_context *ctx)
 int	handle_alt_up(t_input_context *ctx)
 {
 	size_t	column;
+	size_t	start;
 	size_t	length;
 	size_t	distance;
+	size_t	variance;
 
 	column = cursor_get_column(ctx, ctx->cursor);
 	distance = ft_dstrchr(ctx->input, '\n', ctx->cursor);
@@ -66,9 +68,13 @@ int	handle_alt_up(t_input_context *ctx)
 		ctx->cursor = ctx->cursor - (distance + 1);
 	else
 		ctx->cursor = 0;
-	input_get_line_properties(ctx, ctx->cursor, NULL, &length);
+	input_get_line_properties(ctx, ctx->cursor, &start, &length);
 	if (ctx->cursor >= length - column + 1)
 		ctx->cursor -= length - column + 1;
+	variance = ft_strlen(ctx->start_prompt) - ft_strlen(ctx->multiline_prompt);
+	if (start == 0 && ctx->cursor > variance
+		&& ft_strlen(ctx->start_prompt) > ft_strlen(ctx->multiline_prompt))
+		ctx->cursor -= variance;
 	return (1);
 }
 
