@@ -6,13 +6,13 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 14:54:25 by amann             #+#    #+#             */
-/*   Updated: 2022/11/16 14:01:29 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/21 13:58:02 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static bool	ft_isdigit_str(char *s)
+bool	ft_isdigit_str(char *s)
 {
 	int	i;
 
@@ -31,16 +31,20 @@ static bool	format_helper(t_token **cursor)
 	if (ft_isdigit_str((*cursor)->value)
 		&& (ft_strequ((*cursor)->next->value, FD_AGG_IN)
 			|| ft_strequ((*cursor)->next->value, FD_AGG_OUT))
-		&& (ft_isdigit_str((*cursor)->next->next->value)
-			|| ft_strequ((*cursor)->next->next->value, "-")))
+		&& (*cursor)->next->next->type == TOKEN_WORD)
+	{
+		if (ft_strequ((*cursor)->value, "1"))
+			*cursor = (*cursor)->next;
 		return (true);
+	}
 	return (false);
 }
 
 static bool	format_helper_part_two(t_token **cursor)
 {
-	if (ft_isdigit_str((*cursor)->next->value)
-		|| ft_strequ((*cursor)->next->value, "-"))
+	if ((*cursor)->next
+		&& (ft_isdigit_str((*cursor)->next->value)
+			|| ft_strequ((*cursor)->next->value, "-")))
 		return (true);
 	return (false);
 }

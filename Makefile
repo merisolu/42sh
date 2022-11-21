@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/11/18 11:20:19 by jumanner         ###   ########.fr        #
+#    Updated: 2022/11/21 15:03:08 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,10 +23,10 @@ LIB_PATH = ./libft/libft.a
 SRC_DIR = ./src
 
 AST_DIR = ast
-AST_FILES = ast_add_args.c ast_pipe_sequence.c ast_parse_expansions.c \
-				ast_redir_control.c ast_retokenize.c ast_free.c \
-				ast_cleanse_ws.c ast_fd_agg_format_check.c \
-				construct_ast_list.c ast_simple_command.c
+AST_FILES = ast_add_args.c ast_pipe_sequence.c ast_redir_control.c \
+				ast_retokenize.c ast_free.c ast_cleanse_ws.c \
+				ast_fd_agg_format_check.c construct_ast_list.c \
+				ast_simple_command.c ast_add_fd_aggregation.c
 
 AUTOCOMPLETE_DIR = autocomplete
 AUTOCOMPLETE_FILES = autocomplete.c
@@ -56,7 +56,8 @@ EXECUTION_FILES = bin.c executor.c fork.c pipes.c heredocs.c reset_io.c \
 					redirects.c tokenize_and_execute.c execute_fd_aggregation.c
 
 EXPANSION_DIR = expansion
-EXPANSION_FILES = expand_tilde.c expand_variables.c
+EXPANSION_FILES = expand_tilde.c expand_variables.c expand_node.c \
+				  	parse_expansions.c
 
 HISTORY_DIR = history
 HISTORY_FILES = history.c history_save.c history_load.c history_utils.c

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 12:58:11 by amann             #+#    #+#             */
-/*   Updated: 2022/11/16 17:59:02 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/18 13:59:38 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,36 @@
  * Heap memory:
  * - the node itself
  * - **arg_list (array of strings)
- * - *file (if a redirection node)
+ * - **redirs (array of structs)
+ * - *file (in the redir structs)
+ *
  *
  */
 
 void	ast_free_recursion(t_ast *root)
 {
+	size_t	i;
+
 	if (!root)
 		return ;
 	ast_free_recursion(root->left);
 	ast_free_recursion(root->right);
-	ft_free_null_array((void **) root->arg_list);
-	free(root->in_file);
-	free(root->out_file);
-	free(root->in_type);
-	free(root->out_type);
-	free(root);
+	root->arg_list = ft_free_null_array((void **) root->arg_list);
+	if (root->redirs)
+	{
+		i = 0;
+		while (root->redirs[i])
+		{
+			ft_strdel(&(root->redirs[i]->in_file));
+			ft_strdel(&(root->redirs[i]->out_file));
+			ft_strdel(&(root->redirs[i]->in_type));
+			ft_strdel(&(root->redirs[i]->out_type));
+			ft_memdel((void **)&root->redirs[i]);
+			i++;
+		}
+		ft_memdel((void **)&(root->redirs));
+	}
+	ft_memdel((void **)&root);
 }
 
 void	ast_free(t_ast ***ast_list)

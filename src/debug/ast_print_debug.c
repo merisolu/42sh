@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 15:07:12 by amann             #+#    #+#             */
-/*   Updated: 2022/11/16 17:08:38 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/21 13:53:35 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,29 @@
 
 static void	print_redirs(t_ast *node, int fd)
 {
-	if (node->in_type)
-		ft_dprintf(
-			fd,
-			"input (type: %s file: %s)",
-			node->in_type,
-			node->in_file
-			);
-	if (node->out_type)
-		ft_dprintf(
-			fd,
-			" output (type: %s file: %s)",
-			node->out_type,
-			node->out_file
-			);
+	int	i;
+
+	if (!node->redirs)
+		return ;
+	i = 0;
+	while (node->redirs[i])
+	{
+		if (node->redirs[i]->in_type)
+			ft_dprintf(
+				fd,
+				"input (type: %s file: %s)",
+				node->redirs[i]->in_type,
+				node->redirs[i]->in_file
+				);
+		if (node->redirs[i]->out_type)
+			ft_dprintf(
+				fd,
+				" output (type: %s file: %s)",
+				node->redirs[i]->out_type,
+				node->redirs[i]->out_file
+				);
+		i++;
+	}
 	ft_dprintf(fd, "\n");
 }
 
