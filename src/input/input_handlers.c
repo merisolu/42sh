@@ -6,13 +6,13 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:29:22 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 13:35:14 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/21 13:41:33 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-static int	handle_delete_char(t_input_context *ctx)
+static int	handle_backspace(t_input_context *ctx)
 {
 	if (ctx->cursor == 0)
 		return (0);
@@ -23,10 +23,19 @@ static int	handle_delete_char(t_input_context *ctx)
 	return (1);
 }
 
+static int	handle_delete(t_input_context *ctx)
+{
+	if (ctx->cursor >= ft_strlen(ctx->input))
+		return (1);
+	ft_strcpy(ctx->input + ctx->cursor, ctx->input + ctx->cursor + 1);
+	return (1);
+}
+
 static t_key_handler_dispatch	*get_dispatch_table(void)
 {
 	static const t_key_handler_dispatch	dispatch_table[] = {
-	{BACKSPACE, &handle_delete_char},
+	{BACKSPACE, &handle_backspace},
+	{DELETE, &handle_delete},
 	{ARROW_LEFT, &handle_left},
 	{ARROW_RIGHT, &handle_right},
 	{HOME_KEY, &handle_home},

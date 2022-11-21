@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:14 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 14:39:44 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/21 13:35:46 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # define ARROW_LEFT_ALT "\033b"
 # define ARROW_RIGHT_ALT "\033f"
 # define BACKSPACE "\x7F"
+# define DELETE "\x1B[3~"
 # define HOME_KEY "\x1B[H"
 # define END_KEY "\x1B[F"
 # define TAB "\t"
