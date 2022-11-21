@@ -6,18 +6,18 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 15:07:12 by amann             #+#    #+#             */
-/*   Updated: 2022/11/18 16:35:30 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/21 13:53:35 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "debug.h"
 
-
 static void	print_redirs(t_ast *node, int fd)
 {
-	int i;
+	int	i;
+
 	if (!node->redirs)
-		return;
+		return ;
 	i = 0;
 	while (node->redirs[i])
 	{

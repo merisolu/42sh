@@ -6,12 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2022/11/21 13:24:39 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/21 14:31:31 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
-#include "debug.h"
 
 bool	add_redir_struct(t_ast_redir ***redirs, t_ast_redir *new)
 {
@@ -33,39 +32,6 @@ bool	add_redir_struct(t_ast_redir ***redirs, t_ast_redir *new)
 		return (print_bool_error(ERR_MALLOC_FAIL, false));
 	(*redirs)[len] = new;
 	return (true);
-}
-
-static bool	add_fd_agg(t_ast *node, t_token **cursor, t_token *reset)
-{
-	t_ast_redir	*res;
-
-	res = (t_ast_redir *) ft_memalloc(sizeof(t_ast_redir));
-	if (!res)
-		return (print_bool_error(ERR_MALLOC_FAIL, false));
-	res->aggregation = true;
-	if (read_token(cursor, TOKEN_GT | TOKEN_LT, reset))
-	{
-		if ((*cursor)->value[0] == '>')
-			res->agg_from = STDOUT_FILENO;
-		if ((*cursor)->value[0] == '<')
-			res->agg_from = STDIN_FILENO;
-	}
-	else
-	{
-		res->agg_from = ft_atoi((*cursor)->value);
-		eat_token(cursor, TOKEN_WORD, reset);
-	}
-	eat_token(cursor, TOKEN_GT | TOKEN_LT, reset);
-	if ((*cursor)->value[0] == '-')
-		res->agg_close = true;
-	else
-	{
-		if (!ft_isdigit_str((*cursor)->value))
-			return (print_bool_named_error((*cursor)->value, ERR_AMBIGUOUS_REDIR, false));
-		res->agg_to = ft_atoi((*cursor)->value);
-	}
-	eat_token(cursor, TOKEN_WORD, reset);
-	return (add_redir_struct(&(node->redirs), res));
 }
 
 static bool	add_redir_in(t_ast *node, t_token **cursor)
@@ -109,10 +75,10 @@ bool	ast_redirect_control(t_ast *node, t_token **cursor)
 	t_token	*reset;
 
 	reset = *cursor;
-	if (ast_fd_agg_format_check(cursor) && !add_fd_agg(node, cursor, reset))
-			return (false);
+	if (ast_fd_agg_format_check(cursor) && !ast_add_fd_agg(node, cursor, reset))
+		return (false);
 	reset = *cursor;
-	if (*cursor	&& !ast_fd_agg_format_check(cursor)
+	if (*cursor && !ast_fd_agg_format_check(cursor)
 		&& (!(*cursor)->next || (*cursor)->next->type != TOKEN_WORD))
 		return (print_bool_syntax_error(ERR_SYNTAX, reset, false));
 	if (!ast_fd_agg_format_check(cursor)

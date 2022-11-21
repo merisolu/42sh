@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:12 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:55:51 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/21 14:15:11 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,14 @@
 /* Files */
 
 /* expand_tilde.c */
-int	expand_tilde(t_token **cursor, t_state *state, char **result);
+int		expand_tilde(t_token **cursor, t_state *state, char **result);
 
 /* expand_variables.c */
-int	expand_variable(t_token **cursor, t_state *state, char **result);
+int		expand_variable(t_token **cursor, t_state *state, char **result);
 
+/* expand_node.c */
+bool	expand_node(char **word, t_state *state);
+
+/* parse_expansions.c */
+bool	parse_expansions(t_ast *root, t_state *state);
 #endif

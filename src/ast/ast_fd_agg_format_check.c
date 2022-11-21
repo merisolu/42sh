@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 14:54:25 by amann             #+#    #+#             */
-/*   Updated: 2022/11/21 13:31:10 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/21 13:58:02 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static bool	format_helper_part_two(t_token **cursor)
 {
 	if ((*cursor)->next
 		&& (ft_isdigit_str((*cursor)->next->value)
-		|| ft_strequ((*cursor)->next->value, "-")))
+			|| ft_strequ((*cursor)->next->value, "-")))
 		return (true);
 	return (false);
 }

@@ -6,11 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:18:51 by amann             #+#    #+#             */
-/*   Updated: 2022/11/18 13:10:17 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/21 14:18:27 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ast.h"
+#include "expansion.h"
 
 static void	reset_state(t_state *state)
 {
@@ -61,7 +61,7 @@ static char	*expansions_loop(t_token *cursor, t_state *state)
 	return (result);
 }
 
-static bool	expand_node(char **word, t_state *state)
+bool	expand_node(char **word, t_state *state)
 {
 	t_token	*list;
 	char	*result;
@@ -83,39 +83,5 @@ static bool	expand_node(char **word, t_state *state)
 	}
 	ft_strdel(word);
 	*word = result;
-	return (true);
-}
-
-bool	ast_parse_expansions(t_ast *root, t_state *state)
-{
-	int	i;
-
-	if (!root)
-		return (true);
-	ast_parse_expansions(root->right, state);
-	if (root->node_type == AST_COMMAND_ARGS)
-	{
-		i = 0;
-		while (root->arg_list[i])
-		{
-			if (!expand_node(&(root->arg_list[i]), state))
-				return (false);
-			i++;
-		}
-		return (true);
-	}
-	if (root->node_type == AST_REDIRECTIONS && root->redirs)
-	{
-		i = 0;
-		while (root->redirs[i])
-		{
-			if (!expand_node(&(root->redirs[i]->in_file), state)
-				|| !expand_node(&(root->redirs[i]->out_file), state))
-				return (false);
-			i++;
-		}
-		return (true);
-	}
-	ast_parse_expansions(root->left, state);
 	return (true);
 }

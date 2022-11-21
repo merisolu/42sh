@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:04 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/21 12:58:35 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/21 14:35:21 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,19 @@ void	ast_cleanse_ws(t_token **list);
 /* ast_fd_agg_format_check.c */
 bool	ast_fd_agg_format_check(t_token **cursor);
 
+/* ast_add_fd_aggregation.c */
+bool	ast_add_fd_agg(t_ast *node, t_token **cursor, t_token *reset);
+
 /* ast_free.c */
 void	ast_free(t_ast ***tree_list);
 void	ast_free_recursion(t_ast *node);
 
-/* ast_parse_expansions.c */
-bool	ast_parse_expansions(t_ast *root, t_state *state);
-
 /* ast_pipe_sequence.c */
 bool	ast_pipe_sequence(t_token **cursor, t_ast **node);
 
-/* ast_redirect_recursion.c */
+/* ast_redirect_control.c */
 bool	ast_redirect_control(t_ast *node, t_token **cursor);
+bool	add_redir_struct(t_ast_redir ***redirs, t_ast_redir *new);
 
 /* ast_retokenize.c */
 t_token	*ast_retokenize(char *line);
