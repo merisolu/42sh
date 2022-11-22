@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/11/21 15:02:45 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/22 18:16:09 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static pid_t	execute_ast(t_ast_context *ctx, t_state *state)
 	return (result);
 }
 
-static void	execute_ast_list(t_ast **ast, t_state *state)
+static void	execute_at_list(t_ast **ast, t_state *state)
 {
 	t_redir	*redir;
 	t_pipes	pipes;

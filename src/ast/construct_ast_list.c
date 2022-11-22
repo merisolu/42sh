@@ -6,20 +6,22 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:27:35 by amann             #+#    #+#             */
-/*   Updated: 2022/11/16 17:58:40 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/22 16:15:12 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
 
-static size_t	sc_count(t_token *list)
+static size_t	ast_count(t_token *list)
 {
 	size_t	res;
 
 	res = 1;
 	while (list)
 	{
-		if (list->type == TOKEN_SEMICOLON)
+		if ((list->type == TOKEN_SEMICOLON)
+			|| ((list->type == TOKEN_AMPERSAND || list->type == TOKEN_PIPE)
+			&& ft_strlen(list->value) == 2))
 			res++;
 		list = list->next;
 	}
@@ -64,7 +66,7 @@ t_ast	**construct_ast_list(t_token *cursor)
 		return (NULL);
 	ast_cleanse_ws(&cursor);
 	reset = cursor;
-	len = sc_count(cursor);
+	len = ast_count(cursor);
 	ast_list = (t_ast **) ft_memalloc(sizeof(t_ast *) * (len + 1));
 	if (!ast_list)
 		return (NULL);

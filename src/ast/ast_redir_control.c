@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2022/11/21 14:31:31 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/22 17:55:30 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,9 @@ bool	ast_redirect_control(t_ast *node, t_token **cursor)
 	t_token	*reset;
 
 	reset = *cursor;
+	if (!eat_token(cursor, TOKEN_LT | TOKEN_GT, reset))
+		return (true);
+	*cursor = reset;
 	if (ast_fd_agg_format_check(cursor) && !ast_add_fd_agg(node, cursor, reset))
 		return (false);
 	reset = *cursor;

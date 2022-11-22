@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:55:34 by amann             #+#    #+#             */
-/*   Updated: 2022/11/21 13:57:25 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/22 16:32:23 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,14 @@ static bool	check_cmd_end(t_token **cursor)
 	reset = *cursor;
 	if (eat_token(
 			cursor,
-			TOKEN_SEMICOLON | TOKEN_PIPE | TOKEN_LT | TOKEN_GT,
+			TOKEN_SEMICOLON | TOKEN_PIPE | TOKEN_LT | TOKEN_GT | TOKEN_AMPERSAND,
 			reset
 		))
 	{
 		*cursor = reset;
+		if (read_token(cursor, TOKEN_AMPERSAND, reset)
+			&& ft_strlen((*cursor)->value) != 2)
+			return (false);
 		return (true);
 	}
 	if (ast_fd_agg_format_check(cursor))
