@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:01:54 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/21 15:14:33 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/23 10:56:05 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ size_t	cursor_get_row(t_input_context *context, size_t index)
 
 	result = input_get_row_count(context, index + (context->input_start_x - 1));
 	result -= (context->input[index] == '\n');
-	result += context->input_start_y - 1;
+	if (context->input_start_y > 0)
+		result += context->input_start_y - 1;
 	return (result);
 }
 
