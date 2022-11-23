@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 12:55:17 by amann             #+#    #+#             */
-/*   Updated: 2022/11/22 18:29:54 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/23 14:14:34 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ static bool	pipe_recursion(t_token **cursor, t_ast **node)
 }
 
 //nb syntax error if more than 2 pipes or ampersands
+//create a function called something like is_logic_op() to check the
+//value of the token and make if checks shorter
 
 bool	ast_pipe_sequence(t_token **cursor, t_ast **node)
 {
@@ -59,23 +61,14 @@ bool	ast_pipe_sequence(t_token **cursor, t_ast **node)
 	if (!ast_simple_command(cursor, &((*node)->left)))
 		return (false);
 	reset = *cursor;
-	if (!*cursor || read_token(cursor, TOKEN_SEMICOLON, reset)
-		|| (read_token(cursor, TOKEN_AMPERSAND | TOKEN_PIPE, reset) && (ft_strlen(reset->value) == 2)))
+	if (!*cursor || ast_is_separator(*cursor))
 	{
-		if (read_token(cursor, TOKEN_AMPERSAND | TOKEN_PIPE, reset))
-			(*node)->and_or = (*cursor)->type;
-		eat_token(cursor, TOKEN_SEMICOLON | TOKEN_AMPERSAND | TOKEN_PIPE, reset);
+		(*node)->and_or = ast_is_logic_op(cursor, reset);
 		return (true);
 	}
 	if (!pipe_recursion(cursor, node))
 		return (false);
-	if (*cursor && ((*cursor)->type == TOKEN_SEMICOLON
-			|| ((*cursor)->type == TOKEN_PIPE && ft_strlen((*cursor)->value) == 2)
-			|| ((*cursor)->type == TOKEN_AMPERSAND && ft_strlen((*cursor)->value) == 2)))
-	{
-		if ((*cursor)->type == TOKEN_PIPE || (*cursor)->type == TOKEN_AMPERSAND)
-			(*node)->and_or = (*cursor)->type;
-		*cursor = (*cursor)->next;
-	}
+	if (*cursor && ast_is_separator(*cursor))
+		(*node)->and_or = ast_is_logic_op(cursor, reset);
 	return (true);
 }

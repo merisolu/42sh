@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/11/22 14:11:49 by amann            ###   ########.fr        #
+#    Updated: 2022/11/23 13:40:44 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,8 @@ AST_DIR = ast
 AST_FILES = ast_add_args.c ast_pipe_sequence.c ast_redir_control.c \
 				ast_retokenize.c ast_free.c ast_cleanse_ws.c \
 				ast_fd_agg_format_check.c construct_ast_list.c \
-				ast_simple_command.c ast_add_fd_aggregation.c
+				ast_simple_command.c ast_add_fd_aggregation.c \
+				ast_is_separator.c
 
 AUTOCOMPLETE_DIR = autocomplete
 AUTOCOMPLETE_FILES = autocomplete.c
