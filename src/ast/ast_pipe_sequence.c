@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 12:55:17 by amann             #+#    #+#             */
-/*   Updated: 2022/11/23 14:14:34 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/23 17:27:06 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static bool	last_pipe(t_token **cursor)
 	return (true);
 }
 
-static bool	pipe_recursion(t_token **cursor, t_ast **node)
+static bool	pipe_recursion(t_token **cursor, t_ast **node, int recurs_count)
 {
 	if (last_pipe(cursor))
 	{
@@ -38,7 +38,7 @@ static bool	pipe_recursion(t_token **cursor, t_ast **node)
 			return (false);
 		return (true);
 	}
-	if (!ast_pipe_sequence(cursor, &((*node)->right)))
+	if (!ast_pipe_sequence(cursor, &((*node)->right), recurs_count))
 		return (false);
 	return (true);
 }
@@ -47,7 +47,13 @@ static bool	pipe_recursion(t_token **cursor, t_ast **node)
 //create a function called something like is_logic_op() to check the
 //value of the token and make if checks shorter
 
-bool	ast_pipe_sequence(t_token **cursor, t_ast **node)
+/*
+ * variable recurs_count is needed for logical operator handling. We only want
+ * to add values to the root node so we increment it each time
+ * recursion happens and then check its value before updating the node
+ */
+
+bool	ast_pipe_sequence(t_token **cursor, t_ast **node, int recurs_count)
 {
 	t_token	*reset;
 
@@ -66,9 +72,9 @@ bool	ast_pipe_sequence(t_token **cursor, t_ast **node)
 		(*node)->and_or = ast_is_logic_op(cursor, reset);
 		return (true);
 	}
-	if (!pipe_recursion(cursor, node))
+	if (!pipe_recursion(cursor, node, ++recurs_count))
 		return (false);
-	if (*cursor && ast_is_separator(*cursor))
-		(*node)->and_or = ast_is_logic_op(cursor, reset);
+	if (*cursor && ast_is_separator(*cursor) && recurs_count == 1)
+			(*node)->and_or = ast_is_logic_op(cursor, reset);
 	return (true);
 }

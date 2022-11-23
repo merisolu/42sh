@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:27:35 by amann             #+#    #+#             */
-/*   Updated: 2022/11/22 16:15:12 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/23 16:54:46 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static size_t	ast_count(t_token *list)
 	{
 		if ((list->type == TOKEN_SEMICOLON)
 			|| ((list->type == TOKEN_AMPERSAND || list->type == TOKEN_PIPE)
-			&& ft_strlen(list->value) == 2))
+				&& ft_strlen(list->value) == 2))
 			res++;
 		list = list->next;
 	}
@@ -44,7 +44,7 @@ static void	ast_list_loop(t_ast ***ast_list, t_token **cursor, size_t len)
 	idx = 0;
 	while (idx < len)
 	{
-		ret = ast_pipe_sequence(cursor, &((*ast_list)[idx]));
+		ret = ast_pipe_sequence(cursor, &((*ast_list)[idx]), 0);
 		if (!ret)
 		{
 			ast_free(ast_list);

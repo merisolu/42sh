@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:55:34 by amann             #+#    #+#             */
-/*   Updated: 2022/11/22 16:32:23 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/23 16:18:33 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,13 @@ static bool	realloc_array(char ***arr, size_t size)
 static bool	check_cmd_end(t_token **cursor)
 {
 	t_token	*reset;
+	int		x;
 
+	x = TOKEN_SEMICOLON | TOKEN_PIPE | TOKEN_LT | TOKEN_GT | TOKEN_AMPERSAND;
 	reset = *cursor;
 	if (eat_token(
 			cursor,
-			TOKEN_SEMICOLON | TOKEN_PIPE | TOKEN_LT | TOKEN_GT | TOKEN_AMPERSAND,
+			x,
 			reset
 		))
 	{

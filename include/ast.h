@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:04 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/23 14:07:23 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/23 16:55:08 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ bool	ast_is_separator(t_token *token);
 int		ast_is_logic_op(t_token **cursor, t_token *reset);
 
 /* ast_pipe_sequence.c */
-bool	ast_pipe_sequence(t_token **cursor, t_ast **node);
+bool	ast_pipe_sequence(t_token **cursor, t_ast **node, int x);
 
 /* ast_redirect_control.c */
 bool	ast_redirect_control(t_ast *node, t_token **cursor);

@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 17:39:33 by amann             #+#    #+#             */
-/*   Updated: 2022/11/22 16:27:28 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/23 16:23:41 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,7 @@ bool	ast_simple_command(t_token **cursor, t_ast **node)
 	(*node)->node_type = AST_SIMPLE_COMMAND;
 	while (cursor && *cursor)
 	{
-		if (!*cursor || read_token(cursor, TOKEN_SEMICOLON | TOKEN_PIPE, reset)
-			|| (read_token(cursor, TOKEN_AMPERSAND, reset) && ft_strlen((*cursor)->value) == 2))
+		if (!*cursor || ast_is_separator(*cursor) || (*cursor)->type == TOKEN_PIPE)
 			break ;
 		if (!args_node(cursor, &((*node)->left))
 			|| !redirects_node(cursor, &((*node)->right)))

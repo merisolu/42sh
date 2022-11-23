@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 13:50:29 by amann             #+#    #+#             */
-/*   Updated: 2022/11/22 18:20:02 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/23 16:14:19 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@
  * and 1 (or any other positive integer) is false (i.e. something went wrong)
  */
 
-int		cmd_true(char *const *args, t_state *state)
+int	cmd_true(char *const *args, t_state *state)
 {
 	(void)args;
 	(void)state;
 	return (0);
 }
 
-int		cmd_false(char *const *args, t_state *state)
+int	cmd_false(char *const *args, t_state *state)
 {
 	(void)args;
 	(void)state;
