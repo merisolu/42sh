@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/11/23 14:25:24 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/23 15:28:32 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,21 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 		pid = execute_ast(&(t_ast_context){ast[i], redir, &pipes, 0}, state);
 		if (pid != -1 && waitpid(pid, &ret, 0) != -1)
 			set_return_value(get_return_value_from_status(ret), state);
-		//ft_printf("%d\n", ast[i]->and_or);
-		i++;
+
+//		ft_printf("and_or = %d | return = %d\n", ast[i]->and_or, state->last_return_value);
+		if (ast[i]->and_or == TOKEN_AMPERSAND && state->last_return_value == 0)
+			i++;
+		else if (ast[i]->and_or == TOKEN_AMPERSAND && state->last_return_value != 0)
+		{
+			while (ast[i] && ast[i]->and_or == TOKEN_AMPERSAND)
+				i++;
+			if (ast[i])
+				i++;
+		}
+		else
+		{
+			i++;
+		}
 	}
 	pipe_close(pipes.read);
 	check_print_ast(ast, state, true);
