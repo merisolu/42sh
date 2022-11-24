@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 12:55:17 by amann             #+#    #+#             */
-/*   Updated: 2022/11/24 17:15:17 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/24 17:18:13 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ bool	ast_pipe_sequence(t_token **cursor, t_ast **node, int recurs_count)
 		return (false);
 	if (*cursor && ast_is_separator(*cursor) && recurs_count == 1)
 	{
-		ft_putendl("here");
 		if (!handle_logic_ops(cursor, node))
 			return (print_bool_sep_error(ERR_SYNTAX, *cursor, false));
 		eat_token(cursor, TOKEN_AMPERSAND | TOKEN_PIPE | TOKEN_SEMICOLON, reset);
