@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:27:19 by amann             #+#    #+#             */
-/*   Updated: 2022/11/23 17:06:30 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/24 16:17:28 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,14 @@ int	ast_is_logic_op(t_token **cursor, t_token *reset)
 {
 	int	ret;
 
+	(void) reset;
 	if (!*cursor)
 		return (0);
 	if (((*cursor)->type == TOKEN_AMPERSAND || (*cursor)->type == TOKEN_PIPE)
 		&& (ft_strlen((*cursor)->value) == 2))
 	{
 		ret = (*cursor)->type;
-		eat_token(cursor, TOKEN_AMPERSAND | TOKEN_PIPE, reset);
 		return (ret);
 	}
-	eat_token(cursor, TOKEN_SEMICOLON, reset);
 	return (0);
 }

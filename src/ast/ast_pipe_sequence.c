@@ -6,11 +6,14 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 12:55:17 by amann             #+#    #+#             */
-/*   Updated: 2022/11/23 17:27:06 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/24 17:05:41 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
+
+
+
 #include "debug.h"
 
 static bool	last_pipe(t_token **cursor)
@@ -61,7 +64,7 @@ bool	ast_pipe_sequence(t_token **cursor, t_ast **node, int recurs_count)
 		return (false);
 	reset = *cursor;
 	*node = (t_ast *) ft_memalloc(sizeof(t_ast));
-	if (!node)
+	if (!*node)
 		return (print_bool_error(ERR_MALLOC_FAIL, false));
 	(*node)->node_type = AST_PIPE_SEQUENCE;
 	if (!ast_simple_command(cursor, &((*node)->left)))
@@ -69,12 +72,30 @@ bool	ast_pipe_sequence(t_token **cursor, t_ast **node, int recurs_count)
 	reset = *cursor;
 	if (!*cursor || ast_is_separator(*cursor))
 	{
-		(*node)->and_or = ast_is_logic_op(cursor, reset);
+		if (!((*node)->left->left))
+				return (print_bool_sep_error(ERR_SYNTAX, *cursor, false));
+		if (ast_is_logic_op(cursor, reset))
+		{
+			if (!(*cursor)->next || !((*node)->left->left))
+				return (print_bool_sep_error(ERR_SYNTAX, *cursor, false));
+			(*node)->and_or = (*cursor)->type;
+		}
+		eat_token(cursor, TOKEN_AMPERSAND | TOKEN_PIPE | TOKEN_SEMICOLON, reset);
 		return (true);
 	}
 	if (!pipe_recursion(cursor, node, ++recurs_count))
 		return (false);
 	if (*cursor && ast_is_separator(*cursor) && recurs_count == 1)
-			(*node)->and_or = ast_is_logic_op(cursor, reset);
+	{
+		ft_putendl("here");
+		if (ast_is_logic_op(cursor, reset))
+		{
+			if (!(*cursor)->next || !((*node)->left->left))
+				return (print_bool_sep_error(ERR_SYNTAX, *cursor, false));
+			(*node)->and_or = (*cursor)->type;
+		}
+	//	(*node)->and_or = ast_is_logic_op(cursor, reset);
+		eat_token(cursor, TOKEN_AMPERSAND | TOKEN_PIPE | TOKEN_SEMICOLON, reset);
+	}
 	return (true);
 }
