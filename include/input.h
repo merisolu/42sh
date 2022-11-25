@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:14 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/21 13:35:46 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/25 13:57:41 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,9 +112,13 @@ int				handle_right(t_input_context *ctx);
 int				handle_home(t_input_context *ctx);
 int				handle_end(t_input_context *ctx);
 
-/* movement_alt.c */
+/* movement_alt_horizontal.c */
+
 int				handle_alt_left(t_input_context *ctx);
 int				handle_alt_right(t_input_context *ctx);
+
+/* movement_alt_vertical.c */
+
 int				handle_alt_up(t_input_context *ctx);
 int				handle_alt_down(t_input_context *ctx);
 
