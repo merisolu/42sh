@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 14:28:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/17 14:10:32 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/25 14:52:18 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ static char	*get_formatted_input(t_input_context *context)
 	while (result && index < ft_strlen(context->input))
 	{
 		input_get_line_properties(context, index, &start, &length);
-		if (start != 0)
+		if (start != 0 && (length > 0
+				|| (length == 0 && context->input[index - 1] == '\n')))
 			result = ft_strjoinfree(result, context->multiline_prompt);
 		if (!result)
 			break ;
