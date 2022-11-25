@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:55:34 by amann             #+#    #+#             */
-/*   Updated: 2022/11/23 16:18:33 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/25 15:32:41 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,20 @@ static bool	realloc_array(char ***arr, size_t size)
 static bool	check_cmd_end(t_token **cursor)
 {
 	t_token	*reset;
-	int		x;
 
-	x = TOKEN_SEMICOLON | TOKEN_PIPE | TOKEN_LT | TOKEN_GT | TOKEN_AMPERSAND;
 	reset = *cursor;
-	if (eat_token(
-			cursor,
-			x,
-			reset
-		))
+	if (eat_token(cursor, TOKEN_LT | TOKEN_GT, reset))
 	{
 		*cursor = reset;
-		if (read_token(cursor, TOKEN_AMPERSAND, reset)
-			&& ft_strlen((*cursor)->value) != 2)
-			return (false);
 		return (true);
 	}
 	if (ast_fd_agg_format_check(cursor))
+		return (true);
+	if (ast_is_separator(*cursor))
+		return (true);
+	if (!check_separator_syntax(*cursor))
+		return (true);
+	if ((*cursor)->type == TOKEN_PIPE && ft_strlen((*cursor)->value) == 1)
 		return (true);
 	return (false);
 }

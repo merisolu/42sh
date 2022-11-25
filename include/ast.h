@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:04 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/24 17:12:53 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/25 15:21:30 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	ast_free_recursion(t_ast *node);
 /* ast_is_separator.c */
 bool	ast_is_separator(t_token *token);
 int		ast_is_logic_op(t_token **cursor);
+bool	check_separator_syntax(t_token *cursor);
 
 /* ast_pipe_sequence.c */
 bool	ast_pipe_sequence(t_token **cursor, t_ast **node, int x);
@@ -69,5 +70,10 @@ bool	ast_simple_command(t_token **cursor, t_ast **node);
 
 /* construct_ast_list.c */
 t_ast	**construct_ast_list(t_token *cursor);
+
+/* ast_end.c */
+bool	check_end(t_token **cursor, t_token *reset, t_ast **node);
+bool	recursion_end(t_token **cursor, t_token *reset, t_ast **node,
+			int recurs_count);
 
 #endif

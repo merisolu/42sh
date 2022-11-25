@@ -6,15 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 12:55:17 by amann             #+#    #+#             */
-/*   Updated: 2022/11/24 17:18:13 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/25 15:41:00 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
-
-
-
-#include "debug.h"
 
 static bool	last_pipe(t_token **cursor)
 {
@@ -35,6 +31,9 @@ static bool	last_pipe(t_token **cursor)
 
 static bool	pipe_recursion(t_token **cursor, t_ast **node, int recurs_count)
 {
+	if ((*cursor)->type == TOKEN_PIPE
+		&& (!(*cursor)->next || !(*cursor)->previous))
+		return (print_bool_sep_error(ERR_SYNTAX, *cursor, false));
 	if (last_pipe(cursor))
 	{
 		if (!ast_simple_command(cursor, &((*node)->right)))
@@ -45,21 +44,6 @@ static bool	pipe_recursion(t_token **cursor, t_ast **node, int recurs_count)
 		return (false);
 	return (true);
 }
-
-static bool	handle_logic_ops(t_token **cursor, t_ast **node)
-{
-	if (ast_is_logic_op(cursor))
-	{
-		if (!(*cursor)->next || !((*node)->left->left))
-			return (false);
-		(*node)->and_or = (*cursor)->type;
-	}
-	return (true);
-}
-
-//nb syntax error if more than 2 pipes or ampersands
-//create a function called something like is_logic_op() to check the
-//value of the token and make if checks shorter
 
 /*
  * variable recurs_count is needed for logical operator handling. We only want
@@ -82,21 +66,8 @@ bool	ast_pipe_sequence(t_token **cursor, t_ast **node, int recurs_count)
 		return (false);
 	reset = *cursor;
 	if (!*cursor || ast_is_separator(*cursor))
-	{
-		if (!((*node)->left->left))
-				return (print_bool_sep_error(ERR_SYNTAX, *cursor, false));
-		if (!handle_logic_ops(cursor, node))
-			return (print_bool_sep_error(ERR_SYNTAX, *cursor, false));
-		eat_token(cursor, TOKEN_AMPERSAND | TOKEN_PIPE | TOKEN_SEMICOLON, reset);
-		return (true);
-	}
+		return (check_end(cursor, reset, node));
 	if (!pipe_recursion(cursor, node, ++recurs_count))
 		return (false);
-	if (*cursor && ast_is_separator(*cursor) && recurs_count == 1)
-	{
-		if (!handle_logic_ops(cursor, node))
-			return (print_bool_sep_error(ERR_SYNTAX, *cursor, false));
-		eat_token(cursor, TOKEN_AMPERSAND | TOKEN_PIPE | TOKEN_SEMICOLON, reset);
-	}
-	return (true);
+	return (recursion_end(cursor, reset, node, recurs_count));
 }
