@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/11/25 13:53:30 by jumanner         ###   ########.fr        #
+#    Updated: 2022/11/25 15:45:39 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,8 @@ AST_DIR = ast
 AST_FILES = ast_add_args.c ast_pipe_sequence.c ast_redir_control.c \
 				ast_retokenize.c ast_free.c ast_cleanse_ws.c \
 				ast_fd_agg_format_check.c construct_ast_list.c \
-				ast_simple_command.c ast_add_fd_aggregation.c
+				ast_simple_command.c ast_add_fd_aggregation.c \
+				ast_is_separator.c ast_end.c
 
 AUTOCOMPLETE_DIR = autocomplete
 AUTOCOMPLETE_FILES = autocomplete.c
@@ -34,7 +35,7 @@ AUTOCOMPLETE_FILES = autocomplete.c
 BUILT_INS_DIR = built-ins
 BUILT_INS_FILES = built_ins.c built_ins_flags.c cmd_cd.c cmd_echo.c cmd_env.c \
 				cmd_fc.c cmd_setenv.c cmd_unsetenv.c cmd_exit.c \
-				cmd_execute_script.c
+				cmd_execute_script.c cmd_true_false.c
 
 CLEANUP_DIR = cleanup
 CLEANUP_FILES = cleanup.c
@@ -53,7 +54,8 @@ ENVIRONMENT_FILES = environment.c environment_getters.c shlvl.c
 
 EXECUTION_DIR = execution
 EXECUTION_FILES = bin.c executor.c fork.c pipes.c heredocs.c reset_io.c \
-					redirects.c tokenize_and_execute.c execute_fd_aggregation.c
+					redirects.c tokenize_and_execute.c execute_fd_aggregation.c\
+					handle_logical_ops.c						
 
 EXPANSION_DIR = expansion
 EXPANSION_FILES = expand_tilde.c expand_variables.c expand_node.c \

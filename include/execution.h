@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/17 17:35:49 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/23 16:00:11 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,8 @@ int		reset_io(t_redir *r);
 
 /* tokenize_and_execute.c */
 void	tokenize_and_execute(t_state *state);
+
+/* handle_logical_ops.c */
+void	handle_logical_ops(t_ast **ast, t_state *state, int *i);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/11/21 15:02:45 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/23 15:59:18 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 		pid = execute_ast(&(t_ast_context){ast[i], redir, &pipes, 0}, state);
 		if (pid != -1 && waitpid(pid, &ret, 0) != -1)
 			set_return_value(get_return_value_from_status(ret), state);
-		i++;
+		handle_logical_ops(ast, state, &i);
 	}
 	pipe_close(pipes.read);
 	check_print_ast(ast, state, true);
