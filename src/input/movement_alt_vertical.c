@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 13:40:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/25 13:58:24 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/25 15:18:35 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ int	handle_alt_up(t_input_context *ctx)
 			&& ctx->input[ctx->cursor - 1] != '\n');
 	ctx->cursor -= offset;
 	column = get_column(ctx);
-	ctx->cursor -= column + 1;
+	ctx->cursor -= ft_min_size_t(column + 1, ctx->cursor);
 	distance = ft_dstrchr(ctx->input, '\n', ctx->cursor - 1);
 	if (distance == ctx->cursor + 1)
 		distance = 0;
-	ctx->cursor -= distance;
+	ctx->cursor -= ft_min_size_t(distance, ctx->cursor);
 	input_get_line_properties(ctx, ctx->cursor, &start, &length);
 	ctx->cursor = start + ft_min_size_t(column + offset, length);
 	apply_prompt_offset(ctx, 1);
