@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:03:39 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/28 13:40:20 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/28 15:07:49 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	get_start_index(t_state *state)
 	int	i;
 
 	i = 1;
-	while (ft_strlen(state->history[i]) > 0 && i < HISTORY_SIZE - 1)
+	while (i < HISTORY_SIZE - 1 && ft_strlen(state->history[i]) > 0)
 		i++;
 	return (i - 1);
 }
