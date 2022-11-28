@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 17:39:33 by amann             #+#    #+#             */
-/*   Updated: 2022/11/28 13:24:07 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/28 15:00:48 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static bool	check_args_end(t_token **cursor)
 bool	ast_simple_command(t_token **cursor, t_ast **node)
 {
 	*node = (t_ast *) ft_memalloc(sizeof(t_ast));
-	if (!node)
+	if (!(*node))
 		return (print_bool_error(ERR_MALLOC_FAIL, false));
 	(*node)->node_type = AST_SIMPLE_COMMAND;
 	while (cursor && *cursor)
