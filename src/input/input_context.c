@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:51:48 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/10 15:46:54 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/28 13:36:04 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,5 @@ void	input_context_free(t_input_context *context)
 {
 	free(context->input);
 	free(context->clipboard);
+	ft_free_null_array((void **)context->reserved_sequences);
 }
