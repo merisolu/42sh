@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 12:55:17 by amann             #+#    #+#             */
-/*   Updated: 2022/11/25 15:41:00 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/28 15:12:20 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ bool	ast_pipe_sequence(t_token **cursor, t_ast **node, int recurs_count)
 
 	if (!*cursor)
 		return (false);
-	reset = *cursor;
 	*node = (t_ast *) ft_memalloc(sizeof(t_ast));
 	if (!*node)
 		return (print_bool_error(ERR_MALLOC_FAIL, false));
