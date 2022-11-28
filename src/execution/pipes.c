@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 10:55:10 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 17:51:58 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/28 13:59:02 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@ void	pipe_reset(int pipe[2])
 
 void	pipe_close(int pipe[2])
 {
-	close(pipe[PIPE_READ]);
-	close(pipe[PIPE_WRITE]);
+	if (pipe[PIPE_READ] != -1)
+		close(pipe[PIPE_READ]);
+	if (pipe[PIPE_WRITE] != -1)
+		close(pipe[PIPE_WRITE]);
 }
 
 /*
