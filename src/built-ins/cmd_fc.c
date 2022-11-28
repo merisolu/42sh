@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:03:39 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/18 15:05:44 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/28 13:40:20 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,8 @@ void	print_history(bool show_numbers, t_state *state)
 int	cmd_fc(char *const *args, t_state *state)
 {
 	char	flags[6];
-	int		i;
 
-	i = parse_flags(args + 1, "lns", flags, &on_error) + 1;
+	parse_flags(args + 1, "lns", flags, &on_error);
 	if (ft_strchr(flags, 's'))
 	{
 		ft_putstr(state->history[1]);
