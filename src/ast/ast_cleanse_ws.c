@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 15:39:45 by amann             #+#    #+#             */
-/*   Updated: 2022/10/27 11:35:04 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/29 13:14:51 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	set_pointers(t_token **cursor, t_token **temp)
 	}
 }
 
-void	ast_cleanse_ws(t_token **list)
+void	ast_cleanse_ws(t_token *const *list)
 {
 	t_token	*cursor;
 	t_token	*temp;

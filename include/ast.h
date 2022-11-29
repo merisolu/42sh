@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:04 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/25 15:21:30 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/29 13:47:14 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@
 # include "utils.h"
 # include "parsing.h"
 # include "expansion.h"
+
+/* Constants */
+
+# define FD_AGG_IN "<&"
+# define FD_AGG_OUT ">&"
 
 /* Types */
 
@@ -41,7 +46,7 @@ bool	allocate_args_array(char ***res, t_token **cursor);
 bool	ast_add_fd_agg(t_ast *node, t_token **cursor, t_token *reset);
 
 /* ast_cleanse_args.c */
-void	ast_cleanse_ws(t_token **list);
+void	ast_cleanse_ws(t_token *const *list);
 
 /* ast_fd_agg_format_check.c */
 bool	ast_fd_agg_format_check(t_token **cursor);

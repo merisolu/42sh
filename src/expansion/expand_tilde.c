@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:47:12 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 14:08:27 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/28 15:21:53 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static bool	check_first_equals(t_token *cursor)
 
 static bool	check_colon(t_token *cursor)
 {
-	if (cursor && cursor->type != TOKEN_COLON)
+	if (!cursor || cursor->type != TOKEN_COLON)
 		return (false);
 	cursor = cursor->previous;
 	if (!cursor)

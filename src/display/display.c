@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 14:28:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/25 14:52:18 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/29 13:05:10 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,42 @@ static char	*get_formatted_input(t_input_context *context)
 	return (result);
 }
 
+size_t	get_trim_offset(t_input_context *context, char *formatted_input)
+{
+	size_t	newline_count;
+	size_t	result;
+	size_t	temp;
+
+	newline_count = ft_strchrcount(formatted_input, '\n');
+	result = 0;
+	while (newline_count >= context->height)
+	{
+		temp = ft_dstchr(formatted_input + result, '\n',
+				ft_strlen(formatted_input + result));
+		result += temp;
+		result++;
+		newline_count = ft_strchrcount(formatted_input + result, '\n');
+	}
+	return (result);
+}
+
 void	draw(t_input_context *context, int force)
 {
 	char	*formatted_input;
 	size_t	formatted_input_length;
+	size_t	trim_offset;
 
 	formatted_input = get_formatted_input(context);
 	if (formatted_input)
 	{
-		formatted_input_length = ft_strlen(formatted_input);
+		trim_offset = get_trim_offset(context, formatted_input);
+		formatted_input_length = ft_strlen(formatted_input + trim_offset);
 		if (force || context->last_displayed_length != formatted_input_length)
 		{
 			load_cursor(context);
-			ft_putstr(formatted_input);
+			if (trim_offset > 0)
+				ft_putstr(tgetstr("cd", NULL));
+			ft_putstr(formatted_input + trim_offset);
 		}
 		context->last_displayed_length = formatted_input_length;
 		free(formatted_input);

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:16 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 14:15:14 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/29 13:57:26 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int				add_to_result(char **result, char *value, t_state *state);
 /* token.c */
 t_token			*token_add(t_token **list, t_token_type type, char *value);
 void			token_free(t_token **token);
-int				token_is_word_end(t_token *token);
 
 /* token_list.c */
 void			token_list_free(t_token **list);

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/22 16:10:21 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/29 14:03:29 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,6 @@
 
 # define PROMPT "$> "
 # define MULTILINE_PROMPT "> "
-
-# define FD_AGG_IN "<&"
-# define FD_AGG_OUT ">&"
 
 # define MAGIC_NUMBER "#!21\n"
 
@@ -170,7 +167,7 @@ typedef struct s_tokenizer
 
 typedef enum e_ast_node_type
 {
-	AST_PIPE_SEQUENCE = 100,
+	AST_PIPE_SEQUENCE,
 	AST_SIMPLE_COMMAND,
 	AST_COMMAND_ARGS,
 	AST_REDIRECTIONS
