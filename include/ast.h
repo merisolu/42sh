@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:04 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/29 13:15:07 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/29 13:47:14 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@
 # include "utils.h"
 # include "parsing.h"
 # include "expansion.h"
+
+/* Constants */
+
+# define FD_AGG_IN "<&"
+# define FD_AGG_OUT ">&"
 
 /* Types */
 

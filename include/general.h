@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/22 16:10:21 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/29 13:46:37 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,6 @@
 
 # define PROMPT "$> "
 # define MULTILINE_PROMPT "> "
-
-# define FD_AGG_IN "<&"
-# define FD_AGG_OUT ">&"
 
 # define MAGIC_NUMBER "#!21\n"
 
