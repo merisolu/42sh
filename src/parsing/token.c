@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 12:54:56 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:14:37 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/29 13:57:23 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,4 @@ void	token_free(t_token **token)
 		return ;
 	free((*token)->value);
 	free((*token));
-}
-
-int	token_is_word_end(t_token *token)
-{
-	return (token == NULL || token->type == TOKEN_WHITESPACE);
 }
