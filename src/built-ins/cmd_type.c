@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 16:17:26 by amann             #+#    #+#             */
-/*   Updated: 2022/11/29 17:19:23 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/29 18:23:50 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,39 +44,42 @@ static void	print_type_err(char const *name, char const *msg)
 	ft_dprintf(STDERR_FILENO, "21sh: type: %s: %s\n", name, msg);
 }
 
+static void	search_bins(char const *name, int *res, t_state *state)
+{
+	char	*path;
+
+	path = NULL;
+	bin_env_find(name, state->env, &path);
+	if (path)
+	{
+		print_type_res(name, path);
+		ft_strdel(&path);
+		*res = 0;
+	}
+	else
+		print_type_err(name, TYPE_NOT_FOUND);
+}
+
 int		cmd_type(char *const *args, t_state *state)
 {
 	size_t	i;
 	int		res;
-	char	*str;
+	char	*path;
 
-	res = 0;
+	res = 1;
 	i = 1;
 	while (args[i])
 	{
-		str = built_in_search(args[i]);
-		if (str)
+		path = built_in_search(args[i]);
+		if (path)
 		{
 			print_type_res(args[i], TYPE_IS_BUILTIN);
-			ft_strdel(&str);
+			ft_strdel(&path);
 			res = 0;
 		}
 		else
-		{
-			bin_env_find(args[i], state->env, &str);
-			if (str)
-			{
-				print_type_res(args[i], str);
-				ft_strdel(&str);
-				res = 0;
-			}
-			else
-			{
-				print_type_err(args[i], TYPE_NOT_FOUND);
-				res = 1;
-			}
-		}
+			search_bins(args[i], &res, state);
 		i++;
 	}
-	return (0);
+	return (res);
 }
