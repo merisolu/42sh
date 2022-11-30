@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/29 16:19:47 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/30 14:11:50 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@
 # include "execution.h"
 # include "utils.h"
 # include "environment.h"
+
+/* Macros for type */
+
+# define TYPE_IS_BUILTIN "a shell builtin"
+# define TYPE_NOT_FOUND "not found"
 
 /* Types */
 

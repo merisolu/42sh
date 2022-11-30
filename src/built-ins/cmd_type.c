@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 16:17:26 by amann             #+#    #+#             */
-/*   Updated: 2022/11/29 18:23:50 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/30 14:12:10 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,6 @@
  * just handle builtins and executables for now, and an error message if
  * no result was found.
  */
-
-#define	TYPE_IS_BUILTIN "a shell builtin"
-#define	TYPE_NOT_FOUND "not found"
 
 static void	print_type_res(char const *name, char const *msg)
 {
@@ -60,7 +57,7 @@ static void	search_bins(char const *name, int *res, t_state *state)
 		print_type_err(name, TYPE_NOT_FOUND);
 }
 
-int		cmd_type(char *const *args, t_state *state)
+int	cmd_type(char *const *args, t_state *state)
 {
 	size_t	i;
 	int		res;
