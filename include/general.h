@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/30 13:12:37 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/30 14:19:08 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@
 
 # define ETEMPLATE_SHELL_SIMPLE "21sh: %s\n"
 # define ETEMPLATE_SHELL_NAMED "21sh: %s: %s\n"
+# define ETEMPLATE_SHELL_DOUBLE_NAMED "21sh: %s: %s: %s\n"
 
 # define ERR_ENV_MISSING_TERM "No TERM environment variable set."
 # define ERR_TERMCAP_NO_ACCESS "Unable to access termcap database."

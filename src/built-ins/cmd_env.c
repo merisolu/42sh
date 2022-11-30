@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 13:56:40 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/30 14:07:17 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/30 14:34:24 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,6 @@ static void	on_invalid_argument(char c)
 	ft_putstr_fd("[name=value ...] [utility [argument ...]]\n", STDERR_FILENO);
 }
 
-static int	print_env_error(char *str1, char *str2, char *str3, int value)
-{
-	ft_dprintf(STDERR_FILENO, "env: %s%s%s\n", str1, str2, str3);
-	return (value);
-}
-
 static int	args_to_env(char *const *args, char *const *env, int *index, \
 t_cmd_env *cmd)
 {
@@ -41,10 +35,11 @@ t_cmd_env *cmd)
 	{
 		cmd->env = (char **)ft_memalloc(sizeof(char *));
 		if (!cmd->env)
-			return (print_error(-1, "21sh: env: %s\n", ERR_MALLOC_FAIL));
+			return (print_error(-1, ETEMPLATE_SHELL_NAMED,
+					"env", ERR_MALLOC_FAIL));
 	}
 	else if (!ft_dup_null_array((void **)env, (void ***)&(cmd->env), var_copy))
-		return (print_error(-1, "21sh: env: %s\n", ERR_MALLOC_FAIL));
+		return (print_error(-1, ETEMPLATE_SHELL_NAMED, "env", ERR_MALLOC_FAIL));
 	while (args[*index] && ft_strchr(args[*index], '='))
 	{
 		pair = args[*index];
@@ -76,11 +71,11 @@ int	cmd_env(char *const *args, t_state *state)
 		return (free_env_args(&cmd, 0));
 	}
 	if (!ft_dup_null_array((void **)args + i, (void ***)&(cmd.args), var_copy))
-		return (print_error(
-				free_env_args(&cmd, 1), "21sh: env: %s\n", ERR_MALLOC_FAIL));
+		return (print_error(free_env_args(&cmd, 1), ETEMPLATE_SHELL_NAMED,
+				"env", ERR_MALLOC_FAIL));
 	if (bin_env_find(args[i], state->env, &path) == 0)
-		return (print_env_error(args[i], ": ", ERR_NO_SUCH_FILE_OR_DIR,
-				free_env_args(&cmd, 1)));
+		return (print_error(free_env_args(&cmd, 1), ETEMPLATE_SHELL_NAMED,
+				"env", ERR_NO_SUCH_FILE_OR_DIR));
 	return_value = bin_execute(path, cmd.args, cmd.env, NULL);
 	free(path);
 	return (free_env_args(&cmd, return_value));

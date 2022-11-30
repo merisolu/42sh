@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:12:18 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/30 14:07:17 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/30 14:34:38 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ int	cmd_echo(char *const *args, t_state *state)
 	while (i < len)
 	{
 		if (write(1, args[i], ft_strlen(args[i])) == -1)
-			return (print_error(1, "21sh: echo: %s", ERR_WRITE_BAD_FD));
+			return (print_error(1, ETEMPLATE_SHELL_NAMED,
+					"echo", ERR_WRITE_BAD_FD));
 		if (i != len - 1)
 			ft_putchar(' ');
 		i++;
