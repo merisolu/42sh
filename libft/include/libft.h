@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 16:24:04 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/04 12:46:26 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/29 15:47:20 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <limits.h>
 # include <sys/stat.h>
+# include <stdarg.h>
 
 /* Buffer size for ft_get_next_line(). */
 # define GNL_BUFF_SIZE 32
@@ -326,5 +327,6 @@ int			ft_get_next_line(const int fd, char **line);
 /* ft_printf */
 int			ft_printf(const char *format, ...);
 int			ft_dprintf(int fd, const char *format, ...);
+int			ft_vdprintf(int fd, const char *format, va_list lst);
 
 #endif

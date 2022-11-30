@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/19 14:52:18 by amann             #+#    #+#             */
-/*   Updated: 2022/09/20 16:20:19 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/29 15:47:16 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 /***** HEADER FILES *****/
 
 # include "../include/libft.h"
-# include <stdarg.h>
 
 /***** MACROS *****/
 
@@ -98,6 +97,7 @@ typedef struct s_loop
 /* ft_printf.c */
 int			ft_printf(const char *s, ...);
 int			ft_dprintf(int fd, const char *s, ...);
+int			ft_vdprintf(int fd, const char *s, va_list lst);
 
 /* ft_printf_control.c */
 void		ft_printf_ctrl(const char *s, va_list lst, t_loop *l, int *p_ret);
