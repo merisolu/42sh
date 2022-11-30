@@ -1,87 +1,86 @@
 #!21
-set -x
-norminette
-echo $?
-cat -e author
+norminette > /tmp/file
+echo $? >> /tmp/file
+cat -e author >> /tmp/file
 
-echo Minishell stuff....
+echo Minishell stuff.... >> /tmp/file
 
-echo "Fork & execve"
-foo
-/bin/ls
-/bin/ls -laF
-/bin/ls -l -a -F
+echo "Fork & execve"  >> /tmp/file
+foo >> /tmp/file 2>&1
+/bin/ls >> /tmp/file
+/bin/ls -laF >> /tmp/file
+/bin/ls -l -a -F >> /tmp/file
 
-echo Builtins
-echo "it works"
-echo it works
-echo -n it works
-echo he"llo     'w'o"rld
-echo "" hello
+echo Builtins >> /tmp/file
+echo "it works" >> /tmp/file
+echo it works >> /tmp/file
+echo -n it works >> /tmp/file
+echo he"llo     'w'o"rld >> /tmp/file
+echo "" hello >> /tmp/file
 
 setenv temp $PWD
 cd /Users
-/bin/pwd
+/bin/pwd >> /tmp/file 
 cd bocal
-/bin/pwd
+/bin/pwd >> /tmp/file
 cd
-/bin/pwd
-cd -
-/bin/pwd
+/bin/pwd >> /tmp/file
+cd - >> /tmp/file
+/bin/pwd >> /tmp/file
 cd ~/Documents
-/bin/pwd
+/bin/pwd >> /tmp/file
 cd $temp
 unsetenv temp
 
-echo Environment management
-env
+echo Environment management >> /tmp/file
+env >> /tmp/file
 setenv FOO bar
-env
-echo $FOO
-/usr/bin/env
+env >> /tmp/file
+echo $FOO >> /tmp/file
+/usr/bin/env >> /tmp/file
 unsetenv FOO
-env
-echo $FOO
-/usr/bin/env
+env >> /tmp/file
+echo $FOO >> /tmp/file
+/usr/bin/env >> /tmp/file
 
-echo PATH management
+echo PATH management >> /tmp/file
 setenv temp $PATH
 unsetenv PATH
 setenv PATH "/bin:/usr/bin"
-ls
+ls >> /tmp/file
 unsetenv PATH
-ls
-/bin/ls
-setenv PATH $temp
+ls >> /tmp/file 2>&1
+/bin/ls >> /tmp/file
+setenv PATH $temp 
 unsetenv temp
 
-echo cmd line management
-" "
-"	    	"
-    /bin/ls     -l       -A
+echo cmd line management >> /tmp/file
+" " >> /tmp/file 2>&1
+"	    	" >> /tmp/file 2>&1
+    /bin/ls     -l       -A  >> /tmp/file
 
-echo pipes:
-ls | cat -e
-ls | sort -r | cat -e
-base64 /dev/urandom | head -c 1000 | grep 42 | wc -l | sed -e 's/1/Yes/g' -e 's/0/No/g'
+echo pipes: >> /tmp/file
+ls | cat -e >> /tmp/file
+ls | sort -r | cat -e >> /tmp/file
+base64 /dev/urandom | head -c 1000 | grep 42 | wc -l | sed -e 's/1/Yes/g' -e 's/0/No/g' >> /tmp/file
 
-echo redirections:
+echo redirections: >> /tmp/file
 echo "testing redirections," > test.txt
 echo "with multiple lines" >> test.txt
-wc -c < test.txt
+wc -c < test.txt >> /tmp/file
 rm test.txt
 
-echo separators:
-echo no newfile; ls -1; touch newfile ; echo ; echo newfile; ls -1
+echo separators: >> /tmp/file
+echo no newfile >> /tmp/file; ls -1 >> /tmp/file; touch newfile ; echo  >> /tmp/file; echo newfile >> /tmp/file; ls -1 >> /tmp/file
 rm newfile
 
-echo A lil bit of everything:
-mkdir test ; cd test ; ls -a ; ls | cat | wc -c > fifi ; cat fifi
+echo A lil bit of everything: >> /tmp/file
+mkdir test ; cd test ; ls -a >> /tmp/file ; ls | cat | wc -c > fifi ; cat fifi >> /tmp/file
 cd .. ; rm -rf test
 
-echo file descriptor aggregation
-rm nosuchfile 2>&-
-rm nosuchfile 2>&1 | cat -e
-echo "No dollar character" 1>&2 | cat -e
+echo file descriptor aggregation >> /tmp/file
+rm nosuchfile 2>&- >> /tmp/file
+rm nosuchfile 2>&1 | cat -e >> /tmp/file
+echo "No dollar character" 1>&2 | cat -e 
 
-echo remember to check exit, signals, heredocs...
+echo remember to check exit, signals, heredocs & rm /tmp/file...
