@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:29:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 17:54:52 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/30 14:07:17 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,16 @@ static int	bin_find(const char *name, char **paths, char **result)
 	{
 		*result = ft_strdup(name);
 		if (!(*result))
-			return (print_error(ERR_MALLOC_FAIL, -1));
+			return (print_error(
+					-1, ETEMPLATE_SHELL_SIMPLE, ERR_MALLOC_FAIL));
 		return (1);
 	}
 	while (paths[i])
 	{
 		ft_path_join(paths[i], name, result);
 		if (!(*result))
-			return (print_error(ERR_MALLOC_FAIL, -1));
+			return (print_error(
+					-1, ETEMPLATE_SHELL_SIMPLE, ERR_MALLOC_FAIL));
 		if (ft_points_to_file(*result))
 			return (1);
 		ft_memdel((void **)result);
@@ -74,7 +76,7 @@ int	bin_env_find(const char *name, char *const *env, char **result)
 		return (0);
 	paths = ft_strsplit(path, ':');
 	if (!paths)
-		return (print_error(ERR_MALLOC_FAIL, -1));
+		return (print_error(-1, ETEMPLATE_SHELL_SIMPLE, ERR_MALLOC_FAIL));
 	return_value = bin_find(name, paths, result);
 	ft_free_null_array((void **)paths);
 	return (return_value);
@@ -97,7 +99,8 @@ pid_t	bin_execute(char *p, char **arg, char *const *env, t_ast_context *ast)
 	if (result == 0)
 	{
 		if (execve(p, arg, env) == -1)
-			exit(print_error(ERR_CHILD_PROC_FAIL, 1));
+			exit(print_error(
+					1, ETEMPLATE_SHELL_SIMPLE, ERR_CHILD_PROC_FAIL));
 	}
 	return (result);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast_redir_recursion.c                              :+:      :+:    :+:   */
+/*   ast_redir_control.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2022/11/25 15:21:57 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/30 14:07:37 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ bool	add_redir_struct(t_ast_redir ***redirs, t_ast_redir *new)
 	{
 		*redirs = (t_ast_redir **) ft_memalloc(sizeof(t_ast_redir *) * 2);
 		if (!*redirs)
-			return (print_bool_error(ERR_MALLOC_FAIL, false));
+			return (print_error_bool(false, ERR_MALLOC_FAIL));
 	}
 	len = ft_null_array_len((void **)*redirs);
 	if (len == 0)
@@ -29,7 +29,7 @@ bool	add_redir_struct(t_ast_redir ***redirs, t_ast_redir *new)
 		return (true);
 	}
 	if (!ft_resize_null_array((void ***)redirs, len + 1))
-		return (print_bool_error(ERR_MALLOC_FAIL, false));
+		return (print_error_bool(false, ERR_MALLOC_FAIL));
 	(*redirs)[len] = new;
 	return (true);
 }
@@ -40,14 +40,14 @@ static bool	add_redir_in(t_ast *node, t_token **cursor)
 
 	res = (t_ast_redir *) ft_memalloc(sizeof(t_ast_redir));
 	if (!res)
-		return (print_bool_error(ERR_MALLOC_FAIL, false));
+		return (print_error_bool(false, ERR_MALLOC_FAIL));
 	res->in_type = ft_strdup((*cursor)->value);
 	if (!res->in_type)
-		return (print_bool_error(ERR_MALLOC_FAIL, false));
+		return (print_error_bool(false, ERR_MALLOC_FAIL));
 	*cursor = (*cursor)->next;
 	res->in_file = ft_strdup((*cursor)->value);
 	if (!res->in_file)
-		return (print_bool_error(ERR_MALLOC_FAIL, false));
+		return (print_error_bool(false, ERR_MALLOC_FAIL));
 	*cursor = (*cursor)->next;
 	return (add_redir_struct(&(node->redirs), res));
 }
@@ -58,14 +58,14 @@ static bool	add_redir_out(t_ast *node, t_token **cursor)
 
 	res = (t_ast_redir *) ft_memalloc(sizeof(t_ast_redir));
 	if (!res)
-		return (print_bool_error(ERR_MALLOC_FAIL, false));
+		return (print_error_bool(false, ERR_MALLOC_FAIL));
 	res->out_type = ft_strdup((*cursor)->value);
 	if (!res->out_type)
-		return (print_bool_error(ERR_MALLOC_FAIL, false));
+		return (print_error_bool(false, ERR_MALLOC_FAIL));
 	*cursor = (*cursor)->next;
 	res->out_file = ft_strdup((*cursor)->value);
 	if (!res->out_file)
-		return (print_bool_error(ERR_MALLOC_FAIL, false));
+		return (print_error_bool(false, ERR_MALLOC_FAIL));
 	*cursor = (*cursor)->next;
 	return (add_redir_struct(&(node->redirs), res));
 }

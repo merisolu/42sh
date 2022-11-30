@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 13:56:40 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/17 16:00:10 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/30 14:07:17 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ t_cmd_env *cmd)
 	{
 		cmd->env = (char **)ft_memalloc(sizeof(char *));
 		if (!cmd->env)
-			return (print_named_error("env", ERR_MALLOC_FAIL, -1));
+			return (print_error(-1, "21sh: env: %s\n", ERR_MALLOC_FAIL));
 	}
 	else if (!ft_dup_null_array((void **)env, (void ***)&(cmd->env), var_copy))
-		return (print_named_error("env", ERR_MALLOC_FAIL, -1));
+		return (print_error(-1, "21sh: env: %s\n", ERR_MALLOC_FAIL));
 	while (args[*index] && ft_strchr(args[*index], '='))
 	{
 		pair = args[*index];
@@ -76,8 +76,8 @@ int	cmd_env(char *const *args, t_state *state)
 		return (free_env_args(&cmd, 0));
 	}
 	if (!ft_dup_null_array((void **)args + i, (void ***)&(cmd.args), var_copy))
-		return (
-			print_named_error("env", ERR_MALLOC_FAIL, free_env_args(&cmd, 1)));
+		return (print_error(
+				free_env_args(&cmd, 1), "21sh: env: %s\n", ERR_MALLOC_FAIL));
 	if (bin_env_find(args[i], state->env, &path) == 0)
 		return (print_env_error(args[i], ": ", ERR_NO_SUCH_FILE_OR_DIR,
 				free_env_args(&cmd, 1)));

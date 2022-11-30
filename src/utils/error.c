@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:57:03 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/17 17:38:24 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/30 14:07:37 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,37 +16,36 @@
  * Prints the given error message to stderr, and returns the given value.
  */
 
-int	print_error(char *message, int return_value)
+int	print_error_valist(int return_value, char *format, va_list list)
 {
-	ft_dprintf(STDERR_FILENO, "21sh: %s\n", message);
-	return (return_value);
-}
-
-bool	print_bool_error(char *message, bool return_value)
-{
-	ft_dprintf(STDERR_FILENO, "21sh: %s\n", message);
+	ft_vdprintf(STDERR_FILENO, format, list);
 	return (return_value);
 }
 
 /*
- * Prints the given name and error message to stderr, and returns the
- * given return_value.
+ * Prints the given error message to stderr, and returns the given value.
  */
 
-int	print_named_error(char *name, char *message, int return_value)
+int	print_error(int return_value, char *format, ...)
 {
-	ft_dprintf(STDERR_FILENO, "21sh: %s: %s\n", name, message);
+	va_list	list;
+
+	va_start(list, format);
+	ft_vdprintf(STDERR_FILENO, format, list);
+	va_end(list);
 	return (return_value);
 }
 
-bool	print_bool_named_error(char *name, char *message, bool return_value)
-{
-	ft_dprintf(STDERR_FILENO, "21sh: %s: %s\n", name, message);
-	return (return_value);
-}
+/*
+ * Prints the given error message to stderr, and returns the given value.
+ */
 
-bool	print_bool_nb_error(int nb, char *message, bool return_value)
+bool	print_error_bool(bool return_value, char *format, ...)
 {
-	ft_dprintf(STDERR_FILENO, "21sh: %i: %s\n", nb, message);
+	va_list	list;
+
+	va_start(list, format);
+	ft_vdprintf(STDERR_FILENO, format, list);
+	va_end(list);
 	return (return_value);
 }

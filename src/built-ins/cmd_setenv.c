@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 15:04:07 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:14:28 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/30 14:07:17 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,8 @@ int	cmd_setenv(char *const *args, t_state *state)
 		return (0);
 	}
 	if (!(ft_isalpha(name[0]) || name[0] == '_'))
-		return (print_named_error(
-				"setenv", "Variable name must begin with a letter.", 1
-			));
+		return (print_error(1, "21sh: setenv: %s\n",
+				"Variable name must begin with a letter."));
 	value = args[2];
 	if (!value)
 	{

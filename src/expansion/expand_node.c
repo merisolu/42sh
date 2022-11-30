@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast_parse_expansions.c                             :+:      :+:    :+:   */
+/*   expand_node.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:18:51 by amann             #+#    #+#             */
-/*   Updated: 2022/11/21 14:18:27 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/30 14:07:37 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ bool	expand_node(char **word, t_state *state)
 		return (true);
 	list = ast_retokenize(*word);
 	if (!list)
-		return (print_bool_error(ERR_MALLOC_FAIL, false));
+		return (print_error_bool(false, ERR_MALLOC_FAIL));
 	result = expansions_loop(list, state);
 	token_list_free(&list);
 	reset_state(state);

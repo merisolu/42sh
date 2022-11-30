@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 15:41:06 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/30 14:07:17 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,6 @@ t_input_result	get_input(t_input_context *ctx)
 	if (result == INPUT_MARK_FOUND)
 		return (INPUT_MARK_FOUND);
 	else if (result == INPUT_READ_ERROR)
-		return (print_error(ERR_LINE_READ, 1));
+		return (print_error(1, ETEMPLATE_SHELL_SIMPLE, ERR_LINE_READ));
 	return (result);
 }

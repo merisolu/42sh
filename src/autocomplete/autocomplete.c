@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 17:47:14 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/30 14:07:17 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static void	search_from_paths(char *const *env, char *input, char **result)
 	paths = ft_strsplit(env_get("PATH", env), ':');
 	if (!paths)
 	{
-		print_error(ERR_MALLOC_FAIL, -1);
+		print_error(-1, ERR_MALLOC_FAIL);
 		return ;
 	}
 	i = 0;
@@ -101,7 +101,7 @@ static void	search_from_paths(char *const *env, char *input, char **result)
 		search_return_value = search_path(paths[i], input, result);
 		if (search_return_value == -1)
 		{
-			print_error(ERR_MALLOC_FAIL, -1);
+			print_error(-1, ERR_MALLOC_FAIL);
 			break ;
 		}
 		i++;
@@ -126,7 +126,7 @@ int	autocomplete(t_state *state)
 	if (ft_strlen(trimmed_input) == 0)
 	{
 		if (!trimmed_input)
-			print_error(ERR_MALLOC_FAIL, 0);
+			print_error(0, ERR_MALLOC_FAIL);
 		free(trimmed_input);
 		return (0);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_execute_script.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 15:28:55 by amann             #+#    #+#             */
-/*   Updated: 2022/11/16 14:04:13 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/30 14:07:17 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	cmd_execute_script(char *const *args, t_state *state)
 
 	fd = open(*args + 2, O_RDONLY);
 	if (fd == -1 || access(*args + 2, X_OK))
-		return (print_error(ERR_NO_PERMISSION, 1));
+		return (print_error(
+				1, ETEMPLATE_SHELL_SIMPLE, ERR_NO_PERMISSION));
 	ft_get_next_line(fd, &line);
 	if (!line)
 		return (1);
