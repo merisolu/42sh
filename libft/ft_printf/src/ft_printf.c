@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 12:42:19 by amann             #+#    #+#             */
-/*   Updated: 2022/09/20 16:37:45 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/29 15:46:05 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,16 @@ int	ft_dprintf(int fd, const char *s, ...)
 	ret = 0;
 	ft_printf_loop(fd, s, lst, &ret);
 	va_end(lst);
+	return (ret);
+}
+
+int	ft_vdprintf(int fd, const char *s, va_list lst)
+{
+	int		ret;
+
+	if (fd < 0)
+		return (0);
+	ret = 0;
+	ft_printf_loop(fd, s, lst, &ret);
 	return (ret);
 }

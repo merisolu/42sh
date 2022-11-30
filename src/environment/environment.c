@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:39:49 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 17:56:15 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/30 14:07:17 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,13 @@ int	env_set(const char *name, const char *value, char *const **env)
 	{
 		new_size = ft_null_array_len((void **)*env) + 1;
 		if (!ft_resize_null_array((void ***)(env), new_size))
-			return (print_error(ERR_MALLOC_FAIL, 0));
+			return (print_error(
+					0, ETEMPLATE_SHELL_SIMPLE, ERR_MALLOC_FAIL));
 		destination_pointer = (char **)*env + new_size - 1;
 	}
 	new = ft_strnew(ft_strlen(name) + 1 + ft_strlen(value));
 	if (!new)
-		return (print_error(ERR_MALLOC_FAIL, 0));
+		return (print_error(0, ETEMPLATE_SHELL_SIMPLE, ERR_MALLOC_FAIL));
 	ft_strcpy(new, name);
 	new[ft_strlen(name)] = '=';
 	ft_strcpy(new + ft_strlen(name) + 1, value);
@@ -90,7 +91,8 @@ int	env_unset(const char *name, char *const **env)
 	if (removeable)
 	{
 		if (!ft_remove_from_null_array((void ***)env, (void *)(*removeable)))
-			return (print_error(ERR_MALLOC_FAIL, 0));
+			return (print_error(
+					0, ETEMPLATE_SHELL_SIMPLE, ERR_MALLOC_FAIL));
 	}
 	return (1);
 }

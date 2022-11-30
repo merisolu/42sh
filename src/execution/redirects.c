@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/11/18 16:02:13 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/30 14:08:51 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,22 @@ static bool	redirect_input(t_ast_redir *redir_node, t_redir *r)
 	{
 		if (access(redir_node->in_file, F_OK) == 0)
 		{
-			return (print_bool_named_error(redir_node->in_file,
-					ERR_NO_PERMISSION, false));
+			return (print_error_bool(
+					false, ETEMPLATE_SHELL_NAMED,
+					redir_node->in_file, ERR_NO_PERMISSION));
 		}
-		return (print_bool_named_error(redir_node->in_file,
-				ERR_NO_SUCH_FILE_OR_DIR, false));
+		return (print_error_bool(
+				false, ETEMPLATE_SHELL_NAMED,
+				redir_node->in_file, ERR_NO_SUCH_FILE_OR_DIR));
 	}
 	if (r->saved_in == -1)
 		r->saved_in = dup(STDIN_FILENO);
 	if (r->saved_in == -1)
-		return (print_bool_error(ERR_DUP_FAIL, false));
+		return (print_error_bool(
+				false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
 	if (dup2(r->fd_in, STDIN_FILENO) == -1)
-		return (print_bool_error(ERR_DUP_FAIL, false));
+		return (print_error_bool(
+				false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
 	close(r->fd_in);
 	r->fd_in = -1;
 	return (true);
@@ -59,17 +63,17 @@ static bool	redirect_output(t_ast_redir *redir, t_redir *r)
 	if (r->fd_out == -1)
 	{
 		if (ft_is_dir(redir->out_file))
-			return (print_bool_named_error(redir->out_file,
-					ERR_IS_DIR, false));
-		return (print_bool_named_error(redir->out_file,
-				ERR_NO_PERMISSION, false));
+			return (print_error_bool(false, ETEMPLATE_SHELL_NAMED,
+					redir->out_file, ERR_IS_DIR));
+		return (print_error_bool(false, ETEMPLATE_SHELL_NAMED,
+				redir->out_file, ERR_NO_PERMISSION));
 	}
 	if (r->saved_out == -1)
 		r->saved_out = dup(STDOUT_FILENO);
 	if (r->saved_out == -1)
-		return (print_bool_error(ERR_DUP_FAIL, false));
+		return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
 	if (dup2(r->fd_out, STDOUT_FILENO) == -1)
-		return (print_bool_error(ERR_DUP_FAIL, false));
+		return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
 	close(r->fd_out);
 	r->fd_out = -1;
 	return (true);

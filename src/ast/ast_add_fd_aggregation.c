@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_add_fd_aggregation.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 14:24:05 by amann             #+#    #+#             */
-/*   Updated: 2022/11/21 14:40:19 by amann            ###   ########.fr       */
+/*   Updated: 2022/11/30 14:07:37 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ static int	set_fd(char c)
 static bool	ambiguous_redir(t_ast_redir **res, char *val)
 {
 	ft_memdel((void **)res);
-	return (print_bool_named_error(val, ERR_AMBIGUOUS_REDIR, false));
+	return (print_error_bool(
+			false, ETEMPLATE_SHELL_NAMED, val, ERR_MALLOC_FAIL));
 }
 
 bool	ast_add_fd_agg(t_ast *node, t_token **cursor, t_token *reset)
@@ -31,7 +32,7 @@ bool	ast_add_fd_agg(t_ast *node, t_token **cursor, t_token *reset)
 
 	res = (t_ast_redir *) ft_memalloc(sizeof(t_ast_redir));
 	if (!res)
-		return (print_bool_error(ERR_MALLOC_FAIL, false));
+		return (print_error_bool(false, ERR_MALLOC_FAIL));
 	res->aggregation = true;
 	if (read_token(cursor, TOKEN_GT | TOKEN_LT, reset))
 		res->agg_from = set_fd((*cursor)->value[0]);

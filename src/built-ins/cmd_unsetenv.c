@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 16:24:10 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:14:28 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/11/30 14:34:55 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ int	cmd_unsetenv(char *const *args, t_state *state)
 
 	name = args[1];
 	if (!name)
-		return (print_named_error("unsetenv", ERR_TOO_FEW_ARGS, 0));
+		return (print_error(0, ETEMPLATE_SHELL_NAMED,
+				"unsetenv", ERR_TOO_FEW_ARGS));
 	env_unset(name, &(state->env));
 	return (0);
 }
