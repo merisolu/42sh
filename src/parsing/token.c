@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 12:54:56 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/29 13:57:23 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/01 14:49:53 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,6 @@ t_token	*token_add(t_token **list, t_token_type type, char *value)
 	cursor = *list;
 	while (cursor->next)
 		cursor = cursor->next;
-	if (type == TOKEN_BACKSLASH)
-	{
-		free(value);
-		return (cursor);
-	}
 	cursor->next = token_new(type, value, cursor);
 	return (cursor->next);
 }

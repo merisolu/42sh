@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 17:39:33 by amann             #+#    #+#             */
-/*   Updated: 2022/11/30 14:07:37 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/01 14:39:30 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ static bool	args_node(t_token **cursor, t_ast **node)
 	if (!(*node)->arg_list)
 		return (print_error_bool(false, ERR_MALLOC_FAIL));
 	if (!(allocate_args_array(&(*node)->arg_list, cursor)))
-		return (print_error_bool(false, ERR_MALLOC_FAIL));
-	return (1);
+		return (false);
+	return (true);
 }
 
 static bool	check_args_end(t_token **cursor)

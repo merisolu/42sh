@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:55:34 by amann             #+#    #+#             */
-/*   Updated: 2022/11/30 14:07:37 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/01 14:50:39 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ bool	allocate_args_array(char ***res, t_token **cursor)
 				return (print_error_bool(false, ERR_MALLOC_FAIL));
 			idx++;
 		}
+		else if ((*cursor)->type & (TOKEN_AMPERSAND | TOKEN_BACKSLASH))
+			return (print_bool_sep_error(ERR_SYNTAX, *cursor, false));
 		*cursor = (*cursor)->next;
 	}
 	return (true);
