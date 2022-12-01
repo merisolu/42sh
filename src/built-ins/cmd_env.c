@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 13:56:40 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/01 11:49:33 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/01 13:59:13 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,19 @@ t_cmd_env *cmd)
 	return (0);
 }
 
+static void	fork_and_execve(char *path, t_cmd_env *cmd)
+{
+	pid_t	fork_result;
+
+	fork_result = fork();
+	if (fork_result == 0)
+		bin_execve(path, cmd->args, cmd->env);
+	else if (fork_result == -1)
+		print_error(0, ETEMPLATE_SHELL_SIMPLE, ERR_CHILD_PROC_FAIL);
+	else
+		waitpid(fork_result, NULL, 0);
+}
+
 int	cmd_env(char *const *args, t_state *state)
 {
 	t_cmd_env	cmd;
@@ -75,7 +88,7 @@ int	cmd_env(char *const *args, t_state *state)
 	if (bin_env_find(args[i], state->env, &path) == 0)
 		return (print_error(free_env_args(&cmd, 1), ETEMPLATE_SHELL_NAMED,
 				"env", ERR_NO_SUCH_FILE_OR_DIR));
-	bin_execve(path, cmd.args, cmd.env);
+	fork_and_execve(path, &cmd);
 	free(path);
 	return (free_env_args(&cmd, 0));
 }
