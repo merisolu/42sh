@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/30 14:19:08 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/01 13:47:54 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ typedef struct s_state
 	t_token_type	quote_type;
 	struct termios	input_conf;
 	struct termios	orig_conf;
+	bool			terminal_conf_applied;
 	char			*history[HISTORY_SIZE];
 	int				history_index;
 	int				last_return_value;

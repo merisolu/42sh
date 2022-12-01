@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:21:45 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/30 14:07:17 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/01 13:48:32 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int	setup(char *const **env, t_state *state)
 		return (print_error(0, ETEMPLATE_SHELL_SIMPLE, ERR_TERMIOS_FAIL));
 	if (!terminal_apply_config(&(state->input_conf)))
 		return (print_error(0, ETEMPLATE_SHELL_SIMPLE, ERR_TERMIOS_FAIL));
+	state->terminal_conf_applied = true;
 	history_load(state);
 	set_signal_handling();
 	save_cursor(&(state->input_context));
