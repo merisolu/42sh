@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 13:56:40 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/30 14:34:24 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/01 11:49:33 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ int	cmd_env(char *const *args, t_state *state)
 	t_cmd_env	cmd;
 	int			i;
 	char		*path;
-	int			return_value;
 
 	ft_bzero(&cmd, sizeof(t_cmd_env));
 	i = parse_flags(args + 1, "i", cmd.flags, &on_invalid_argument) + 1;
@@ -76,7 +75,7 @@ int	cmd_env(char *const *args, t_state *state)
 	if (bin_env_find(args[i], state->env, &path) == 0)
 		return (print_error(free_env_args(&cmd, 1), ETEMPLATE_SHELL_NAMED,
 				"env", ERR_NO_SUCH_FILE_OR_DIR));
-	return_value = bin_execute(path, cmd.args, cmd.env, NULL);
+	bin_execve(path, cmd.args, cmd.env);
 	free(path);
-	return (free_env_args(&cmd, return_value));
+	return (free_env_args(&cmd, 0));
 }

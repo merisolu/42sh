@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:29:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/30 14:07:17 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/01 12:38:58 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,24 +83,16 @@ int	bin_env_find(const char *name, char *const *env, char **result)
 }
 
 /*
- * Attempts to fork the current process, and transform it into a new process
- * defined by the given path to a binary.
+ * Attempts to execve the current process into a new process defined by the
+ * given path to a binary.
  *
- * If fork or execve calls fail, an error message is printed to stderr.
+ * If the execve call fails, an error message is printed to stderr and the
+ * process exits.
  */
 
-pid_t	bin_execute(char *p, char **arg, char *const *env, t_ast_context *ast)
+void	bin_execve(char *path, char **arg, char *const *env)
 {
-	pid_t	result;
-
-	if (!p)
-		return (-1);
-	result = start_fork(ast);
-	if (result == 0)
-	{
-		if (execve(p, arg, env) == -1)
-			exit(print_error(
-					1, ETEMPLATE_SHELL_SIMPLE, ERR_CHILD_PROC_FAIL));
-	}
-	return (result);
+	if (execve(path, arg, env) == -1)
+		exit(print_error(
+				1, ETEMPLATE_SHELL_SIMPLE, ERR_CHILD_PROC_FAIL));
 }
