@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 11:28:16 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/30 14:07:17 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/01 11:38:53 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,14 @@ pid_t	start_fork(t_ast_context *ast)
 		exit(1);
 	signal(SIGINT, SIG_DFL);
 	return (result);
+}
+
+/*
+ * Returns true if the pipes are set up to go somewhere, false otherwise.
+ */
+
+bool	in_pipes(t_pipes *pipes)
+{
+	return (!(pipes->read[0] == -1 && pipes->read[1] == -1
+			&& pipes->write[0] == -1 && pipes->write[1] == -1));
 }

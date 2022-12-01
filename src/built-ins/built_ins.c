@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:18:43 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/29 16:20:51 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/01 12:54:15 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,33 +85,15 @@ t_cmd	*built_in_get(const char *name)
 	return (NULL);
 }
 
-/*
- * Runs the given built_in. Forks if necessary. Returning -1 when not forking
- * is intentional to avoid calling waitpid() in execute_tree_list(). It should
- * not cause issues with error handling (at least right now).
- */
-
-pid_t	built_in_run(t_cmd cmd, char *const *args, t_state *state, \
+int	built_in_run(t_cmd cmd, char *const *args, t_state *state, \
 	t_ast_context *ast)
 {
-	pid_t	result;
-	int		should_fork;
-	t_pipes	*pipes;
-
-	pipes = ast->pipes;
-	should_fork = !(pipes->read[0] == -1 && pipes->read[1] == -1
-			&& pipes->write[0] == -1 && pipes->write[1] == -1);
-	if (should_fork)
-	{
-		result = start_fork(ast);
-		if (result == 0)
-			exit(cmd(args, state));
-		else
-			return (result);
-	}
-	if (ast->node->right && !handle_redirects(ast->node->right, ast->redirect))
+	if (!env_set("_", args[0], &(state->env)))
+		set_return_value(1, state);
+	else if (ast->node->right
+		&& !handle_redirects(ast->node->right, ast->redirect))
 		set_return_value(1, state);
 	else
 		set_return_value(cmd(args, state), state);
-	return (-1);
+	return (state->last_return_value);
 }
