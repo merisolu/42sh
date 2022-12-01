@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/29 13:15:32 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/01 11:30:04 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ bool	execute_filedes_aggregation(t_ast_redir *redir, t_redir *r);
 
 /* fork.c */
 pid_t	start_fork(t_ast_context *ast);
+bool	in_pipes(t_pipes *pipes);
 
 /* pipes.c */
 void	pipe_reset(int pipe[2]);
