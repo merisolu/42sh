@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 14:24:05 by amann             #+#    #+#             */
-/*   Updated: 2022/12/02 13:06:56 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/02 14:35:25 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static bool	ambiguous_redir(t_ast_redir **res, char *val)
 {
 	ft_memdel((void **)res);
 	return (print_error_bool(
-			false, ETEMPLATE_SHELL_NAMED, val, ERR_MALLOC_FAIL));
+			false, ETEMPLATE_SHELL_NAMED, val, ERR_AMBIGUOUS_REDIR));
 }
 
 bool	ast_add_fd_agg(t_ast *node, t_token **cursor)
@@ -44,7 +44,7 @@ bool	ast_add_fd_agg(t_ast *node, t_token **cursor)
 	*cursor = (*cursor)->next;
 	if ((*cursor)->value[0] == '-')
 		res->agg_close = true;
-	else if (!ft_isdigit_str((*cursor)->value))
+	else if (!ft_isdigit_str((*cursor)->value) && res->agg_from != 1)
 		return (ambiguous_redir(&res, (*cursor)->value));
 	else
 		res->agg_to = ft_atoi((*cursor)->value);

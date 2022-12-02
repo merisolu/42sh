@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2022/12/02 13:49:20 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/02 15:54:31 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ static bool	add_redir_out(t_ast *node, t_token **cursor)
 	res = (t_ast_redir *) ft_memalloc(sizeof(t_ast_redir));
 	if (!res)
 		return (print_error_bool(false, ERR_MALLOC_FAIL));
-	if (!ft_strequ((*cursor)->value, ">") && !ft_strequ((*cursor)->value, ">>"))
+	if (!ft_strequ((*cursor)->value, ">") && !ft_strequ((*cursor)->value, ">>")
+			&& !ft_strequ((*cursor)->value, ">&"))
 		return (print_bool_sep_error(ERR_SYNTAX, *cursor, false));
 	res->out_type = ft_strdup((*cursor)->value);
 	if (!res->out_type)
