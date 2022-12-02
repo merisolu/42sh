@@ -6,11 +6,15 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2022/11/30 15:07:22 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/02 13:32:35 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
+
+
+
+#include "debug.h"
 
 bool	add_redir_struct(t_ast_redir ***redirs, t_ast_redir *new)
 {
@@ -41,9 +45,13 @@ static bool	add_redir_in(t_ast *node, t_token **cursor)
 	res = (t_ast_redir *) ft_memalloc(sizeof(t_ast_redir));
 	if (!res)
 		return (print_error_bool(false, ERR_MALLOC_FAIL));
+	if (!ft_strequ((*cursor)->value, "<") && !ft_strequ((*cursor)->value, "<<"))
+		return (print_bool_sep_error(ERR_SYNTAX, *cursor, false));
 	res->in_type = ft_strdup((*cursor)->value);
 	if (!res->in_type)
 		return (print_error_bool(false, ERR_MALLOC_FAIL));
+	if (!((*cursor)->next) || (*cursor)->next->type != TOKEN_WORD)
+		return (print_bool_syntax_error(ERR_SYNTAX, *cursor, false));
 	*cursor = (*cursor)->next;
 	res->in_file = ft_strdup((*cursor)->value);
 	if (!res->in_file)
@@ -59,9 +67,13 @@ static bool	add_redir_out(t_ast *node, t_token **cursor)
 	res = (t_ast_redir *) ft_memalloc(sizeof(t_ast_redir));
 	if (!res)
 		return (print_error_bool(false, ERR_MALLOC_FAIL));
+	if (!ft_strequ((*cursor)->value, ">") && !ft_strequ((*cursor)->value, ">>"))
+		return (print_bool_sep_error(ERR_SYNTAX, *cursor, false));
 	res->out_type = ft_strdup((*cursor)->value);
 	if (!res->out_type)
 		return (print_error_bool(false, ERR_MALLOC_FAIL));
+	if (!((*cursor)->next) || (*cursor)->next->type != TOKEN_WORD)
+		return (print_bool_syntax_error(ERR_SYNTAX, *cursor, false));
 	*cursor = (*cursor)->next;
 	res->out_file = ft_strdup((*cursor)->value);
 	if (!res->out_file)
@@ -70,31 +82,41 @@ static bool	add_redir_out(t_ast *node, t_token **cursor)
 	return (add_redir_struct(&(node->redirs), res));
 }
 
+/*
+ * First, we must filter out separators or null, as we will call this function
+ * if these are detected in ast_add_args.
+ *
+ * We then loop through the tokens, checking for fd aggregation or redirects,
+ * and handling them accordingly, until we hit a word, which is not the start
+ * of fd aggregation.
+ *
+ * Bad syntax will be managed by the respective handler functions.
+ */
+
 bool	ast_redirect_control(t_ast *node, t_token **cursor)
 {
-	t_token	*reset;
-
-	reset = *cursor;
-	if (!eat_token(cursor, TOKEN_LT | TOKEN_GT, reset)
-		&& !ast_fd_agg_format_check(cursor))
+	if (!(*cursor) || (!((*cursor)->type & (TOKEN_LT | TOKEN_GT))
+		&& !ast_fd_agg_format_check(cursor)))
 		return (true);
-	*cursor = reset;
-	if (ast_fd_agg_format_check(cursor) && !ast_add_fd_agg(node, cursor, reset))
-		return (false);
-	reset = *cursor;
-	if (*cursor && ((!ast_fd_agg_format_check(cursor)
-				&& (!(*cursor)->next || (*cursor)->next->type != TOKEN_WORD))
-			|| ft_strlen((*cursor)->value) > 2))
-		return (print_bool_syntax_error(ERR_SYNTAX, reset, false));
-	if (!ast_fd_agg_format_check(cursor)
-		&& eat_token(cursor, TOKEN_GT, reset)
-		&& eat_token(cursor, TOKEN_WORD, reset)
-		&& !add_redir_out(node, &reset))
-		return (false);
-	if (!ast_fd_agg_format_check(cursor)
-		&& eat_token(cursor, TOKEN_LT, reset)
-		&& eat_token(cursor, TOKEN_WORD, reset)
-		&& !add_redir_in(node, &reset))
-		return (false);
+	while (*cursor)
+	{
+		if (ast_fd_agg_format_check(cursor))
+		{
+			if (!ast_add_fd_agg(node, cursor))
+				return (false);
+		}
+		else if ((*cursor)->type == TOKEN_GT)
+		{
+			if (!add_redir_out(node, cursor))
+				return (false);
+		}
+		else if ((*cursor)->type == TOKEN_LT)
+		{
+			if (!add_redir_in(node, cursor))
+				return (false);
+		}
+		else
+			return (true);
+	}
 	return (true);
 }

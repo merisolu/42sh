@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 14:24:05 by amann             #+#    #+#             */
-/*   Updated: 2022/11/30 14:07:37 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/02 13:06:56 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static bool	ambiguous_redir(t_ast_redir **res, char *val)
 			false, ETEMPLATE_SHELL_NAMED, val, ERR_MALLOC_FAIL));
 }
 
-bool	ast_add_fd_agg(t_ast *node, t_token **cursor, t_token *reset)
+bool	ast_add_fd_agg(t_ast *node, t_token **cursor)
 {
 	t_ast_redir	*res;
 
@@ -34,20 +34,20 @@ bool	ast_add_fd_agg(t_ast *node, t_token **cursor, t_token *reset)
 	if (!res)
 		return (print_error_bool(false, ERR_MALLOC_FAIL));
 	res->aggregation = true;
-	if (read_token(cursor, TOKEN_GT | TOKEN_LT, reset))
+	if ((*cursor)->type & (TOKEN_GT | TOKEN_LT))
 		res->agg_from = set_fd((*cursor)->value[0]);
 	else
 	{
 		res->agg_from = ft_atoi((*cursor)->value);
-		eat_token(cursor, TOKEN_WORD, reset);
+		*cursor = (*cursor)->next;
 	}
-	eat_token(cursor, TOKEN_GT | TOKEN_LT, reset);
+	*cursor = (*cursor)->next;
 	if ((*cursor)->value[0] == '-')
 		res->agg_close = true;
 	else if (!ft_isdigit_str((*cursor)->value))
 		return (ambiguous_redir(&res, (*cursor)->value));
 	else
 		res->agg_to = ft_atoi((*cursor)->value);
-	eat_token(cursor, TOKEN_WORD, reset);
+	*cursor = (*cursor)->next;
 	return (add_redir_struct(&(node->redirs), res));
 }
