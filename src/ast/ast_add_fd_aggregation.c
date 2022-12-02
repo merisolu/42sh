@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 14:24:05 by amann             #+#    #+#             */
-/*   Updated: 2022/12/02 14:35:25 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/02 16:41:04 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,18 @@ static bool	ambiguous_redir(t_ast_redir **res, char *val)
 	ft_memdel((void **)res);
 	return (print_error_bool(
 			false, ETEMPLATE_SHELL_NAMED, val, ERR_AMBIGUOUS_REDIR));
+}
+
+static bool	fd_agg_one(t_ast_redir **res, t_token **cursor)
+{
+	(*res)->aggregation = false;
+	(*res)->out_type = ft_strdup(">");
+	if (!(*res)->out_type)
+		return (print_error_bool(false, ERR_MALLOC_FAIL));
+	(*res)->out_file = ft_strdup((*cursor)->value);
+	if (!(*res)->out_file)
+		return (print_error_bool(false, ERR_MALLOC_FAIL));
+	return (true);
 }
 
 bool	ast_add_fd_agg(t_ast *node, t_token **cursor)
@@ -44,8 +56,11 @@ bool	ast_add_fd_agg(t_ast *node, t_token **cursor)
 	*cursor = (*cursor)->next;
 	if ((*cursor)->value[0] == '-')
 		res->agg_close = true;
-	else if (!ft_isdigit_str((*cursor)->value) && res->agg_from != 1)
+	else if (!ft_isdigit_str((*cursor)->value) && (res->agg_from != 1
+			|| (*cursor)->previous->type == TOKEN_LT))
 		return (ambiguous_redir(&res, (*cursor)->value));
+	else if (!ft_isdigit_str((*cursor)->value) && !fd_agg_one(&res, cursor))
+		return (false);
 	else
 		res->agg_to = ft_atoi((*cursor)->value);
 	*cursor = (*cursor)->next;
