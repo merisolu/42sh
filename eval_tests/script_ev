@@ -83,4 +83,4 @@ rm nosuchfile 2>&- >> /tmp/file
 rm nosuchfile 2>&1 | cat -e >> /tmp/file
 echo "No dollar character" 1>&2 | cat -e 
 
-echo remember to check exit, signals, heredocs & rm /tmp/file...
+echo "remember to check exit, signals, heredocs & rm /tmp/file..."

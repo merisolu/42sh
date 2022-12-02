@@ -6,15 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2022/12/02 13:32:35 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/02 13:49:20 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
-
-
-
-#include "debug.h"
 
 bool	add_redir_struct(t_ast_redir ***redirs, t_ast_redir *new)
 {
@@ -87,16 +83,18 @@ static bool	add_redir_out(t_ast *node, t_token **cursor)
  * if these are detected in ast_add_args.
  *
  * We then loop through the tokens, checking for fd aggregation or redirects,
- * and handling them accordingly, until we hit a word, which is not the start
- * of fd aggregation.
+ * and handling them accordingly, until we hit a sequence of tokens not matching
+ * the syntax.
  *
- * Bad syntax will be managed by the respective handler functions.
+ * Bad syntax, for example no file to redirect into or ">>>>>",  will be managed
+ * by the respective handler functions; to keep this loop as clean and minimal
+ * as possible.
  */
 
 bool	ast_redirect_control(t_ast *node, t_token **cursor)
 {
 	if (!(*cursor) || (!((*cursor)->type & (TOKEN_LT | TOKEN_GT))
-		&& !ast_fd_agg_format_check(cursor)))
+			&& !ast_fd_agg_format_check(cursor)))
 		return (true);
 	while (*cursor)
 	{
