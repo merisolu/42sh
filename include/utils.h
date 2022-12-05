@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:20 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/30 14:11:14 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/05 14:10:32 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,15 @@
 
 # include <sys/ioctl.h>
 # include <termcap.h>
+# include <fcntl.h>
 
 # include "libft.h"
 # include "general.h"
 
 /* Files */
+
+/* debug_redir.c */
+void	debug_redir(t_ast_redir *redir, t_redir *r);
 
 /* error.c */
 int		print_error_valist(int return_value, char *format, va_list list);

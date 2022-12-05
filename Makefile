@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/12/01 12:54:21 by jumanner         ###   ########.fr        #
+#    Updated: 2022/12/05 14:09:48 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,7 +84,8 @@ TERMINAL_DIR = terminal
 TERMINAL_FILES = terminal_configuration.c
 
 UTILS_DIR = utils
-UTILS_FILES = error.c utils.c utils_input.c return_value.c syntax_error.c
+UTILS_FILES = error.c utils.c utils_input.c return_value.c syntax_error.c \
+			  	debug_redir.c
 
 SRC_FILES = main.c \
 			$(patsubst %, $(AST_DIR)/%, $(AST_FILES)) \
