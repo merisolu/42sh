@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 14:43:34 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/14 10:51:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/06 13:27:52 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 /* Files */
 
 /* cursor.c */
+int		parse_cursor(char *buffer, t_input_context *context);
 void	save_cursor(t_input_context *context);
 void	load_cursor(t_input_context *context);
 
