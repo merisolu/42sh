@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:13:18 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/06 13:33:09 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/06 14:37:52 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,9 @@ static bool	is_valid_sequence(char *buffer)
 	i = 2;
 	while (buffer[i] && ft_isdigit(buffer[i]))
 		i++;
-	while (buffer[i] && buffer[i] == ';')
-		i++;
 	if (buffer[i] != ';')
 		return (false);
+	i++;
 	while (buffer[i] && ft_isdigit(buffer[i]))
 		i++;
 	return (buffer[i] == 'R');
@@ -50,17 +49,17 @@ int	parse_cursor(char *buffer, t_input_context *context)
 	i = 2;
 	while (buffer[i] != ';')
 	{
-		y *= 10;
-		y += buffer[i] - '0';
+		y = (y * 10) + buffer[i] - '0';
 		i++;
 	}
 	i++;
 	while (buffer[i] != 'R')
 	{
-		x *= 10;
-		x += buffer[i] - '0';
+		x = (x * 10) + buffer[i] - '0';
 		i++;
 	}
+	if (!context)
+		return (i + 1);
 	context->input_start_x = x;
 	context->input_start_y = y;
 	return (i + 1);

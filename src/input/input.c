@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/30 14:07:17 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/06 17:08:59 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,7 @@ static t_input_result	get_line(t_input_context *ctx)
 		if (handle_key_result == -1)
 			return (INPUT_CALLED_FOR_EXIT);
 		i += handle_key_result;
-		if (i >= BUF_SIZE)
-			break ;
+		i += parse_cursor(buffer + i, NULL);
 		if (append_char(buffer[i], ctx) == INPUT_MARK_FOUND)
 			return (INPUT_MARK_FOUND);
 		i++;
