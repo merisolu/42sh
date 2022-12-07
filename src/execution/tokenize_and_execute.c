@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/12/07 16:31:46 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/07 16:49:04 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,12 @@ static pid_t	execute_simple_command(t_ast_context *ctx, t_state *state)
 		return (print_error(1, ETEMPLATE_SHELL_SIMPLE, ERR_HEREDOC_FAIL));
 	if (ctx->is_at_end)
 		pipe_reset(ctx->pipes->write);
-	if (ctx->node->left && ctx->node->left->arg_list && ctx->node->left->arg_list[0])
+	if (ctx->node->left && ctx->node->left->arg_list
+		&& ctx->node->left->arg_list[0])
 	{
 		result = execute(ctx->node->left->arg_list, state, ctx);
 		if (!env_set("_", ctx->node->left->arg_list[ft_null_array_len((void **)
-				ctx->node->left->arg_list) - 1], &(state->env)))
+						ctx->node->left->arg_list) - 1], &(state->env)))
 			return (-1);
 	}
 	else if (ctx->node->left && ctx->node->right)
