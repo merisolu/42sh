@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/12/07 14:09:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/07 16:31:46 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,23 @@ static pid_t	execute_simple_command(t_ast_context *ctx, t_state *state)
 	pid_t	result;
 
 	result = -1;
-	if (!ctx->is_at_end)
-	{
-		if (pipe(ctx->pipes->write) == -1)
-			print_error(1, ETEMPLATE_SHELL_SIMPLE, ERR_PIPE_FAIL);
-	}
+	if (!ctx->is_at_end && pipe(ctx->pipes->write) == -1)
+		print_error(1, ETEMPLATE_SHELL_SIMPLE, ERR_PIPE_FAIL);
 	if (ctx->node->right && !heredoc_run(ctx->node->right, ctx->pipes))
 		return (print_error(1, ETEMPLATE_SHELL_SIMPLE, ERR_HEREDOC_FAIL));
 	if (ctx->is_at_end)
 		pipe_reset(ctx->pipes->write);
-	if (ctx->node->left && ctx->node->left->arg_list)
+	if (ctx->node->left && ctx->node->left->arg_list && ctx->node->left->arg_list[0])
 	{
 		result = execute(ctx->node->left->arg_list, state, ctx);
 		if (!env_set("_", ctx->node->left->arg_list[ft_null_array_len((void **)
-						ctx->node->left->arg_list) - 1], &(state->env)))
+				ctx->node->left->arg_list) - 1], &(state->env)))
 			return (-1);
+	}
+	else if (ctx->node->left && ctx->node->right)
+	{
+		result = 0;
+		handle_redirects(ctx->node->right, ctx->redirect);
 	}
 	pipe_close(ctx->pipes->read);
 	pipes_copy(ctx->pipes->read, ctx->pipes->write);
@@ -52,10 +54,10 @@ static bool	execute_ast(t_ast_context *ctx, t_state *state)
 	if (ctx->node->node_type == AST_SIMPLE_COMMAND)
 	{
 		pid = execute_simple_command(ctx, state);
-		if (pid == -1 || !pids_add(pid, state))
-			return (false);
 		if (ctx->node->right)
 			reset_io(ctx->redirect);
+		if (pid == -1 || !pids_add(pid, state))
+			return (false);
 		return (true);
 	}
 	else if (ctx->node->node_type == AST_PIPE_SEQUENCE)
