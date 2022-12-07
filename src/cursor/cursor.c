@@ -6,11 +6,28 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:13:18 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 17:57:14 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/06 14:37:52 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cursor.h"
+
+static bool	is_valid_sequence(char *buffer)
+{
+	size_t	i;
+
+	if (!ft_strnequ(buffer, "\x1B[", 2))
+		return (false);
+	i = 2;
+	while (buffer[i] && ft_isdigit(buffer[i]))
+		i++;
+	if (buffer[i] != ';')
+		return (false);
+	i++;
+	while (buffer[i] && ft_isdigit(buffer[i]))
+		i++;
+	return (buffer[i] == 'R');
+}
 
 /*
  * Parses the ANSI escape sequence which reports the current cursor's position.
@@ -19,30 +36,30 @@
  * After the output has been parsed, the row and column are stored in *state.
  */
 
-static int	parse_cursor(char buf[BUF_SIZE], t_input_context *context)
+int	parse_cursor(char *buffer, t_input_context *context)
 {
 	size_t	x;
 	size_t	y;
 	size_t	i;
 
-	if (ft_dstchr(buf, 'R', BUF_SIZE - 1) == BUF_SIZE)
+	if (!is_valid_sequence(buffer))
 		return (0);
 	x = 0;
 	y = 0;
 	i = 2;
-	while (buf[i] != ';')
+	while (buffer[i] != ';')
 	{
-		y *= 10;
-		y += buf[i] - '0';
+		y = (y * 10) + buffer[i] - '0';
 		i++;
 	}
 	i++;
-	while (buf[i] != 'R')
+	while (buffer[i] != 'R')
 	{
-		x *= 10;
-		x += buf[i] - '0';
+		x = (x * 10) + buffer[i] - '0';
 		i++;
 	}
+	if (!context)
+		return (i + 1);
 	context->input_start_x = x;
 	context->input_start_y = y;
 	return (i + 1);
@@ -56,10 +73,10 @@ static int	parse_cursor(char buf[BUF_SIZE], t_input_context *context)
 
 void	save_cursor(t_input_context *context)
 {
-	char	buf[BUF_SIZE];
+	char	buf[BUF_SIZE + 1];
 
 	ft_putstr_fd("\x1B[6n", STDIN_FILENO);
-	ft_bzero(&buf, BUF_SIZE);
+	ft_bzero(&buf, BUF_SIZE + 1);
 	if (read(STDIN_FILENO, &buf, BUF_SIZE) > 0)
 		parse_cursor(buf, context);
 }
