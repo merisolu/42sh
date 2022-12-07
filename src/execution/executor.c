@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/01 12:35:38 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/07 14:11:05 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,7 @@ pid_t	execute(char *const *args, t_state *state, t_ast_context *ast)
 	{
 		fork_result = start_fork(ast);
 		if (fork_result == -1)
-			return (print_error(-1, ETEMPLATE_SHELL_SIMPLE,
-					ERR_CHILD_PROC_FAIL));
+			return (-1);
 		else if (fork_result != 0)
 			return (fork_result);
 	}

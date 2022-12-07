@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:21:45 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/01 13:48:32 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/07 13:24:33 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ static int	get_state_struct(char *const **env, t_state *result)
 
 	i = 0;
 	ft_bzero(result, sizeof(t_state));
+	ft_bzero(result->pids, sizeof(pid_t) * MAX_PIDS);
 	reserved_sequences = get_reserved_sequences();
 	if (!reserved_sequences)
 		return (print_error(0, ETEMPLATE_SHELL_SIMPLE, ERR_MALLOC_FAIL));
 	if (!input_context_set(&(result->input_context),
 			&(t_input_initializer){
-			PROMPT, MULTILINE_PROMPT, "\n",
-			reserved_sequences}))
+			PROMPT, MULTILINE_PROMPT, "\n", reserved_sequences}))
 		return (print_error(0, ETEMPLATE_SHELL_SIMPLE, ERR_INPUT_CONTEXT_FAIL));
 	while (i < HISTORY_SIZE)
 	{
@@ -53,9 +53,7 @@ static int	get_state_struct(char *const **env, t_state *result)
 	}
 	if (!ft_dup_null_array((void **)*env, (void ***)&(result->env), var_copy))
 		return (print_error(0, ETEMPLATE_SHELL_SIMPLE, ERR_MALLOC_FAIL));
-	return (
-		env_unset("OLDPWD", &(result->env))
-	);
+	return (env_unset("OLDPWD", &(result->env)));
 }
 
 int	setup(char *const **env, t_state *state)

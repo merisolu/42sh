@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/01 13:47:54 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/07 14:09:50 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 
 # define PROMPT "$> "
 # define MULTILINE_PROMPT "> "
+
+# define MAX_PIDS 709
 
 # define MAGIC_NUMBER "#!21\n"
 
@@ -148,6 +150,7 @@ typedef struct s_state
 	bool			terminal_conf_applied;
 	char			*history[HISTORY_SIZE];
 	int				history_index;
+	pid_t			pids[MAX_PIDS];
 	int				last_return_value;
 	int				exit_return_value;
 	int				exiting;
