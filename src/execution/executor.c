@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/07 14:11:05 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/08 15:35:53 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ pid_t	execute(char *const *args, t_state *state, t_ast_context *ast)
 	if (args && !args[0])
 		return (-1);
 	if (!args || !(args[0]))
-		return (print_error(-1, ETEMPLATE_SHELL_SIMPLE, ERR_MALLOC_FAIL));
+		return (print_error(-1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	forking = (in_pipes(ast->pipes) || !built_in_get(args[0]));
 	if (forking)
 	{

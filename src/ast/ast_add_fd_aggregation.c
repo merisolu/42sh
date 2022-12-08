@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 14:24:05 by amann             #+#    #+#             */
-/*   Updated: 2022/12/08 15:07:03 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/08 15:37:53 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static bool	ambiguous_redir(t_ast_redir **res, char *val)
 {
 	ft_memdel((void **)res);
 	return (print_error_bool(
-			false, ETEMPLATE_SHELL_NAMED, val, ERR_AMBIGUOUS_REDIR));
+			false, ERRTEMPLATE_NAMED, val, ERR_AMBIGUOUS_REDIR));
 }
 
 static bool	fd_agg_one(t_ast_redir **res, t_token **cursor)
@@ -31,10 +31,10 @@ static bool	fd_agg_one(t_ast_redir **res, t_token **cursor)
 	(*res)->aggregation = false;
 	(*res)->out_type = ft_strdup(">");
 	if (!(*res)->out_type)
-		return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_MALLOC_FAIL));
+		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	(*res)->out_file = ft_strdup((*cursor)->value);
 	if (!(*res)->out_file)
-		return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_MALLOC_FAIL));
+		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	return (true);
 }
 
@@ -44,7 +44,7 @@ bool	ast_add_fd_agg(t_ast *node, t_token **cursor)
 
 	res = (t_ast_redir *) ft_memalloc(sizeof(t_ast_redir));
 	if (!res)
-		return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_MALLOC_FAIL));
+		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	res->aggregation = true;
 	if ((*cursor)->type & (TOKEN_GT | TOKEN_LT))
 		res->agg_from = set_fd((*cursor)->value[0]);

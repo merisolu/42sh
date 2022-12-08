@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:18:51 by amann             #+#    #+#             */
-/*   Updated: 2022/12/08 15:11:24 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/08 15:35:53 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ bool	expand_node(char **word, t_state *state)
 		return (true);
 	list = ast_retokenize(*word);
 	if (!list)
-		return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_MALLOC_FAIL));
+		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	result = expansions_loop(list, state);
 	token_list_free(&list);
 	reset_state(state);

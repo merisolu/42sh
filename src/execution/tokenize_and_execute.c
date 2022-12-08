@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/12/07 16:31:46 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/08 15:35:53 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ static pid_t	execute_simple_command(t_ast_context *ctx, t_state *state)
 
 	result = -1;
 	if (!ctx->is_at_end && pipe(ctx->pipes->write) == -1)
-		print_error(1, ETEMPLATE_SHELL_SIMPLE, ERR_PIPE_FAIL);
+		print_error(1, ERRTEMPLATE_SIMPLE, ERR_PIPE_FAIL);
 	if (ctx->node->right && !heredoc_run(ctx->node->right, ctx->pipes))
-		return (print_error(1, ETEMPLATE_SHELL_SIMPLE, ERR_HEREDOC_FAIL));
+		return (print_error(1, ERRTEMPLATE_SIMPLE, ERR_HEREDOC_FAIL));
 	if (ctx->is_at_end)
 		pipe_reset(ctx->pipes->write);
 	if (ctx->node->left && ctx->node->left->arg_list && ctx->node->left->arg_list[0])
@@ -113,7 +113,7 @@ void	tokenize_and_execute(t_state *state)
 	}
 	if (!terminal_apply_config(&(state->orig_conf)))
 	{
-		print_error(1, ETEMPLATE_SHELL_SIMPLE, ERR_TERMIOS_FAIL);
+		print_error(1, ERRTEMPLATE_SIMPLE, ERR_TERMIOS_FAIL);
 		return ;
 	}
 	state->input_context.cursor = ft_strlen(state->input_context.input);
@@ -124,5 +124,5 @@ void	tokenize_and_execute(t_state *state)
 	history_store(state->input_context.input, state, 0);
 	clear_input(&(state->input_context));
 	if (!terminal_apply_config(&(state->input_conf)))
-		print_error(1, ETEMPLATE_SHELL_SIMPLE, ERR_TERMIOS_FAIL);
+		print_error(1, ERRTEMPLATE_SIMPLE, ERR_TERMIOS_FAIL);
 }

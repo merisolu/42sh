@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 13:56:40 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/01 13:59:13 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/08 15:37:53 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ t_cmd_env *cmd)
 	{
 		cmd->env = (char **)ft_memalloc(sizeof(char *));
 		if (!cmd->env)
-			return (print_error(-1, ETEMPLATE_SHELL_NAMED,
+			return (print_error(-1, ERRTEMPLATE_NAMED,
 					"env", ERR_MALLOC_FAIL));
 	}
 	else if (!ft_dup_null_array((void **)env, (void ***)&(cmd->env), var_copy))
-		return (print_error(-1, ETEMPLATE_SHELL_NAMED, "env", ERR_MALLOC_FAIL));
+		return (print_error(-1, ERRTEMPLATE_NAMED, "env", ERR_MALLOC_FAIL));
 	while (args[*index] && ft_strchr(args[*index], '='))
 	{
 		pair = args[*index];
@@ -60,7 +60,7 @@ static void	fork_and_execve(char *path, t_cmd_env *cmd)
 	if (fork_result == 0)
 		bin_execve(path, cmd->args, cmd->env);
 	else if (fork_result == -1)
-		print_error(0, ETEMPLATE_SHELL_SIMPLE, ERR_CHILD_PROC_FAIL);
+		print_error(0, ERRTEMPLATE_SIMPLE, ERR_CHILD_PROC_FAIL);
 	else
 		waitpid(fork_result, NULL, 0);
 }
@@ -83,10 +83,10 @@ int	cmd_env(char *const *args, t_state *state)
 		return (free_env_args(&cmd, 0));
 	}
 	if (!ft_dup_null_array((void **)args + i, (void ***)&(cmd.args), var_copy))
-		return (print_error(free_env_args(&cmd, 1), ETEMPLATE_SHELL_NAMED,
+		return (print_error(free_env_args(&cmd, 1), ERRTEMPLATE_NAMED,
 				"env", ERR_MALLOC_FAIL));
 	if (bin_env_find(args[i], state->env, &path) == 0)
-		return (print_error(free_env_args(&cmd, 1), ETEMPLATE_SHELL_NAMED,
+		return (print_error(free_env_args(&cmd, 1), ERRTEMPLATE_NAMED,
 				"env", ERR_NO_SUCH_FILE_OR_DIR));
 	fork_and_execve(path, &cmd);
 	free(path);

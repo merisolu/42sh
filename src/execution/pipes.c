@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 10:55:10 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/30 14:07:17 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/08 15:35:53 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,14 @@ int	pipes_connect(int read_pipe[2], int write_pipe[2])
 	if (read_pipe[PIPE_READ] != -1)
 	{
 		if (dup2(read_pipe[PIPE_READ], STDIN_FILENO) == -1)
-			print_error(0, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL);
+			print_error(0, ERRTEMPLATE_SIMPLE, ERR_DUP_FAIL);
 		close(read_pipe[PIPE_WRITE]);
 		close(read_pipe[PIPE_READ]);
 	}
 	if (write_pipe[PIPE_READ] != -1)
 	{
 		if (dup2(write_pipe[PIPE_WRITE], STDOUT_FILENO) == -1)
-			print_error(0, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL);
+			print_error(0, ERRTEMPLATE_SIMPLE, ERR_DUP_FAIL);
 		close(write_pipe[PIPE_READ]);
 		close(write_pipe[PIPE_WRITE]);
 	}

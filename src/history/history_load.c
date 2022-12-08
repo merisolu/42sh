@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 11:35:56 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/30 14:07:17 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/08 15:35:53 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	history_load(t_state *state)
 	if (file == -1)
 	{
 		free(path);
-		print_error(0, ETEMPLATE_SHELL_SIMPLE, ERR_CANNOT_OPEN_HISTORY);
+		print_error(0, ERRTEMPLATE_SIMPLE, ERR_CANNOT_OPEN_HISTORY);
 		return ;
 	}
 	add_lines_to_history(file, state);
