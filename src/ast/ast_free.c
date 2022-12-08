@@ -6,11 +6,20 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 12:58:11 by amann             #+#    #+#             */
-/*   Updated: 2022/12/08 14:26:13 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/08 15:57:12 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
+
+void	clear_redir_and_members(t_ast_redir *redir)
+{
+	ft_strdel(&(redir->in_file));
+	ft_strdel(&(redir->out_file));
+	ft_strdel(&(redir->in_type));
+	ft_strdel(&(redir->out_type));
+	ft_memdel((void **)&redir);
+}
 
 void	ast_free_redirs(t_ast **root)
 {
@@ -19,11 +28,7 @@ void	ast_free_redirs(t_ast **root)
 	i = 0;
 	while ((*root)->redirs[i])
 	{
-		ft_strdel(&((*root)->redirs[i]->in_file));
-		ft_strdel(&((*root)->redirs[i]->out_file));
-		ft_strdel(&((*root)->redirs[i]->in_type));
-		ft_strdel(&((*root)->redirs[i]->out_type));
-		ft_memdel((void **)&(*root)->redirs[i]);
+		clear_redir_and_members((*root)->redirs[i]);
 		i++;
 	}
 	ft_memdel((void **)&((*root)->redirs));
@@ -40,8 +45,6 @@ void	ast_free_redirs(t_ast **root)
  * - **arg_list (array of strings)
  * - **redirs (array of structs)
  * - *file (in the redir structs)
- *
- *
  */
 
 void	ast_free_recursion(t_ast *root)
