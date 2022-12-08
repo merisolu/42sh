@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 12:58:11 by amann             #+#    #+#             */
-/*   Updated: 2022/12/08 14:01:15 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/08 14:26:13 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void	ast_free_redirs(t_ast **root)
 
 void	ast_free_recursion(t_ast *root)
 {
-
 	if (!root)
 		return ;
 	ast_free_recursion(root->left);
