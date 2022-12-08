@@ -6,11 +6,29 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 12:58:11 by amann             #+#    #+#             */
-/*   Updated: 2022/11/18 13:59:38 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/08 14:01:15 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
+
+void	ast_free_redirs(t_ast **root)
+{
+	size_t	i;
+
+	i = 0;
+	while ((*root)->redirs[i])
+	{
+		ft_strdel(&((*root)->redirs[i]->in_file));
+		ft_strdel(&((*root)->redirs[i]->out_file));
+		ft_strdel(&((*root)->redirs[i]->in_type));
+		ft_strdel(&((*root)->redirs[i]->out_type));
+		ft_memdel((void **)&(*root)->redirs[i]);
+		i++;
+	}
+	ft_memdel((void **)&((*root)->redirs));
+	return ;
+}
 
 /*
  * Takes a pointer to a list of trees and iterates through them, from the
@@ -28,7 +46,6 @@
 
 void	ast_free_recursion(t_ast *root)
 {
-	size_t	i;
 
 	if (!root)
 		return ;
@@ -36,19 +53,7 @@ void	ast_free_recursion(t_ast *root)
 	ast_free_recursion(root->right);
 	root->arg_list = ft_free_null_array((void **) root->arg_list);
 	if (root->redirs)
-	{
-		i = 0;
-		while (root->redirs[i])
-		{
-			ft_strdel(&(root->redirs[i]->in_file));
-			ft_strdel(&(root->redirs[i]->out_file));
-			ft_strdel(&(root->redirs[i]->in_type));
-			ft_strdel(&(root->redirs[i]->out_type));
-			ft_memdel((void **)&root->redirs[i]);
-			i++;
-		}
-		ft_memdel((void **)&(root->redirs));
-	}
+		ast_free_redirs(&root);
 	ft_memdel((void **)&root);
 }
 
