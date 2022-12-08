@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:55:34 by amann             #+#    #+#             */
-/*   Updated: 2022/12/01 14:50:39 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/08 15:25:35 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static bool	realloc_array(char ***arr, size_t size)
 	if (!res)
 	{
 		ft_free_null_array((void **) *arr);
-		return (print_error_bool(false, ERR_MALLOC_FAIL));
+		return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_MALLOC_FAIL));
 	}
 	i = 0;
 	while ((*arr)[i])
@@ -84,7 +84,7 @@ bool	allocate_args_array(char ***res, t_token **cursor)
 			}
 			(*res)[idx] = ft_strdup((*cursor)->value);
 			if (!(*res)[idx])
-				return (print_error_bool(false, ERR_MALLOC_FAIL));
+				return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_MALLOC_FAIL));
 			idx++;
 		}
 		else if ((*cursor)->type & (TOKEN_AMPERSAND | TOKEN_BACKSLASH))

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 15:27:43 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/30 14:37:22 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/08 15:29:29 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,17 +65,17 @@ static int	construct_path(char *target, char **result)
 	{
 		*result = ft_strdup(target);
 		if (!(*result))
-			return (print_error(0, ERR_MALLOC_FAIL));
+			return (print_error(0, ETEMPLATE_SHELL_NAMED, "cd", ERR_MALLOC_FAIL));
 	}
 	else
 	{
 		path = getcwd(NULL, 0);
 		if (!path)
-			return (print_error(0, ERR_CANNOT_GET_CWD));
+			return (print_error(0, ETEMPLATE_SHELL_NAMED, "cd", ERR_CANNOT_GET_CWD));
 		ft_path_join(path, target, result);
 		free(path);
 		if (!(*result))
-			return (print_error(0, ERR_MALLOC_FAIL));
+			return (print_error(0, ETEMPLATE_SHELL_NAMED, "cd", ERR_MALLOC_FAIL));
 	}
 	return (1);
 }
