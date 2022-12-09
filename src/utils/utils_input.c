@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:04:07 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 17:46:28 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/09 14:25:23 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,28 @@
  * *length respectively.
  */
 
+static void	ret_zero(size_t *start, size_t *length)
+{
+	*start = 0;
+	*length = 0;
+}
+
+static void	iglp_helper(size_t *start, size_t *length, size_t ss, size_t se)
+{
+	if (length)
+		*length = se;
+	if (start)
+		*start = ss;
+}
+
 void	input_get_line_properties(\
 	t_input_context *context, size_t index, size_t *start, size_t *length)
 {
 	size_t	section_start;
 	size_t	section_end;
 
+	if (ft_strlen(context->input) < index)
+		return (ret_zero(start, length));
 	section_start = index;
 	while (section_start > 0)
 	{
@@ -49,10 +65,7 @@ void	input_get_line_properties(\
 		section_end = ft_strlen(context->input);
 	if (section_start == 0 && section_end == 0 && index > 0)
 		section_start = index;
-	if (length)
-		*length = section_end;
-	if (start)
-		*start = section_start;
+	iglp_helper(start, length, section_start, section_end);
 }
 
 /*
