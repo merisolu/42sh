@@ -6,14 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2022/12/09 16:31:43 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/09 17:01:53 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
-
-
-#include "debug.h"
 
 bool	add_redir_struct(t_ast_redir ***redirs, t_ast_redir *new)
 {
@@ -43,23 +40,24 @@ bool	add_redir_struct(t_ast_redir ***redirs, t_ast_redir *new)
 	return (true);
 }
 
-bool	check_redir_syntax(t_token *cursor)
+static bool	check_redir_syntax(t_token *cursor)
 {
 	if (cursor->type == TOKEN_GT)
 	{
 		if (!ft_strequ(cursor->value, ">") && !ft_strequ(cursor->value, ">>")
-			&& !ft_strequ(cursor->value, ">&"))
+			&& !ft_strequ(cursor->value, FD_AGG_OUT))
 			return (print_bool_sep_error(ERR_SYNTAX, cursor, false));
 	}
 	else if (cursor->type == TOKEN_LT)
 	{
-		if (!ft_strequ(cursor->value, "<") && !ft_strequ(cursor->value, "<<")
-			&& !ft_strequ(cursor->value, "<&"))
+		if (!ft_strequ(cursor->value, "<") && !ft_strequ(cursor->value, "<<"))
 			return (print_bool_sep_error(ERR_SYNTAX, cursor, false));
 	}
-	if (!(cursor->next) || !(cursor->next->type & (TOKEN_WORD | TOKEN_WHITESPACE)))
+	if (!(cursor->next)
+		|| !(cursor->next->type & (TOKEN_WORD | TOKEN_WHITESPACE)))
 		return (print_bool_syntax_error(ERR_SYNTAX, cursor, false));
-	if (cursor->next->type == TOKEN_WORD && ast_fd_agg_format_check(&(cursor->next)))
+	if (cursor->next->type == TOKEN_WORD
+		&& ast_fd_agg_format_check(&(cursor->next)))
 		return (print_bool_syntax_error(ERR_SYNTAX, cursor, false));
 	if (cursor->next->type == TOKEN_WHITESPACE
 		&& (!(cursor->next->next) || cursor->next->next->type != TOKEN_WORD
@@ -144,7 +142,7 @@ bool	ast_redirect_control(t_ast *node, t_token **cursor)
 		return (true);
 	while (*cursor)
 	{
-		if ((ast_fd_agg_format_check(cursor)))
+		if (ast_fd_agg_format_check(cursor))
 		{
 			if (!ast_add_fd_agg(node, cursor))
 				return (false);
