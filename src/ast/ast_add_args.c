@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:55:34 by amann             #+#    #+#             */
-/*   Updated: 2022/12/08 16:18:29 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/09 15:10:12 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,10 @@
 
 static bool	check_cmd_end(t_token **cursor)
 {
-	t_token	*reset;
-
-	reset = *cursor;
-	if (eat_token(cursor, TOKEN_LT | TOKEN_GT, reset))
-	{
-		*cursor = reset;
-		return (true);
-	}
-	if (ast_fd_agg_format_check(cursor))
-		return (true);
-	if (ast_is_separator(*cursor))
-		return (true);
-	if (!check_separator_syntax(*cursor))
-		return (true);
-	if ((*cursor)->type == TOKEN_PIPE && ft_strlen((*cursor)->value) == 1)
+	if ((*cursor)->type & (TOKEN_LT | TOKEN_GT)
+		|| ast_fd_agg_format_check(cursor) || ast_is_separator(*cursor)
+		|| !check_separator_syntax(*cursor)
+		|| ((*cursor)->type == TOKEN_PIPE && ft_strlen((*cursor)->value) == 1))
 		return (true);
 	return (false);
 }
