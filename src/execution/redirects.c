@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/12/08 14:14:39 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/12 16:00:52 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	initialize_redir_struct(t_redir *r)
 	r->saved_in = -1;
 	r->saved_fd = -1;
 	r->fd_agg = -1;
+	r->reset_order = -1;
 }
 
 static bool	copy_orig_fd(int *saved, int fd)
@@ -56,6 +57,7 @@ static bool	redirect_input(t_ast_redir *redir_node, t_redir *r)
 				false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
 	close(r->fd_in);
 	r->fd_in = -1;
+	r->reset_order = 0;
 	return (true);
 }
 
@@ -83,6 +85,7 @@ static bool	redirect_output(t_ast_redir *redir, t_redir *r)
 		return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
 	close(r->fd_out);
 	r->fd_out = -1;
+	r->reset_order = 0;
 	return (true);
 }
 

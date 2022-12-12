@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 15:31:16 by amann             #+#    #+#             */
-/*   Updated: 2022/12/05 15:41:00 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/12 15:48:18 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ bool	execute_filedes_aggregation(t_ast_redir *redir, t_redir *r)
 		return (print_error(
 				false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
 	r->fd_agg = redir->agg_from;
+	r->reset_order = 1;
 	if (redir->agg_close)
 		close(redir->agg_from);
 	else

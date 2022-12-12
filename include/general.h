@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/07 14:09:50 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/12 15:53:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,6 +217,7 @@ typedef struct s_redir
 	int	saved_in;
 	int	saved_fd;
 	int	fd_agg;
+	int	reset_order;
 }	t_redir;
 
 typedef struct s_ast_context
