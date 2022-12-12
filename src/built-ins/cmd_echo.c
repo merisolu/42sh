@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:12:18 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/30 14:34:38 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/12 11:46:44 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,10 @@ int	cmd_echo(char *const *args, t_state *state)
 		i++;
 	}
 	if (!no_newline)
-		ft_putchar('\n');
+	{
+		if (write(1, "\n", 1) == -1)
+			return (print_error(1, ETEMPLATE_SHELL_NAMED,
+					"echo", ERR_WRITE_BAD_FD));
+	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2022/12/09 17:01:53 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/12 12:02:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static bool	check_redir_syntax(t_token *cursor)
 	if (cursor->next->type == TOKEN_WHITESPACE
 		&& (!(cursor->next->next) || cursor->next->next->type != TOKEN_WORD
 			|| ast_fd_agg_format_check(&(cursor->next->next))))
-		return (print_bool_syntax_error(ERR_SYNTAX, cursor, false));
+		return (print_bool_syntax_error(ERR_SYNTAX, cursor->next, false));
 	return (true);
 }
 
