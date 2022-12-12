@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 15:31:16 by amann             #+#    #+#             */
-/*   Updated: 2022/12/12 15:48:18 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/12 16:08:34 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ static bool	check_fd_errors(t_ast_redir *redir)
 {
 	struct stat	buf;
 
-	if (fstat(redir->agg_to, &buf) == -1)
+	if (fstat(redir->agg_to, &buf) == -1 || redir->agg_to > 2)
 	{
 		return (print_error_bool(
 				false, "21sh: %i: %s\n", redir->agg_to, ERR_BAD_FD));
 	}
-	if (fstat(redir->agg_from, &buf) == -1)
+	if (fstat(redir->agg_from, &buf) == -1 || redir->agg_from > 2)
 	{
 		return (print_error_bool(
 				false, "21sh: %i: %s\n", redir->agg_from, ERR_BAD_FD));
