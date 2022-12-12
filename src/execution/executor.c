@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/08 15:35:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/12 14:35:23 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,13 @@ t_ast_context *ast, bool forking)
 	pid_t	return_value;
 
 	if (built_in_get(args[0]))
-		return (exit_if_forking(forking,
-				built_in_run(built_in_get(args[0]), args, state, ast)));
+	{
+		if (forking)
+			return (exit_if_forking(forking,
+					built_in_run(built_in_get(args[0]), args, state, ast)));
+		built_in_run(built_in_get(args[0]), args, state, ast);
+		return (exit_if_forking(forking, 0));
+	}
 	if (ft_strchr(args[0], '/') || (args[0][0] == '.'))
 		return (exit_if_forking(forking, execute_absolute_path(args, state)));
 	return_value = find_from_path(args[0], state->env, &path);

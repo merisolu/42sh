@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/12/08 15:35:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/12 14:25:31 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ static pid_t	execute_simple_command(t_ast_context *ctx, t_state *state)
 
 	result = -1;
 	if (!ctx->is_at_end && pipe(ctx->pipes->write) == -1)
-		print_error(1, ERRTEMPLATE_SIMPLE, ERR_PIPE_FAIL);
+		return (print_error(-1, ERRTEMPLATE_SIMPLE, ERR_PIPE_FAIL));
 	if (ctx->node->right && !heredoc_run(ctx->node->right, ctx->pipes))
-		return (print_error(1, ERRTEMPLATE_SIMPLE, ERR_HEREDOC_FAIL));
+		return (print_error(-1, ERRTEMPLATE_SIMPLE, ERR_HEREDOC_FAIL));
 	if (ctx->is_at_end)
 		pipe_reset(ctx->pipes->write);
 	if (ctx->node->left && ctx->node->left->arg_list && ctx->node->left->arg_list[0])
@@ -90,7 +90,7 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 		initialize_redir_struct(redir);
 		parse_expansions(ast[i], state);
 		res = execute_ast(&(t_ast_context){ast[i], redir, &pipes, 0}, state);
-		set_return_value(get_return_value_from_status(pids_wait(state)), state);
+		set_return_value(pids_wait(state), state);
 		if (!res)
 			break ;
 		handle_logical_ops(ast, state, &i);
