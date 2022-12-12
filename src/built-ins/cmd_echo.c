@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:12:18 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/12 11:46:44 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/12 13:52:06 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,8 @@ int	cmd_echo(char *const *args, t_state *state)
 
 	(void)state;
 	len = ft_null_array_len((void **)args);
-	i = 1;
-	no_newline = ft_strequ(args[i], "-n");
-	i += no_newline;
+	no_newline = ft_strequ(args[1], "-n");
+	i = no_newline + 1;
 	while (i < len)
 	{
 		if (write(1, args[i], ft_strlen(args[i])) == -1)
