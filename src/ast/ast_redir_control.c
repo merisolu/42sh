@@ -6,12 +6,13 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2022/12/13 14:07:48 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/13 15:03:43 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
 
+/*
 static bool	add_redir_in(t_ast *node, t_token **cursor)
 {
 	t_ast_redir	*res;
@@ -66,33 +67,50 @@ static bool	add_redir_err(t_ast *node, t_token **cursor)
 	}
 	*cursor = (*cursor)->next;
 	return (add_redir_struct(&(node->redirs), res));
-}
+}*/
 
-static bool	add_redir_out(t_ast *node, t_token **cursor)
+static bool	add_redir(t_ast *node, t_token **cursor)
 {
 	t_ast_redir	*res;
 
 	res = (t_ast_redir *) ft_memalloc(sizeof(t_ast_redir));
 	if (!res)
 		return (print_error_bool(false, ERR_MALLOC_FAIL));
+
+	res->redir_fd = -1;
+	if ((*cursor)->type == TOKEN_WORD)
+	{
+		res->redir_fd = ft_atoi((*cursor)->value);
+		if (res->redir_fd > 9)
+		{
+			free(res);
+			return (print_error_bool(false, ERR_BAD_FD));
+		}
+		*cursor = (*cursor)->next;
+	}
+
 	if (!check_redir_syntax(*cursor))
 	{
 		free(res);
 		return (false);
 	}
-	res->out_type = ft_strdup((*cursor)->value);
-	if (!res->out_type)
+
+	res->redir_op = ft_strdup((*cursor)->value);
+	if (!res->redir_op)
 		return (print_error_bool(false, ERR_MALLOC_FAIL));
 	*cursor = (*cursor)->next;
+
 	if ((*cursor)->type == TOKEN_WHITESPACE)
 		*cursor = (*cursor)->next;
-	res->out_file = ft_strdup((*cursor)->value);
-	if (!res->out_file)
+
+	res->redir_file = ft_strdup((*cursor)->value);
+	if (!res->redir_file)
 	{
 		clear_redir_and_members(res);
 		return (print_error_bool(false, ERR_MALLOC_FAIL));
 	}
 	*cursor = (*cursor)->next;
+
 	return (add_redir_struct(&(node->redirs), res));
 }
 
@@ -109,54 +127,28 @@ static bool	add_redir_out(t_ast *node, t_token **cursor)
  * as possible.
  */
 
+bool	check_redir_tokens(t_token **cursor)
+{
+	return (((*cursor)->type & (TOKEN_LT | TOKEN_GT))
+		||  ((*cursor)->type == TOKEN_WORD && ft_isdigit_str((*cursor)->value)
+			&& (*cursor)->next && (*cursor)->next->type & (TOKEN_LT | TOKEN_GT)));
+}
+
 bool	ast_redirect_control(t_ast *node, t_token **cursor)
 {
-	if (!(*cursor) || (!((*cursor)->type & (TOKEN_LT | TOKEN_GT))
-			&& !(((*cursor)->type == TOKEN_WORD && ft_isdigit_str((*cursor)->value)
-			&& (*cursor)->next && (*cursor)->next->type & (TOKEN_LT | TOKEN_GT)))
+	if (!(*cursor) || (!check_redir_tokens(cursor)
 			&& !ast_fd_agg_format_check(cursor)))
 		return (true);
 	while (*cursor)
 	{
-		if ((*cursor)->type == TOKEN_WORD && !ast_fd_agg_format_check(cursor))
-		{
-			if (ft_strequ((*cursor)->value, "2"))
-			{
-				*cursor = (*cursor)->next;
-				if (!add_redir_err(node, cursor))
-					return (false);
-			}
-			else if (ft_strequ((*cursor)->value, "1"))
-			{
-				*cursor = (*cursor)->next;
-				if (!add_redir_out(node, cursor))
-					return (false);
-			}
-			else if (ft_strequ((*cursor)->value, "0"))
-			{
-				*cursor = (*cursor)->next;
-				if (!add_redir_in(node, cursor))
-					return (false);
-			}
-			else
-			{
-				ft_putendl("bad filedes");
-				return (false);
-			}
-		}
-		else if (ast_fd_agg_format_check(cursor))
+		if (ast_fd_agg_format_check(cursor))
 		{
 			if (!ast_add_fd_agg(node, cursor))
 				return (false);
 		}
-		else if ((*cursor)->type == TOKEN_GT)
+		else if (check_redir_tokens(cursor))
 		{
-			if (!add_redir_out(node, cursor))
-				return (false);
-		}
-		else if ((*cursor)->type == TOKEN_LT)
-		{
-			if (!add_redir_in(node, cursor))
+			if (!add_redir(node, cursor))
 				return (false);
 		}
 		else
