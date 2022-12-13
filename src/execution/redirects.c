@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/12/12 16:00:52 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/13 14:31:57 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@ void	initialize_redir_struct(t_redir *r)
 {
 	r->fd_out = -1;
 	r->fd_in = -1;
+	r->fd_err = -1;
 	r->saved_out = -1;
 	r->saved_in = -1;
+	r->saved_err = -1;
 	r->saved_fd = -1;
 	r->fd_agg = -1;
 	r->reset_order = -1;
@@ -81,10 +83,39 @@ static bool	redirect_output(t_ast_redir *redir, t_redir *r)
 		return (print_error_bool(false, ETEMPLATE_SHELL_NAMED,
 				redir->out_file, ERR_NO_PERMISSION));
 	}
+//	dup2(r->fd_out, 7);
 	if (dup2(r->fd_out, STDOUT_FILENO) == -1)
 		return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
 	close(r->fd_out);
 	r->fd_out = -1;
+	r->reset_order = 0;
+	return (true);
+}
+
+static bool	redirect_error(t_ast_redir *redir, t_redir *r)
+{
+	int			append;
+	static int	perms;
+
+	if (r->saved_err == -1 && !copy_orig_fd(&(r->saved_err), STDERR_FILENO))
+		return (false);
+	perms = S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR | S_IROTH;
+	append = O_TRUNC;
+	if (ft_strequ(redir->err_type, REDIR_APPEND))
+		append = O_APPEND;
+	r->fd_err = open(redir->err_file, O_WRONLY | O_CREAT | append, perms);
+	if (r->fd_err == -1)
+	{
+		if (ft_is_dir(redir->err_file))
+			return (print_error_bool(false, ETEMPLATE_SHELL_NAMED,
+					redir->err_file, ERR_IS_DIR));
+		return (print_error_bool(false, ETEMPLATE_SHELL_NAMED,
+				redir->err_file, ERR_NO_PERMISSION));
+	}
+	if (dup2(r->fd_err, STDERR_FILENO) == -1)
+		return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
+	close(r->fd_err);
+	r->fd_err = -1;
 	r->reset_order = 0;
 	return (true);
 }
@@ -98,6 +129,9 @@ bool	handle_redirects(t_ast *node, t_redir *r)
 	i = 0;
 	while (node->redirs[i])
 	{
+		if (node->redirs[i]->err_type
+			&& !redirect_error(node->redirs[i], r))
+			return (false);
 		if (node->redirs[i]->out_type
 			&& !redirect_output(node->redirs[i], r))
 			return (false);

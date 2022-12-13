@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:04 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/09 17:00:18 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/13 13:37:12 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@ bool	allocate_args_array(t_ast **node, t_token **cursor);
 /* ast_add_fd_aggregation.c */
 bool	ast_add_fd_agg(t_ast *node, t_token **cursor);
 
+/* ast_add_redir_struct.c */
+bool	add_redir_struct(t_ast_redir ***redirs, t_ast_redir *new);
+
 /* ast_fd_agg_format_check.c */
 bool	ast_fd_agg_format_check(t_token **cursor);
 
@@ -74,6 +77,9 @@ bool	ast_simple_command(t_token **cursor, t_ast **node);
 
 /* construct_ast_list.c */
 t_ast	**construct_ast_list(t_token *cursor);
+
+/* check_redir_syntax.c */
+bool	check_redir_syntax(t_token *cursor);
 
 /* ast_end.c */
 bool	check_end(t_token **cursor, t_token *reset, t_ast **node);
