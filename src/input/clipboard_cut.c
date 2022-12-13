@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 11:05:38 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 14:39:44 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/08 12:58:01 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,8 @@ int	cut_word(t_input_context *ctx)
 int	cut_to_cursor(t_input_context *ctx)
 {
 	copy_to_cursor(ctx);
-	ft_bzero(ctx->input + ft_strlen(ctx->input),
-		INPUT_MAX_SIZE - ctx->cursor);
+	ft_bzero(ctx->input, ctx->cursor);
 	ft_strcpy(ctx->input, ctx->input + ctx->cursor);
-	ft_bzero(ctx->input + ft_strlen(ctx->input),
-		INPUT_MAX_SIZE - ctx->cursor);
 	ctx->cursor = 0;
 	return (1);
 }

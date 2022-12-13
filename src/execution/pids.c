@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:02:59 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/07 14:06:22 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/12 14:25:33 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,14 @@ int	pids_wait(t_state *state)
 	int		return_value;
 
 	i = 0;
+	return_value = state->last_return_value;
 	while (state->pids[i] != 0)
 	{
 		if (state->pids[i] != -1)
+		{
 			waitpid(state->pids[i], &return_value, 0);
+			return_value = get_return_value_from_status(return_value);
+		}
 		i++;
 	}
 	ft_bzero(state->pids, sizeof(int) * MAX_PIDS);

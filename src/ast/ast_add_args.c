@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:55:34 by amann             #+#    #+#             */
-/*   Updated: 2022/12/08 16:18:29 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/13 13:01:24 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ bool	allocate_args_array(t_ast **node, t_token **cursor)
 		{
 			((*node)->arg_list)[idx] = ft_strdup((*cursor)->value);
 			if (!((*node)->arg_list)[idx])
-				return (print_error_bool(false, ERR_MALLOC_FAIL));
+				return (print_error_bool(false,
+						ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 			idx++;
 		}
 		else if ((*cursor)->type & (TOKEN_AMPERSAND | TOKEN_BACKSLASH))

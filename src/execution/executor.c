@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/07 14:11:05 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/12 14:35:23 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,13 @@ t_ast_context *ast, bool forking)
 	pid_t	return_value;
 
 	if (built_in_get(args[0]))
-		return (exit_if_forking(forking,
-				built_in_run(built_in_get(args[0]), args, state, ast)));
+	{
+		if (forking)
+			return (exit_if_forking(forking,
+					built_in_run(built_in_get(args[0]), args, state, ast)));
+		built_in_run(built_in_get(args[0]), args, state, ast);
+		return (exit_if_forking(forking, 0));
+	}
 	if (ft_strchr(args[0], '/') || (args[0][0] == '.'))
 		return (exit_if_forking(forking, execute_absolute_path(args, state)));
 	return_value = find_from_path(args[0], state->env, &path);
@@ -61,7 +66,7 @@ pid_t	execute(char *const *args, t_state *state, t_ast_context *ast)
 	if (args && !args[0])
 		return (-1);
 	if (!args || !(args[0]))
-		return (print_error(-1, ETEMPLATE_SHELL_SIMPLE, ERR_MALLOC_FAIL));
+		return (print_error(-1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	forking = (in_pipes(ast->pipes) || !built_in_get(args[0]));
 	if (forking)
 	{

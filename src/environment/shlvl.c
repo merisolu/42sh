@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 10:16:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/30 14:07:17 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/08 15:35:53 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	set_shlvl(char *const **env)
 		shlvl++;
 	shlvl_string = ft_itoa(shlvl);
 	if (!shlvl_string)
-		return (print_error(0, ETEMPLATE_SHELL_SIMPLE, ERR_MALLOC_FAIL));
+		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	result = env_set("SHLVL", shlvl_string, env);
 	free(shlvl_string);
 	return (result);

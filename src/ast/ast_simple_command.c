@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 17:39:33 by amann             #+#    #+#             */
-/*   Updated: 2022/12/08 16:17:08 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/13 12:59:53 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static bool	redirects_node(t_token **cursor, t_ast **node)
 	if (!*node)
 		*node = (t_ast *) ft_memalloc(sizeof(t_ast));
 	if (!*node)
-		return (print_error_bool(false, ERR_MALLOC_FAIL));
+		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	if (!(*node)->node_type)
 		(*node)->node_type = AST_REDIRECTIONS;
 	return (ast_redirect_control(*node, cursor));
@@ -32,14 +32,14 @@ static bool	args_node(t_token **cursor, t_ast **node)
 	if (!*node)
 		*node = (t_ast *) ft_memalloc(sizeof(t_ast));
 	if (!*node)
-		return (print_error_bool(false, ERR_MALLOC_FAIL));
+		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	if (!(*node)->node_type)
 		(*node)->node_type = AST_COMMAND_ARGS;
 	if (!(*node)->arg_list)
 		(*node)->arg_list
 			= (char **) ft_memalloc(sizeof(char *) * (INPUT_MAX_SIZE / 2));
 	if (!(*node)->arg_list)
-		return (print_error_bool(false, ERR_MALLOC_FAIL));
+		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	if (!(allocate_args_array(node, cursor)))
 		return (false);
 	return (true);
@@ -57,7 +57,7 @@ bool	ast_simple_command(t_token **cursor, t_ast **node)
 {
 	*node = (t_ast *) ft_memalloc(sizeof(t_ast));
 	if (!(*node))
-		return (print_error_bool(false, ERR_MALLOC_FAIL));
+		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	(*node)->node_type = AST_SIMPLE_COMMAND;
 	while (cursor && *cursor)
 	{

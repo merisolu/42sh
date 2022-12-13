@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 10:56:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/30 14:07:17 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/08 15:35:53 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	heredoc_cleanup(t_input_context *ctx, struct termios *original)
 {
 	input_context_free(ctx);
 	if (!terminal_apply_config(original))
-		print_error(0, ETEMPLATE_SHELL_SIMPLE, ERR_INPUT_CONTEXT_FAIL);
+		print_error(0, ERRTEMPLATE_SIMPLE, ERR_INPUT_CONTEXT_FAIL);
 }
 
 static int	heredoc_setup(t_input_context *ctx, char *mark, \
@@ -32,12 +32,12 @@ struct termios *original)
 	{
 		heredoc_cleanup(ctx, original);
 		return (print_error(
-				0, ETEMPLATE_SHELL_SIMPLE, ERR_INPUT_CONTEXT_FAIL));
+				0, ERRTEMPLATE_SIMPLE, ERR_INPUT_CONTEXT_FAIL));
 	}
 	if (!terminal_apply_config(&input))
 	{
 		heredoc_cleanup(ctx, original);
-		return (print_error(0, ETEMPLATE_SHELL_SIMPLE, ERR_TERMIOS_FAIL));
+		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_TERMIOS_FAIL));
 	}
 	save_cursor(ctx);
 	return (1);
@@ -96,7 +96,7 @@ int	heredoc_run(t_ast *redir_node, t_pipes *pipes)
 	if (!terminal_apply_config(&original))
 	{
 		heredoc_cleanup(&ctx, &original);
-		return (print_error(0, ETEMPLATE_SHELL_SIMPLE, ERR_TERMIOS_FAIL));
+		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_TERMIOS_FAIL));
 	}
 	ft_putstr_fd(ctx.input, pipes->read[PIPE_WRITE]);
 	heredoc_cleanup(&ctx, &original);
