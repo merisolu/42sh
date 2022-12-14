@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_expansions.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 14:06:38 by amann             #+#    #+#             */
-/*   Updated: 2022/11/21 14:21:13 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/14 15:19:55 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,13 @@ bool	parse_expansions(t_ast *root, t_state *state)
 {
 	if (!root)
 		return (true);
-	parse_expansions(root->right, state);
+	if (!parse_expansions(root->right, state))
+		return (false);
 	if (root->node_type == AST_COMMAND_ARGS)
 		return (exp_args_loop(root, state));
 	if (root->node_type == AST_REDIRECTIONS && root->redirs)
 		return (exp_redirs_loop(root, state));
-	parse_expansions(root->left, state);
+	if (!parse_expansions(root->left, state))
+		return (false);
 	return (true);
 }
