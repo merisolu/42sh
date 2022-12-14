@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 11:35:56 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/08 15:35:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/14 15:28:45 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	add_lines_to_history(int file, t_state *state)
 {
 	char	*line;
 
-	while (ft_get_next_line(file, &line) != 0)
+	while (ft_get_next_line(file, &line) > 0)
 	{
 		history_store(line, state, 0);
 		free(line);
