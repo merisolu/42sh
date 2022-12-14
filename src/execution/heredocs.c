@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 10:56:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/08 15:35:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/14 14:07:34 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	heredoc_cleanup(t_input_context *ctx, struct termios *original)
 {
 	input_context_free(ctx);
 	if (!terminal_apply_config(original))
-		print_error(0, ERRTEMPLATE_SIMPLE, ERR_INPUT_CONTEXT_FAIL);
+		print_error(0, ERRTEMPLATE_SIMPLE, ERR_TERMIOS_FAIL);
 }
 
 static int	heredoc_setup(t_input_context *ctx, char *mark, \
@@ -25,7 +25,8 @@ struct termios *original)
 	struct termios	input;
 
 	if (!terminal_get_configs(&input, original))
-		return (0);
+		return (print_error(
+				0, ERRTEMPLATE_SIMPLE, ERR_TERMIOS_FAIL));
 	if (!input_context_set(ctx,
 			&(t_input_initializer){
 			MULTILINE_PROMPT, MULTILINE_PROMPT, mark, NULL}))
@@ -88,7 +89,7 @@ int	heredoc_run(t_ast *redir_node, t_pipes *pipes)
 	if (!ft_strequ(heredoc_node->in_type, REDIR_HEREDOC))
 		return (1);
 	if (pipe(pipes->read) == -1)
-		return (0);
+		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_PIPE_FAIL));
 	if (!heredoc_setup(&ctx, heredoc_node->in_file, &original))
 		return (0);
 	display(&ctx, 0);
