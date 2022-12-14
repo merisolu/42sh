@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/12/14 18:55:00 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/14 19:07:51 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,8 @@ static bool	execute_redirection(t_ast_redir *redir, t_redir *r)
 	else
 		if (dup2(fd, STDIN_FILENO) == -1)
 			return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
-	close(fd);
+	if (redir->redir_fd != 3)
+		close(fd);
 	r->reset_order = 0;
 	return (true);
 }
