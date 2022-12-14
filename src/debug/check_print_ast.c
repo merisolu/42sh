@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_print_ast.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 17:06:54 by amann             #+#    #+#             */
-/*   Updated: 2022/11/16 17:28:07 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/14 13:05:46 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	display_print_file(void)
 		remove(TMP_FILE_PATH);
 		return ;
 	}
-	while (ft_get_next_line(fd, &line))
+	while (ft_get_next_line(fd, &line) > 0)
 	{
 		ft_putendl(line);
 		ft_strdel(&line);
