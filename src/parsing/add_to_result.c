@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   add_to_result.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:11:55 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/02 14:53:15 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/14 15:02:08 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ static int	continue_word(char **res, char *value)
 {
 	char	*temp;
 
+	ft_strdel(res);
 	temp = ft_strjoin(*res, value);
 	if (!temp)
 		return (-1);
-	ft_strdel(res);
 	*res = ft_strdup(temp);
 	free(temp);
 	if (!(*res))
