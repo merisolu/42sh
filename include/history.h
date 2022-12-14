@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:14:31 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/17 12:51:38 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/14 15:55:54 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@
 /* Files */
 
 /* history.c */
-int		history_store(char *input, t_state *state, int into_temp);
-int		history_recall(int diff, t_state *state);
+void	history_store(char *input, t_state *state, int into_temp);
+void	history_recall(int diff, t_state *state);
 
 /* history_save.c */
 void	history_save(t_state *state);
