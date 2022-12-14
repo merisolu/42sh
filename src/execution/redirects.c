@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/12/14 14:54:27 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/14 17:42:33 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 void	initialize_redir_struct(t_redir *r)
 {
-	r->fd_out = -1;
-	r->fd_in = -1;
-	r->fd_err = -1;
 	r->saved_out = -1;
 	r->saved_in = -1;
 	r->saved_err = -1;
@@ -109,33 +106,39 @@ static bool	redirect_error(t_ast_redir *redir, t_redir *r)
 	return (true);
 }*/
 
+static bool	fd_is_open(int fd)
+{
+	struct stat buf;
+
+	if (fstat(fd, &buf) == -1)
+		return (false);
+	return (true);
+}
+
+static bool	dup_fd(int fd, int *i)
+{
+
+	if (!fd_is_open(fd))
+		return (print_error_bool(
+			false, "21sh: %i: %s\n", fd, ERR_BAD_FD));
+	if (*i == -1)
+		*i = dup(fd);
+	if (*i == -1)
+		return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
+	return (true);
+}
+
 static bool	copy_orig_fd(t_ast_redir *redir, t_redir **r)
 {
 	if (redir->redir_out)
 	{
 		if (redir->redir_fd == STDERR_FILENO)
-		{
-			if ((*r)->saved_err == -1)
-				(*r)->saved_err = dup(STDERR_FILENO);
-			if ((*r)->saved_err == -1)
-				return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
-		}
+			return (dup_fd(STDERR_FILENO, &((*r)->saved_err)));
 		else
-		{
-			if ((*r)->saved_out == -1)
-				(*r)->saved_out = dup(STDOUT_FILENO);
-			if ((*r)->saved_out == -1)
-				return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
-		}
+			return (dup_fd(STDOUT_FILENO, &((*r)->saved_out)));
 	}
 	else
-	{
-		if ((*r)->saved_in == -1)
-			(*r)->saved_in = dup(STDIN_FILENO);
-		if ((*r)->saved_in == -1)
-			return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
-	}
-	return (true);
+		return (dup_fd(STDIN_FILENO, &((*r)->saved_in)));
 }
 
 static bool	execute_redirection(t_ast_redir *redir, t_redir *r)
@@ -176,22 +179,15 @@ static bool	execute_redirection(t_ast_redir *redir, t_redir *r)
 		return (print_error_bool(false, ETEMPLATE_SHELL_NAMED,
 				redir->redir_file, ERR_NO_PERMISSION));
 	}
-
 	if (redir->redir_fd != -1)
 	{
 		if (dup2(fd, redir->redir_fd) == -1)
 			return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
 	}
-	if (redir->redir_out)
+	else if (redir->redir_out)
 	{
-		if (redir->redir_fd == STDERR_FILENO)
-		{
-			if (dup2(fd, STDERR_FILENO) == -1)
-				return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
-		}
-		else
-			if (dup2(fd, STDOUT_FILENO) == -1)
-				return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
+		if (dup2(fd, STDOUT_FILENO) == -1)
+			return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
 	}
 	else
 		if (dup2(fd, STDIN_FILENO) == -1)

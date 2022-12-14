@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/14 14:37:07 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/14 15:40:06 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,9 +211,6 @@ typedef struct s_pipes
 
 typedef struct s_redir
 {
-	int	fd_out;
-	int	fd_err;
-	int	fd_in;
 	int	saved_out;
 	int	saved_err;
 	int	saved_in;

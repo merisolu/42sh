@@ -6,11 +6,13 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 13:06:37 by amann             #+#    #+#             */
-/*   Updated: 2022/12/14 14:46:13 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/14 16:28:43 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+
+#include "utils.h"
 
 static int	reset_fd_aggregation(t_redir *r)
 {
@@ -52,21 +54,8 @@ static int	reset_redirs(t_redir *r)
 
 int	reset_io(t_redir *r)
 {
-/*	ft_dprintf(
-			0,
-			"fd_out: %d\nfd_err: %d\nfd_in: %d\nsaved_out: %d\nsaved_err: %d\n \
-saved_in: %d\nsaved_fd: %d\nfd_agg: %d\nreset_order: %d\n",
-			 r->fd_out,
-			 r->fd_err,
-			 r->fd_in,
-			 r->saved_out,
-			 r->saved_err,
-			 r->saved_in,
-			 r->saved_fd,
-			 r->fd_agg,
-			 r->reset_order
-			);
-*/
+	debug_redir(NULL, r);
+	ft_printf("%d\n", r->reset_order);
 	if (r->reset_order == 1)
 	{
 		reset_fd_aggregation(r);

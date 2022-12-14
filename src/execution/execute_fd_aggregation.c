@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 15:31:16 by amann             #+#    #+#             */
-/*   Updated: 2022/12/14 14:34:16 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/14 17:47:31 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ bool	execute_filedes_aggregation(t_ast_redir *redir, t_redir *r)
 		if (dup2(redir->agg_to, redir->agg_from) == -1)
 			return (print_error(
 					false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
+		close(redir->agg_to);
 	}
 	return (true);
 }
