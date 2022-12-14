@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/13 15:04:10 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/14 14:37:07 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,14 +186,7 @@ typedef struct s_ast_redir
 	char	*redir_file;
 	char	*redir_op;
 	int		redir_fd;
-
-	char	*in_file;
-	char	*out_file;
-	char	*err_file;
-	char	*in_type;
-	char	*out_type;
-	char	*err_type;
-
+	bool	redir_out;
 	bool	aggregation;
 	int		agg_to;
 	int		agg_from;

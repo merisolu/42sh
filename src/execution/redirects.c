@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/12/13 15:50:57 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/14 14:54:27 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,17 +111,30 @@ static bool	redirect_error(t_ast_redir *redir, t_redir *r)
 
 static bool	copy_orig_fd(t_ast_redir *redir, t_redir **r)
 {
-	if (ft_strequ(redir->redir_op, ">") || ft_strequ(redir->redir_op, ">>") || ft_strequ(redir->redir_op, ">&"))
+	if (redir->redir_out)
 	{
 		if (redir->redir_fd == STDERR_FILENO)
-			(*r)->saved_err = dup(STDERR_FILENO);
+		{
+			if ((*r)->saved_err == -1)
+				(*r)->saved_err = dup(STDERR_FILENO);
+			if ((*r)->saved_err == -1)
+				return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
+		}
 		else
-			(*r)->saved_out = dup(STDOUT_FILENO);
+		{
+			if ((*r)->saved_out == -1)
+				(*r)->saved_out = dup(STDOUT_FILENO);
+			if ((*r)->saved_out == -1)
+				return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
+		}
 	}
 	else
-		(*r)->saved_in = dup(STDIN_FILENO);
-	if ((*r)->saved_err == -1 && (*r)->saved_out == -1 && (*r)->saved_in == -1)
-		return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
+	{
+		if ((*r)->saved_in == -1)
+			(*r)->saved_in = dup(STDIN_FILENO);
+		if ((*r)->saved_in == -1)
+			return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
+	}
 	return (true);
 }
 
@@ -134,11 +147,8 @@ static bool	execute_redirection(t_ast_redir *redir, t_redir *r)
 	if (!copy_orig_fd(redir, &r))
 		return (false);
 
-	if (ft_strequ(redir->redir_op, ">") || ft_strequ(redir->redir_op, ">&") || ft_strequ(redir->redir_op, REDIR_APPEND))
+	if (redir->redir_out)
 	{
-		if (!open_output_file())
-			return (false);
-
 		open_flags = O_WRONLY | O_CREAT;
 		if (ft_strequ(redir->redir_op, REDIR_APPEND))
 			open_flags |= O_APPEND;
@@ -151,28 +161,43 @@ static bool	execute_redirection(t_ast_redir *redir, t_redir *r)
 		open_flags = O_RDONLY;
 		perm = 0450;
 	}
-	fd = open(redir->out_file, open_flags, perm);
+	fd = open(redir->redir_file, open_flags, perm);
 	if (fd == -1)
 	{
-		if (ft_is_dir(redir->out_file))
+		if (ft_is_dir(redir->redir_file))
 			return (print_error_bool(false, ETEMPLATE_SHELL_NAMED,
-					redir->out_file, ERR_IS_DIR));
-		if (access(redir_node->in_file, F_OK) == 0)
+					redir->redir_file, ERR_IS_DIR));
+		if (access(redir->redir_file, F_OK) == 0)
 		{
 			return (print_error_bool(
 					false, ETEMPLATE_SHELL_NAMED,
-					redir_node->in_file, ERR_NO_PERMISSION));
+					redir->redir_file, ERR_NO_PERMISSION));
 		}
 		return (print_error_bool(false, ETEMPLATE_SHELL_NAMED,
-				redir->out_file, ERR_NO_PERMISSION));
+				redir->redir_file, ERR_NO_PERMISSION));
 	}
 
-//	dup2(r->fd_out, 7);
-	if (dup2(r->fd_out, STDOUT_FILENO) == -1)
-		return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
+	if (redir->redir_fd != -1)
+	{
+		if (dup2(fd, redir->redir_fd) == -1)
+			return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
+	}
+	if (redir->redir_out)
+	{
+		if (redir->redir_fd == STDERR_FILENO)
+		{
+			if (dup2(fd, STDERR_FILENO) == -1)
+				return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
+		}
+		else
+			if (dup2(fd, STDOUT_FILENO) == -1)
+				return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
+	}
+	else
+		if (dup2(fd, STDIN_FILENO) == -1)
+			return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
 
-	close(r->fd_out);
-	r->fd_out = -1;
+	close(fd);
 	r->reset_order = 0;
 	return (true);
 }

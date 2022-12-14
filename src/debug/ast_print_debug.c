@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 15:07:12 by amann             #+#    #+#             */
-/*   Updated: 2022/11/29 14:49:56 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/14 14:41:35 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,9 @@ static void	print_redirs(t_ast *node, int fd)
 			ft_dprintf(fd, " aggregation (from: %d to: %d close: %d)",
 				node->redirs[i]->agg_from, node->redirs[i]->agg_to,
 				node->redirs[i]->agg_close);
-		if (node->redirs[i]->in_type)
-			ft_dprintf(fd, " input (type: %s file: %s)",
-				node->redirs[i]->in_type, node->redirs[i]->in_file);
-		if (node->redirs[i]->out_type)
-			ft_dprintf(fd, " output (type: %s file: %s)",
-				node->redirs[i]->out_type, node->redirs[i]->out_file);
+		if (node->redirs[i]->redir_op)
+			ft_dprintf(fd, " redir (type: %s file: %s)",
+				node->redirs[i]->redir_op, node->redirs[i]->redir_file);
 		i++;
 	}
 	ft_dprintf(fd, "\n");

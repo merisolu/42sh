@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 12:58:11 by amann             #+#    #+#             */
-/*   Updated: 2022/12/08 15:57:12 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/14 14:37:00 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 void	clear_redir_and_members(t_ast_redir *redir)
 {
-	ft_strdel(&(redir->in_file));
-	ft_strdel(&(redir->out_file));
-	ft_strdel(&(redir->in_type));
-	ft_strdel(&(redir->out_type));
+	ft_strdel(&(redir->redir_file));
+	ft_strdel(&(redir->redir_op));
 	ft_memdel((void **)&redir);
 }
 

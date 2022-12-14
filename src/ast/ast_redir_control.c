@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2022/12/13 15:03:43 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/14 14:22:17 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,10 @@ static bool	add_redir(t_ast *node, t_token **cursor)
 	res->redir_op = ft_strdup((*cursor)->value);
 	if (!res->redir_op)
 		return (print_error_bool(false, ERR_MALLOC_FAIL));
+	res->redir_out = false;
+	if (ft_strequ(res->redir_op, ">") || ft_strequ(res->redir_op, ">&")
+		|| ft_strequ(res->redir_op, ">>"))
+		res->redir_out = true;
 	*cursor = (*cursor)->next;
 
 	if ((*cursor)->type == TOKEN_WHITESPACE)

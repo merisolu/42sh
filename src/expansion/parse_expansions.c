@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 14:06:38 by amann             #+#    #+#             */
-/*   Updated: 2022/11/21 14:21:13 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/14 14:43:54 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ static bool	exp_redirs_loop(t_ast *root, t_state *state)
 	i = 0;
 	while (root->redirs[i])
 	{
-		if (!expand_node(&(root->redirs[i]->in_file), state)
-			|| !expand_node(&(root->redirs[i]->out_file), state))
+		if (!expand_node(&(root->redirs[i]->redir_file), state))
 			return (false);
 		i++;
 	}

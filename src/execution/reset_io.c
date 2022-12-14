@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 13:06:37 by amann             #+#    #+#             */
-/*   Updated: 2022/12/13 13:56:19 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/14 14:46:13 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	reset_redirs(t_redir *r)
 
 int	reset_io(t_redir *r)
 {
-	ft_dprintf(
+/*	ft_dprintf(
 			0,
 			"fd_out: %d\nfd_err: %d\nfd_in: %d\nsaved_out: %d\nsaved_err: %d\n \
 saved_in: %d\nsaved_fd: %d\nfd_agg: %d\nreset_order: %d\n",
@@ -66,7 +66,7 @@ saved_in: %d\nsaved_fd: %d\nfd_agg: %d\nreset_order: %d\n",
 			 r->fd_agg,
 			 r->reset_order
 			);
-
+*/
 	if (r->reset_order == 1)
 	{
 		reset_fd_aggregation(r);
