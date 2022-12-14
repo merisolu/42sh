@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 15:31:16 by amann             #+#    #+#             */
-/*   Updated: 2022/12/14 17:47:31 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/14 18:17:13 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,12 @@ static bool	check_fd_errors(t_ast_redir *redir)
 		return (print_error_bool(
 				false, "21sh: %i: %s\n", redir->agg_to, ERR_BAD_FD));
 	}
+	/*
 	if (fstat(redir->agg_from, &buf) == -1)
 	{
 		return (print_error_bool(
 				false, "21sh: %i: %s\n", redir->agg_from, ERR_BAD_FD));
-	}
+	}*/
 	return (true);
 }
 

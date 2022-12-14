@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/12/14 17:42:33 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/14 18:55:00 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ static bool	execute_redirection(t_ast_redir *redir, t_redir *r)
 	int			perm;
 	int			fd;
 
-	if (!copy_orig_fd(redir, &r))
+	if (redir->redir_fd == -1 && !copy_orig_fd(redir, &r))
 		return (false);
 
 	if (redir->redir_out)
@@ -183,6 +183,7 @@ static bool	execute_redirection(t_ast_redir *redir, t_redir *r)
 	{
 		if (dup2(fd, redir->redir_fd) == -1)
 			return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
+		r->redir_fd = redir->redir_fd;
 	}
 	else if (redir->redir_out)
 	{
@@ -192,7 +193,6 @@ static bool	execute_redirection(t_ast_redir *redir, t_redir *r)
 	else
 		if (dup2(fd, STDIN_FILENO) == -1)
 			return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
-
 	close(fd);
 	r->reset_order = 0;
 	return (true);

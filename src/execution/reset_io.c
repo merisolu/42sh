@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 13:06:37 by amann             #+#    #+#             */
-/*   Updated: 2022/12/14 16:28:43 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/14 18:52:11 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static int	reset_redirs(t_redir *r)
 	}
 	if (r->saved_out != -1)
 	{
+		ft_putendl("voi ei");
 		if (dup2(r->saved_out, STDOUT_FILENO) == -1)
 			return (print_error(0, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
 		close(r->saved_out);
@@ -55,7 +56,7 @@ static int	reset_redirs(t_redir *r)
 int	reset_io(t_redir *r)
 {
 	debug_redir(NULL, r);
-	ft_printf("%d\n", r->reset_order);
+//	ft_printf("%d\n", r->reset_order);
 	if (r->reset_order == 1)
 	{
 		reset_fd_aggregation(r);
@@ -66,5 +67,7 @@ int	reset_io(t_redir *r)
 		reset_redirs(r);
 		reset_fd_aggregation(r);
 	}
+	if (r->redir_fd)
+		close(r->redir_fd);
 	return (1);
 }
