@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/12/15 15:45:33 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/15 16:42:47 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,8 +181,14 @@ static bool	execute_redirection(t_ast_redir *redir, t_redir *r)
 		return (print_error_bool(false, ETEMPLATE_SHELL_NAMED,
 				redir->redir_file, ERR_NO_PERMISSION));
 	}
+	ft_dprintf(2, "here %d\n", fd);
 	if (redir->redir_fd != -1)
 	{
+		//check redir_fd is not already in use
+		//if it is, increment it by one until it is not, then dup2
+		struct stat buf;
+		if (fstat(redir->redir_fd, &buf) != -1)
+			(redir->redir_fd)++;
 		if (dup2(fd, redir->redir_fd) == -1)
 			return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
 		r->redir_fd = redir->redir_fd;
@@ -195,7 +201,7 @@ static bool	execute_redirection(t_ast_redir *redir, t_redir *r)
 	else
 		if (dup2(fd, STDIN_FILENO) == -1)
 			return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
-	if (redir->redir_fd != 3)
+	if (redir->redir_fd != fd)
 		close(fd);
 	return (true);
 }
