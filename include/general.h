@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/14 18:25:41 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/15 13:29:53 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,7 @@ typedef struct s_redir
 typedef struct s_ast_context
 {
 	t_ast	*node;
-	t_redir	*redirect;
+	t_redir	**redirect;
 	t_pipes	*pipes;
 	int		is_at_end;
 }	t_ast_context;

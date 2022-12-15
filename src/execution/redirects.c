@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/12/14 19:07:51 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/15 15:45:33 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,9 @@ static bool	copy_orig_fd(t_ast_redir *redir, t_redir **r)
 	if (redir->redir_out)
 	{
 		if (redir->redir_fd == STDERR_FILENO)
+		{
 			return (dup_fd(STDERR_FILENO, &((*r)->saved_err)));
+		}
 		else
 			return (dup_fd(STDOUT_FILENO, &((*r)->saved_out)));
 	}
@@ -147,7 +149,7 @@ static bool	execute_redirection(t_ast_redir *redir, t_redir *r)
 	int			perm;
 	int			fd;
 
-	if (redir->redir_fd == -1 && !copy_orig_fd(redir, &r))
+	if ((redir->redir_fd == -1 || redir->redir_fd == 2) && !copy_orig_fd(redir, &r))
 		return (false);
 
 	if (redir->redir_out)
@@ -195,11 +197,10 @@ static bool	execute_redirection(t_ast_redir *redir, t_redir *r)
 			return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
 	if (redir->redir_fd != 3)
 		close(fd);
-	r->reset_order = 0;
 	return (true);
 }
 
-bool	handle_redirects(t_ast *node, t_redir *r)
+bool	handle_redirects(t_ast *node, t_redir **r)
 {
 	size_t	i;
 
@@ -208,14 +209,16 @@ bool	handle_redirects(t_ast *node, t_redir *r)
 	i = 0;
 	while (node->redirs[i])
 	{
+		r[i] = (t_redir *) ft_memalloc(sizeof(t_redir));
+		initialize_redir_struct(r[i]);
 		if (node->redirs[i]->aggregation)
 		{
-			if (!execute_filedes_aggregation(node->redirs[i], r))
+			if (!execute_filedes_aggregation(node->redirs[i], r[i]))
 				return (false);
 		}
 		else
 		{
-			if (!execute_redirection(node->redirs[i], r))
+			if (!execute_redirection(node->redirs[i], r[i]))
 				return (false);
 		}
 		i++;

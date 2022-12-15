@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/07 13:29:20 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/15 13:37:19 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,10 @@ int		heredoc_run(t_ast *redir_node, t_pipes *pipes);
 
 /* redirects.c */
 void	initialize_redir_struct(t_redir *r);
-bool	handle_redirects(t_ast *redir_node, t_redir *r);
+bool	handle_redirects(t_ast *redir_node, t_redir **r);
 
 /* reset_io.c */
-int		reset_io(t_redir *r);
+int		reset_io(t_redir **r);
 
 /* tokenize_and_execute.c */
 void	tokenize_and_execute(t_state *state);
