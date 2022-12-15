@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 15:28:55 by amann             #+#    #+#             */
-/*   Updated: 2022/12/08 15:35:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/13 14:41:08 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,16 @@ int	cmd_execute_script(char *const *args, t_state *state)
 
 	fd = open(*args + 2, O_RDONLY);
 	if (fd == -1 || access(*args + 2, X_OK))
-		return (print_error(
-				1, ERRTEMPLATE_SIMPLE, ERR_NO_PERMISSION));
+		return (print_error(1, ERRTEMPLATE_SIMPLE, ERR_NO_PERMISSION));
 	ft_get_next_line(fd, &line);
 	if (!line)
-		return (1);
+		return (print_error(1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	ft_strdel(&line);
 	state->running_script = true;
 	while (ft_get_next_line(fd, &line))
 	{
 		if (!line)
-			return (1);
+			return (print_error(1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 		ft_strclr(state->input_context.input);
 		ft_strcpy(state->input_context.input, line);
 		if (ft_strlen(state->input_context.input) > 0)
