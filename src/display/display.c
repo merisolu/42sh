@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 14:28:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/29 13:05:10 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/15 14:36:46 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,26 +68,26 @@ size_t	get_trim_offset(t_input_context *context, char *formatted_input)
 void	draw(t_input_context *context, int force)
 {
 	char	*formatted_input;
-	size_t	formatted_input_length;
-	size_t	trim_offset;
+	size_t	trim;
 
 	formatted_input = get_formatted_input(context);
 	if (formatted_input)
 	{
-		trim_offset = get_trim_offset(context, formatted_input);
-		formatted_input_length = ft_strlen(formatted_input + trim_offset);
-		if (force || context->last_displayed_length != formatted_input_length)
+		trim = get_trim_offset(context, formatted_input);
+		if (force || context->last_displayed_length
+			!= ft_strlen(formatted_input + trim))
 		{
 			load_cursor(context);
-			if (trim_offset > 0)
+			if (trim > 0)
 				ft_putstr(tgetstr("cd", NULL));
-			ft_putstr(formatted_input + trim_offset);
+			ft_putstr(formatted_input + trim);
 		}
-		context->last_displayed_length = formatted_input_length;
+		context->last_displayed_length = ft_strlen(formatted_input + trim);
 		free(formatted_input);
 	}
 	else
 	{
+		load_cursor(context);
 		ft_printf("%s%s%s", context->start_prompt, tgetstr("cd", NULL),
 			ERR_MALLOC_FAIL);
 		context->last_displayed_length = 0;
