@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:29:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/08 15:35:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/14 13:40:33 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	bin_find(const char *name, char **paths, char **result)
 	size_t	i;
 
 	i = 0;
-	if ((name[0] == '/' || ft_strnequ(name, "./", 2))
+	if ((ft_strnequ(name, "/", 1) || ft_strnequ(name, "./", 2))
 		&& ft_points_to_file(name))
 	{
 		*result = ft_strdup(name);
