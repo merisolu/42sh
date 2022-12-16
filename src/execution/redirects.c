@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/12/15 16:42:47 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/16 13:25:48 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,39 +117,56 @@ static bool	fd_is_open(int fd)
 
 static bool	dup_fd(int fd, int *i)
 {
-
 	if (!fd_is_open(fd))
 		return (print_error_bool(
 			false, "21sh: %i: %s\n", fd, ERR_BAD_FD));
-	if (*i == -1)
-		*i = dup(fd);
+	*i = dup(fd);
 	if (*i == -1)
 		return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
 	return (true);
 }
 
-static bool	copy_orig_fd(t_ast_redir *redir, t_redir **r)
+static bool	already_duped(t_redir **head, int fd)
+{
+	int i;
+
+	i = 0;
+	while (head[i])
+	{
+		if (fd == STDERR_FILENO && (head[i])->saved_err != -1)
+			return(true);
+		if (fd == STDOUT_FILENO && (head[i])->saved_out != -1)
+			return(true);
+		if (fd == STDIN_FILENO && (head[i])->saved_in != -1)
+			return(true);
+		i++;
+	}
+	return (false);
+}
+
+static bool	copy_orig_fd(t_ast_redir *redir, t_redir **r, t_redir **head)
 {
 	if (redir->redir_out)
 	{
-		if (redir->redir_fd == STDERR_FILENO)
+		if (redir->redir_fd == STDERR_FILENO && !already_duped(head, STDERR_FILENO))
 		{
 			return (dup_fd(STDERR_FILENO, &((*r)->saved_err)));
 		}
-		else
+		else if (!already_duped(head, STDOUT_FILENO))
 			return (dup_fd(STDOUT_FILENO, &((*r)->saved_out)));
 	}
-	else
-		return (dup_fd(STDIN_FILENO, &((*r)->saved_in)));
+	else if (!already_duped(head, STDIN_FILENO))
+		return (dup_fd(STDIN_FILENO, &(*r)->saved_in));
+	return (true);
 }
 
-static bool	execute_redirection(t_ast_redir *redir, t_redir *r)
+static bool	execute_redirection(t_ast_redir *redir, t_redir *r, t_redir **head)
 {
 	int			open_flags;
 	int			perm;
 	int			fd;
 
-	if ((redir->redir_fd == -1 || redir->redir_fd == 2) && !copy_orig_fd(redir, &r))
+	if ((redir->redir_fd == -1 || redir->redir_fd == 2) && !copy_orig_fd(redir, &r, head))
 		return (false);
 
 	if (redir->redir_out)
@@ -181,19 +198,18 @@ static bool	execute_redirection(t_ast_redir *redir, t_redir *r)
 		return (print_error_bool(false, ETEMPLATE_SHELL_NAMED,
 				redir->redir_file, ERR_NO_PERMISSION));
 	}
-	ft_dprintf(2, "here %d\n", fd);
 	if (redir->redir_fd != -1)
 	{
 		//check redir_fd is not already in use
 		//if it is, increment it by one until it is not, then dup2
-		struct stat buf;
-		if (fstat(redir->redir_fd, &buf) != -1)
+		while (fd_is_open(redir->redir_fd) && redir->redir_fd > 2)
 			(redir->redir_fd)++;
+		ft_dprintf(2, "%d\n", redir->redir_fd);
 		if (dup2(fd, redir->redir_fd) == -1)
 			return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
 		r->redir_fd = redir->redir_fd;
 	}
-	else if (redir->redir_out)
+	else if (redir->redir_out) //need to check the stdout has not already been dup'd
 	{
 		if (dup2(fd, STDOUT_FILENO) == -1)
 			return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
@@ -224,7 +240,7 @@ bool	handle_redirects(t_ast *node, t_redir **r)
 		}
 		else
 		{
-			if (!execute_redirection(node->redirs[i], r[i]))
+			if (!execute_redirection(node->redirs[i], r[i], r))
 				return (false);
 		}
 		i++;
