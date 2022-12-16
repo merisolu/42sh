@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:03:39 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/28 15:07:49 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/16 13:12:09 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	on_error(char c)
 {
 	ft_dprintf(STDERR_FILENO, "21sh: fc: -%c: invalid option\n", c);
-	ft_putstr_fd("fc: usage: fc [-nl] or fc -s\n", STDERR_FILENO);
+	ft_putstr_fd("fc: usage: fc [-nlr] or fc -s\n", STDERR_FILENO);
 }
 
 static int	get_start_index(t_state *state)
@@ -28,22 +28,30 @@ static int	get_start_index(t_state *state)
 	return (i - 1);
 }
 
-void	print_history(bool show_numbers, t_state *state)
+void	print_history(bool show_numbers, bool reverse, t_state *state)
 {
 	int	i;
 	int	start;
+	int	end;
 
 	start = get_start_index(state);
 	i = start;
 	if (start > 16)
 		i -= start - 16;
-	while (i > 0)
+	if (reverse)
+		i = 1;
+	end = 0;
+	if (reverse)
+		end = ft_min(start + 1, 17);
+	while (i != end)
 	{
 		if (show_numbers)
-			ft_printf("%d\t%s\n", (start - i) + 1, state->history[i]);
+			ft_printf("%d", (start - i) + 1);
+		ft_printf("\t%s\n", state->history[i]);
+		if (reverse)
+			i++;
 		else
-			ft_printf("\t%s\n", state->history[i]);
-		i--;
+			i--;
 	}
 }
 
@@ -51,7 +59,7 @@ int	cmd_fc(char *const *args, t_state *state)
 {
 	char	flags[6];
 
-	parse_flags(args + 1, "lns", flags, &on_error);
+	parse_flags(args + 1, "lnrs", flags, &on_error);
 	if (ft_strchr(flags, 's'))
 	{
 		ft_putstr(state->history[1]);
@@ -61,6 +69,6 @@ int	cmd_fc(char *const *args, t_state *state)
 		return (0);
 	}
 	if (ft_strchr(flags, 'l'))
-		print_history(!ft_strchr(flags, 'n'), state);
+		print_history(!ft_strchr(flags, 'n'), ft_strchr(flags, 'r'), state);
 	return (0);
 }
