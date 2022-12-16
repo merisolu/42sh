@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:03:39 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/16 13:12:09 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/16 13:22:45 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	get_start_index(t_state *state)
 	return (i - 1);
 }
 
-void	print_history(bool show_numbers, bool reverse, t_state *state)
+static void	print_history(bool show_numbers, bool reverse, t_state *state)
 {
 	int	i;
 	int	start;
