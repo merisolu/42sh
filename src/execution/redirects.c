@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/12/16 13:25:48 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/16 14:21:37 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ static bool	dup_fd(int fd, int *i)
 	return (true);
 }
 
-static bool	already_duped(t_redir **head, int fd)
+bool	already_duped(t_redir **head, int fd)
 {
 	int i;
 
@@ -202,12 +202,12 @@ static bool	execute_redirection(t_ast_redir *redir, t_redir *r, t_redir **head)
 	{
 		//check redir_fd is not already in use
 		//if it is, increment it by one until it is not, then dup2
-		while (fd_is_open(redir->redir_fd) && redir->redir_fd > 2)
-			(redir->redir_fd)++;
-		ft_dprintf(2, "%d\n", redir->redir_fd);
-		if (dup2(fd, redir->redir_fd) == -1)
+		redir->redir_fd_alias = redir->redir_fd;
+		while (fd_is_open(redir->redir_fd_alias) && redir->redir_fd > 2)
+			(redir->redir_fd_alias)++;
+		if (dup2(fd, redir->redir_fd_alias) == -1)
 			return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
-		r->redir_fd = redir->redir_fd;
+		r->redir_fd = redir->redir_fd_alias;
 	}
 	else if (redir->redir_out) //need to check the stdout has not already been dup'd
 	{
@@ -217,7 +217,7 @@ static bool	execute_redirection(t_ast_redir *redir, t_redir *r, t_redir **head)
 	else
 		if (dup2(fd, STDIN_FILENO) == -1)
 			return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
-	if (redir->redir_fd != fd)
+	if (redir->redir_fd_alias != fd)
 		close(fd);
 	return (true);
 }
@@ -235,7 +235,7 @@ bool	handle_redirects(t_ast *node, t_redir **r)
 		initialize_redir_struct(r[i]);
 		if (node->redirs[i]->aggregation)
 		{
-			if (!execute_filedes_aggregation(node->redirs[i], r[i]))
+			if (!execute_filedes_aggregation(&(node->redirs[i]), r[i], node->redirs, r))
 				return (false);
 		}
 		else

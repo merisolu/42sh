@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 13:06:37 by amann             #+#    #+#             */
-/*   Updated: 2022/12/15 16:37:35 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/16 15:29:10 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static int	reset_fd_aggregation(t_redir *r)
 			return (print_error(0, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
 		if (r->saved_fd > 2)
 			close(r->saved_fd);
+		if (r->fd_agg > 2)
+			close(r->fd_agg);
 		r->saved_fd = -1;
 	}
 	return (1);

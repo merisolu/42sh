@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/15 13:37:19 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/16 14:22:03 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int		check_path_validity(char *path);
 int		find_from_path(char *name, char *const *env, char **path);
 
 /* execute_fd_aggregation.c */
-bool	execute_filedes_aggregation(t_ast_redir *redir, t_redir *r);
+bool	execute_filedes_aggregation(t_ast_redir **redir, t_redir *r, t_ast_redir **head, t_redir **r_head);
 
 /* fork.c */
 pid_t	start_fork(t_ast_context *ast);
@@ -76,6 +76,7 @@ int		heredoc_run(t_ast *redir_node, t_pipes *pipes);
 
 /* redirects.c */
 void	initialize_redir_struct(t_redir *r);
+bool	already_duped(t_redir **head, int fd);
 bool	handle_redirects(t_ast *redir_node, t_redir **r);
 
 /* reset_io.c */
