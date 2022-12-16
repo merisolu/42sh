@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:00:19 by amann             #+#    #+#             */
-/*   Updated: 2022/12/14 16:49:44 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/16 17:24:13 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,8 @@ void	debug_redir(t_ast_redir *redir, t_redir *r)
 			);
 	ft_dprintf(
 		fd,
-	//	"agg to :%d\nagg from: %d\n\n\n
 		"saved in: %d\nsaved out: %d\n\
-saved err: %d\nsaved fd: %d\nfd agg: %d\n-----\n\n",
-	//	redir->agg_to,
-	//	redir->agg_from,
+		saved err: %d\nsaved fd: %d\nfd agg: %d\n-----\n\n",
 		r->saved_in,
 		r->saved_out,
 		r->saved_err,

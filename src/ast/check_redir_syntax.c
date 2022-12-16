@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 13:02:10 by amann             #+#    #+#             */
-/*   Updated: 2022/12/13 13:02:34 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/16 16:10:12 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,3 @@ bool	check_redir_syntax(t_token *cursor)
 		return (print_bool_syntax_error(ERR_SYNTAX, cursor->next, false));
 	return (true);
 }
-

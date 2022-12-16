@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 15:31:16 by amann             #+#    #+#             */
-/*   Updated: 2022/12/16 15:03:10 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/16 16:23:52 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,11 @@
 
 static bool	find_aliased_fd(t_ast_redir **head, int *fd)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (head[i])
 	{
-		//ft_printf("%d %d %d\n", (head[i])->redir_fd, (head[i])->redir_fd_alias,*fd);
 		if ((head[i])->redir_fd == *fd)
 		{
 			*fd = (head[i])->redir_fd_alias;
@@ -40,15 +39,13 @@ static bool	find_aliased_fd(t_ast_redir **head, int *fd)
 
 static bool	check_fd_errors(t_ast_redir **redir, t_ast_redir **head)
 {
-	struct stat	buf;
-
-	if (fstat((*redir)->agg_to, &buf) == -1 || ((*redir)->agg_to > 2
-		&& !find_aliased_fd(head, &((*redir)->agg_to))))
+	if (!fd_is_open((*redir)->agg_to) || ((*redir)->agg_to > 2
+			&& !find_aliased_fd(head, &((*redir)->agg_to))))
 	{
-			return (print_error_bool(
+		return (print_error_bool(
 				false, "21sh: %i: %s\n", (*redir)->agg_to, ERR_BAD_FD));
 	}
-	if (fstat((*redir)->agg_from, &buf) == -1)
+	if (!fd_is_open((*redir)->agg_from))
 	{
 		return (print_error_bool(
 				false, "21sh: %i: %s\n", (*redir)->agg_from, ERR_BAD_FD));
@@ -56,9 +53,9 @@ static bool	check_fd_errors(t_ast_redir **redir, t_ast_redir **head)
 	return (true);
 }
 
-static bool already_aggregated(t_redir **head, int fd)
+static bool	already_aggregated(t_redir **head, int fd)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (head[i])
@@ -68,6 +65,21 @@ static bool already_aggregated(t_redir **head, int fd)
 		i++;
 	}
 	return (false);
+}
+
+static bool	dup_or_close(t_ast_redir **redir)
+{
+	if ((*redir)->agg_close)
+		close((*redir)->agg_from);
+	else
+	{
+		if (dup2((*redir)->agg_to, (*redir)->agg_from) == -1)
+		{
+			return (print_error(
+					false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
+		}
+	}
+	return (true);
 }
 
 /*
@@ -83,12 +95,13 @@ static bool already_aggregated(t_redir **head, int fd)
  * need dup2 to copy the output to the fd specified as the right operand.
  */
 
-bool	execute_filedes_aggregation(t_ast_redir **redir, t_redir *r, t_ast_redir **head, t_redir **r_head)
+bool	execute_filedes_aggregation(t_ast_redir **redir, t_redir *r, \
+		t_ast_redir **head, t_redir **r_head)
 {
 	if (!check_fd_errors(redir, head))
 		return (false);
 	if (!already_duped(r_head, (*redir)->agg_from)
-			&& !already_aggregated(r_head, (*redir)->agg_from))
+		&& !already_aggregated(r_head, (*redir)->agg_from))
 	{
 		r->saved_fd = dup((*redir)->agg_from);
 		if (r->saved_fd == -1)
@@ -98,16 +111,8 @@ bool	execute_filedes_aggregation(t_ast_redir **redir, t_redir *r, t_ast_redir **
 		}
 		r->fd_agg = (*redir)->agg_from;
 	}
-	if ((*redir)->agg_close)
-		close((*redir)->agg_from);
-	else
-	{
-		if (dup2((*redir)->agg_to, (*redir)->agg_from) == -1)
-		{
-			return (print_error(
-					false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
-		}
-	}
+	if (!dup_or_close(redir))
+		return (false);
 	if (r->saved_fd < 3)
 		close(r->saved_fd);
 	return (true);

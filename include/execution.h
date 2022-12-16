@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/16 14:22:03 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/16 17:22:03 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@
 int		bin_env_find(const char *name, char *const *env, char **result);
 void	bin_execve(char *path, char **args, char *const *env);
 
+/* copy_orig_fd.c */
+bool	copy_orig_fd(t_ast_redir *redir, t_redir **r, t_redir **head);
+
 /* executor.c */
 int		execute(char *const *args, t_state *state, t_ast_context *ast);
 
@@ -54,7 +57,11 @@ int		check_path_validity(char *path);
 int		find_from_path(char *name, char *const *env, char **path);
 
 /* execute_fd_aggregation.c */
-bool	execute_filedes_aggregation(t_ast_redir **redir, t_redir *r, t_ast_redir **head, t_redir **r_head);
+bool	execute_filedes_aggregation(t_ast_redir **redir, t_redir *r, \
+		t_ast_redir **head, t_redir **r_head);
+
+/* execute_redirection.c */
+bool	execute_redirection(t_ast_redir *redir, t_redir *r, t_redir **head);
 
 /* fork.c */
 pid_t	start_fork(t_ast_context *ast);

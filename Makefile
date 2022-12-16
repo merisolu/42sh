@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/12/13 13:37:03 by amann            ###   ########.fr        #
+#    Updated: 2022/12/16 17:22:23 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ AST_FILES = ast_add_args.c ast_pipe_sequence.c ast_redir_control.c \
 				ast_retokenize.c ast_free.c	ast_fd_agg_format_check.c \
 				construct_ast_list.c ast_simple_command.c \
 				ast_add_fd_aggregation.c ast_is_separator.c ast_end.c \
-				check_redir_syntax.c ast_add_redir_struct.c
+				check_redir_syntax.c ast_add_redir_struct.c \
+				check_redir_tokens.c
 
 AUTOCOMPLETE_DIR = autocomplete
 AUTOCOMPLETE_FILES = autocomplete.c
@@ -55,7 +56,8 @@ ENVIRONMENT_FILES = environment.c environment_getters.c shlvl.c
 EXECUTION_DIR = execution
 EXECUTION_FILES = bin.c executor.c executor_path_utils.c fork.c pids.c pipes.c \
 					heredocs.c reset_io.c redirects.c tokenize_and_execute.c \
-					execute_fd_aggregation.c handle_logical_ops.c
+					execute_fd_aggregation.c handle_logical_ops.c \
+					copy_orig_fd.c execute_redirection.c
 
 EXPANSION_DIR = expansion
 EXPANSION_FILES = expand_tilde.c expand_variables.c expand_node.c \
@@ -85,7 +87,7 @@ TERMINAL_FILES = terminal_configuration.c
 
 UTILS_DIR = utils
 UTILS_FILES = error.c utils.c utils_input.c return_value.c syntax_error.c \
-			  	debug_redir.c
+			  	debug_redir.c fd_is_open.c
 
 SRC_FILES = main.c \
 			$(patsubst %, $(AST_DIR)/%, $(AST_FILES)) \

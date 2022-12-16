@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:55:34 by amann             #+#    #+#             */
-/*   Updated: 2022/12/13 12:56:34 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/16 15:40:17 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,12 @@
 static bool	check_cmd_end(t_token **cursor)
 {
 	if (((*cursor)->type == TOKEN_WORD && ft_isdigit_str((*cursor)->value)
-		&& (*cursor)->next && (*cursor)->next->type & (TOKEN_LT | TOKEN_GT))
+			&& (*cursor)->next && (*cursor)->next->type & (TOKEN_LT | TOKEN_GT))
 		|| ((*cursor)->type & (TOKEN_LT | TOKEN_GT)
-		|| ast_fd_agg_format_check(cursor) || ast_is_separator(*cursor)
-		|| !check_separator_syntax(*cursor)
-		|| ((*cursor)->type == TOKEN_PIPE && ft_strlen((*cursor)->value) == 1)))
+			|| ast_fd_agg_format_check(cursor) || ast_is_separator(*cursor)
+			|| !check_separator_syntax(*cursor)
+			|| ((*cursor)->type == TOKEN_PIPE
+				&& ft_strlen((*cursor)->value) == 1)))
 		return (true);
 	return (false);
 }

@@ -6,13 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 13:06:37 by amann             #+#    #+#             */
-/*   Updated: 2022/12/16 15:29:10 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/16 17:23:17 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
-
-#include "utils.h"
 
 static int	reset_fd_aggregation(t_redir *r)
 {
@@ -58,15 +56,13 @@ static int	reset_redirs(t_redir *r)
 	return (1);
 }
 
-//TODO make this an array of structs
 int	reset_io(t_redir **r)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (r[i])
 	{
-		debug_redir(NULL, r[i]);
 		reset_redirs(r[i]);
 		reset_fd_aggregation(r[i]);
 		if ((r[i])->redir_fd > 2)
@@ -74,6 +70,5 @@ int	reset_io(t_redir **r)
 		free(r[i]);
 		i++;
 	}
-
 	return (1);
 }

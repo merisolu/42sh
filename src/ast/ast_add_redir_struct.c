@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 11:55:08 by amann             #+#    #+#             */
-/*   Updated: 2022/12/13 11:55:20 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/16 15:43:24 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,3 @@ bool	add_redir_struct(t_ast_redir ***redirs, t_ast_redir *new)
 	(*redirs)[len] = new;
 	return (true);
 }
-

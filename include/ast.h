@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:04 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/13 13:37:12 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/16 15:56:24 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,9 @@ t_ast	**construct_ast_list(t_token *cursor);
 
 /* check_redir_syntax.c */
 bool	check_redir_syntax(t_token *cursor);
+
+/* check_redir_tokens.c */
+bool	check_redir_tokens(t_token **cursor);
 
 /* ast_end.c */
 bool	check_end(t_token **cursor, t_token *reset, t_ast **node);

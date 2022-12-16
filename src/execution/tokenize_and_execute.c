@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/12/15 13:29:42 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/16 17:23:38 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 	i = 0;
 	while (ast[i] != NULL)
 	{
-		//initialize_redir_struct(redir);
 		parse_expansions(ast[i], state);
 		res = execute_ast(&(t_ast_context){ast[i], redir, &pipes, 0}, state);
 		set_return_value(get_return_value_from_status(pids_wait(state)), state);
