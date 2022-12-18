@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:08:41 by amann             #+#    #+#             */
-/*   Updated: 2022/12/16 17:13:35 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/18 20:14:53 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static bool	dup_fd(int fd, int *i)
 	*i = dup(fd);
 	if (*i == -1)
 		return (print_error_bool(false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
+	if (*i < 3)
+		close(*i);
 	return (true);
 }
 

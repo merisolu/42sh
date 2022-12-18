@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:18:02 by amann             #+#    #+#             */
-/*   Updated: 2022/12/18 17:27:53 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/18 20:08:31 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ bool	execute_redirection(t_ast_redir *redir, t_redir *r, t_redir **head)
 		if (!set_redirect_destination(redir, fd))
 			return (false);
 	}
-	ft_printf("fd: %d, alias: %d\n", fd, redir->redir_fd_alias);
 	if (redir->redir_fd_alias != fd)
 		close(fd);
 	return (true);
