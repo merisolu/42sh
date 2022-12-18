@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:18:02 by amann             #+#    #+#             */
-/*   Updated: 2022/12/16 17:18:44 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/18 17:27:53 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,11 @@ static int	open_fd(t_ast_redir *redir, int open_flags, int perm)
 static bool	set_specified_fd(t_ast_redir *redir, int fd, t_redir *r)
 {
 	redir->redir_fd_alias = redir->redir_fd;
-	while (fd_is_open(redir->redir_fd_alias) && redir->redir_fd > 2)
-		(redir->redir_fd_alias)++;
+	if (redir->redir_fd_alias > 2)
+	{
+		while (fd_is_open(redir->redir_fd_alias) && redir->redir_fd > 2)
+			(redir->redir_fd_alias)++;
+	}
 	if (dup2(fd, redir->redir_fd_alias) == -1)
 		return (print_error_bool(
 				false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
@@ -89,7 +92,7 @@ bool	execute_redirection(t_ast_redir *redir, t_redir *r, t_redir **head)
 	int			perm;
 	int			fd;
 
-	if ((redir->redir_fd == -1 || redir->redir_fd == 2)
+	if ((redir->redir_fd == -1 || redir->redir_fd < 3)
 		&& !copy_orig_fd(redir, &r, head))
 		return (false);
 	perm = 0644;
@@ -107,6 +110,7 @@ bool	execute_redirection(t_ast_redir *redir, t_redir *r, t_redir **head)
 		if (!set_redirect_destination(redir, fd))
 			return (false);
 	}
+	ft_printf("fd: %d, alias: %d\n", fd, redir->redir_fd_alias);
 	if (redir->redir_fd_alias != fd)
 		close(fd);
 	return (true);
