@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:18:02 by amann             #+#    #+#             */
-/*   Updated: 2022/12/18 20:08:31 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/19 16:18:58 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,16 @@ static int	open_fd(t_ast_redir *redir, int open_flags, int perm)
 	if (fd == -1)
 	{
 		if (ft_is_dir(redir->redir_file))
-			return (print_error_bool(false, ERRTEMPLATE_NAMED,
+			return (print_error(-1, ERRTEMPLATE_NAMED,
 					redir->redir_file, ERR_IS_DIR));
 		if (access(redir->redir_file, F_OK) == 0)
 		{
-			return (print_error_bool(
-					false, ERRTEMPLATE_NAMED,
+			return (print_error(
+					-1, ERRTEMPLATE_NAMED,
 					redir->redir_file, ERR_NO_PERMISSION));
 		}
-		return (print_error_bool(false, ERRTEMPLATE_NAMED,
-				redir->redir_file, ERR_NO_PERMISSION));
+		return (print_error(-1, ERRTEMPLATE_NAMED,
+				redir->redir_file, ERR_NO_SUCH_FILE_OR_DIR));
 	}
 	return (fd);
 }

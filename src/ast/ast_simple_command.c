@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 17:39:33 by amann             #+#    #+#             */
-/*   Updated: 2022/12/13 12:59:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/19 16:42:53 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ bool	ast_simple_command(t_token **cursor, t_ast **node)
 	{
 		if (check_args_end(cursor))
 			break ;
-		if (!check_separator_syntax(*cursor))
-			return (print_bool_sep_error(ERR_SYNTAX, *cursor, false));
+		if (!check_separator_syntax(*cursor, true))
+			return (false);
 		if (!args_node(cursor, &((*node)->left))
 			|| !redirects_node(cursor, &((*node)->right)))
 			return (false);
