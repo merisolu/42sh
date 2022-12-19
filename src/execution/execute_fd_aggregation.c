@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 15:31:16 by amann             #+#    #+#             */
-/*   Updated: 2022/12/19 11:51:19 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/19 15:38:51 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,19 @@ static bool	already_aggregated(t_redir **head, int fd)
 	return (false);
 }
 
-static bool	dup_or_close(t_ast_redir **redir, t_ast_redir **head)
+static bool	dup_or_close(t_ast_redir **redir, t_ast_redir **head, t_redir **r_h)
 {
+	int	orig;
+
 	if ((*redir)->agg_close)
 		close((*redir)->agg_from);
 	else
 	{
+		orig = (*redir)->agg_to;
 		find_aliased_fd(head, &((*redir)->agg_to));
-		if (!fd_is_open((*redir)->agg_to))
+		if (!fd_is_open((*redir)->agg_to) || ((*redir)->agg_to > 2
+				&& !find_aliased_fd(head, &orig)
+				&& !already_aggregated(r_h, (*redir)->agg_to)))
 			return (print_error_bool(
 					false, "21sh: %i: %s\n", (*redir)->agg_to, ERR_BAD_FD));
 		if (dup2((*redir)->agg_to, (*redir)->agg_from) == -1)
@@ -98,7 +103,7 @@ bool	execute_filedes_aggregation(t_ast_redir **redir, t_redir *r, \
 	r->fd_agg = (*redir)->agg_from;
 	if (r->saved_fd < 3)
 		close(r->saved_fd);
-	if (!dup_or_close(redir, head))
+	if (!dup_or_close(redir, head, r_head))
 		return (false);
 	return (true);
 }
