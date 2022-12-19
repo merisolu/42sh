@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/12/13 13:00:10 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/19 11:49:19 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,79 +14,14 @@
 
 void	initialize_redir_struct(t_redir *r)
 {
-	r->fd_out = -1;
-	r->fd_in = -1;
 	r->saved_out = -1;
 	r->saved_in = -1;
+	r->saved_err = -1;
 	r->saved_fd = -1;
 	r->fd_agg = -1;
 }
 
-static bool	copy_orig_fd(int *saved, int fd)
-{
-	struct stat	buf;
-
-	if (fstat(fd, &buf) == -1)
-		return (print_error_bool(false, "21sh: %i: %s\n", fd, ERR_BAD_FD));
-	*saved = dup(fd);
-	if (*saved == -1)
-		return (print_error_bool(false, ERRTEMPLATE_SIMPLE ERR_DUP_FAIL));
-	return (true);
-}
-
-static bool	redirect_input(t_ast_redir *redir_node, t_redir *r)
-{
-	if (r->saved_in == -1 && !copy_orig_fd(&(r->saved_in), STDIN_FILENO))
-		return (false);
-	r->fd_in = open(redir_node->in_file, O_RDONLY);
-	if (r->fd_in == -1)
-	{
-		if (access(redir_node->in_file, F_OK) == 0)
-		{
-			return (print_error_bool(
-					false, ERRTEMPLATE_NAMED,
-					redir_node->in_file, ERR_NO_PERMISSION));
-		}
-		return (print_error_bool(
-				false, ERRTEMPLATE_NAMED,
-				redir_node->in_file, ERR_NO_SUCH_FILE_OR_DIR));
-	}
-	if (dup2(r->fd_in, STDIN_FILENO) == -1)
-		return (print_error_bool(
-				false, ERRTEMPLATE_SIMPLE, ERR_DUP_FAIL));
-	close(r->fd_in);
-	r->fd_in = -1;
-	return (true);
-}
-
-static bool	redirect_output(t_ast_redir *redir, t_redir *r)
-{
-	int			append;
-	static int	perms;
-
-	if (r->saved_out == -1 && !copy_orig_fd(&(r->saved_out), STDOUT_FILENO))
-		return (false);
-	perms = S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR | S_IROTH;
-	append = O_TRUNC;
-	if (ft_strequ(redir->out_type, REDIR_APPEND))
-		append = O_APPEND;
-	r->fd_out = open(redir->out_file, O_WRONLY | O_CREAT | append, perms);
-	if (r->fd_out == -1)
-	{
-		if (ft_is_dir(redir->out_file))
-			return (print_error_bool(false, ERRTEMPLATE_NAMED,
-					redir->out_file, ERR_IS_DIR));
-		return (print_error_bool(false, ERRTEMPLATE_NAMED,
-				redir->out_file, ERR_NO_PERMISSION));
-	}
-	if (dup2(r->fd_out, STDOUT_FILENO) == -1)
-		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_DUP_FAIL));
-	close(r->fd_out);
-	r->fd_out = -1;
-	return (true);
-}
-
-bool	handle_redirects(t_ast *node, t_redir *r)
+bool	handle_redirects(t_ast *node, t_redir **r)
 {
 	size_t	i;
 
@@ -95,16 +30,19 @@ bool	handle_redirects(t_ast *node, t_redir *r)
 	i = 0;
 	while (node->redirs[i])
 	{
-		if (node->redirs[i]->out_type
-			&& !redirect_output(node->redirs[i], r))
-			return (false);
-		if (node->redirs[i]->in_type
-			&& !ft_strequ(node->redirs[i]->in_type, REDIR_HEREDOC)
-			&& !redirect_input(node->redirs[i], r))
-			return (false);
-		if (node->redirs[i]->aggregation
-			&& !execute_filedes_aggregation(node->redirs[i], r))
-			return (false);
+		r[i] = (t_redir *) ft_memalloc(sizeof(t_redir));
+		initialize_redir_struct(r[i]);
+		if (node->redirs[i]->aggregation)
+		{
+			if (!execute_filedes_aggregation(
+					&(node->redirs[i]), r[i], node->redirs, r))
+				return (false);
+		}
+		else
+		{
+			if (!execute_redirection(node->redirs[i], r[i], r))
+				return (false);
+		}
 		i++;
 	}
 	ast_free_redirs(&node);

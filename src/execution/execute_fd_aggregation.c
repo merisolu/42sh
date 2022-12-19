@@ -6,33 +6,62 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 15:31:16 by amann             #+#    #+#             */
-/*   Updated: 2022/12/08 15:35:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/19 11:51:19 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-/*
- * If an unused fd is quoted to copy from in the shell, this would normally be
- * opened for reading. However, we are not allowed to use fdopen() in this
- * project, so we cannot open fd's by their actual number, we need a filepath.
- * Because of this limitation, we can just return an error if fstat() finds
- * that the fd on either side of the >& operator is closed
- */
-
-static bool	check_fd_errors(t_ast_redir *redir)
+static bool	find_aliased_fd(t_ast_redir **head, int *fd)
 {
-	struct stat	buf;
+	int		i;
+	int		check;
+	bool	found;
 
-	if (fstat(redir->agg_to, &buf) == -1)
+	found = false;
+	check = *fd;
+	i = 0;
+	while (head[i])
 	{
-		return (print_error_bool(
-				false, "21sh: %i: %s\n", redir->agg_to, ERR_BAD_FD));
+		if ((head[i])->redir_fd == check)
+		{
+			*fd = (head[i])->redir_fd_alias;
+			found = true;
+		}
+		i++;
 	}
-	if (fstat(redir->agg_from, &buf) == -1)
+	return (found);
+}
+
+static bool	already_aggregated(t_redir **head, int fd)
+{
+	int	i;
+
+	i = 0;
+	while (head[i])
 	{
-		return (print_error_bool(
-				false, "21sh: %i: %s\n", redir->agg_from, ERR_BAD_FD));
+		if ((head[i])->fd_agg == fd)
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
+static bool	dup_or_close(t_ast_redir **redir, t_ast_redir **head)
+{
+	if ((*redir)->agg_close)
+		close((*redir)->agg_from);
+	else
+	{
+		find_aliased_fd(head, &((*redir)->agg_to));
+		if (!fd_is_open((*redir)->agg_to))
+			return (print_error_bool(
+					false, "21sh: %i: %s\n", (*redir)->agg_to, ERR_BAD_FD));
+		if (dup2((*redir)->agg_to, (*redir)->agg_from) == -1)
+		{
+			return (print_error(
+					false, ERRTEMPLATE_SIMPLE, ERR_DUP_FAIL));
+		}
 	}
 	return (true);
 }
@@ -50,23 +79,26 @@ static bool	check_fd_errors(t_ast_redir *redir)
  * need dup2 to copy the output to the fd specified as the right operand.
  */
 
-bool	execute_filedes_aggregation(t_ast_redir *redir, t_redir *r)
+bool	execute_filedes_aggregation(t_ast_redir **redir, t_redir *r, \
+		t_ast_redir **head, t_redir **r_head)
 {
-	if (!check_fd_errors(redir))
-		return (false);
-	if (r->saved_fd == -1)
-		r->saved_fd = dup(redir->agg_from);
-	if (r->saved_fd == -1)
-		return (print_error(
-				false, ERRTEMPLATE_SIMPLE, ERR_DUP_FAIL));
-	r->fd_agg = redir->agg_from;
-	if (redir->agg_close)
-		close(redir->agg_from);
-	else
+	if (!already_duped(r_head, (*redir)->agg_from)
+		&& !already_aggregated(r_head, (*redir)->agg_from)
+		&& fd_is_open((*redir)->agg_from))
 	{
-		if (dup2(redir->agg_to, redir->agg_from) == -1)
+		r->saved_fd = dup((*redir)->agg_from);
+		if (r->saved_fd == -1)
+		{
 			return (print_error(
 					false, ERRTEMPLATE_SIMPLE, ERR_DUP_FAIL));
+		}
 	}
+	else
+		r->saved_fd = (*redir)->agg_from;
+	r->fd_agg = (*redir)->agg_from;
+	if (r->saved_fd < 3)
+		close(r->saved_fd);
+	if (!dup_or_close(redir, head))
+		return (false);
 	return (true);
 }

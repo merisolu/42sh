@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/12/15 15:42:47 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/19 11:46:29 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static bool	execute_ast(t_ast_context *ctx, t_state *state)
 
 static void	execute_ast_list(t_ast **ast, t_state *state)
 {
-	t_redir	redir;
+	t_redir	**redir;
 	t_pipes	pipes;
 	int		i;
 	bool	res;
@@ -83,15 +83,14 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 	if (!ast)
 		return ;
 	check_print_ast(ast, state, false);
+	redir = (t_redir **) ft_memalloc(sizeof(t_redir *) * (LINE_MAX / 2));
 	pipes_reset(pipes.read, pipes.write);
 	i = 0;
 	while (ast[i] != NULL)
 	{
-		initialize_redir_struct(&redir);
-		if (!parse_expansions(ast[i], state))
-			break ;
-		res = execute_ast(&(t_ast_context){ast[i], &redir, &pipes, 0}, state);
-		set_return_value(pids_wait(state), state);
+		parse_expansions(ast[i], state);
+		res = execute_ast(&(t_ast_context){ast[i], redir, &pipes, 0}, state);
+		set_return_value(get_return_value_from_status(pids_wait(state)), state);
 		if (!res)
 			break ;
 		handle_logical_ops(ast, state, &i);

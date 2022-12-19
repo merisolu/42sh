@@ -6,94 +6,69 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2022/12/13 13:01:54 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/19 11:53:41 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
 
-bool	add_redir_struct(t_ast_redir ***redirs, t_ast_redir *new)
+static bool	set_specified_fd(t_ast_redir **res, t_token **cursor)
 {
-	size_t	len;
-
-	if (!*redirs)
+	(*res)->redir_fd = ft_atoi((*cursor)->value);
+	if ((*res)->redir_fd > 9)
 	{
-		*redirs = (t_ast_redir **) ft_memalloc(sizeof(t_ast_redir *) * 2);
-		if (!*redirs)
-		{
-			clear_redir_and_members(new);
-			return (print_error_bool(false,
-					ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-		}
+		ft_memdel((void **)res);
+		return (print_error_bool(false, ERR_BAD_FD));
 	}
-	len = ft_null_array_len((void **)*redirs);
-	if (len == 0)
-	{
-		(*redirs)[0] = new;
-		return (true);
-	}
-	if (!ft_resize_null_array((void ***)redirs, len + 1))
-	{
-		clear_redir_and_members(new);
-		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	}
-	(*redirs)[len] = new;
+	*cursor = (*cursor)->next;
 	return (true);
 }
 
-static bool	add_redir_in(t_ast *node, t_token **cursor)
+static bool	set_redir_op(t_ast_redir **res, t_token **cursor)
 {
-	t_ast_redir	*res;
-
-	res = (t_ast_redir *) ft_memalloc(sizeof(t_ast_redir));
-	if (!res)
-		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	if (!ft_strequ((*cursor)->value, "<") && !ft_strequ((*cursor)->value, "<<"))
-		return (print_bool_sep_error(ERR_SYNTAX, *cursor, false));
-	res->in_type = ft_strdup((*cursor)->value);
-	if (!res->in_type)
-		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	if (!((*cursor)->next) || (*cursor)->next->type != TOKEN_WORD)
-	{
-		clear_redir_and_members(res);
-		return (print_bool_syntax_error(ERR_SYNTAX, *cursor, false));
-	}
+	(*res)->redir_op = ft_strdup((*cursor)->value);
+	if (!(*res)->redir_op)
+		return (print_error_bool(false, ERR_MALLOC_FAIL));
+	(*res)->redir_out = false;
+	if (ft_strequ((*res)->redir_op, ">") || ft_strequ((*res)->redir_op, ">&")
+		|| ft_strequ((*res)->redir_op, ">>"))
+		(*res)->redir_out = true;
 	*cursor = (*cursor)->next;
-	res->in_file = ft_strdup((*cursor)->value);
-	if (!res->in_file)
-	{
-		clear_redir_and_members(res);
-		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	}
-	*cursor = (*cursor)->next;
-	return (add_redir_struct(&(node->redirs), res));
+	return (true);
 }
 
-static bool	add_redir_out(t_ast *node, t_token **cursor)
+static bool	set_redir_file(t_ast_redir **res, t_token **cursor)
+{
+	(*res)->redir_file = ft_strdup((*cursor)->value);
+	if (!(*res)->redir_file)
+	{
+		clear_redir_and_members(*res);
+		return (print_error_bool(false, ERR_MALLOC_FAIL));
+	}
+	return (true);
+}
+
+static bool	add_redir(t_ast *node, t_token **cursor)
 {
 	t_ast_redir	*res;
 
 	res = (t_ast_redir *) ft_memalloc(sizeof(t_ast_redir));
 	if (!res)
-		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	if (!ft_strequ((*cursor)->value, ">") && !ft_strequ((*cursor)->value, ">>")
-		&& !ft_strequ((*cursor)->value, ">&"))
-		return (print_bool_sep_error(ERR_SYNTAX, *cursor, false));
-	res->out_type = ft_strdup((*cursor)->value);
-	if (!res->out_type)
-		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	if (!((*cursor)->next) || (*cursor)->next->type != TOKEN_WORD)
+		return (print_error_bool(false, ERR_MALLOC_FAIL));
+	res->redir_fd = -1;
+	if ((*cursor)->type == TOKEN_WORD && !set_specified_fd(&res, cursor))
+		return (false);
+	if (!check_redir_syntax(*cursor))
 	{
-		clear_redir_and_members(res);
-		return (print_bool_syntax_error(ERR_SYNTAX, *cursor, false));
+		free(res);
+		return (false);
 	}
-	*cursor = (*cursor)->next;
-	res->out_file = ft_strdup((*cursor)->value);
-	if (!res->out_file)
-	{
-		clear_redir_and_members(res);
-		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	}
+	if (!set_redir_op(&res, cursor))
+		return (false);
+	if ((*cursor)->type == TOKEN_WHITESPACE)
+		*cursor = (*cursor)->next;
+	if (!set_redir_file(&res, cursor))
+		return (false);
 	*cursor = (*cursor)->next;
 	return (add_redir_struct(&(node->redirs), res));
 }
@@ -113,7 +88,7 @@ static bool	add_redir_out(t_ast *node, t_token **cursor)
 
 bool	ast_redirect_control(t_ast *node, t_token **cursor)
 {
-	if (!(*cursor) || (!((*cursor)->type & (TOKEN_LT | TOKEN_GT))
+	if (!(*cursor) || (!check_redir_tokens(cursor)
 			&& !ast_fd_agg_format_check(cursor)))
 		return (true);
 	while (*cursor)
@@ -123,14 +98,9 @@ bool	ast_redirect_control(t_ast *node, t_token **cursor)
 			if (!ast_add_fd_agg(node, cursor))
 				return (false);
 		}
-		else if ((*cursor)->type == TOKEN_GT)
+		else if (check_redir_tokens(cursor))
 		{
-			if (!add_redir_out(node, cursor))
-				return (false);
-		}
-		else if ((*cursor)->type == TOKEN_LT)
-		{
-			if (!add_redir_in(node, cursor))
+			if (!add_redir(node, cursor))
 				return (false);
 		}
 		else

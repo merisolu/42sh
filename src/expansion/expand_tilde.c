@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:47:12 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/28 15:21:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/12 14:40:04 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	expand_tilde(t_token **csr, t_state *s, char **res)
 
 	scn = TOKEN_FWD_SLASH | TOKEN_COLON | TOKEN_NULL;
 	fb = *csr;
-	if (fb->type != TOKEN_TILDE || ft_strlen(fb->value) > 1)
+	if (!fb || fb->type != TOKEN_TILDE || ft_strlen(fb->value) > 1)
 		return (0);
 	if (!fb->previous || check_first_equals(fb->previous)
 		|| check_colon(fb->previous))

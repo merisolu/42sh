@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 14:24:05 by amann             #+#    #+#             */
-/*   Updated: 2022/12/08 15:37:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/19 11:54:35 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ static bool	ambiguous_redir(t_ast_redir **res, char *val)
 static bool	fd_agg_one(t_ast_redir **res, t_token **cursor)
 {
 	(*res)->aggregation = false;
-	(*res)->out_type = ft_strdup(">");
-	if (!(*res)->out_type)
-		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	(*res)->out_file = ft_strdup((*cursor)->value);
-	if (!(*res)->out_file)
-		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
+	(*res)->redir_op = ft_strdup(">");
+	if (!(*res)->redir_op)
+		return (print_error_bool(false, ERR_MALLOC_FAIL));
+	(*res)->redir_file = ft_strdup((*cursor)->value);
+	if (!(*res)->redir_file)
+		return (print_error_bool(false, ERR_MALLOC_FAIL));
 	return (true);
 }
 

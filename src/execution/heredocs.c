@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 10:56:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/14 14:07:34 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/19 11:50:19 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static t_ast_redir	*find_heredoc_node(t_ast *node)
 	i = 0;
 	while (node->redirs[i])
 	{
-		if (ft_strequ(node->redirs[i]->in_type, REDIR_HEREDOC))
+		if (ft_strequ(node->redirs[i]->redir_op, REDIR_HEREDOC))
 			res = node->redirs[i];
 		i++;
 	}
@@ -86,11 +86,11 @@ int	heredoc_run(t_ast *redir_node, t_pipes *pipes)
 	heredoc_node = find_heredoc_node(redir_node);
 	if (!heredoc_node)
 		return (1);
-	if (!ft_strequ(heredoc_node->in_type, REDIR_HEREDOC))
+	if (!ft_strequ(heredoc_node->redir_op, REDIR_HEREDOC))
 		return (1);
 	if (pipe(pipes->read) == -1)
-		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_PIPE_FAIL));
-	if (!heredoc_setup(&ctx, heredoc_node->in_file, &original))
+		return (0);
+	if (!heredoc_setup(&ctx, heredoc_node->redir_file, &original))
 		return (0);
 	display(&ctx, 0);
 	input_loop(&ctx);

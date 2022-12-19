@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:00:19 by amann             #+#    #+#             */
-/*   Updated: 2022/12/05 14:11:50 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/16 17:24:13 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	debug_redir(t_ast_redir *redir, t_redir *r)
 {
 	int	fd;
 
+	(void) redir;
 	fd = open(
 			"test",
 			O_CREAT | O_RDWR | O_APPEND,
@@ -28,15 +29,13 @@ void	debug_redir(t_ast_redir *redir, t_redir *r)
 			);
 	ft_dprintf(
 		fd,
-		"agg to :%d\nagg from: %d\n\nfd in: %d\nfd out: %d\
-		\nsaved in: %d\nsaved out: %d\nsaved fd:%d\n-----\n\n",
-		redir->agg_to,
-		redir->agg_from,
-		r->fd_in,
-		r->fd_out,
+		"saved in: %d\nsaved out: %d\n\
+		saved err: %d\nsaved fd: %d\nfd agg: %d\n-----\n\n",
 		r->saved_in,
 		r->saved_out,
-		r->saved_fd
+		r->saved_err,
+		r->saved_fd,
+		r->fd_agg
 		);
 	close(fd);
 }

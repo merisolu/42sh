@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/08 15:39:45 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/19 11:55:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,10 +183,11 @@ typedef enum e_ast_node_type
 
 typedef struct s_ast_redir
 {
-	char	*in_file;
-	char	*out_file;
-	char	*in_type;
-	char	*out_type;
+	char	*redir_file;
+	char	*redir_op;
+	int		redir_fd;
+	int		redir_fd_alias;
+	bool	redir_out;
 	bool	aggregation;
 	int		agg_to;
 	int		agg_from;
@@ -211,18 +212,18 @@ typedef struct s_pipes
 
 typedef struct s_redir
 {
-	int	fd_out;
-	int	fd_in;
 	int	saved_out;
+	int	saved_err;
 	int	saved_in;
 	int	saved_fd;
 	int	fd_agg;
+	int	redir_fd;
 }	t_redir;
 
 typedef struct s_ast_context
 {
 	t_ast	*node;
-	t_redir	*redirect;
+	t_redir	**redirect;
 	t_pipes	*pipes;
 	int		is_at_end;
 }	t_ast_context;
