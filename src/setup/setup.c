@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:21:45 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/08 15:35:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/19 14:51:10 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int	setup(char *const **env, t_state *state)
 	char	*term;
 	int		database_result;
 
+	if (!get_state_struct(env, state) || !set_shlvl(&(state->env)))
+		return (0);
 	term = getenv("TERM");
 	if (!term)
 		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_ENV_MISSING_TERM));
@@ -69,8 +71,6 @@ int	setup(char *const **env, t_state *state)
 		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_TERMCAP_NO_ACCESS));
 	else if (database_result == 0)
 		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_TERMCAP_NO_ENTRY));
-	if (!get_state_struct(env, state) || !set_shlvl(&(state->env)))
-		return (0);
 	if (state->input_context.width == 0 || state->input_context.height == 0)
 		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_WINDOW_TOO_SMALL));
 	if (!terminal_get_configs(&(state->input_conf), &(state->orig_conf)))
