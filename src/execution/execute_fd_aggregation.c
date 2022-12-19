@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 15:31:16 by amann             #+#    #+#             */
-/*   Updated: 2022/12/18 20:14:17 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/19 11:36:17 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ static bool	dup_or_close(t_ast_redir **redir, t_ast_redir **head)
 					false, "21sh: %i: %s\n", (*redir)->agg_to, ERR_BAD_FD));
 		if (dup2((*redir)->agg_to, (*redir)->agg_from) == -1)
 		{
-			ft_dprintf(2, "here from: %d  to: %d\n", (*redir)->agg_from, (*redir)->agg_to);
 			return (print_error(
 					false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
 		}
@@ -84,17 +83,19 @@ bool	execute_filedes_aggregation(t_ast_redir **redir, t_redir *r, \
 		t_ast_redir **head, t_redir **r_head)
 {
 	if (!already_duped(r_head, (*redir)->agg_from)
-		&& !already_aggregated(r_head, (*redir)->agg_from) && fd_is_open((*redir)->agg_from))
+		&& !already_aggregated(r_head, (*redir)->agg_from)
+		&& fd_is_open((*redir)->agg_from))
 	{
 		r->saved_fd = dup((*redir)->agg_from);
 		if (r->saved_fd == -1)
 		{
-		//	ft_dprintf(2, "from: %d  to: %d\n", (*redir)->agg_from, (*redir)->agg_to);
 			return (print_error(
 					false, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
 		}
-		r->fd_agg = (*redir)->agg_from;
 	}
+	else
+		r->saved_fd = (*redir)->agg_from;
+	r->fd_agg = (*redir)->agg_from;
 	if (r->saved_fd < 3)
 		close(r->saved_fd);
 	if (!dup_or_close(redir, head))

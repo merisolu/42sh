@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 13:06:37 by amann             #+#    #+#             */
-/*   Updated: 2022/12/18 18:36:00 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/19 11:31:11 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,11 @@ static int	reset_fd_aggregation(t_redir *r)
 {
 	if (r->saved_fd != -1)
 	{
-		if (dup2(r->saved_fd, r->fd_agg) == -1)
-			return (print_error(0, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
+		if (fd_is_open(r->saved_fd))
+		{
+			if (dup2(r->saved_fd, r->fd_agg) == -1)
+				return (print_error(0, ETEMPLATE_SHELL_SIMPLE, ERR_DUP_FAIL));
+		}
 		if (r->saved_fd > 2)
 			close(r->saved_fd);
 		if (r->fd_agg > 2)
@@ -63,18 +66,11 @@ int	reset_io(t_redir **r)
 	i = 0;
 	while (r[i])
 	{
-		debug_redir(NULL, r[i]);
 		reset_redirs(r[i]);
 		reset_fd_aggregation(r[i]);
 		if ((r[i])->redir_fd > 2)
 			close((r[i])->redir_fd);
 		free(r[i]);
-		i++;
-	}
-	i = 3;
-	while (i < 10)
-	{
-		close(i);
 		i++;
 	}
 	return (1);
