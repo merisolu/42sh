@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/12/19 11:46:29 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/19 14:59:59 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 	if (!ast)
 		return ;
 	check_print_ast(ast, state, false);
-	redir = (t_redir **) ft_memalloc(sizeof(t_redir *) * (LINE_MAX / 2));
+	redir = (t_redir **) ft_memalloc(sizeof(t_redir *) * (INPUT_MAX_SIZE / 2));
 	pipes_reset(pipes.read, pipes.write);
 	i = 0;
 	while (ast[i] != NULL)
@@ -95,6 +95,7 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 			break ;
 		handle_logical_ops(ast, state, &i);
 	}
+	free(redir);
 	pipe_close(pipes.read);
 	check_print_ast(ast, state, true);
 	ast_free(&ast);
