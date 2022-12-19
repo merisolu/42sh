@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/12/19 11:49:19 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/19 14:58:44 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,5 @@ bool	handle_redirects(t_ast *node, t_redir **r)
 		}
 		i++;
 	}
-	ast_free_redirs(&node);
 	return (true);
 }
