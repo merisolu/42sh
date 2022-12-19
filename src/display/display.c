@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 14:28:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/15 14:36:46 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/19 15:29:08 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,6 @@ void	display(t_input_context *context, int force)
 	size_t	rows;
 
 	draw(context, force);
-	move_cursor_to_saved_position(context);
 	rows = ft_min_size_t(
 			input_get_row_count(context, ft_strlen(context->input)
 				+ (context->input_start_x - 1)),
@@ -121,4 +120,5 @@ void	display(t_input_context *context, int force)
 	if (context->input_start_y + rows >= context->height)
 		context->input_start_y -= (context->input_start_y + rows)
 			- context->height;
+	move_cursor_to_saved_position(context);
 }
