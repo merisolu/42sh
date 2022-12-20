@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:04:07 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/09 14:25:23 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/20 11:17:21 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@
 
 static void	ret_zero(size_t *start, size_t *length)
 {
-	*start = 0;
-	*length = 0;
+	if (start)
+		*start = 0;
+	if (length)
+		*length = 0;
 }
 
 static void	iglp_helper(size_t *start, size_t *length, size_t ss, size_t se)
