@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:08:41 by amann             #+#    #+#             */
-/*   Updated: 2022/12/18 20:14:53 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/20 18:46:37 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,15 @@ bool	copy_orig_fd(t_ast_redir *redir, t_redir **r, t_redir **head)
 	if (redir->redir_out)
 	{
 		if (redir->redir_fd == STDERR_FILENO
-			&& !already_duped(head, STDERR_FILENO))
-		{
+			&& !already_duped(head, STDERR_FILENO)
+			&& !already_aggregated(head, STDERR_FILENO))
 			return (dup_fd(STDERR_FILENO, &((*r)->saved_err)));
-		}
-		else if (!already_duped(head, STDOUT_FILENO))
+		else if (!already_duped(head, STDOUT_FILENO)
+			&& !already_aggregated(head, STDOUT_FILENO))
 			return (dup_fd(STDOUT_FILENO, &((*r)->saved_out)));
 	}
-	else if (!already_duped(head, STDIN_FILENO))
+	else if (!already_duped(head, STDIN_FILENO)
+			&& !already_aggregated(head, STDIN_FILENO))
 		return (dup_fd(STDIN_FILENO, &(*r)->saved_in));
 	return (true);
 }

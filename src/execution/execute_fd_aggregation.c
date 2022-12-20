@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 15:31:16 by amann             #+#    #+#             */
-/*   Updated: 2022/12/19 15:38:51 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/20 18:42:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static bool	find_aliased_fd(t_ast_redir **head, int *fd)
 	return (found);
 }
 
-static bool	already_aggregated(t_redir **head, int fd)
+bool	already_aggregated(t_redir **head, int fd)
 {
 	int	i;
 
