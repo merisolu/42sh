@@ -6,21 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:57:03 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/30 14:07:37 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/20 13:06:40 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
-
-/*
- * Prints the given error message to stderr, and returns the given value.
- */
-
-int	print_error_valist(int return_value, char *format, va_list list)
-{
-	ft_vdprintf(STDERR_FILENO, format, list);
-	return (return_value);
-}
 
 /*
  * Prints the given error message to stderr, and returns the given value.

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:07 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 17:07:52 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/20 13:05:52 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,5 @@ void	print_ast(t_ast **ast, int fd);
 
 /* check_print_ast.c */
 void	check_print_ast(t_ast **ast_list, t_state *state, bool exp);
-
-/* print_tokens.c */
-void	print_tokens(t_token *result);
 
 #endif

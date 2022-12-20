@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:20 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/16 16:22:45 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/20 13:06:43 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,7 @@
 
 /* Files */
 
-/* debug_redir.c */
-void	debug_redir(t_ast_redir *redir, t_redir *r);
-
 /* error.c */
-int		print_error_valist(int return_value, char *format, va_list list);
 int		print_error(int return_value, char *format, ...);
 bool	print_error_bool(bool return_value, char *format, ...);
 

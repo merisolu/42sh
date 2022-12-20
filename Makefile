@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/12/16 17:22:23 by amann            ###   ########.fr        #
+#    Updated: 2022/12/20 13:07:43 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ CURSOR_DIR = cursor
 CURSOR_FILES = cursor.c cursor_utils.c
 
 DEBUG_DIR = debug
-DEBUG_FILES = ast_print_debug.c print_tokens.c check_print_ast.c
+DEBUG_FILES = ast_print_debug.c check_print_ast.c
 
 DISPLAY_DIR = display
 DISPLAY_FILES = display.c
@@ -87,7 +87,7 @@ TERMINAL_FILES = terminal_configuration.c
 
 UTILS_DIR = utils
 UTILS_FILES = error.c utils.c utils_input.c return_value.c syntax_error.c \
-			  	debug_redir.c fd_is_open.c
+			  fd_is_open.c
 
 SRC_FILES = main.c \
 			$(patsubst %, $(AST_DIR)/%, $(AST_FILES)) \
