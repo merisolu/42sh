@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2022/12/19 11:53:41 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/20 15:16:12 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ static bool	set_redir_op(t_ast_redir **res, t_token **cursor)
 	if (!(*res)->redir_op)
 		return (print_error_bool(false, ERR_MALLOC_FAIL));
 	(*res)->redir_out = false;
-	if (ft_strequ((*res)->redir_op, ">") || ft_strequ((*res)->redir_op, ">&")
-		|| ft_strequ((*res)->redir_op, ">>"))
+	if (ft_strequ((*res)->redir_op, REDIR_OUT)
+		|| ft_strequ((*res)->redir_op, FD_AGG_OUT)
+		|| ft_strequ((*res)->redir_op, REDIR_APPEND))
 		(*res)->redir_out = true;
 	*cursor = (*cursor)->next;
 	return (true);

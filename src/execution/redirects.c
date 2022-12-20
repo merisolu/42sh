@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2022/12/19 15:56:46 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/20 15:17:46 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ bool	handle_redirects(t_ast *node, t_redir **r)
 	i = 0;
 	while (node->redirs[i])
 	{
-		if (ft_strequ(node->redirs[i]->redir_op, "<<"))
+		if (ft_strequ(node->redirs[i]->redir_op, REDIR_HEREDOC))
 		{
 			i++;
 			continue ;
