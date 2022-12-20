@@ -6,11 +6,21 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 13:02:10 by amann             #+#    #+#             */
-/*   Updated: 2022/12/16 16:10:12 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/20 14:51:12 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
+
+static bool	check_syntax_after_op(t_token *cursor)
+{
+	if (ast_fd_agg_format_check(&(cursor->next)))
+		return (print_bool_syntax_error(ERR_SYNTAX, cursor, false));
+	if (ft_isdigit_str(cursor->next->value) && cursor->next->next
+			&& (cursor->next->next->type & (TOKEN_GT | TOKEN_LT)))
+		return (print_bool_syntax_error(ERR_SYNTAX, cursor, false));
+	return (true);
+}
 
 bool	check_redir_syntax(t_token *cursor)
 {
@@ -28,12 +38,13 @@ bool	check_redir_syntax(t_token *cursor)
 	if (!(cursor->next)
 		|| !(cursor->next->type & (TOKEN_WORD | TOKEN_WHITESPACE)))
 		return (print_bool_syntax_error(ERR_SYNTAX, cursor, false));
-	if (cursor->next->type == TOKEN_WORD
-		&& ast_fd_agg_format_check(&(cursor->next)))
-		return (print_bool_syntax_error(ERR_SYNTAX, cursor, false));
+	if (cursor->next->type == TOKEN_WORD && !check_syntax_after_op(cursor))
+			return (false);
 	if (cursor->next->type == TOKEN_WHITESPACE
-		&& (!(cursor->next->next) || cursor->next->next->type != TOKEN_WORD
-			|| ast_fd_agg_format_check(&(cursor->next->next))))
+		&& (!(cursor->next->next) || cursor->next->next->type != TOKEN_WORD))
 		return (print_bool_syntax_error(ERR_SYNTAX, cursor->next, false));
+	if (cursor->next->type == TOKEN_WHITESPACE && cursor->next->next
+		&& !check_syntax_after_op(cursor->next))
+		return (false);
 	return (true);
 }
