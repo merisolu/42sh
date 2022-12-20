@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 13:06:37 by amann             #+#    #+#             */
-/*   Updated: 2022/12/19 11:47:26 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/20 13:02:49 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	reset_io(t_redir **r)
 		reset_fd_aggregation(r[i]);
 		if ((r[i])->redir_fd > 2)
 			close((r[i])->redir_fd);
-		free(r[i]);
+		ft_memdel((void **) &(r[i]));
 		i++;
 	}
 	return (1);
