@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 17:06:54 by amann             #+#    #+#             */
-/*   Updated: 2022/12/14 13:05:46 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/20 15:35:49 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,13 @@ static void	display_print_file(void)
 
 	fd = open(TMP_FILE_PATH, O_RDONLY);
 	if (fd == -1)
-	{
-		remove(TMP_FILE_PATH);
 		return ;
-	}
 	while (ft_get_next_line(fd, &line) > 0)
 	{
 		ft_putendl(line);
 		ft_strdel(&line);
 	}
 	close(fd);
-	remove(TMP_FILE_PATH);
 }
 
 void	check_print_ast(t_ast **ast_list, t_state *state, bool exp)
