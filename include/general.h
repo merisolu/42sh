@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/19 11:55:16 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/20 15:20:23 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,14 @@
 
 # define PROMPT "$> "
 # define MULTILINE_PROMPT "> "
+# define REDIR_OUT ">"
+# define REDIR_APPEND ">>"
+# define REDIR_IN "<"
+# define REDIR_HEREDOC "<<"
+# define FD_AGG_IN "<&"
+# define FD_AGG_OUT ">&"
+
+/* Types */
 
 # define MAX_PIDS 709
 

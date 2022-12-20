@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/16 17:22:03 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/20 15:07:09 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,6 @@
 # include "history.h"
 # include "terminal.h"
 # include "debug.h"
-
-/* Constants */
-# define REDIR_APPEND ">>"
-# define REDIR_HEREDOC "<<"
-
-/* Types */
 
 /* Files */
 
