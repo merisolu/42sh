@@ -6,15 +6,19 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/12/19 15:02:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/20 12:35:44 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-static int	is_at_end_check(t_ast *node)
+static void	cleanup_ast_list(t_ast **ast, t_redir **redir, t_pipes *pipes, \
+t_state *state)
 {
-	return (!node->right || node->right->node_type == AST_SIMPLE_COMMAND);
+	free(redir);
+	pipe_close(pipes->read);
+	check_print_ast(ast, state, true);
+	ast_free(&ast);
 }
 
 static pid_t	execute_simple_command(t_ast_context *ctx, t_state *state)
@@ -68,7 +72,9 @@ static bool	execute_ast(t_ast_context *ctx, t_state *state)
 		if (result && ctx->node->right)
 			result = execute_ast(
 					&(t_ast_context){ctx->node->right, ctx->redirect,
-					ctx->pipes, is_at_end_check(ctx->node)}, state);
+					ctx->pipes, (!ctx->node->right
+						|| ctx->node->right->node_type == AST_SIMPLE_COMMAND)},
+					state);
 	}
 	return (result);
 }
@@ -84,9 +90,11 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 		return ;
 	check_print_ast(ast, state, false);
 	redir = (t_redir **) ft_memalloc(sizeof(t_redir *) * (INPUT_MAX_SIZE / 2));
+	if (!redir)
+		print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
 	pipes_reset(pipes.read, pipes.write);
 	i = 0;
-	while (ast[i] != NULL)
+	while (ast[i] != NULL && redir)
 	{
 		if (!parse_expansions(ast[i], state))
 			break ;
@@ -96,10 +104,7 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 			break ;
 		handle_logical_ops(ast, state, &i);
 	}
-	free(redir);
-	pipe_close(pipes.read);
-	check_print_ast(ast, state, true);
-	ast_free(&ast);
+	cleanup_ast_list(ast, redir, &pipes, state);
 }
 
 void	tokenize_and_execute(t_state *state)
