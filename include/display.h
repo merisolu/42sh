@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 14:28:46 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/16 15:34:13 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/20 15:28:22 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,8 @@
 
 /* Includes */
 
-# include <termcap.h>
-
 # include "libft.h"
-# include "general.h"
 # include "input.h"
-# include "utils.h"
-# include "cursor.h"
 
 /* Files */
 

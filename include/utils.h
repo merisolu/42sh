@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:20 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/20 13:06:43 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/20 15:27:54 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 /* Includes */
 
 # include <sys/ioctl.h>
-# include <termcap.h>
 # include <fcntl.h>
 
 # include "libft.h"
 # include "general.h"
+# include "execution.h"
 
 /* Files */
 

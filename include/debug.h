@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:07 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/20 13:05:52 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/20 15:30:23 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 
 /* Includes */
 
+# include <fcntl.h>
+
 # include "libft.h"
 # include "general.h"
 # include "environment.h"
-# include "execution.h"
 
 /* needed to delete temp files with remove() */
 # include <stdio.h>

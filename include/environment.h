@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:09 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 14:14:49 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/20 15:28:24 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 /* Includes */
 
-# include "libft.h"
-# include "general.h"
 # include "utils.h"
 
 /* Files */

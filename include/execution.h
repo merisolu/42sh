@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/16 17:22:03 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/20 15:27:51 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,14 @@
 
 /* Includes */
 
-# include <fcntl.h>
-
 # if __linux__
 #  include <signal.h>
 #  include <sys/wait.h>
 # endif
 
-# include "libft.h"
-# include "general.h"
-# include "utils.h"
 # include "cursor.h"
 # include "display.h"
-# include "environment.h"
-# include "built_ins.h"
+# include "expansion.h"
 # include "ast.h"
 # include "history.h"
 # include "terminal.h"

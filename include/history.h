@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:14:31 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/14 15:55:54 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/20 15:28:14 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 
 /* Includes */
 
-# include <pwd.h>
 # include <fcntl.h>
 
-# include "libft.h"
 # include "general.h"
 # include "utils.h"
 
