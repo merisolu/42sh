@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   copy_orig_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:08:41 by amann             #+#    #+#             */
-/*   Updated: 2022/12/20 18:46:37 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/21 10:40:55 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ bool	copy_orig_fd(t_ast_redir *redir, t_redir **r, t_redir **head)
 			return (dup_fd(STDOUT_FILENO, &((*r)->saved_out)));
 	}
 	else if (!already_duped(head, STDIN_FILENO)
-			&& !already_aggregated(head, STDIN_FILENO))
+		&& !already_aggregated(head, STDIN_FILENO))
 		return (dup_fd(STDIN_FILENO, &(*r)->saved_in));
 	return (true);
 }
