@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:55:34 by amann             #+#    #+#             */
-/*   Updated: 2022/12/19 16:38:07 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/21 13:52:42 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,30 @@ static bool	check_cmd_end(t_token **cursor)
 	return (false);
 }
 
+static bool	check_intern(t_ast **node, t_token **cursor)
+{
+	size_t	idx;
+
+	if (ft_null_array_len((void **) (*node)->arg_list))
+		return (true);
+	idx = 0;
+	while (*cursor && check_var_syntax((*cursor)->value))
+	{
+		((*node)->var_list)[idx] = ft_strdup((*cursor)->value);
+		if (!(((*node)->var_list)[idx]))
+			return (print_error_bool(false, ERR_MALLOC_FAIL));
+		idx++;
+		*cursor = (*cursor)->next;
+	}
+	return (true);
+}
+
 bool	allocate_args_array(t_ast **node, t_token **cursor)
 {
 	size_t	idx;
 
+	if (!check_intern(node, cursor))
+		return (false);
 	idx = ft_null_array_len((void **)(*node)->arg_list);
 	while (*cursor && !check_cmd_end(cursor))
 	{
