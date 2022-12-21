@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/12/20 12:35:44 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/21 16:25:44 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ static pid_t	execute_simple_command(t_ast_context *ctx, t_state *state)
 		result = 0;
 		handle_redirects(ctx->node->right, ctx->redirect);
 	}
+	if (!ctx->node->left->arg_list[0] && ctx->node->left->var_list)
+		ft_putendl("moi moi");
 	pipe_close(ctx->pipes->read);
 	pipes_copy(ctx->pipes->read, ctx->pipes->write);
 	return (result);
