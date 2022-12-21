@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/20 15:20:23 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/21 15:44:10 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,6 +206,7 @@ typedef struct s_ast
 {
 	t_ast_node_type	node_type;
 	char			**arg_list;
+	char			**var_list;
 	t_ast_redir		**redirs;
 	int				and_or;
 	struct s_ast	*left;

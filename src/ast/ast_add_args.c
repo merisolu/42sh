@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:55:34 by amann             #+#    #+#             */
-/*   Updated: 2022/12/21 13:52:42 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/21 16:02:57 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@ static bool	check_intern(t_ast **node, t_token **cursor)
 {
 	size_t	idx;
 
-	if (ft_null_array_len((void **) (*node)->arg_list))
+	if (ft_null_array_len((void **)(*node)->arg_list))
 		return (true);
+	if ((*cursor)->type == TOKEN_WHITESPACE)
+		*cursor = (*cursor)->next;
 	idx = 0;
 	while (*cursor && check_var_syntax((*cursor)->value))
 	{
@@ -39,7 +41,11 @@ static bool	check_intern(t_ast **node, t_token **cursor)
 			return (print_error_bool(false, ERR_MALLOC_FAIL));
 		idx++;
 		*cursor = (*cursor)->next;
+		if ((*cursor)->type == TOKEN_WHITESPACE)
+			*cursor = (*cursor)->next;
 	}
+//	for (int i = 0 ; ((*node)->var_list)[i] ; i++)
+//		ft_putendl(((*node)->var_list)[i]);
 	return (true);
 }
 

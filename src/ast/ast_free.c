@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 12:58:11 by amann             #+#    #+#             */
-/*   Updated: 2022/12/14 14:37:00 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/21 15:57:50 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,17 @@ void	ast_free_redirs(t_ast **root)
  * - *file (in the redir structs)
  */
 
-void	ast_free_recursion(t_ast *root)
+void	ast_free_recursion(t_ast *node)
 {
-	if (!root)
+	if (!node)
 		return ;
-	ast_free_recursion(root->left);
-	ast_free_recursion(root->right);
-	root->arg_list = ft_free_null_array((void **) root->arg_list);
-	if (root->redirs)
-		ast_free_redirs(&root);
-	ft_memdel((void **)&root);
+	ast_free_recursion(node->left);
+	ast_free_recursion(node->right);
+	node->arg_list = ft_free_null_array((void **) node->arg_list);
+	node->var_list = ft_free_null_array((void **) node->var_list);
+	if (node->redirs)
+		ast_free_redirs(&node);
+	ft_memdel((void **)&node);
 }
 
 void	ast_free(t_ast ***ast_list)

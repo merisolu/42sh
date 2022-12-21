@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 17:39:33 by amann             #+#    #+#             */
-/*   Updated: 2022/12/19 16:42:53 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/21 15:48:43 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ static bool	args_node(t_token **cursor, t_ast **node)
 	if (!(*node)->arg_list)
 		(*node)->arg_list
 			= (char **) ft_memalloc(sizeof(char *) * (INPUT_MAX_SIZE / 2));
-	if (!(*node)->arg_list)
+	if (!(*node)->var_list)
+		(*node)->var_list
+			= (char **) ft_memalloc(sizeof(char *) * (INPUT_MAX_SIZE / 2));
+	if (!(*node)->arg_list || !(*node)->var_list)
 		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	if (!(allocate_args_array(node, cursor)))
 		return (false);
