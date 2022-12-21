@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:08:41 by amann             #+#    #+#             */
-/*   Updated: 2022/12/21 10:40:55 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/21 13:03:35 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ bool	already_duped(t_redir **head, int fd)
 			return (true);
 		if (fd == STDIN_FILENO && (head[i])->saved_in != -1)
 			return (true);
+		if (fd == (head[i])->fd_agg)
+			return (true);
 		i++;
 	}
 	return (false);
@@ -48,15 +50,12 @@ bool	copy_orig_fd(t_ast_redir *redir, t_redir **r, t_redir **head)
 	if (redir->redir_out)
 	{
 		if (redir->redir_fd == STDERR_FILENO
-			&& !already_duped(head, STDERR_FILENO)
-			&& !already_aggregated(head, STDERR_FILENO))
+			&& !already_duped(head, STDERR_FILENO))
 			return (dup_fd(STDERR_FILENO, &((*r)->saved_err)));
-		else if (!already_duped(head, STDOUT_FILENO)
-			&& !already_aggregated(head, STDOUT_FILENO))
+		else if (!already_duped(head, STDOUT_FILENO))
 			return (dup_fd(STDOUT_FILENO, &((*r)->saved_out)));
 	}
-	else if (!already_duped(head, STDIN_FILENO)
-		&& !already_aggregated(head, STDIN_FILENO))
+	else if (!already_duped(head, STDIN_FILENO))
 		return (dup_fd(STDIN_FILENO, &(*r)->saved_in));
 	return (true);
 }

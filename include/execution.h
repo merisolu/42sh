@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/20 18:41:48 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/21 12:55:23 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int		find_from_path(char *name, char *const *env, char **path);
 /* execute_fd_aggregation.c */
 bool	execute_filedes_aggregation(t_ast_redir **redir, t_redir *r, \
 		t_ast_redir **head, t_redir **r_head);
-bool	already_aggregated(t_redir **head, int fd);
 
 /* execute_redirection.c */
 bool	execute_redirection(t_ast_redir *redir, t_redir *r, t_redir **head);

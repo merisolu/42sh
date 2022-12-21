@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 15:31:16 by amann             #+#    #+#             */
-/*   Updated: 2022/12/20 18:42:16 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/21 13:04:13 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static bool	find_aliased_fd(t_ast_redir **head, int *fd)
 	return (found);
 }
 
-bool	already_aggregated(t_redir **head, int fd)
+static bool	already_aggregated(t_redir **head, int fd)
 {
 	int	i;
 
@@ -87,9 +87,8 @@ static bool	dup_or_close(t_ast_redir **redir, t_ast_redir **head, t_redir **r_h)
 bool	execute_filedes_aggregation(t_ast_redir **redir, t_redir *r, \
 		t_ast_redir **head, t_redir **r_head)
 {
-	if (!already_duped(r_head, (*redir)->agg_from)
-		&& !already_aggregated(r_head, (*redir)->agg_from)
-		&& fd_is_open((*redir)->agg_from))
+	if (fd_is_open((*redir)->agg_from)
+		&& !already_duped(r_head, (*redir)->agg_from))
 	{
 		r->saved_fd = dup((*redir)->agg_from);
 		if (r->saved_fd == -1)
