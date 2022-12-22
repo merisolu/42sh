@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/22 13:51:15 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/22 14:40:03 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ typedef struct s_state
 {
 	char *const		*env;
 	char *const		*intern;
+	char *const		*exported;
 	t_input_context	input_context;
 	int				continue_previous_node;
 	bool			in_quotes;

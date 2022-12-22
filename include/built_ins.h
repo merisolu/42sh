@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/22 13:58:16 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/22 14:47:30 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,9 @@ int		cmd_cd(char *const *args, t_state *state);
 
 /* cmd_env.c */
 int		cmd_env(char *const *args, t_state *state);
+
+/* cmd_env.c */
+int		cmd_export(char *const *args, t_state *state);
 
 /* cmd_fc.c */
 int		cmd_fc(char *const *args, t_state *state);
