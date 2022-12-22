@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/20 15:28:34 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/22 13:58:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,7 @@ int		cmd_false(char *const *args, t_state *state);
 
 /* cmd_type.c */
 int		cmd_type(char *const *args, t_state *state);
+
+/* cmd_set.c */
+int		cmd_set(char *const *args, t_state *state);
 #endif
