@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/21 15:44:10 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/22 13:51:15 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ typedef enum e_token_type
 typedef struct s_state
 {
 	char *const		*env;
+	char *const		*intern;
 	t_input_context	input_context;
 	int				continue_previous_node;
 	bool			in_quotes;

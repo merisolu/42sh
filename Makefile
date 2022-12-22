@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/12/21 15:42:43 by amann            ###   ########.fr        #
+#    Updated: 2022/12/22 13:45:17 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,8 @@ EXECUTION_DIR = execution
 EXECUTION_FILES = bin.c executor.c executor_path_utils.c fork.c pids.c pipes.c \
 					heredocs.c reset_io.c redirects.c tokenize_and_execute.c \
 					execute_fd_aggregation.c handle_logical_ops.c \
-					copy_orig_fd.c execute_redirection.c
+					copy_orig_fd.c execute_redirection.c \
+					set_internal_variables.c
 
 EXPANSION_DIR = expansion
 EXPANSION_FILES = expand_tilde.c expand_variables.c expand_node.c \

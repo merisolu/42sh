@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/21 12:55:23 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/22 13:42:15 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,9 @@ bool	handle_redirects(t_ast *redir_node, t_redir **r);
 
 /* reset_io.c */
 int		reset_io(t_redir **r);
+
+/* set_internal_variables.c */
+bool	set_internal_variables(char **var_list, t_state *state);
 
 /* tokenize_and_execute.c */
 void	tokenize_and_execute(t_state *state);
