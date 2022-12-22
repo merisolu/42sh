@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/20 15:28:34 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/21 13:41:41 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 
 # define TYPE_IS_BUILTIN "a shell builtin"
 # define TYPE_NOT_FOUND "not found"
+
+# define HASH_FNV1_OFFSET 0xCBF29CE484222325
+# define HASH_FNV1_PRIME 0x100000001B3
 
 /* Types */
 
@@ -65,6 +68,9 @@ int		cmd_env(char *const *args, t_state *state);
 
 /* cmd_fc.c */
 int		cmd_fc(char *const *args, t_state *state);
+
+/* cmd_hash.c */
+int		cmd_hash(char *const *args, t_state *state);
 
 /* cmd_setenv.c */
 int		cmd_setenv(char *const *args, t_state *state);
