@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/21 13:41:41 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/22 11:38:50 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,13 @@
 /* Includes */
 
 # include "utils.h"
+# include "hash.h"
 # include "environment.h"
 
 /* Macros for type */
 
 # define TYPE_IS_BUILTIN "a shell builtin"
 # define TYPE_NOT_FOUND "not found"
-
-# define HASH_FNV1_OFFSET 0xCBF29CE484222325
-# define HASH_FNV1_PRIME 0x100000001B3
 
 /* Types */
 

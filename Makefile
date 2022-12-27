@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/12/21 13:36:05 by jumanner         ###   ########.fr        #
+#    Updated: 2022/12/27 12:10:40 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,6 +63,9 @@ EXPANSION_DIR = expansion
 EXPANSION_FILES = expand_tilde.c expand_variables.c expand_node.c \
 				  	parse_expansions.c
 
+HASH_DIR = hash
+HASH_FILES = hash_table.c
+
 HISTORY_DIR = history
 HISTORY_FILES = history.c history_save.c history_load.c history_utils.c
 
@@ -100,6 +103,7 @@ SRC_FILES = main.c \
 			$(patsubst %, $(ENVIRONMENT_DIR)/%, $(ENVIRONMENT_FILES)) \
 			$(patsubst %, $(EXECUTION_DIR)/%, $(EXECUTION_FILES)) \
 			$(patsubst %, $(EXPANSION_DIR)/%, $(EXPANSION_FILES)) \
+			$(patsubst %, $(HASH_DIR)/%, $(HASH_FILES)) \
 			$(patsubst %, $(HISTORY_DIR)/%, $(HISTORY_FILES)) \
 			$(patsubst %, $(INPUT_DIR)/%, $(INPUT_FILES)) \
 			$(patsubst %, $(PARSING_DIR)/%, $(PARSING_FILES)) \

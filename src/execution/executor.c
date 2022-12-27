@@ -6,11 +6,26 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/12 14:35:23 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/27 12:13:19 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+
+/*
+ * Adds path of args[0] to the hash table if its not there. Built-ins are
+ * excluded. *path is not freed, as it is stored in the hash table.
+ */
+
+static void	update_hash_table(char *const *args, t_state *state)
+{
+	char	*path;
+
+	if (built_in_get(args[0]) || hash_table_get(args[0], state->hash_table))
+		return ;
+	if (find_binary(args[0], state, &path) == 1)
+		hash_table_add(args[0], path, &(state->hash_table));
+}
 
 static int	execute_absolute_path(char *const *args, t_state *state)
 {
@@ -48,7 +63,10 @@ t_ast_context *ast, bool forking)
 	}
 	if (ft_strchr(args[0], '/') || (args[0][0] == '.'))
 		return (exit_if_forking(forking, execute_absolute_path(args, state)));
-	return_value = find_from_path(args[0], state->env, &path);
+	return_value = find_binary(args[0], state, &path);
+	if (return_value == 0)
+		return (exit_if_forking(forking, print_error(RETURN_COMMAND_NOT_FOUND,
+					ERRTEMPLATE_NAMED, args[0], ERR_COM_NOT_FOUND)));
 	if (return_value != 1)
 		return (exit_if_forking(forking, return_value));
 	return_value = env_set("_", path, &(state->env));
@@ -68,6 +86,7 @@ pid_t	execute(char *const *args, t_state *state, t_ast_context *ast)
 	if (!args || !(args[0]))
 		return (print_error(-1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	forking = (in_pipes(ast->pipes) || !built_in_get(args[0]));
+	update_hash_table(args, state);
 	if (forking)
 	{
 		fork_result = start_fork(ast);

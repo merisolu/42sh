@@ -6,26 +6,28 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 13:34:40 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/21 13:58:21 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/27 12:11:44 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "built_ins.h"
 
-static long long	fnv1_hash(char *source)
+static void	print_hash_table(t_hash_entry **table)
 {
-	unsigned long long	hash;
-	size_t				i;
+	size_t	i;
 
-	hash = (unsigned long long) HASH_FNV1_OFFSET;
-	i = 0;
-	while (source[i])
+	if (!table[0])
 	{
-		hash *= (unsigned long long) HASH_FNV1_PRIME;
-		hash ^= (unsigned long long) HASH_FNV1_OFFSET;
+		ft_printf("hash: hash table empty\n");
+		return ;
+	}
+	ft_printf("hits\tcommand\n");
+	i = 0;
+	while (table[i])
+	{
+		ft_printf("%4i\t%s\n", table[i]->hits, table[i]->path);
 		i++;
 	}
-	return (hash);
 }
 
 int	cmd_hash(char *const *args, t_state *state)
@@ -33,9 +35,8 @@ int	cmd_hash(char *const *args, t_state *state)
 	(void)state;
 	if (!args[1])
 	{
-		ft_printf("No args.\n");
+		print_hash_table(state->hash_table);
 		return (0);
 	}
-	ft_printf("Result: %llu\n", fnv1_hash(args[1]));
 	return (0);
 }

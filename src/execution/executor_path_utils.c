@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:27:48 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/08 15:37:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/27 12:09:55 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,23 @@ int	check_path_validity(char *path)
 }
 
 /*
- * Attempts to find a binary with the given name from PATH in env. Prints
- * ERR_COM_NOT_FOUND error message to stderr if the command could not be found.
+ * Attempts to find a binary with the given name from the hash table, then from
+ * PATH in env. Returns -1 on malloc fail, 0 on not found, 1 on success.
  */
 
-int	find_from_path(char *name, char *const *env, char **result)
+int	find_binary(char *name, t_state *state, char **result)
 {
 	int		return_value;
+	char	*hash_table_result;
 
-	return_value = bin_env_find(name, env, result);
-	if (return_value == 0)
-		return (print_error(RETURN_COMMAND_NOT_FOUND, ERRTEMPLATE_NAMED,
-				name, ERR_COM_NOT_FOUND));
+	hash_table_result = hash_table_get(name, state->hash_table);
+	if (hash_table_result && result)
+	{
+		*result = ft_strdup(hash_table_result);
+		if (!(*result))
+			return (print_error(-1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
+		return (1);
+	}
+	return_value = bin_env_find(name, state->env, result);
 	return (return_value);
 }

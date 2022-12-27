@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/20 15:20:23 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/22 11:12:25 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,13 @@ typedef enum e_token_type
 	TOKEN_NULL = 1 << 25
 }	t_token_type;
 
+typedef struct s_hash_entry
+{
+	unsigned long long	hash;
+	char				*path;
+	unsigned int		hits;
+}	t_hash_entry;
+
 typedef struct s_state
 {
 	char *const		*env;
@@ -158,6 +165,7 @@ typedef struct s_state
 	bool			terminal_conf_applied;
 	char			*history[HISTORY_SIZE];
 	int				history_index;
+	t_hash_entry	**hash_table;
 	pid_t			pids[MAX_PIDS];
 	int				last_return_value;
 	int				exit_return_value;
