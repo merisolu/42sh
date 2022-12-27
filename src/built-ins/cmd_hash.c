@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 13:34:40 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/27 12:11:44 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/27 14:23:09 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,13 @@ static void	print_hash_table(t_hash_entry **table)
 
 int	cmd_hash(char *const *args, t_state *state)
 {
-	(void)state;
-	if (!args[1])
+	if (ft_strequ(args[1], "-r"))
 	{
-		print_hash_table(state->hash_table);
-		return (0);
+		hash_table_clear(state->hash_table);
+		free(state->hash_table);
+		hash_table_setup(&(state->hash_table));
 	}
+	else
+		print_hash_table(state->hash_table);
 	return (0);
 }
