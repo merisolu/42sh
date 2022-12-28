@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 11:12:01 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/27 12:15:54 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/28 11:23:54 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,13 @@ bool	hash_table_setup(t_hash_entry ***table)
 }
 
 /*
- * Adds an entry to the hash table. Returns true on success, false otherwise.
+ * Adds an entry to the hash table. 'hits' specifies the hit count the entry
+ * should have when put into the table. Returns true on success, false
+ * otherwise.
  */
 
-bool	hash_table_add(char *source, char *path, t_hash_entry ***table)
+bool	hash_table_add(char *key, char *path, t_hash_entry ***table, \
+unsigned int hits)
 {
 	t_hash_entry	*entry;
 	int				add_to_array_result;
@@ -50,9 +53,9 @@ bool	hash_table_add(char *source, char *path, t_hash_entry ***table)
 	entry = ft_memalloc(sizeof(t_hash_entry));
 	if (!entry)
 		return (false);
-	entry->hash = fnv1_hash(source);
+	entry->hash = fnv1_hash(key);
 	entry->path = path;
-	entry->hits = 1;
+	entry->hits = hits;
 	add_to_array_result = ft_add_to_null_array((void ***)table, entry);
 	if (!add_to_array_result)
 	{
