@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 11:12:01 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/28 12:01:57 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/28 13:38:48 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
  * Gets a specific entry from the hash table. Returns NULL if nothing was found.
  */
 
-static t_hash_entry	*hash_table_get(char *source, t_hash_entry **table)
+static t_hash_entry	*hash_table_get(char *name, t_hash_entry **table)
 {
 	size_t				i;
 	unsigned long long	source_hash;
 
-	source_hash = fnv1_hash(source);
+	source_hash = fnv1_hash(name);
 	i = 0;
 	while (table[i])
 	{
@@ -48,14 +48,14 @@ bool	hash_table_setup(t_hash_entry ***table)
  * reset. Returns true on success, false otherwise.
  */
 
-bool	hash_table_add(char *key, char *path, t_hash_entry ***table, \
+bool	hash_table_add(char *name, char *path, t_hash_entry ***table, \
 unsigned int hits)
 {
 	t_hash_entry	*entry;
 	bool			new_entry;
 	int				add_to_array_result;
 
-	entry = hash_table_get(key, *table);
+	entry = hash_table_get(name, *table);
 	new_entry = entry != NULL;
 	if (!new_entry)
 	{
@@ -63,7 +63,7 @@ unsigned int hits)
 		if (!entry)
 			return (false);
 	}
-	entry->hash = fnv1_hash(key);
+	entry->hash = fnv1_hash(name);
 	entry->path = path;
 	entry->hits = hits;
 	if (new_entry)
@@ -79,11 +79,11 @@ unsigned int hits)
  * counter. Returns NULL if nothing was found.
  */
 
-char	*hash_table_get_path(char *source, t_hash_entry **table)
+char	*hash_table_get_path(char *name, t_hash_entry **table)
 {
 	t_hash_entry	*entry;
 
-	entry = hash_table_get(source, table);
+	entry = hash_table_get(name, table);
 	if (entry)
 	{
 		entry->hits++;
