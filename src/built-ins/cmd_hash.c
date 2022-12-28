@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 13:34:40 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/28 11:26:19 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/28 13:35:35 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static void	print_hash_table(t_hash_entry **table)
 
 int	cmd_hash(char *const *args, t_state *state)
 {
+	size_t	i;
 	char	*path;
 
 	if (ft_strequ(args[1], "-r"))
@@ -40,10 +41,18 @@ int	cmd_hash(char *const *args, t_state *state)
 		free(state->hash_table);
 		hash_table_setup(&(state->hash_table));
 	}
-	else if (args[1])
+	if (args[1])
 	{
-		if (find_binary(args[1], state, &path) == 1)
-			hash_table_add(args[1], path, &(state->hash_table), 0);
+		i = 1 + (ft_strequ(args[1], "-r") || args[2]);
+		while (args[i])
+		{
+			if (find_binary(args[i], state, &path) == 1)
+				hash_table_add(args[i], path, &(state->hash_table), 0);
+			else
+				print_error(
+					0, ERRTEMPLATE_DOUBLE_NAMED, "hash", args[i], "not found");
+			i++;
+		}
 	}
 	else
 		print_hash_table(state->hash_table);
