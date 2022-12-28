@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:27:48 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/27 12:09:55 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/28 11:49:27 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	find_binary(char *name, t_state *state, char **result)
 	int		return_value;
 	char	*hash_table_result;
 
-	hash_table_result = hash_table_get(name, state->hash_table);
+	hash_table_result = hash_table_get_path(name, state->hash_table);
 	if (hash_table_result && result)
 	{
 		*result = ft_strdup(hash_table_result);

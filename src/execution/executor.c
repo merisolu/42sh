@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/28 11:25:28 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/28 11:57:01 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static void	update_hash_table(char *const *args, t_state *state)
 {
 	char	*path;
 
-	if (built_in_get(args[0]) || hash_table_get(args[0], state->hash_table))
+	if (built_in_get(args[0])
+		|| hash_table_get_path(args[0], state->hash_table))
 		return ;
 	if (find_binary(args[0], state, &path) == 1)
 		hash_table_add(args[0], path, &(state->hash_table), 1);

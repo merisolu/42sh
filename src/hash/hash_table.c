@@ -6,11 +6,31 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 11:12:01 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/28 11:43:34 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/28 11:57:30 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "hash.h"
+
+/*
+ * Gets a specific entry from the hash table. Returns NULL if nothing was found.
+ */
+
+static t_hash_entry	*hash_table_get(char *source, t_hash_entry **table)
+{
+	size_t				i;
+	unsigned long long	source_hash;
+
+	source_hash = fnv1_hash(source);
+	i = 0;
+	while (table[i])
+	{
+		if (source_hash == table[i]->hash)
+			return (table[i]);
+		i++;
+	}
+	return (NULL);
+}
 
 /*
  * Allocates the first entry in the hash table.
@@ -50,24 +70,19 @@ unsigned int hits)
 }
 
 /*
- * Gets a specific entry from the hash table. Returns NULL if nothing was found.
+ * Gets the path of a specific entry from the hash table and increments the hit
+ * counter. Returns NULL if nothing was found.
  */
 
-char	*hash_table_get(char *source, t_hash_entry **table)
+char	*hash_table_get_path(char *source, t_hash_entry **table)
 {
-	size_t				i;
-	unsigned long long	source_hash;
+	t_hash_entry	*entry;
 
-	source_hash = fnv1_hash(source);
-	i = 0;
-	while (table[i])
+	entry = hash_table_get(source, table);
+	if (entry)
 	{
-		if (source_hash == table[i]->hash)
-		{
-			table[i]->hits++;
-			return (table[i]->path);
-		}
-		i++;
+		entry->hits++;
+		return (entry->path);
 	}
 	return (NULL);
 }
