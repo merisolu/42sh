@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/12/27 12:10:40 by jumanner         ###   ########.fr        #
+#    Updated: 2022/12/28 11:42:40 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,7 @@ EXPANSION_FILES = expand_tilde.c expand_variables.c expand_node.c \
 				  	parse_expansions.c
 
 HASH_DIR = hash
-HASH_FILES = hash_table.c
+HASH_FILES = hash_table.c fnv1.c
 
 HISTORY_DIR = history
 HISTORY_FILES = history.c history_save.c history_load.c history_utils.c
