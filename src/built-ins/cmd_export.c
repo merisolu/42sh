@@ -6,22 +6,11 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:48:06 by amann             #+#    #+#             */
-/*   Updated: 2022/12/22 15:04:03 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/28 12:03:19 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "built_ins.h"
-
-static bool	setup_var_arrays(t_state *state)
-{
-	if (!(state->exported))
-		state->exported = (char **) ft_memalloc(sizeof(char *) * (INPUT_MAX_SIZE / 2));
-	if (!(state->intern))
-		state->intern = (char **) ft_memalloc(sizeof(char *) * (INPUT_MAX_SIZE / 2));
-	if (!(state->intern) || !(state->exported))
-		return (print_error(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	return (true);
-}
 
 /*
  * export works similarly to setenv; ostensibly it allows the user to declare
@@ -52,12 +41,27 @@ static bool	setup_var_arrays(t_state *state)
 
 int	cmd_export(char *const *args, t_state *state)
 {
+	int	i;
+	int	ret;
+
 	if (!args[1] || (ft_strequ(args[1], "-p") && !args[2]))
 	{
 		env_print_all(state->exported);
 		return (1);
 	}
-	if (!setup_var_arrays(state))
-		return (0);
-	return (1);
+	ret = 0;
+	i = 1;
+	if (ft_strequ(args[1], "-p"))
+		i = 2;
+	while (args[i])
+	{
+		if (ft_strchr(args[i], '=')) //add new variable
+		{
+			if (!check_var_syntax(args[i]))
+				return print_named_error...
+		}
+		//check if intern var exists already
+		i++;
+	}
+	return (ret);
 }
