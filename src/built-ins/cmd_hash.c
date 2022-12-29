@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 13:34:40 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/28 13:35:35 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/29 14:29:22 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@ static void	print_hash_table(t_hash_entry **table)
 {
 	size_t	i;
 
+	if (!table)
+	{
+		ft_printf("hash: hash table not allocated\n");
+		return ;
+	}
 	if (!table[0])
 	{
 		ft_printf("hash: hash table empty\n");
@@ -30,17 +35,22 @@ static void	print_hash_table(t_hash_entry **table)
 	}
 }
 
+static void	clear_hash_stable(t_hash_entry ***table)
+{
+	hash_table_clear(*table);
+	free(*table);
+	hash_table_setup(table);
+	if (!(*table))
+		print_error(0, ERRTEMPLATE_NAMED, "hash", ERR_MALLOC_FAIL);
+}
+
 int	cmd_hash(char *const *args, t_state *state)
 {
 	size_t	i;
 	char	*path;
 
 	if (ft_strequ(args[1], "-r"))
-	{
-		hash_table_clear(state->hash_table);
-		free(state->hash_table);
-		hash_table_setup(&(state->hash_table));
-	}
+		clear_hash_stable(&(state->hash_table));
 	if (args[1])
 	{
 		i = 1 + (ft_strequ(args[1], "-r") || args[2]);

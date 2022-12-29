@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 11:12:01 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/28 13:38:48 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/29 11:57:52 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static t_hash_entry	*hash_table_get(char *name, t_hash_entry **table)
 	size_t				i;
 	unsigned long long	source_hash;
 
+	if (!table)
+		return (NULL);
 	source_hash = fnv1_hash(name);
 	i = 0;
 	while (table[i])
@@ -55,6 +57,9 @@ unsigned int hits)
 	bool			new_entry;
 	int				add_to_array_result;
 
+	if (!(*table))
+		return (print_error_bool(false, ERRTEMPLATE_SIMPLE,
+				"unable to update hash table: table has not been allocated"));
 	entry = hash_table_get(name, *table);
 	new_entry = entry != NULL;
 	if (!new_entry)
@@ -100,6 +105,8 @@ void	hash_table_clear(t_hash_entry **table)
 {
 	size_t	i;
 
+	if (!table)
+		return ;
 	i = 0;
 	while ((table)[i])
 	{
