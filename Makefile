@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2022/12/22 14:47:42 by amann            ###   ########.fr        #
+#    Updated: 2022/12/29 15:40:23 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ BUILT_INS_DIR = built-ins
 BUILT_INS_FILES = built_ins.c built_ins_flags.c cmd_cd.c cmd_echo.c cmd_env.c \
 				cmd_fc.c cmd_setenv.c cmd_unsetenv.c cmd_exit.c \
 				cmd_execute_script.c cmd_true_false.c cmd_type.c \
-				cmd_set.c cmd_export.c
+				cmd_set.c cmd_export.c cmd_unset.c
 
 CLEANUP_DIR = cleanup
 CLEANUP_FILES = cleanup.c
@@ -115,7 +115,7 @@ SRCS := $(patsubst %, $(SRC_DIR)/%, $(SRC_FILES))
 OBJ_DIR = ./obj
 OBJS := $(patsubst %, $(OBJ_DIR)/%, $(SRC_FILES:.c=.o))
 
-GCC_FLAGS = -O2 -Wall -Wextra -Werror
+GCC_FLAGS = -Wall -Wextra -Werror -g
 
 $(NAME): $(LIB_PATH) $(OBJS)
 	$(CC) $(GCC_FLAGS) $(OBJS) -o $(NAME) -ltermcap -L $(LIB_DIR) -lft

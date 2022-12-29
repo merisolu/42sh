@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:55:34 by amann             #+#    #+#             */
-/*   Updated: 2022/12/21 16:21:23 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/29 15:27:43 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ static bool	check_intern(t_ast **node, t_token **cursor)
 		if (*cursor && (*cursor)->type == TOKEN_WHITESPACE)
 			*cursor = (*cursor)->next;
 	}
-//	for (int i = 0 ; ((*node)->var_list)[i] ; i++)
-//		ft_putendl(((*node)->var_list)[i]);
 	return (true);
 }
 

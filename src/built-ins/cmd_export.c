@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:48:06 by amann             #+#    #+#             */
-/*   Updated: 2022/12/29 12:56:30 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/29 15:54:26 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,16 @@ static bool	print_exported(char *const *args, t_state *state)
 		i = 0;
 		while ((state->exported)[i])
 		{
-			ft_printf("export %.*s=\"%s\"\n",
+			ft_printf("var = %s\n", (state->exported)[i]);
+			if (ft_strchr((state->exported)[i], '='))
+			{
+				ft_printf("export %.*s=\"%s\"\n",
 					valid_env_name_length((state->exported)[i]),
 					(state->exported)[i],
 					ft_strchr((state->exported)[i], '=') + 1);
+			}
+			else
+				ft_printf("export %s\n", (state->exported)[i]);
 			i++;
 		}
 		return (true);
@@ -43,16 +49,15 @@ static bool	export_new_variable(char *var, t_state *state)
 	if (!name)
 		return (print_error_bool(false, ERR_MALLOC_FAIL));
 	value = ft_strchr(var, '=');
-	value += 1;
-	if (!env_set(name, value, &(state->env))
-		|| !env_set(name, value, &(state->intern))
-		|| !env_set(name, value, &(state->exported)))
+	if (!env_set(name, value + 1, &(state->env))
+		|| !env_set(name, value + 1, &(state->intern))
+		|| !env_set(name, value + 1, &(state->exported)))
 		return (false);
 	ft_strdel(&name);
 	return (true);
 }
 
-bool	export_existing_variable(char *name, t_state *state)
+static bool	export_existing_variable(char *name, t_state *state)
 {
 	char	**var;
 	char	*value;
@@ -69,8 +74,9 @@ bool	export_existing_variable(char *name, t_state *state)
 			return (false);
 		return (true);
 	}
-	if (name[valid_env_name_length(name)]) //if this resolves to the null byte, the name is valid
-		return (print_error_bool(false, ERRTEMPLATE_DOUBLE_NAMED_QUOTED, "export", name, ERR_NOT_VALID_ID));
+	if (name[valid_env_name_length(name)])
+		return (print_error_bool(false, ERRTEMPLATE_DOUBLE_NAMED_QUOTED,
+				"export", name, ERR_NOT_VALID_ID));
 	len = ft_null_array_len((void **)state->exported);
 	dest_ptr = (char **)&((state->exported)[len]);
 	*dest_ptr = ft_strdup(name);
@@ -78,7 +84,6 @@ bool	export_existing_variable(char *name, t_state *state)
 		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	return (true);
 }
-
 
 /*
  * export works similarly to setenv; ostensibly it allows the user to declare
@@ -120,14 +125,15 @@ int	cmd_export(char *const *args, t_state *state)
 		i = 2;
 	while (args[i])
 	{
-		if (ft_strchr(args[i], '=')) //add new variable
+		if (ft_strchr(args[i], '='))
 		{
 			if (!check_var_syntax(args[i]))
-				ret = print_error(1, ERRTEMPLATE_DOUBLE_NAMED_QUOTED, "export", args[i], ERR_NOT_VALID_ID);
+				ret = print_error(1, ERRTEMPLATE_DOUBLE_NAMED_QUOTED,
+						"export", args[i], ERR_NOT_VALID_ID);
 			else if (!export_new_variable(args[i], state))
 				ret = 1;
 		}
-		else if (!export_existing_variable(args[i], state))//check if intern var exists already
+		else if (!export_existing_variable(args[i], state))
 				ret = 1;
 		i++;
 	}
