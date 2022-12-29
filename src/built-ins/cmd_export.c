@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:48:06 by amann             #+#    #+#             */
-/*   Updated: 2022/12/28 17:06:14 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/29 12:56:30 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,19 @@
 
 static bool	print_exported(char *const *args, t_state *state)
 {
+	int	i;
+
 	if (!args[1] || (ft_strequ(args[1], "-p") && !args[2]))
 	{
-		env_print_all(state->exported);
+		i = 0;
+		while ((state->exported)[i])
+		{
+			ft_printf("export %.*s=\"%s\"\n",
+					valid_env_name_length((state->exported)[i]),
+					(state->exported)[i],
+					ft_strchr((state->exported)[i], '=') + 1);
+			i++;
+		}
 		return (true);
 	}
 	return (false);
