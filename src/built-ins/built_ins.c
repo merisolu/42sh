@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:18:43 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/29 14:46:15 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/30 17:23:49 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ static const t_cmd_dispatch	*get_dispatch(void)
 	{"env", &cmd_env},
 	{"export", &cmd_export},
 	{"fc", &cmd_fc},
-	{"setenv", &cmd_setenv},
-	{"unsetenv", &cmd_unsetenv},
 	{"unset", &cmd_unset},
 	{"true", &cmd_true},
 	{"false", &cmd_false},
