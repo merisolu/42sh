@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:26:38 by amann             #+#    #+#             */
-/*   Updated: 2022/10/27 12:52:43 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/30 17:59:21 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ static int	expand_name(char *value, t_state *state, char **res)
 	valid = ft_strsub(value, 0, valid_env_name_length(value));
 	if (!valid)
 		return (-1);
-	return_code = add_to_result(res, env_get_or(valid, "", state->env), state);
+	if (env_get_or(valid, NULL, state->intern))
+		return_code = add_to_result(res, env_get_or(valid, "", state->intern), state);
+	else
+		return_code = add_to_result(res, env_get_or(valid, "", state->env), state);
 	if (return_code == 1)
 		add_to_result(res, value + valid_env_name_length(value), state);
 	free(valid);

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 09:52:18 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/30 16:52:20 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/30 17:52:51 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,12 @@ char	**env_get_pointer(const char *name, char *const *env)
 	size_t	name_length;
 	size_t	env_name_length;
 
-//	size_t len = ft_null_array_len((void **)env);
 	if (!env)
 		return (NULL);
 	name_length = ft_strlen(name);
 	i = 0;
 	while (env[i])
 	{
-		//ft_printf("envlen = %zu i = %d name = %s\n", len, i, env[i]);
-//		ft_printf("env[%d] = %s max = %d\n",i, env[i], ft_strlen(env[i]));
 		if (!ft_strchr(env[i], '='))
 			env_name_length = name_length;
 		else
@@ -41,7 +38,6 @@ char	**env_get_pointer(const char *name, char *const *env)
 			return ((char **)env + i);
 		i++;
 	}
-//	ft_putendl(name);
 	return (NULL);
 }
 
@@ -56,9 +52,7 @@ char	*env_get(const char *name, char *const *env)
 
 	temp = env_get_pointer(name, env);
 	if (temp)
-	{
 		return (ft_strchr(*temp, '=') + 1);
-	}
 	return (NULL);
 }
 
