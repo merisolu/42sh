@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:48:06 by amann             #+#    #+#             */
-/*   Updated: 2022/12/29 15:54:26 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/30 15:49:08 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static bool	print_exported(char *const *args, t_state *state)
 		i = 0;
 		while ((state->exported)[i])
 		{
-			ft_printf("var = %s\n", (state->exported)[i]);
 			if (ft_strchr((state->exported)[i], '='))
 			{
 				ft_printf("export %.*s=\"%s\"\n",
@@ -49,9 +48,18 @@ static bool	export_new_variable(char *var, t_state *state)
 	if (!name)
 		return (print_error_bool(false, ERR_MALLOC_FAIL));
 	value = ft_strchr(var, '=');
-	if (!env_set(name, value + 1, &(state->env))
+	if (exported_no_equals(name, state))
+	{
+		delete_var(name, state);
+		if (!env_set(name, value, &(state->exported)))
+			return (false);
+		if (!env_set(name, value, &(state->env)))
+			return (false);
+		return (true);
+	}
+	if (!env_set(name, value + 1, &(state->exported))
 		|| !env_set(name, value + 1, &(state->intern))
-		|| !env_set(name, value + 1, &(state->exported)))
+		|| !env_set(name, value + 1, &(state->env)))
 		return (false);
 	ft_strdel(&name);
 	return (true);

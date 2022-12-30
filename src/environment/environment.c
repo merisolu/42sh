@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:39:49 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/08 15:35:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2022/12/30 14:45:39 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	env_set(const char *name, const char *value, char *const **env)
 					0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 		destination_pointer = (char **)*env + new_size - 1;
 	}
+	//ft_printf("name: %s value: %s dest: %s\n", name, value, *destination_pointer);
 	new = ft_strnew(ft_strlen(name) + 1 + ft_strlen(value));
 	if (!new)
 		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
