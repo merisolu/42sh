@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 09:52:18 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/30 15:27:11 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/30 16:52:20 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ char	**env_get_pointer(const char *name, char *const *env)
 	{
 		//ft_printf("envlen = %zu i = %d name = %s\n", len, i, env[i]);
 //		ft_printf("env[%d] = %s max = %d\n",i, env[i], ft_strlen(env[i]));
-		env_name_length = ft_dstchr(env[i], '=', ft_strlen(env[i]));
+		if (!ft_strchr(env[i], '='))
+			env_name_length = name_length;
+		else
+			env_name_length = ft_dstchr(env[i], '=', ft_strlen(env[i]));
 		if (env_name_length == name_length \
 			&& ft_strncmp(env[i], name, env_name_length) == 0)
 			return ((char **)env + i);

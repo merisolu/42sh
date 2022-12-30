@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:48:06 by amann             #+#    #+#             */
-/*   Updated: 2022/12/30 15:49:08 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/30 16:57:34 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ static bool	export_new_variable(char *var, t_state *state)
 	if (exported_no_equals(name, state))
 	{
 		delete_var(name, state);
-		if (!env_set(name, value, &(state->exported)))
+		if (!env_set(name, value + 1, &(state->exported)))
 			return (false);
-		if (!env_set(name, value, &(state->env)))
+		if (!env_set(name, value + 1, &(state->env)))
 			return (false);
 		return (true);
 	}
@@ -85,6 +85,8 @@ static bool	export_existing_variable(char *name, t_state *state)
 	if (name[valid_env_name_length(name)])
 		return (print_error_bool(false, ERRTEMPLATE_DOUBLE_NAMED_QUOTED,
 				"export", name, ERR_NOT_VALID_ID));
+	if (env_get_pointer(name, state->exported))
+		return (true);
 	len = ft_null_array_len((void **)state->exported);
 	dest_ptr = (char **)&((state->exported)[len]);
 	*dest_ptr = ft_strdup(name);
