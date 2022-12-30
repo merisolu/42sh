@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 14:52:32 by amann             #+#    #+#             */
-/*   Updated: 2022/12/29 15:28:22 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/30 16:19:09 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	cmd_unset(char *const *args, t_state *state)
 		env_unset(name, &(state->env));
 		env_unset(name, &(state->intern));
 		env_unset(name, &(state->exported));
+		if (exported_no_equals(name, state))
+			delete_var(name, state);
 		i++;
 	}
 	return (ret);

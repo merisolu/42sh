@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/29 14:57:02 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/30 16:16:43 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,9 @@ int		cmd_type(char *const *args, t_state *state);
 
 /* cmd_unset.c */
 int		cmd_unset(char *const *args, t_state *state);
+
+/* delete_var.c */
+void	delete_var(char *name, t_state *state);
+bool	exported_no_equals(char *name, t_state *state);
 
 #endif

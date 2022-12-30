@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/30 15:42:34 by amann            ###   ########.fr       */
+/*   Updated: 2022/12/30 16:16:17 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,6 @@ int		reset_io(t_redir **r);
 
 /* set_internal_variables.c */
 bool	set_internal_variables(char **var_list, t_state *state);
-void	delete_var(char *name, t_state *state);
-bool	exported_no_equals(char *name, t_state *state);
 
 /* tokenize_and_execute.c */
 void	tokenize_and_execute(t_state *state);
