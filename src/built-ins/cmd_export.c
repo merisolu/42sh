@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:48:06 by amann             #+#    #+#             */
-/*   Updated: 2022/12/30 16:57:34 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/02 16:18:07 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static bool	print_exported(char *const *args, t_state *state)
 	if (!args[1] || (ft_strequ(args[1], "-p") && !args[2]))
 	{
 		i = 0;
-		while ((state->exported)[i])
+		while (state->exported && (state->exported)[i])
 		{
 			if (ft_strchr((state->exported)[i], '='))
 			{
@@ -37,6 +37,31 @@ static bool	print_exported(char *const *args, t_state *state)
 	return (false);
 }
 
+int	export_set(const char *name, const char *value, char *const **env)
+{
+	size_t	new_size;
+	char	**destination_pointer;
+	char	*new;
+
+	if (ft_strisempty(name))
+		return (1);
+	destination_pointer = env_get_pointer(name, *env);
+	if (!destination_pointer)
+	{
+		new_size = ft_null_array_len((void **)*env);
+		destination_pointer = (char **)*env + new_size;
+	}
+	new = ft_strnew(ft_strlen(name) + 1 + ft_strlen(value));
+	if (!new)
+		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
+	ft_strcpy(new, name);
+	new[ft_strlen(name)] = '=';
+	ft_strcpy(new + ft_strlen(name) + 1, value);
+	free(*destination_pointer);
+	*destination_pointer = new;
+	return (1);
+}
+
 static bool	export_new_variable(char *var, t_state *state)
 {
 	size_t	len;
@@ -50,15 +75,15 @@ static bool	export_new_variable(char *var, t_state *state)
 	value = ft_strchr(var, '=');
 	if (exported_no_equals(name, state))
 	{
-		delete_var(name, state);
-		if (!env_set(name, value + 1, &(state->exported)))
+		delete_var(name, &(state->exported));
+		if (!export_set(name, value + 1, &(state->exported)))
 			return (false);
 		if (!env_set(name, value + 1, &(state->env)))
 			return (false);
 		return (true);
 	}
-	if (!env_set(name, value + 1, &(state->exported))
-		|| !env_set(name, value + 1, &(state->intern))
+	if (!export_set(name, value + 1, &(state->exported))
+		|| !export_set(name, value + 1, &(state->intern))
 		|| !env_set(name, value + 1, &(state->env)))
 		return (false);
 	ft_strdel(&name);
@@ -77,15 +102,15 @@ static bool	export_existing_variable(char *name, t_state *state)
 	{
 		value = ft_strchr(*var, '=');
 		if (!env_set(name, value + 1, &(state->env))
-			|| !env_set(name, value + 1, &(state->exported))
-			|| !env_set(name, value + 1, &(state->intern)))
+			|| !export_set(name, value + 1, &(state->exported))
+			|| !export_set(name, value + 1, &(state->intern)))
 			return (false);
 		return (true);
 	}
 	if (name[valid_env_name_length(name)])
 		return (print_error_bool(false, ERRTEMPLATE_DOUBLE_NAMED_QUOTED,
 				"export", name, ERR_NOT_VALID_ID));
-	if (env_get_pointer(name, state->exported))
+	if (exported_no_equals(name, state))
 		return (true);
 	len = ft_null_array_len((void **)state->exported);
 	dest_ptr = (char **)&((state->exported)[len]);

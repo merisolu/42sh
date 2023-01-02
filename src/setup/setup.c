@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:21:45 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/29 15:35:31 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/02 16:02:58 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ static int	get_state_struct(char *const **env, t_state *result)
 	}
 
 	ft_dup_null_array((void **)*env, (void ***)&(result->env), var_copy);
-	result->exported = (char **) ft_memalloc(sizeof(char *) * (INPUT_MAX_SIZE / 2));
-	result->intern = (char **) ft_memalloc(sizeof(char *) * (INPUT_MAX_SIZE / 2));
+	result->exported = (char **) ft_memalloc(sizeof(char *) * (INPUT_MAX_SIZE));
+	result->intern = (char **) ft_memalloc(sizeof(char *) * (INPUT_MAX_SIZE));
 	if (!(result->intern) || !(result->exported) || !(result->env))
 		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	return (env_unset("OLDPWD", &(result->env)));

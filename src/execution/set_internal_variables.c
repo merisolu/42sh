@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 13:29:32 by amann             #+#    #+#             */
-/*   Updated: 2022/12/30 17:13:10 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/02 16:03:21 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 static bool	update_var_arrays(char *name, char *value, t_state *state)
 {
-	if (!env_set(name, value, &(state->intern)))
+	if (!export_set(name, value, &(state->intern)))
 		return (false);
 	if (env_get(name, state->exported))
 	{
-		if (!env_set(name, value, &(state->exported)))
+		if (!export_set(name, value, &(state->exported)))
 			return (false);
 		if (!env_set(name, value, &(state->env)))
 			return (false);
 	}
 	else if (exported_no_equals(name, state))
 	{
-		delete_var(name, state);
-		if (!env_set(name, value, &(state->exported)))
+		delete_var(name, &(state->exported));
+		if (!export_set(name, value, &(state->exported)))
 			return (false);
 		if (!env_set(name, value, &(state->env)))
 			return (false);
