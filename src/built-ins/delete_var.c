@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 16:14:26 by amann             #+#    #+#             */
-/*   Updated: 2023/01/02 16:03:30 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/02 18:16:45 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,27 +26,40 @@ bool	exported_no_equals(char *name, t_state *state)
 	return (false);
 }
 
+static void	shuffle_down(char *const **arr, int i)
+{
+	char	**temp;
+
+	while ((*arr)[i + 1])
+	{
+		temp = (char **)&((*arr)[i]);
+		*temp = (char *)((*arr)[i + 1]);
+		i++;
+	}
+	temp = (char **)&((*arr)[i]);
+	*temp = NULL;
+}
+
 void	delete_var(char *name, char *const **arr)
 {
 	int		i;
-	char	**temp;
+	size_t	name_len;
 
+	if (ft_strchr(name, '='))
+	{
+		name_len = 0;
+		while (name[name_len] && name[name_len] != '=')
+			name_len++;
+	}
+	else
+		name_len = ft_strlen(name);
 	i = 0;
 	while ((*arr)[i])
 	{
-		//if (ft_strchr((*arr)[i], '='))
-
-		if (ft_strequ(name, (*arr)[i]))
+		if (ft_strnequ(name, (*arr)[i], name_len))
 		{
 			free((*arr)[i]);
-			while ((*arr)[i + 1])
-			{
-				temp = (char **)&((*arr)[i]);
-				*temp = (char *)((*arr)[i + 1]);
-				i++;
-			}
-			temp = (char **)&((*arr)[i]);
-			*temp = NULL;
+			shuffle_down(arr, i);
 			break ;
 		}
 		i++;

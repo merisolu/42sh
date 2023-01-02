@@ -6,11 +6,26 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:26:38 by amann             #+#    #+#             */
-/*   Updated: 2022/12/30 17:59:21 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/02 17:56:34 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expansion.h"
+
+static int	expand_name_helper(char **res, char *valid, t_state *state)
+{
+	if (env_get_or(valid, NULL, state->intern))
+		return (add_to_result(
+				res,
+				env_get_or(valid, "", state->intern),
+				state
+			));
+	return (add_to_result(
+			res,
+			env_get_or(valid, "", state->env),
+			state
+		));
+}
 
 static int	expand_name(char *value, t_state *state, char **res)
 {
@@ -30,10 +45,7 @@ static int	expand_name(char *value, t_state *state, char **res)
 	valid = ft_strsub(value, 0, valid_env_name_length(value));
 	if (!valid)
 		return (-1);
-	if (env_get_or(valid, NULL, state->intern))
-		return_code = add_to_result(res, env_get_or(valid, "", state->intern), state);
-	else
-		return_code = add_to_result(res, env_get_or(valid, "", state->env), state);
+	return_code = expand_name_helper(res, valid, state);
 	if (return_code == 1)
 		add_to_result(res, value + valid_env_name_length(value), state);
 	free(valid);

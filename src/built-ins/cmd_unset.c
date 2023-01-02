@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 14:52:32 by amann             #+#    #+#             */
-/*   Updated: 2023/01/02 16:18:24 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/02 17:04:02 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,10 @@ int	cmd_unset(char *const *args, t_state *state)
 				"export", name, ERR_NOT_VALID_ID);
 			ret = 1;
 		}
-		env_unset(name, &(state->env));
-		delete_var(name, &(state->intern));
+		if (!env_unset(name, &(state->env)))
+			return (0);
 		delete_var(name, &(state->exported));
+		delete_var(name, &(state->intern));
 		i++;
 	}
 	return (ret);

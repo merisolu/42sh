@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:21:45 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/02 16:02:58 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/02 17:27:12 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,16 @@ static char	**get_reserved_sequences(void)
 		return (NULL);
 	ft_add_to_null_array((void ***)&result, var_copy(TAB));
 	return (result);
+}
+
+static bool	initialise_arrays(char *const **env, t_state *result)
+{
+	ft_dup_null_array((void **)*env, (void ***)&(result->env), var_copy);
+	result->exported = (char **) ft_memalloc(sizeof(char *) * (INPUT_MAX_SIZE));
+	result->intern = (char **) ft_memalloc(sizeof(char *) * (INPUT_MAX_SIZE));
+	if (!(result->intern) || !(result->exported) || !(result->env))
+		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
+	return (true);
 }
 
 static int	get_state_struct(char *const **env, t_state *result)
@@ -51,12 +61,8 @@ static int	get_state_struct(char *const **env, t_state *result)
 			return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 		i++;
 	}
-
-	ft_dup_null_array((void **)*env, (void ***)&(result->env), var_copy);
-	result->exported = (char **) ft_memalloc(sizeof(char *) * (INPUT_MAX_SIZE));
-	result->intern = (char **) ft_memalloc(sizeof(char *) * (INPUT_MAX_SIZE));
-	if (!(result->intern) || !(result->exported) || !(result->env))
-		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
+	if (!initialise_arrays(env, result))
+		return (0);
 	return (env_unset("OLDPWD", &(result->env)));
 }
 

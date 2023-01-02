@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/02 15:48:41 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/02 17:51:10 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,11 @@ int		cmd_cd(char *const *args, t_state *state);
 /* cmd_env.c */
 int		cmd_env(char *const *args, t_state *state);
 
-/* cmd_env.c */
+/* cmd_export.c */
 int		cmd_export(char *const *args, t_state *state);
+
+/* export_set.c */
+int		export_set(const char *name, const char *value, char *const **env);
 
 /* cmd_fc.c */
 int		cmd_fc(char *const *args, t_state *state);
@@ -92,5 +95,4 @@ int		cmd_unset(char *const *args, t_state *state);
 void	delete_var(char *name, char *const **arr);
 bool	exported_no_equals(char *name, t_state *state);
 
-int	export_set(const char *name, const char *value, char *const **env);
 #endif
