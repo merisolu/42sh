@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:21:45 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/02 17:27:12 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/03 13:48:29 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,27 @@ static char	**get_reserved_sequences(void)
 
 static bool	initialise_arrays(char *const **env, t_state *result)
 {
+	int		i;
+	char	**temp;
+
 	ft_dup_null_array((void **)*env, (void ***)&(result->env), var_copy);
 	result->exported = (char **) ft_memalloc(sizeof(char *) * (INPUT_MAX_SIZE));
 	result->intern = (char **) ft_memalloc(sizeof(char *) * (INPUT_MAX_SIZE));
 	if (!(result->intern) || !(result->exported) || !(result->env))
 		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
+	i = 0;
+	while ((result->env)[i])
+	{
+		temp = (char **)&((result->exported)[i]);
+		*temp = ft_strdup((result->env)[i]);
+		if (!((result->exported)[i]))
+			return (print_error_bool(
+					false,
+					ERRTEMPLATE_SIMPLE,
+					ERR_MALLOC_FAIL
+				));
+		i++;
+	}
 	return (true);
 }
 
