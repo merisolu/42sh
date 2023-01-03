@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2022/12/22 13:26:05 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/03 12:04:02 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,22 @@ t_state *state)
 	pipe_close(pipes->read);
 	check_print_ast(ast, state, true);
 	ast_free(&ast);
+}
+
+bool	remove_temp_vars_from_env(t_ast_context *ctx, t_state *state)
+{
+	char	**var_list;
+	int		i;
+
+	var_list = ctx->node->left->var_list;
+	i = 0;
+	while (var_list[i])
+	{
+		if (!env_unset(var_list[i], &(state->env)))
+			return (false);
+		i++;
+	}
+	return (true);
 }
 
 static pid_t	execute_simple_command(t_ast_context *ctx, t_state *state)
@@ -46,9 +62,17 @@ static pid_t	execute_simple_command(t_ast_context *ctx, t_state *state)
 		result = 0;
 		handle_redirects(ctx->node->right, ctx->redirect);
 	}
-	if (!ctx->node->left->arg_list[0] && ctx->node->left->var_list
-		&& !set_internal_variables(ctx->node->left->var_list, state))
-		return (-1);
+	if (!ctx->node->left->arg_list[0] && ctx->node->left->var_list)
+	{
+		if (!set_internal_variables(ctx->node->left->var_list, state))
+			return (-1);
+	}
+	else if (ctx->node->left->arg_list[0] && ctx->node->left->var_list)
+	{
+		if (!remove_temp_vars_from_env(ctx, state))
+			return (-1);
+	}
+	//remove variables from env if var_list and arg_list exists.
 
 	pipe_close(ctx->pipes->read);
 	pipes_copy(ctx->pipes->read, ctx->pipes->write);
