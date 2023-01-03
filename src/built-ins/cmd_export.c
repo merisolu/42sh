@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:48:06 by amann             #+#    #+#             */
-/*   Updated: 2023/01/02 18:06:51 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/03 17:36:24 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ static bool	export_existing_variable(char *name, t_state *state)
 	{
 		value = ft_strchr(*var, '=');
 		if (value && (!env_set(name, value + 1, &(state->env))
-			|| !export_set(name, value + 1, &(state->exported))
-			|| !export_set(name, value + 1, &(state->intern))))
+				|| !export_set(name, value + 1, &(state->exported))
+				|| !export_set(name, value + 1, &(state->intern))))
 			return (false);
 		return (true);
 	}

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 14:06:38 by amann             #+#    #+#             */
-/*   Updated: 2022/12/19 11:44:13 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/03 17:30:21 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,13 @@ static bool	exp_args_loop(t_ast *root, t_state *state)
 	while (root->arg_list[i])
 	{
 		if (!expand_node(&(root->arg_list[i]), state))
+			return (false);
+		i++;
+	}
+	i = 0;
+	while (root->var_list[i])
+	{
+		if (!expand_node(&(root->var_list[i]), state))
 			return (false);
 		i++;
 	}

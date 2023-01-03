@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:22:18 by amann             #+#    #+#             */
-/*   Updated: 2023/01/03 17:04:51 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/03 17:35:21 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,3 @@ bool	update_env_execution(t_state *state, t_ast_context *ctx)
 	}
 	return (true);
 }
-

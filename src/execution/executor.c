@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/03 14:28:11 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/03 17:35:53 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,6 @@ pid_t	execute(char *const *args, t_state *state, t_ast_context *ast)
 	bool	forking;
 	pid_t	fork_result;
 
-/*	if (args && !args[0])
-		return (-1);
-	if (!args || !(args[0]))
-		return (print_error(-1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));*/
 	if (!update_env_execution(state, ast))
 		return (-1);
 	forking = (in_pipes(ast->pipes) || !built_in_get(args[0]));
