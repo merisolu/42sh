@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/03 11:51:06 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/03 14:28:11 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,39 +58,6 @@ t_ast_context *ast, bool forking)
 	return (exit_if_forking(forking, return_value));
 }
 
-/*
- * If variables are declared at the start of a command, these should be
- * temporarily added to the environment for that command. After the commmand
- * has finished executing these will be removed.
- *
- * The while loop is basically lifted straight out of the env builtin.
- * We know at this point the parser has validated the var_list, we can just do
- * a little pointer magic and let env_set take care of updating the env array.
- */
-
-bool	update_env(t_state *state, t_ast_context *ctx)
-{
-	char	**var_list;
-	char	*pair;
-	char	*temp;
-	int		i;
-
-	if (!ctx->node->left->var_list)
-		return (true);
-	var_list = ctx->node->left->var_list;
-	i = 0;
-	while (var_list[i])
-	{
-		pair = var_list[i];
-		temp = ft_strchr(pair, '=') + 1;
-		pair[ft_dstchr(pair, '=', ft_strlen(pair))] = '\0';
-		if (!env_set(pair, temp, &(state->env)))
-			return (false);
-		i++;
-	}
-	return (true);
-}
-
 pid_t	execute(char *const *args, t_state *state, t_ast_context *ast)
 {
 	bool	forking;
@@ -100,7 +67,7 @@ pid_t	execute(char *const *args, t_state *state, t_ast_context *ast)
 		return (-1);
 	if (!args || !(args[0]))
 		return (print_error(-1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));*/
-	if (!update_env(state, ast))
+	if (!update_env_execution(state, ast))
 		return (-1);
 	forking = (in_pipes(ast->pipes) || !built_in_get(args[0]));
 	if (forking)
