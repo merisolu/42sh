@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 13:56:40 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/08 15:37:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/04 16:18:02 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	cmd_env(char *const *args, t_state *state)
 	if (!ft_dup_null_array((void **)args + i, (void ***)&(cmd.args), var_copy))
 		return (print_error(free_env_args(&cmd, 1), ERRTEMPLATE_NAMED,
 				"env", ERR_MALLOC_FAIL));
-	if (bin_env_find(args[i], state->env, &path) == 0)
+	if (bin_env_find(args[i], state, &path) == 0)
 		return (print_error(free_env_args(&cmd, 1), ERRTEMPLATE_NAMED,
 				"env", ERR_NO_SUCH_FILE_OR_DIR));
 	fork_and_execve(path, &cmd);

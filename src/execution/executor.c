@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/03 17:35:53 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/04 16:13:48 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_ast_context *ast, bool forking)
 	}
 	if (ft_strchr(args[0], '/') || (args[0][0] == '.'))
 		return (exit_if_forking(forking, execute_absolute_path(args, state)));
-	return_value = find_from_path(args[0], state->env, &path);
+	return_value = find_from_path(args[0], state, &path);
 	if (return_value != 1)
 		return (exit_if_forking(forking, return_value));
 	return_value = env_set("_", path, &(state->env));

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/03 14:29:39 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/04 16:17:21 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 /* Files */
 
 /* bin.c */
-int		bin_env_find(const char *name, char *const *env, char **result);
+int		bin_env_find(const char *name, t_state *state, char **result);
 void	bin_execve(char *path, char **args, char *const *env);
 
 /* copy_orig_fd.c */
@@ -42,7 +42,7 @@ int		execute(char *const *args, t_state *state, t_ast_context *ast);
 
 /* executor_path_utils.c */
 int		check_path_validity(char *path);
-int		find_from_path(char *name, char *const *env, char **path);
+int		find_from_path(char *name, t_state *state, char **path);
 
 /* execute_fd_aggregation.c */
 bool	execute_filedes_aggregation(t_ast_redir **redir, t_redir *r, \

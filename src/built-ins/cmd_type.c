@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 16:17:26 by amann             #+#    #+#             */
-/*   Updated: 2022/11/30 14:12:10 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/04 16:18:27 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	search_bins(char const *name, int *res, t_state *state)
 	char	*path;
 
 	path = NULL;
-	bin_env_find(name, state->env, &path);
+	bin_env_find(name, state, &path);
 	if (path)
 	{
 		print_type_res(name, path);

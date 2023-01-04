@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:48:06 by amann             #+#    #+#             */
-/*   Updated: 2023/01/04 14:30:22 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/04 14:49:47 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int	cmd_export(char *const *args, t_state *state)
 				ret = 1;
 		}
 		else if (!export_existing_variable(args[i], state))
-				ret = 1;
+			ret = 1;
 		i++;
 	}
 	return (ret);

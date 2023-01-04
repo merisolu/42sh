@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:29:06 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/14 13:40:33 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/04 16:16:38 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,16 @@ static int	bin_find(const char *name, char **paths, char **result)
  * Returns 1 on success, 0 on not found, -1 on malloc failure.
  */
 
-int	bin_env_find(const char *name, char *const *env, char **result)
+int	bin_env_find(const char *name, t_state *state, char **result)
 {
 	char	*path;
 	char	**paths;
 	int		return_value;
 
 	*result = NULL;
-	path = env_get("PATH", env);
+	path = env_get("PATH", state->env);
+	if (!path)
+		path = env_get("PATH", state->intern);
 	if (!path)
 		return (0);
 	paths = ft_strsplit(path, ':');

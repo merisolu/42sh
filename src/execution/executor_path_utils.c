@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:27:48 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/08 15:37:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/04 16:14:14 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ int	check_path_validity(char *path)
  * ERR_COM_NOT_FOUND error message to stderr if the command could not be found.
  */
 
-int	find_from_path(char *name, char *const *env, char **result)
+int	find_from_path(char *name, t_state *state, char **result)
 {
 	int		return_value;
 
-	return_value = bin_env_find(name, env, result);
+	return_value = bin_env_find(name, state, result);
 	if (return_value == 0)
 		return (print_error(RETURN_COMMAND_NOT_FOUND, ERRTEMPLATE_NAMED,
 				name, ERR_COM_NOT_FOUND));
