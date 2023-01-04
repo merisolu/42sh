@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:16 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/20 15:28:10 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/04 14:13:19 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ bool			read_token(\
 	t_token **cursor, t_token_type type, t_token *on_fail);
 
 /* get_token_type.c */
-t_token_type	get_token_type(char value, bool in_quotes);
+t_token_type	get_token_type(char value, bool in_quotes, \
+bool backslash_inhibited);
 
 /* lexer.c */
 t_token			*tokenize(char *input, t_tokenizer *tokenizer);
