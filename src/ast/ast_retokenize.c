@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:21:06 by amann             #+#    #+#             */
-/*   Updated: 2023/01/03 14:29:08 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/04 13:59:46 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ t_token	*ast_retokenize(char *line)
 	}
 	if (t.backslash_inhibited)
 		token_add(&result, TOKEN_WORD, ft_strdup(t.buff));
-	else if (type != TOKEN_BACKSLASH)
+	else if (type != TOKEN_BACKSLASH || !result)
 		token_add(&result, type, ft_strdup(t.buff));
 	free(t.buff);
 	return (result);
