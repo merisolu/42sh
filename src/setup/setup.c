@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:21:45 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/03 13:48:29 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/04 17:10:50 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,10 @@ int	setup(char *const **env, t_state *state)
 	term = getenv("TERM");
 	if (!term)
 		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_ENV_MISSING_TERM));
+	if (!isatty(1))
+		open(ttyname(ttyslot()), O_RDWR);
+	if (!isatty(2))
+		open(ttyname(ttyslot()), O_RDWR);
 	database_result = tgetent(NULL, term);
 	if (database_result < 0)
 		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_TERMCAP_NO_ACCESS));
