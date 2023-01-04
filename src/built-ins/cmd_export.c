@@ -6,35 +6,19 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:48:06 by amann             #+#    #+#             */
-/*   Updated: 2023/01/03 17:36:24 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/04 14:30:22 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "built_ins.h"
 
-static bool	print_exported(char *const *args, t_state *state)
+static bool	var_set_all(char *name, char *value, t_state *state)
 {
-	int	i;
-
-	if (!args[1] || (ft_strequ(args[1], "-p") && !args[2]))
-	{
-		i = 0;
-		while (state->exported && (state->exported)[i])
-		{
-			if (ft_strchr((state->exported)[i], '='))
-			{
-				ft_printf("export %.*s=\"%s\"\n",
-					valid_env_name_length((state->exported)[i]),
-					(state->exported)[i],
-					ft_strchr((state->exported)[i], '=') + 1);
-			}
-			else
-				ft_printf("export %s\n", (state->exported)[i]);
-			i++;
-		}
-		return (true);
-	}
-	return (false);
+	if (!export_set(name, value, &(state->exported))
+		|| !export_set(name, value, &(state->intern))
+		|| !env_set(name, value, &(state->env)))
+		return (false);
+	return (true);
 }
 
 static bool	export_new_variable(char *var, t_state *state)
@@ -49,19 +33,12 @@ static bool	export_new_variable(char *var, t_state *state)
 		return (print_error_bool(false, ERR_MALLOC_FAIL));
 	value = ft_strchr(var, '=');
 	if (exported_no_equals(name, state))
-	{
 		delete_var(name, &(state->exported));
-		if (!export_set(name, value + 1, &(state->exported))
-			|| !env_set(name, value + 1, &(state->env)))
-		{
-			free(name);
-			return (false);
-		}
-	}
-	else if (!export_set(name, value + 1, &(state->exported))
-		|| !export_set(name, value + 1, &(state->intern))
-		|| !env_set(name, value + 1, &(state->env)))
+	if (!var_set_all(name, value + 1, state))
+	{
+		ft_strdel(&name);
 		return (false);
+	}
 	ft_strdel(&name);
 	return (true);
 }
@@ -90,9 +67,7 @@ static bool	export_existing_variable(char *name, t_state *state)
 	if (var)
 	{
 		value = ft_strchr(*var, '=');
-		if (value && (!env_set(name, value + 1, &(state->env))
-				|| !export_set(name, value + 1, &(state->exported))
-				|| !export_set(name, value + 1, &(state->intern))))
+		if (value && !var_set_all(name, value + 1, state))
 			return (false);
 		return (true);
 	}
