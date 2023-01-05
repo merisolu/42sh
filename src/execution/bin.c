@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:29:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/04 16:16:38 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/05 15:02:12 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	bin_env_find(const char *name, t_state *state, char **result)
 	if (!path)
 		path = env_get("PATH", state->intern);
 	if (!path)
-		return (0);
+		return (print_error(-1, ERRTEMPLATE_SIMPLE, ERR_NO_SUCH_FILE_OR_DIR));
 	paths = ft_strsplit(path, ':');
 	if (!paths)
 		return (print_error(-1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
