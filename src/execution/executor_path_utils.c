@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:27:48 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/04 16:14:14 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/05 15:25:20 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,23 @@ int	check_path_validity(char *path)
 }
 
 /*
- * Attempts to find a binary with the given name from PATH in env. Prints
- * ERR_COM_NOT_FOUND error message to stderr if the command could not be found.
+ * Attempts to find a binary with the given name from the hash table, then from
+ * PATH in env. Returns -1 on malloc fail, 0 on not found, 1 on success.
  */
 
-int	find_from_path(char *name, t_state *state, char **result)
+int	find_binary(char *name, t_state *state, char **result)
 {
 	int		return_value;
+	char	*hash_table_result;
 
+	hash_table_result = hash_table_get_path(name, state->hash_table);
+	if (hash_table_result && result)
+	{
+		*result = ft_strdup(hash_table_result);
+		if (!(*result))
+			return (print_error(-1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
+		return (1);
+	}
 	return_value = bin_env_find(name, state, result);
-	if (return_value == 0)
-		return (print_error(RETURN_COMMAND_NOT_FOUND, ERRTEMPLATE_NAMED,
-				name, ERR_COM_NOT_FOUND));
 	return (return_value);
 }

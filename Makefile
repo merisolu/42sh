@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2023/01/05 13:42:26 by amann            ###   ########.fr        #
+#    Updated: 2023/01/05 15:24:33 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ BUILT_INS_DIR = built-ins
 BUILT_INS_FILES = built_ins.c built_ins_flags.c cmd_cd.c cmd_echo.c cmd_env.c \
 				cmd_fc.c cmd_exit.c cmd_execute_script.c cmd_true_false.c \
 				cmd_type.c cmd_set.c cmd_export.c cmd_unset.c delete_var.c \
-				export_set.c print_exported.c
+				export_set.c print_exported.c cmd_hash.c
 
 CLEANUP_DIR = cleanup
 CLEANUP_FILES = cleanup.c
@@ -66,6 +66,9 @@ EXPANSION_DIR = expansion
 EXPANSION_FILES = expand_tilde.c expand_variables.c expand_node.c \
 				  	parse_expansions.c
 
+HASH_DIR = hash
+HASH_FILES = hash_table.c fnv1.c
+
 HISTORY_DIR = history
 HISTORY_FILES = history.c history_save.c history_load.c history_utils.c
 
@@ -77,7 +80,7 @@ INPUT_FILES = clipboard_copy.c clipboard_cut.c clipboard_paste.c \
 
 PARSING_DIR = parsing
 PARSING_FILES = eat_read_token.c get_token_type.c lexer.c literals.c \
-				token.c token_list.c add_to_result.c
+				token.c token_list.c add_to_result.c check_quotes.c
 
 SETUP_DIR = setup
 SETUP_FILES = setup.c setup_termcaps.c setup_input.c setup_fd.c
@@ -103,6 +106,7 @@ SRC_FILES = main.c \
 			$(patsubst %, $(ENVIRONMENT_DIR)/%, $(ENVIRONMENT_FILES)) \
 			$(patsubst %, $(EXECUTION_DIR)/%, $(EXECUTION_FILES)) \
 			$(patsubst %, $(EXPANSION_DIR)/%, $(EXPANSION_FILES)) \
+			$(patsubst %, $(HASH_DIR)/%, $(HASH_FILES)) \
 			$(patsubst %, $(HISTORY_DIR)/%, $(HISTORY_FILES)) \
 			$(patsubst %, $(INPUT_DIR)/%, $(INPUT_FILES)) \
 			$(patsubst %, $(PARSING_DIR)/%, $(PARSING_FILES)) \

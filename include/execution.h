@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/04 16:17:21 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/05 15:22:02 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int		execute(char *const *args, t_state *state, t_ast_context *ast);
 
 /* executor_path_utils.c */
 int		check_path_validity(char *path);
-int		find_from_path(char *name, t_state *state, char **path);
+int		find_binary(char *name, t_state *state, char **path);
 
 /* execute_fd_aggregation.c */
 bool	execute_filedes_aggregation(t_ast_redir **redir, t_redir *r, \

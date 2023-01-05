@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:21:45 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/05 14:41:24 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/05 15:16:57 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ static int	get_state_struct(char *const **env, t_state *result)
 	ft_bzero(result->pids, sizeof(pid_t) * MAX_PIDS);
 	reserved_sequences = get_reserved_sequences();
 	if (!reserved_sequences)
+		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
+	if (!hash_table_setup(&(result->hash_table)))
 		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	if (!input_context_set(&(result->input_context),
 			&(t_input_initializer){

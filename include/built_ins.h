@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/04 14:29:07 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/05 15:22:50 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 /* Includes */
 
 # include "utils.h"
+# include "hash.h"
 # include "environment.h"
 
 /* Macros for type */
@@ -68,6 +69,9 @@ int		cmd_export(char *const *args, t_state *state);
 
 /* export_set.c */
 int		export_set(const char *name, const char *value, char *const **env);
+
+/* cmd_hash.c */
+int		cmd_hash(char *const *args, t_state *state);
 
 /* cmd_fc.c */
 int		cmd_fc(char *const *args, t_state *state);
