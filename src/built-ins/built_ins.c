@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:18:43 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/05 15:20:01 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/05 16:11:36 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static const t_cmd_dispatch	*get_dispatch(void)
 	static const t_cmd_dispatch	dispatch_table[] = {
 	{"cd", &cmd_cd},
 	{"echo", &cmd_echo},
-	{"env", &cmd_env},
 	{"export", &cmd_export},
 	{"fc", &cmd_fc},
 	{"unset", &cmd_unset},
