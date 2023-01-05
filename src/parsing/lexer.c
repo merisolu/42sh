@@ -6,44 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/05 13:04:03 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/05 13:14:05 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-
-/*
- * New process for merging quote handling and tokenisation.
- * Each character of the input string is added to a buffer until the token
- * type changes. The buffer is then added as a token to the token list.
- * We then bzero the buffer and start adding to it again, repeating the process
- * until we reach the end of the input string.
- *
- * In each iteration we check quotes. If we hit an opening or closing quote,
- * we flip the in_quotes variable and skip to the next character as these
- * should not form part of our WORD token. While we are 'in_quotes' (i.e. that
- * variable is TRUE), all characters in the string are interpreted literally -
- * so pipes and semicolons form part of a WORD, for example.
- *
- * If in_quotes is still TRUE at the end of the input string, we can enter
- * multi-line input mode.
- */
-
-static bool	check_quotes(char c, t_tokenizer *t)
-{
-	if ((c == '\'' || c == '\"') && !(t->in_quotes))
-	{
-		t->in_quotes = true;
-		t->quote_type = c;
-		return (true);
-	}
-	else if (c == t->quote_type && t->in_quotes)
-	{
-		t->in_quotes = false;
-		return (true);
-	}
-	return (true);
-}
 
 static int	skip_whitespace(char *line)
 {

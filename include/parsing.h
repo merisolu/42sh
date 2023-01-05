@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:16 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/04 14:13:19 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/05 13:16:24 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 # include "ast.h"
 
 /* Files */
+
+/* check_quotes.c */
+void			check_quotes(char c, t_tokenizer *tokenizer);
 
 /* eat_read_token.c */
 bool			eat_token(\
