@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2023/01/04 14:30:06 by amann            ###   ########.fr        #
+#    Updated: 2023/01/05 13:42:26 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,7 +80,7 @@ PARSING_FILES = eat_read_token.c get_token_type.c lexer.c literals.c \
 				token.c token_list.c add_to_result.c
 
 SETUP_DIR = setup
-SETUP_FILES = setup.c
+SETUP_FILES = setup.c setup_termcaps.c setup_input.c setup_fd.c
 
 SIGNALS_DIR = signals
 SIGNALS_FILES = signal.c

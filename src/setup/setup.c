@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:21:45 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/04 17:10:50 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/05 13:43:35 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,30 +84,14 @@ static int	get_state_struct(char *const **env, t_state *result)
 
 int	setup(char *const **env, t_state *state)
 {
-	char	*term;
-	int		database_result;
-
 	if (!get_state_struct(env, state) || !set_shlvl(&(state->env)))
 		return (0);
-	term = getenv("TERM");
-	if (!term)
-		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_ENV_MISSING_TERM));
-	if (!isatty(1))
-		open(ttyname(ttyslot()), O_RDWR);
-	if (!isatty(2))
-		open(ttyname(ttyslot()), O_RDWR);
-	database_result = tgetent(NULL, term);
-	if (database_result < 0)
-		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_TERMCAP_NO_ACCESS));
-	else if (database_result == 0)
-		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_TERMCAP_NO_ENTRY));
-	if (state->input_context.width == 0 || state->input_context.height == 0)
-		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_WINDOW_TOO_SMALL));
-	if (!terminal_get_configs(&(state->input_conf), &(state->orig_conf)))
-		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_TERMIOS_FAIL));
-	if (!terminal_apply_config(&(state->input_conf)))
-		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_TERMIOS_FAIL));
-	state->terminal_conf_applied = true;
+	if (!setup_fd())
+		return (0);
+	if (!setup_termcaps())
+		return (0);
+	if (!setup_input(state))
+		return (0);
 	history_load(state);
 	set_signal_handling();
 	save_cursor(&(state->input_context));
