@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 13:14:18 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/05 13:45:18 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/05 14:26:25 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@
 
 void	check_quotes(char c, t_tokenizer *tokenizer)
 {
-	if (tokenizer->backslash_inhibited)
+	if (tokenizer->backslash_inhibited
+		&& ((tokenizer->in_quotes && tokenizer->quote_type != '\'')
+			|| !tokenizer->in_quotes))
 		return ;
 	if ((c == '\'' || c == '\"') && !(tokenizer->in_quotes))
 	{

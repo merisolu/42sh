@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:21:06 by amann             #+#    #+#             */
-/*   Updated: 2023/01/04 13:59:46 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/05 14:57:41 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,13 @@ static const t_token_dispatch	*get_parse_token_dispatch(void)
 	return (dispatch_table);
 }
 
-static t_token_type	get_parser_token_type(char value)
+static t_token_type	get_parser_token_type(char value, t_tokenizer *tokenizer)
 {
 	const t_token_dispatch	*dispatch_table;
 	size_t					i;
 
+	if (value != '\'' && tokenizer->in_quotes && tokenizer->quote_type == '\'')
+		return (TOKEN_WORD);
 	dispatch_table = get_parse_token_dispatch();
 	i = 0;
 	while (dispatch_table[i].token != TOKEN_NULL)
@@ -69,7 +71,7 @@ static void	rt_loop(t_tokenizer *t, t_token **res, t_token_type *type, char *lc)
 	t->backslash_inhibited = (*type == TOKEN_BACKSLASH
 			&& !t->backslash_inhibited);
 	ft_bzero(t->buff, ft_strlen(t->buff) + 1);
-	*type = get_parser_token_type(*lc);
+	*type = get_parser_token_type(*lc, t);
 	t->buff_idx = 0;
 }
 
@@ -84,14 +86,14 @@ t_token	*ast_retokenize(char *line)
 	if (!t.buff)
 		return (NULL);
 	result = NULL;
-	type = get_parser_token_type(line[0]);
+	type = get_parser_token_type(line[0], &t);
 	i = 0;
 	while (line[i])
 	{
-		if (get_parser_token_type(line[i]) != type || (type
-				& (TOKEN_DOUBLE_QUOTE | TOKEN_SINGLE_QUOTE | TOKEN_BACKSLASH)
-				&& i > 0))
+		if (get_parser_token_type(line[i], &t) != type || (i > 0 \
+		&& type & (TOKEN_DOUBLE_QUOTE | TOKEN_SINGLE_QUOTE | TOKEN_BACKSLASH)))
 			rt_loop(&t, &result, &type, line + i);
+		check_quotes(line[i], &t);
 		t.buff[t.buff_idx++] = line[i++];
 	}
 	if (t.backslash_inhibited)
