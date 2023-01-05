@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 13:14:18 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/05 13:18:06 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/05 13:45:18 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 /*
  * New process for merging quote handling and tokenisation.
+ *
  * Each character of the input string is added to a buffer until the token
  * type changes. The buffer is then added as a token to the token list.
  * We then bzero the buffer and start adding to it again, repeating the process
@@ -27,10 +28,15 @@
  *
  * If in_quotes is still TRUE at the end of the input string, we can enter
  * multi-line input mode.
+ *
+ * If we're currently backslash inhibited, we keep the quote state as-is and
+ * return early.
  */
 
 void	check_quotes(char c, t_tokenizer *tokenizer)
 {
+	if (tokenizer->backslash_inhibited)
+		return ;
 	if ((c == '\'' || c == '\"') && !(tokenizer->in_quotes))
 	{
 		tokenizer->in_quotes = true;
