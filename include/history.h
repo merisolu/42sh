@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:14:31 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/20 15:28:14 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/05 15:58:14 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 /* Constants */
 
-# define HISTORY_FILE ".21sh_history"
+# define HISTORY_FILE ".42sh_history"
 
 /* Errors */
 

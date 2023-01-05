@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 15:31:16 by amann             #+#    #+#             */
-/*   Updated: 2022/12/21 13:04:13 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/05 15:58:14 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static bool	dup_or_close(t_ast_redir **redir, t_ast_redir **head, t_redir **r_h)
 				&& !find_aliased_fd(head, &orig)
 				&& !already_aggregated(r_h, (*redir)->agg_to)))
 			return (print_error_bool(
-					false, "21sh: %i: %s\n", (*redir)->agg_to, ERR_BAD_FD));
+					false, "42sh: %i: %s\n", (*redir)->agg_to, ERR_BAD_FD));
 		if (dup2((*redir)->agg_to, (*redir)->agg_from) == -1)
 		{
 			return (print_error(

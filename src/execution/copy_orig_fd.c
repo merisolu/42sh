@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:08:41 by amann             #+#    #+#             */
-/*   Updated: 2022/12/21 13:03:35 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/05 15:58:14 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static bool	dup_fd(int fd, int *i)
 {
 	if (!fd_is_open(fd))
 		return (print_error_bool(
-				false, "21sh: %i: %s\n", fd, ERR_BAD_FD));
+				false, "42sh: %i: %s\n", fd, ERR_BAD_FD));
 	*i = dup(fd);
 	if (*i == -1)
 		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_DUP_FAIL));

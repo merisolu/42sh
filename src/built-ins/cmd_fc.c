@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:03:39 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/16 13:22:45 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/05 15:58:14 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	on_error(char c)
 {
-	ft_dprintf(STDERR_FILENO, "21sh: fc: -%c: invalid option\n", c);
+	ft_dprintf(STDERR_FILENO, "42sh: fc: -%c: invalid option\n", c);
 	ft_putstr_fd("fc: usage: fc [-nlr] or fc -s\n", STDERR_FILENO);
 }
 

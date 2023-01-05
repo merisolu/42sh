@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 10:16:30 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/08 15:35:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/05 15:58:14 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	print_shlvl_error(int target_shlvl)
 {
 	ft_dprintf(STDERR_FILENO,
-		"21sh: warning: shell level (%d) too high, resetting to 1\n",
+		"42sh: warning: shell level (%d) too high, resetting to 1\n",
 		target_shlvl);
 }
 

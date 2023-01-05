@@ -1,6 +1,6 @@
 #!/bin/sh
 while true
 do
-	leaks 21sh;
+	leaks 42sh;
 	sleep 3;
 done

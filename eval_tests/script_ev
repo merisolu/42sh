@@ -1,4 +1,4 @@
-#!21
+#!42
 norminette > /tmp/file
 echo $? >> /tmp/file
 cat -e author >> /tmp/file

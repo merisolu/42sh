@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_type.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 16:17:26 by amann             #+#    #+#             */
-/*   Updated: 2023/01/04 16:18:27 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/05 15:58:14 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	print_type_res(char const *name, char const *msg)
 
 static void	print_type_err(char const *name, char const *msg)
 {
-	ft_dprintf(STDERR_FILENO, "21sh: type: %s: %s\n", name, msg);
+	ft_dprintf(STDERR_FILENO, "42sh: type: %s: %s\n", name, msg);
 }
 
 static void	search_bins(char const *name, int *res, t_state *state)
