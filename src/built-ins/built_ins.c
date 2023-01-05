@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:18:43 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/30 17:23:49 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/05 14:49:32 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ char	*built_in_search(const char *partial_name)
 	i = 0;
 	while (dispatch_table[i].run != NULL)
 	{
-		if (ft_strnequ(
-				partial_name, dispatch_table[i].name, ft_strlen(partial_name)))
+		if (ft_strequ(
+				partial_name, dispatch_table[i].name))
 			return (ft_strdup((char *)dispatch_table[i].name));
 		i++;
 	}

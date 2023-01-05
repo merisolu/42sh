@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:21:45 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/05 13:43:35 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/05 14:41:24 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,19 +82,19 @@ static int	get_state_struct(char *const **env, t_state *result)
 	return (env_unset("OLDPWD", &(result->env)));
 }
 
-int	setup(char *const **env, t_state *state)
+bool	setup(char *const **env, t_state *state)
 {
 	if (!get_state_struct(env, state) || !set_shlvl(&(state->env)))
-		return (0);
+		return (false);
 	if (!setup_fd())
-		return (0);
+		return (false);
 	if (!setup_termcaps())
-		return (0);
+		return (false);
 	if (!setup_input(state))
-		return (0);
+		return (false);
 	history_load(state);
 	set_signal_handling();
 	save_cursor(&(state->input_context));
 	display(&(state->input_context), 1);
-	return (1);
+	return (true);
 }
