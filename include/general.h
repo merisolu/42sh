@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/05 15:58:38 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/06 13:19:07 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@
 # define ERR_BAD_FD "bad file descriptor"
 # define ERR_AMBIGUOUS_REDIR "ambiguous redirect"
 # define ERR_NOT_VALID_ID "not a valid identifier"
+# define ERR_STDIN_CLOSED "could not detect standard input"
 
 /* Globals */
 
