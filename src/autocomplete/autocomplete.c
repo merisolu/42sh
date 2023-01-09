@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/08 15:35:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/09 15:48:39 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,19 +110,41 @@ static void	search_from_paths(char *const *env, char *input, char **result)
 }
 
 /*
- * Attempts to autocomplete a partical binary name in
- * state->input_context.input. If a match is found, the partial name will be
- * replaced with the full name.
+ * Provides contextual, dynamic, completion of:
+ *		- commands
+ *		- built-ins
+ *		- files
+ *		- internal and environment variables
+ *
+ * By contextual, we mean that depending on the cursor position and the input
+ * state at the point tab is pressed, different completions will be proposed.
+ *
+ * For example, in the command "$> ls /", it the cursor is on the '/', only
+ * directories and files from the root folder will be proposed. Furthermore,
+ * if the command read 'l', rather than 'ls' and the cursor was over or next
+ * to the 'l' when tab was pressed, only commands and/or builtins beginning
+ * with 'l' would be proposed.
+ *
+ * In the command "$> echo ${S" only variables beginning with an 'S' will be
+ * proposed.
+ *
+ * NB. if there is only one possible autocompletion that can be proposed,
+ * this will be added to the input automatically. However, if there are
+ * multiple, nothing happens, until tab is pressed again, and then all
+ * possible propositions are printed to the STDOUT
  */
 
-int	autocomplete(t_state *state)
+int	autocomplete(t_state *state, bool tab)
 {
 	char	*trimmed_input;
 	char	*temp;
 
+	if (tab)
+		ft_putendl("second press!");
 	if (!state || ft_strlen(state->input_context.input) == 0)
 		return (0);
 	trimmed_input = ft_strtrim(state->input_context.input);
+//	ft_printf("\n*%s*\n", trimmed_input);
 	if (ft_strlen(trimmed_input) == 0)
 	{
 		if (!trimmed_input)

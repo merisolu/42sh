@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2022/10/27 15:11:18 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/09 15:42:21 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@
 /* Files */
 
 /* autocomplete.c */
-int	autocomplete(t_state *state);
+int	autocomplete(t_state *state, bool tab);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/30 17:15:41 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/09 15:47:30 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	g_last_signal;
 static t_input_result	input_handler(t_state *state)
 {
 	t_input_result	result;
+	static bool		tab;
 
 	result = get_input(&(state->input_context));
 	if (result == INPUT_CALLED_FOR_EXIT)
@@ -31,9 +32,14 @@ static t_input_result	input_handler(t_state *state)
 		if (ft_strequ(ARROW_DOWN, state->input_context.found_reserved_sequence))
 			history_recall(-1, state);
 		if (ft_strequ(TAB, state->input_context.found_reserved_sequence))
-			autocomplete(state);
+		{
+			autocomplete(state, tab);
+			tab = true;
+		}
 		display(&(state->input_context), 1);
 	}
+	else if (result != INPUT_NOTHING_READ)
+		tab = false;
 	return (result);
 }
 
