@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/06 13:19:07 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/09 13:33:45 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@
 # define ERR_INVALID_PATH "path is invalid"
 # define ERR_MALLOC_FAIL "memory allocation failed"
 # define ERR_OPEN_FAIL "open failed"
+# define ERR_WRITE_FAIL "write failed"
+# define ERR_READ_FAIL "read failed"
 # define ERR_TERMIOS_FAIL "failed to set terminal attributes"
 # define ERR_NO_HOME "HOME not set"
 # define ERR_NO_OLDPWD "OLDPWD not set"

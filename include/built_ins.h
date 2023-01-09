@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/05 16:17:14 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/09 12:25:20 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@
 
 # define TYPE_IS_BUILTIN "a shell builtin"
 # define TYPE_NOT_FOUND "not found"
+
+/* Constants */
+
+# define FC_EDIT_FILE "/tmp/42sh_fc_edit_file"
 
 /* Types */
 
@@ -72,6 +76,9 @@ int		cmd_hash(char *const *args, t_state *state);
 
 /* cmd_fc.c */
 int		cmd_fc(char *const *args, t_state *state);
+
+/* cmd_fc_editor.c */
+bool	cmd_fc_history_edit(char *editor, t_state *state);
 
 /* cmd_exit.c */
 int		cmd_exit(char *const *args, t_state *state);
