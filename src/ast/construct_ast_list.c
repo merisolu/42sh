@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:27:35 by amann             #+#    #+#             */
-/*   Updated: 2022/12/09 16:58:59 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/09 14:23:39 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static size_t	ast_count(t_token *list)
 	res = 1;
 	while (list)
 	{
-		if ((list->type == TOKEN_SEMICOLON)
+		if ((list->type == TOKEN_SEMICOLON || list->type == TOKEN_AMPERSAND)
 			|| ((list->type == TOKEN_AMPERSAND || list->type == TOKEN_PIPE)
 				&& ft_strlen(list->value) == 2))
 			res++;

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:55:34 by amann             #+#    #+#             */
-/*   Updated: 2023/01/05 15:20:44 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/09 14:22:05 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,6 @@ bool	allocate_args_array(t_ast **node, t_token **cursor)
 						ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 			idx++;
 		}
-		else if ((*cursor)->type == TOKEN_AMPERSAND)
-			return (print_bool_sep_error(ERR_SYNTAX, *cursor, false));
 		*cursor = (*cursor)->next;
 	}
 	return (true);

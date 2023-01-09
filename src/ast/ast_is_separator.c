@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_is_separator.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:27:19 by amann             #+#    #+#             */
-/*   Updated: 2022/12/19 16:55:49 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/09 14:27:20 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ bool	ast_is_separator(t_token *token)
 {
 	if (!token)
 		return (false);
-	if (token->type == TOKEN_SEMICOLON && ft_strlen(token->value) == 1)
+	if ((token->type == TOKEN_SEMICOLON || token->type == TOKEN_AMPERSAND)
+		&& ft_strlen(token->value) == 1)
 		return (true);
 	if ((token->type == TOKEN_AMPERSAND || token->type == TOKEN_PIPE)
 		&& (ft_strlen(token->value) == 2))
