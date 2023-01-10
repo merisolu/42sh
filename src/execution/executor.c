@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/05 15:37:53 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/10 15:41:24 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ pid_t	execute(char *const *args, t_state *state, t_ast_context *ast)
 
 	if (!update_env_execution(state, ast))
 		return (-1);
-	forking = (in_pipes(ast->pipes) || !built_in_get(args[0]));
+	forking = (ast->background || in_pipes(ast->pipes)
+			|| !built_in_get(args[0]));
 	update_hash_table(args, state);
 	if (forking)
 	{

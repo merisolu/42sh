@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/05 15:22:02 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/10 13:27:58 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,9 @@ void	handle_logical_ops(t_ast **ast, t_state *state, int *i);
 int		heredoc_run(t_ast *redir_node, t_pipes *pipes);
 
 /* pids.c */
-bool	pids_add(pid_t pid, t_state *state);
+bool	pids_add(pid_t pid, bool background, t_state *state);
 int		pids_wait(t_state *state);
+void	pids_wait_background(t_state *state);
 
 /* pipes.c */
 void	pipe_reset(int pipe[2]);

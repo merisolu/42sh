@@ -6,13 +6,19 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/30 17:15:41 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/10 15:39:32 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
 int	g_last_signal;
+
+static void	repeating_state_checks(t_state *state)
+{
+	check_signal(state);
+	pids_wait_background(state);
+}
 
 static t_input_result	input_handler(t_state *state)
 {
@@ -47,7 +53,7 @@ int	main(const int argc, const char **argv, char *const *env)
 		return (cleanup(&state, 1));
 	while (!state.exiting)
 	{
-		check_signal(&state);
+		repeating_state_checks(&state);
 		if (input_handler(&state) == INPUT_MARK_FOUND)
 		{
 			tokenize_and_execute(&state);

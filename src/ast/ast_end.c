@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_end.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 14:42:43 by amann             #+#    #+#             */
-/*   Updated: 2022/11/25 15:43:16 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/10 15:25:11 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ bool	check_end(t_token **cursor, t_token *reset, t_ast **node)
 		return (print_bool_sep_error(ERR_SYNTAX, *cursor, false));
 	if (!handle_logic_ops(cursor, node))
 		return (print_bool_sep_error(ERR_SYNTAX, *cursor, false));
+	if (*cursor)
+		(*node)->amp = (ft_strequ((*cursor)->value, "&") != 0);
 	eat_token(
 		cursor,
 		TOKEN_AMPERSAND | TOKEN_PIPE | TOKEN_SEMICOLON,

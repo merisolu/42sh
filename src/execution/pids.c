@@ -6,22 +6,29 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:02:59 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/12 14:25:33 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/10 15:41:15 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-bool	pids_add(pid_t pid, t_state *state)
+bool	pids_add(pid_t pid, bool background, t_state *state)
 {
 	size_t	i;
+	pid_t	*target;
 
+	if (background)
+		target = state->background_pids;
+	else
+		target = state->pids;
 	i = 0;
-	while (i < MAX_PIDS && state->pids[i] != 0)
+	while (i < MAX_PIDS && target[i] != 0)
 		i++;
 	if (i == MAX_PIDS)
 		return (false);
-	state->pids[i] = pid;
+	target[i] = pid;
+	if (background)
+		ft_printf("[background process] %i\n", pid);
 	return (true);
 }
 
@@ -43,4 +50,21 @@ int	pids_wait(t_state *state)
 	}
 	ft_bzero(state->pids, sizeof(int) * MAX_PIDS);
 	return (return_value);
+}
+
+void	pids_wait_background(t_state *state)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < MAX_PIDS)
+	{
+		if (state->background_pids[i] > 0
+			&& waitpid(state->background_pids[i], NULL, WNOHANG))
+		{
+			ft_printf("[done] %i\n", state->background_pids[i]);
+			state->background_pids[i] = 0;
+		}
+		i++;
+	}
 }

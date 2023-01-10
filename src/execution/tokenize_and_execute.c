@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2023/01/03 14:25:28 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/10 15:41:57 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,18 @@ static bool	execute_ast(t_ast_context *ctx, t_state *state)
 		pid = execute_simple_command(ctx, state);
 		if (ctx->node->right)
 			reset_io(ctx->redirect);
-		if (pid == -1 || !pids_add(pid, state))
+		if (pid == -1 || !pids_add(pid, ctx->background, state))
 			return (false);
 		return (true);
 	}
 	else if (ctx->node->node_type == AST_PIPE_SEQUENCE)
 	{
 		result = execute_ast(&(t_ast_context){ctx->node->left, ctx->redirect,
-				ctx->pipes, !ctx->node->right}, state);
+				ctx->pipes, ctx->background, !ctx->node->right}, state);
 		if (result && ctx->node->right)
 			result = execute_ast(
 					&(t_ast_context){ctx->node->right, ctx->redirect,
-					ctx->pipes, (!ctx->node->right
+					ctx->pipes, ctx->background, (!ctx->node->right
 						|| ctx->node->right->node_type == AST_SIMPLE_COMMAND)},
 					state);
 	}
@@ -55,7 +55,6 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 	t_redir	**redir;
 	t_pipes	pipes;
 	int		i;
-	bool	res;
 
 	if (!ast)
 		return ;
@@ -69,10 +68,11 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 	{
 		if (!parse_expansions(ast[i], state))
 			break ;
-		res = execute_ast(&(t_ast_context){ast[i], redir, &pipes, 0}, state);
-		set_return_value(pids_wait(state), state);
-		if (!res)
+		if (!execute_ast(
+				&(t_ast_context){ast[i], redir, &pipes, ast[i]->amp, 0}, state))
 			break ;
+		if (!ast[i]->amp)
+			set_return_value(pids_wait(state), state);
 		handle_logical_ops(ast, state, &i);
 	}
 	cleanup_ast_list(ast, redir, &pipes, state);

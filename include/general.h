@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/09 13:33:45 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/10 15:29:37 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,7 @@ typedef struct s_state
 	int				history_index;
 	t_hash_entry	**hash_table;
 	pid_t			pids[MAX_PIDS];
+	pid_t			background_pids[MAX_PIDS];
 	int				last_return_value;
 	int				exit_return_value;
 	int				exiting;
@@ -225,6 +226,7 @@ typedef struct s_ast
 	char			**var_list;
 	t_ast_redir		**redirs;
 	int				and_or;
+	bool			amp;
 	struct s_ast	*left;
 	struct s_ast	*right;
 }	t_ast;
@@ -250,6 +252,7 @@ typedef struct s_ast_context
 	t_ast	*node;
 	t_redir	**redirect;
 	t_pipes	*pipes;
+	bool	background;
 	int		is_at_end;
 }	t_ast_context;
 
