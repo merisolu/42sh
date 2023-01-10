@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/10 15:15:08 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/10 16:20:09 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,11 @@ static int	check_match_is_file(char *path, char *name)
  * or on error.
  */
 
-static int	search_path(char *path, char *partial_name, char **result)
+static int	search_path(char *path, char *partial_name, char ***search_results, int *count)
 {
 	DIR				*dir;
 	struct dirent	*entry;
 
-	*result = NULL;
 	dir = opendir(path);
 	if (!dir)
 		return (0);
@@ -61,16 +60,56 @@ static int	search_path(char *path, char *partial_name, char **result)
 			&& check_execution_rights(path, entry->d_name) == 1
 			&& check_match_is_file(path, entry->d_name) == 1)
 		{
-			*result = ft_strdup(entry->d_name);
-			closedir(dir);
-			if (!(*result))
-				return (-1);
-			return (1);
+			(*search_results)[*count] = ft_strdup(entry->d_name);
+			if (!(*search_results)[*count])
+				return (print_error(-1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
+			(*count)++;
 		}
 		entry = readdir(dir);
 	}
 	closedir(dir);
 	return (0);
+}
+
+/*
+ * In the event that we are looking for a command, we much search from our list
+ * of builtins, and then the path, to compile a list of potential commands.
+ *
+ * If the PATH cannot be found in the environment, we must also look for it in
+ * the internal variables, as this is what bash seems to do.
+ *
+ * If there is more than 1 possible solution, we stop, unless second_tab is true.
+ */
+
+static char	**search_commands(t_state *state, char *trimmed_input, bool second_tab)
+{
+	char	**search_result;
+	int		search_return_value;
+	char	*path_var;
+	char	**paths;
+	int		count;
+	int		i;
+
+	path_var = env_get("PATH", state->env);
+	if (!path_var)
+		path_var = env_get("PATH", state->intern);
+	if (!path_var)
+		return (NULL);
+	paths = ft_strsplit(path_var, ':');
+	if (!paths)
+		print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
+	search_result = (char **) ft_memalloc(sizeof(char *) * 200);
+	count = 0;
+	i = 0;
+	while (paths[i])
+	{
+		search_return_value = search_path(paths[i], trimmed_input, &search_result, &count);
+		if (search_return_value == -1 || (count > 1 && !second_tab))
+			return (NULL);
+		i++;
+	}
+	ft_free_null_array((void **)paths);
+	return (search_result);
 }
 
 /*
@@ -80,34 +119,6 @@ static int	search_path(char *path, char *partial_name, char **result)
  * *result will be NULL if no match was found, or if an error has occured.
  */
 
-static void	search_from_paths(char *const *env, char *input, char **result)
-{
-	int		search_return_value;
-	char	**paths;
-	size_t	i;
-
-	if (!result)
-		return ;
-	paths = ft_strsplit(env_get("PATH", env), ':');
-	if (!paths)
-	{
-		print_error(-1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
-		return ;
-	}
-	i = 0;
-	search_return_value = 0;
-	while (paths[i] && search_return_value == 0)
-	{
-		search_return_value = search_path(paths[i], input, result);
-		if (search_return_value == -1)
-		{
-			print_error(-1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
-			break ;
-		}
-		i++;
-	}
-	ft_free_null_array((void **)paths);
-}
 
 /*
  * We need to base our search on the cursor position in the string and its
@@ -193,11 +204,11 @@ static t_search_type	get_search_type(char *trimmed_input)
 int	autocomplete(t_state *state, bool tab)
 {
 	char			*trimmed_input;
-	char			*temp;
+	char			**search_result;
+	char			*temp; //delete me
 	t_search_type	search_type;
 	t_input_context ic;
 
-	(void)tab;
 	ic = state->input_context;
 	if (!state || ft_strlen(ic.input) == 0)
 		return (0);
@@ -205,19 +216,27 @@ int	autocomplete(t_state *state, bool tab)
 	if (!trimmed_input)
 		return (0);
 	search_type = get_search_type(trimmed_input);
-	ft_printf("\n-- *%s* cursor idx = %zu\n", trimmed_input, ic.cursor);
+	//ft_printf("\n-- *%s* cursor idx = %zu\n", trimmed_input, ic.cursor);
+	search_result = NULL;
+
 	if (search_type == SEARCH_COMMAND) //first word, not a path, search commands/builtins
-		;
+		search_result = search_commands(state, trimmed_input, tab);
 	else if (search_type == SEARCH_FILE_PATH) //search file paths
-		;
+		search_result = NULL;
 	else if (search_type == SEARCH_VARIABLE) //search variables
-		;
-	ft_printf("\nsearch type = %d\n", search_type);
+		search_result = NULL;
+	if (!search_result)
+		return (0);
+	for (int i = 0; search_result[i]; i++)
+		ft_printf("%s\n", search_result[i]);
+
+
 
 	temp = built_in_search(trimmed_input);
-	if (!temp)
-		search_from_paths(state->env, trimmed_input, &temp);
-	if (temp)
+//	if (!temp)
+//		search_from_paths(state->env, trimmed_input, &temp);
+
+	if (temp) //copies the found string over the input, will need to be refactored to handle inserting strings...
 	{
 		ft_strcpy(state->input_context.input, temp);
 		state->input_context.cursor = ft_strlen(state->input_context.input);
