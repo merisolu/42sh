@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/10 13:58:40 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/10 15:15:08 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,42 +140,28 @@ static char	*trim_input_to_cursor(t_input_context ic)
 	//determine where we are searching based on the cursor context
 	//if we are in the first word, and there is no / char, we are only
 	//searching for built-ins and commands.
+	//	0 first_word;
+	//	1 file_path;
+	//  2 variable;
 
-static int	get_search_type(char *trimmed_input)
+static t_search_type	get_search_type(char *trimmed_input)
 {
 	int		i;
-	bool	first_word;
-	bool	file_path;
-	bool	variable;
+	int		res;
 	char	c;
 
-	first_word = true;
-	file_path = false;
-	variable = false;
+	res = SEARCH_COMMAND;
 	i = 0;
 	while (trimmed_input[i])
 	{
 		c = trimmed_input[i];
-		if (c == '/' || c == '.')
-		{
-			file_path = true;
-			variable = false;
-		}
-		else if (c == ' ')
-		{
-			first_word = false;
-			file_path = true;
-			variable = false;
-		}
+		if (c == '/' || c == '.' || c == ' ')
+			res = SEARCH_FILE_PATH;
 		else if (c == '$' &&  (i == 0 || trimmed_input[i - 1] == ' '))
-		{
-			variable = true;
-			file_path = false;
-		}
+			res = SEARCH_VARIABLE;
 		i++;
 	}
-
-
+	return (res);
 }
 
 /*
@@ -206,9 +192,9 @@ static int	get_search_type(char *trimmed_input)
 
 int	autocomplete(t_state *state, bool tab)
 {
-	char	*trimmed_input;
-	char	*temp;
-	int		search_type;
+	char			*trimmed_input;
+	char			*temp;
+	t_search_type	search_type;
 	t_input_context ic;
 
 	(void)tab;
@@ -219,10 +205,15 @@ int	autocomplete(t_state *state, bool tab)
 	if (!trimmed_input)
 		return (0);
 	search_type = get_search_type(trimmed_input);
-
-
 	ft_printf("\n-- *%s* cursor idx = %zu\n", trimmed_input, ic.cursor);
-	ft_printf("\nfirst word = %d | file_path =  %d | variable = %d\n", first_word, file_path, variable);
+	if (search_type == SEARCH_COMMAND) //first word, not a path, search commands/builtins
+		;
+	else if (search_type == SEARCH_FILE_PATH) //search file paths
+		;
+	else if (search_type == SEARCH_VARIABLE) //search variables
+		;
+	ft_printf("\nsearch type = %d\n", search_type);
+
 	temp = built_in_search(trimmed_input);
 	if (!temp)
 		search_from_paths(state->env, trimmed_input, &temp);
