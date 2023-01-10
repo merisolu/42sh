@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/10 15:41:24 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/10 15:56:54 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ pid_t	execute(char *const *args, t_state *state, t_ast_context *ast)
 			return (-1);
 		else if (fork_result != 0)
 			return (fork_result);
+		if (ast->background)
+			setsid();
 	}
 	return (execute_child(args, state, ast, forking));
 }
