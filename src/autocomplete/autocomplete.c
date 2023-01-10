@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/09 15:48:39 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/10 13:58:40 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,75 @@ static void	search_from_paths(char *const *env, char *input, char **result)
 }
 
 /*
+ * We need to base our search on the cursor position in the string and its
+ * context. This function truncates the input up to the cursor and removes
+ * any whitespace chars preceding the first word.
+ */
+
+static char	*trim_input_to_cursor(t_input_context ic)
+{
+	char	*input_to_cursor;
+	char	*trimmed_input;
+
+	input_to_cursor = ft_strndup(ic.input, ic.cursor);
+	if (!input_to_cursor)
+		return (print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
+	int i = 0;
+	while (input_to_cursor[i] == ' ')
+		i++;
+	trimmed_input = ft_strdup(input_to_cursor + i);
+	free(input_to_cursor);
+	if (ft_strlen(trimmed_input) == 0)
+	{
+		if (!trimmed_input)
+			print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
+		free(trimmed_input);
+		return (NULL);
+	}
+	return (trimmed_input);
+}
+	//determine where we are searching based on the cursor context
+	//if we are in the first word, and there is no / char, we are only
+	//searching for built-ins and commands.
+
+static int	get_search_type(char *trimmed_input)
+{
+	int		i;
+	bool	first_word;
+	bool	file_path;
+	bool	variable;
+	char	c;
+
+	first_word = true;
+	file_path = false;
+	variable = false;
+	i = 0;
+	while (trimmed_input[i])
+	{
+		c = trimmed_input[i];
+		if (c == '/' || c == '.')
+		{
+			file_path = true;
+			variable = false;
+		}
+		else if (c == ' ')
+		{
+			first_word = false;
+			file_path = true;
+			variable = false;
+		}
+		else if (c == '$' &&  (i == 0 || trimmed_input[i - 1] == ' '))
+		{
+			variable = true;
+			file_path = false;
+		}
+		i++;
+	}
+
+
+}
+
+/*
  * Provides contextual, dynamic, completion of:
  *		- commands
  *		- built-ins
@@ -128,30 +197,32 @@ static void	search_from_paths(char *const *env, char *input, char **result)
  * In the command "$> echo ${S" only variables beginning with an 'S' will be
  * proposed.
  *
- * NB. if there is only one possible autocompletion that can be proposed,
+ * NB: if there is only one possible autocompletion that can be proposed,
  * this will be added to the input automatically. However, if there are
  * multiple, nothing happens, until tab is pressed again, and then all
- * possible propositions are printed to the STDOUT
+ * possible propositions are printed to the STDOUT. The tab arg is a
+ * static var from main that monitors this
  */
 
 int	autocomplete(t_state *state, bool tab)
 {
 	char	*trimmed_input;
 	char	*temp;
+	int		search_type;
+	t_input_context ic;
 
-	if (tab)
-		ft_putendl("second press!");
-	if (!state || ft_strlen(state->input_context.input) == 0)
+	(void)tab;
+	ic = state->input_context;
+	if (!state || ft_strlen(ic.input) == 0)
 		return (0);
-	trimmed_input = ft_strtrim(state->input_context.input);
-//	ft_printf("\n*%s*\n", trimmed_input);
-	if (ft_strlen(trimmed_input) == 0)
-	{
-		if (!trimmed_input)
-			print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
-		free(trimmed_input);
+	trimmed_input = trim_input_to_cursor(ic);
+	if (!trimmed_input)
 		return (0);
-	}
+	search_type = get_search_type(trimmed_input);
+
+
+	ft_printf("\n-- *%s* cursor idx = %zu\n", trimmed_input, ic.cursor);
+	ft_printf("\nfirst word = %d | file_path =  %d | variable = %d\n", first_word, file_path, variable);
 	temp = built_in_search(trimmed_input);
 	if (!temp)
 		search_from_paths(state->env, trimmed_input, &temp);

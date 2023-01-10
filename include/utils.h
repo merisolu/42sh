@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:20 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/20 15:27:54 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/10 13:06:40 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 /* error.c */
 int		print_error(int return_value, char *format, ...);
 bool	print_error_bool(bool return_value, char *format, ...);
+void	*print_error_ptr(void *return_value, char *format, ...);
 
 /* fd_is_open.c */
 bool	fd_is_open(int fd);

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:57:03 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/20 13:06:40 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/10 13:06:13 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,16 @@ int	print_error(int return_value, char *format, ...)
  */
 
 bool	print_error_bool(bool return_value, char *format, ...)
+{
+	va_list	list;
+
+	va_start(list, format);
+	ft_vdprintf(STDERR_FILENO, format, list);
+	va_end(list);
+	return (return_value);
+}
+
+void	*print_error_ptr(void *return_value, char *format, ...)
 {
 	va_list	list;
 
