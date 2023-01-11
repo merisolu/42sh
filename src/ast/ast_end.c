@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 14:42:43 by amann             #+#    #+#             */
-/*   Updated: 2023/01/10 15:25:11 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/11 14:02:12 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ bool	recursion_end(t_token **cursor, t_token *reset, t_ast **node, int rc)
 	{
 		if (!handle_logic_ops(cursor, node))
 			return (print_bool_sep_error(ERR_SYNTAX, *cursor, false));
+		if (*cursor)
+			(*node)->amp = (ft_strequ((*cursor)->value, "&") != 0);
 		eat_token(
 			cursor,
 			TOKEN_AMPERSAND | TOKEN_PIPE | TOKEN_SEMICOLON,
