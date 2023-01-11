@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/10 15:29:37 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/11 11:33:58 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@
 # define RETURN_NO_ACCESS 126
 # define RETURN_COMMAND_NOT_FOUND 127
 # define RETURN_CTRL_D 127
+# define RETURN_SUSPENDED 146
 
 /* Errors */
 

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:21:45 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/05 15:16:57 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/11 11:11:32 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ static int	get_state_struct(char *const **env, t_state *result)
 
 bool	setup(char *const **env, t_state *state)
 {
+	setsid();
 	if (!get_state_struct(env, state) || !set_shlvl(&(state->env)))
 		return (false);
 	if (!setup_fd())

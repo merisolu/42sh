@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:02:59 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/10 15:41:15 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/11 13:23:41 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,9 @@ int	pids_wait(t_state *state)
 	{
 		if (state->pids[i] != -1)
 		{
-			waitpid(state->pids[i], &return_value, 0);
+			waitpid(state->pids[i], &return_value, WUNTRACED);
+			if (WIFSTOPPED(return_value))
+				ft_printf("\n[stopped] %i", state->pids[i]);
 			return_value = get_return_value_from_status(return_value);
 		}
 		i++;
