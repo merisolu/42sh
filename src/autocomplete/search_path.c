@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:19:04 by amann             #+#    #+#             */
-/*   Updated: 2023/01/11 16:09:24 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/11 17:32:14 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	check_match_is_file(char *path, char *name)
 
 static int	bin_search(char *path, t_auto *autocomp, struct dirent *entry, DIR *dir)
 {
-	if (ft_strnequ(*(autocomp->query), entry->d_name, ft_strlen(*(autocomp->query)))
+	if (ft_strnequ(*(autocomp->query), entry->d_name, autocomp->query_len)
 		&& check_execution_rights(path, entry->d_name) == 1
 		&& check_match_is_file(path, entry->d_name) == 1)
 	{
@@ -57,9 +57,12 @@ static int	bin_search(char *path, t_auto *autocomp, struct dirent *entry, DIR *d
 
 static int	file_path_search(t_auto *autocomp, struct dirent *entry, DIR *dir)
 {
-	if (ft_strnequ(*(autocomp->query), entry->d_name, ft_strlen(*(autocomp->query))))
+	if (ft_strnequ(*(autocomp->query), entry->d_name, autocomp->query_len))
 //		&& check_execution_rights(path, entry->d_name) == 1)
 	{
+		if (autocomp->query_len == 0
+			&& (ft_strequ(entry->d_name, ".") ||  ft_strequ(entry->d_name, "..")))
+			return (0);
 		(*(autocomp->search_results))[*(autocomp->count)] = ft_strdup(entry->d_name);
 		//if the result is a dir, we need to append a /
 		if (!(*(autocomp->search_results))[*(autocomp->count)])
@@ -71,7 +74,6 @@ static int	file_path_search(t_auto *autocomp, struct dirent *entry, DIR *dir)
 	}
 	return (0);
 }
-
 
 /*
  * Searches the specific path for an executable file with a name matching
@@ -99,7 +101,7 @@ int	search_path(char *path, t_auto *autocomp, bool bin)
 	{
 		if (bin && bin_search(path, autocomp, entry, dir) == -1)
 			return (-1);
-		else if (file_path_search(autocomp, entry, dir) == -1)
+		else if (!bin && file_path_search(autocomp, entry, dir) == -1)
 			return (-1);
 		entry = readdir(dir);
 	}

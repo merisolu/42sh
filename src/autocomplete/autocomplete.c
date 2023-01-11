@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/11 16:52:42 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/11 17:28:41 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ char	**search_file_paths(char *trimmed_input, bool second_tab)
 	else
 		path = ft_strdup(".");
 	//ft_printf("\npath = %s | query = %s\n", path, query);
+	autocomp.query_len = ft_strlen(query);
 	search_path(path, &autocomp, false);
 	if (count > 1 && !second_tab)
 	{

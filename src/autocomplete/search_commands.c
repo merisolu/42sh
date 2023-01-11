@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:16:26 by amann             #+#    #+#             */
-/*   Updated: 2023/01/11 15:56:05 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/11 17:25:12 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ char	**search_commands(t_state *state, char *trimmed_input, bool second_tab)
 	if (!search_builtins(trimmed_input, &search_result, &count))
 		return (NULL);
 	initialise_autocomp(&autocomp, &trimmed_input, &search_result, &count);
+	autocomp.query_len = ft_strlen(trimmed_input);
 	i = 0;
 	while (paths[i])
 	{

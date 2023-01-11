@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/11 15:27:40 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/11 17:24:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct	s_auto
 {
 	int		*count;
 	char	**query;
+	size_t	query_len;
 	char	***search_results;
 }			t_auto;
 
