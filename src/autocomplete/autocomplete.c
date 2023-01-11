@@ -6,11 +6,18 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/11 14:34:02 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/11 16:52:42 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
+
+void	initialise_autocomp(t_auto *autocomp, char **query, char ***search_result, int *count)
+{
+	autocomp->query = query;
+	autocomp->search_results = search_result;
+	autocomp->count = count;
+}
 
 /*
  * We need to base our search on the cursor position in the string and its
@@ -101,6 +108,78 @@ static t_search_type	get_search_type(char *trimmed_input)
  * static var from main that monitors this
  */
 
+/*
+ * Here we are searching for an absolute path if the query begins with a '/',
+ * in other cases a relative path.
+ */
+
+static char	*find_query(char *str)
+{
+	size_t	len;
+	size_t	start;
+
+	len = ft_strlen(str);
+	while (len)
+	{
+		if (str[len] == ' ')
+			start = len + 1;
+		len--;
+	}
+	return (ft_strdup(str + start));
+}
+
+static size_t	last_slash(char *str)
+{
+	size_t	len;
+
+	len = ft_strlen(str);
+	while (len)
+	{
+		if (str[len] == '/')
+			break ;
+		len--;
+	}
+	return (len + 1);
+}
+
+char	**search_file_paths(char *trimmed_input, bool second_tab)
+{
+	char	**search_result;
+	char	*query;
+	int		count;
+	char	*path;
+	t_auto	autocomp;
+
+	search_result = (char **) ft_memalloc(sizeof(char *) * 200);
+	if (!search_result)
+		print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
+	count = 0;
+	query = find_query(trimmed_input);
+	initialise_autocomp(&autocomp, &query, &search_result, &count);
+	if (query[0] == '/')
+	{
+		path = ft_strndup(query, last_slash(query));
+		char *temp = ft_strdup(ft_strrchr(query, '/') + 1);
+		ft_strdel(&query);
+		query = temp;
+	}
+	else
+		path = ft_strdup(".");
+	//ft_printf("\npath = %s | query = %s\n", path, query);
+	search_path(path, &autocomp, false);
+	if (count > 1 && !second_tab)
+	{
+		ft_free_null_array((void **)search_result);
+		return (NULL);
+	}
+	return (search_result);
+}
+
+//edge case, if the query begins with '.' this will always expand to './' (test this!)
+//if the query begins './' we should search for executables in the current dir
+
+//maybe add the length of the query to autocomp struct to make the search more optimised
+
 int	autocomplete(t_state *state, bool tab)
 {
 	char			*trimmed_input;
@@ -121,7 +200,7 @@ int	autocomplete(t_state *state, bool tab)
 	if (search_type == SEARCH_COMMAND) //first word, not a path, search commands/builtins
 		search_result = search_commands(state, trimmed_input, tab);
 	else if (search_type == SEARCH_FILE_PATH) //search file paths
-		search_result = NULL;
+		search_result = search_file_paths(trimmed_input, tab);
 	else if (search_type == SEARCH_VARIABLE) //search variables
 		search_result = NULL;
 
