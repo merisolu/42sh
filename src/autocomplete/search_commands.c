@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:16:26 by amann             #+#    #+#             */
-/*   Updated: 2023/01/11 14:30:52 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/11 15:10:10 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,12 @@ static char	**free_all_return(char ***search_result, char ***paths)
 	return (NULL);
 }
 
+static void	initialise_autocomp(t_auto *autocomp, char **query, char ***search_result, int *count)
+{
+	autocomp->query = query;
+	autocomp->search_results = search_result;
+	autocomp->count = count;
+}
 /*
  * In the event that we are looking for a command, we much search from our list
  * of builtins, and then the path, to compile a list of potential commands.
@@ -76,6 +82,7 @@ char	**search_commands(t_state *state, char *trimmed_input, bool second_tab)
 	char	**paths;
 	int		count;
 	int		i;
+	t_auto	autocomp;
 
 	paths = get_paths(state);
 	search_result = (char **) ft_memalloc(sizeof(char *) * 200);
@@ -84,10 +91,11 @@ char	**search_commands(t_state *state, char *trimmed_input, bool second_tab)
 	count = 0;
 	if (!search_builtins(trimmed_input, &search_result, &count))
 		return (NULL);
+	initialise_autocomp(&autocomp, &trimmed_input, &search_result, &count);
 	i = 0;
 	while (paths[i])
 	{
-		if (search_path(paths[i], trimmed_input, &search_result, &count) == -1
+		if (search_path(paths[i], &autocomp) == -1
 			|| (count > 1 && !second_tab))
 			return (free_all_return(&search_result, &paths));
 		i++;

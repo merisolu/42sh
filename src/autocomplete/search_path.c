@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:19:04 by amann             #+#    #+#             */
-/*   Updated: 2023/01/11 14:32:07 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/11 15:10:33 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,13 @@ static int	check_match_is_file(char *path, char *name)
  * updated globally as this tracks the number of search results found and
  * therefore the index in the array each new result will need to be appended
  * to.
+ *
+ * The bin bool determines whether or not we are searching for a command,
+ * and therefore only interested in files, not directories. However, if we
+ * are looking for filepath, we do not need to check this.
  */
 
-int	search_path(char *path, char *query, char ***search_results, int *count)
+int	search_path(char *path, t_auto *autocomp)
 {
 	DIR				*dir;
 	struct dirent	*entry;
@@ -58,17 +62,17 @@ int	search_path(char *path, char *query, char ***search_results, int *count)
 	entry = readdir(dir);
 	while (entry)
 	{
-		if (ft_strnequ(query, entry->d_name, ft_strlen(query))
+		if (ft_strnequ(*(autocomp->query), entry->d_name, ft_strlen(*(autocomp->query)))
 			&& check_execution_rights(path, entry->d_name) == 1
 			&& check_match_is_file(path, entry->d_name) == 1)
 		{
-			(*search_results)[*count] = ft_strdup(entry->d_name);
-			if (!(*search_results)[*count])
+			(*(autocomp->search_results))[*(autocomp->count)] = ft_strdup(entry->d_name);
+			if (!(*(autocomp->search_results))[*(autocomp->count)])
 			{
 				closedir(dir);
 				return (print_error(-1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 			}
-			(*count)++;
+			(*(autocomp->count))++;
 		}
 		entry = readdir(dir);
 	}

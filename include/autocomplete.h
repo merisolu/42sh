@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/11 14:24:16 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/11 15:09:32 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,13 @@ typedef enum e_search_type
 	SEARCH_VARIABLE
 }	t_search_type;
 
+typedef struct	s_auto
+{
+	int		*count;
+	char	**query;
+	char	***search_results;
+}			t_auto;
+
 /* Files */
 
 /* autocomplete.c */
@@ -40,6 +47,6 @@ int		autocomplete(t_state *state, bool tab);
 char	**search_commands(t_state *state, char *trimmed_input, bool second_tab);
 
 /* search_path.c */
-int		search_path(char *path, char *partial_name, char ***search_results, int *count);
+int		search_path(char *path, t_auto *autocomp);
 
 #endif
