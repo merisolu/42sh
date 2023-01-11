@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/10 15:14:24 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/11 14:24:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "libft.h"
 # include "general.h"
 # include "built_ins.h"
+# include "cursor.h"
 
 /* Structs and enums */
 
@@ -33,6 +34,12 @@ typedef enum e_search_type
 /* Files */
 
 /* autocomplete.c */
-int	autocomplete(t_state *state, bool tab);
+int		autocomplete(t_state *state, bool tab);
+
+/* search_commands.c */
+char	**search_commands(t_state *state, char *trimmed_input, bool second_tab);
+
+/* search_path.c */
+int		search_path(char *path, char *partial_name, char ***search_results, int *count);
 
 #endif
