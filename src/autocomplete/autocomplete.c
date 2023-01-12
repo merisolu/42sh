@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/12 14:41:21 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 15:15:41 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ char	**search_file_paths(char *trimmed_input, bool second_tab)
 		query = temp;
 	}
 	else
-		path = ft_strdup(".");
+		path = ft_strdup("./");
 //	ft_printf("\npath = %s | query = %s\n", path, query);
 	autocomp.query_len = ft_strlen(query);
 	search_path(path, &autocomp, false);
@@ -188,6 +188,9 @@ char	**search_file_paths(char *trimmed_input, bool second_tab)
 //
 //$M will autocomplete to $MA on first tab press. Then 2 tab presses more suggest 3 poss
 //options, all starting with $MA.
+//
+//autocomplete on an empty input will attempt to print out the whole path on the 2nd
+//tab press.
 
 int	autocomplete(t_state *state, bool second_tab)
 {
