@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:19:04 by amann             #+#    #+#             */
-/*   Updated: 2023/01/12 15:06:26 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 17:23:37 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,66 +38,40 @@ static int	check_match_is_file(char *path, char *name)
 	return (result);
 }
 
-static int	bin_search(char *path, t_auto *autocomp, struct dirent *entry, DIR *dir)
+static int	bin_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir)
 {
-	if (ft_strnequ(*(autocomp->query), entry->d_name, autocomp->query_len)
+	if (ft_strnequ(*(ac->query), entry->d_name, ac->query_len)
 		&& check_execution_rights(path, entry->d_name) == 1
 		&& check_match_is_file(path, entry->d_name) == 1)
 	{
-		(*(autocomp->search_results))[*(autocomp->count)] = ft_strdup(entry->d_name);
-		if (!(*(autocomp->search_results))[*(autocomp->count)])
+		(*(ac->search_results))[*(ac->count)] = ft_strdup(entry->d_name);
+		if (!(*(ac->search_results))[*(ac->count)])
 		{
 			closedir(dir);
 			return (print_error(-1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 		}
-		(*(autocomp->count))++;
+		(*(ac->count))++;
 	}
 	return (0);
 }
 
-static bool	check_result_is_dir(char *path, t_auto *autocomp, struct dirent *entry, DIR *dir)
+static int	fp_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir)
 {
-	char	*temp;
-	char	*full_path;
-
-	full_path = ft_strjoin(path, entry->d_name);
-	if (!full_path)
+	if (ft_strnequ(*(ac->query), entry->d_name, ac->query_len))
 	{
-		closedir(dir);
-		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	}
-	if (ft_is_dir(full_path))
-	{
-		temp = ft_strnew(sizeof(char) + (ft_strlen(entry->d_name) + 1));
-		if (!temp)
-		{
-			closedir(dir);
-			return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-		}
-		ft_strcpy(temp, entry->d_name);
-		temp[ft_strlen(entry->d_name)] = '/';
-		ft_strdel(&((*(autocomp->search_results))[*(autocomp->count)]));
-		(*(autocomp->search_results))[*(autocomp->count)] = temp;
-	}
-	return (true);
-}
-
-static int	file_path_search(char *path, t_auto *autocomp, struct dirent *entry, DIR *dir)
-{
-	if (ft_strnequ(*(autocomp->query), entry->d_name, autocomp->query_len))
-	{
-		if (autocomp->query_len == 0
-			&& (ft_strequ(entry->d_name, ".") ||  ft_strequ(entry->d_name, "..")))
+		if (ac->query_len == 0
+			&& (ft_strequ(entry->d_name, ".")
+				|| ft_strequ(entry->d_name, "..")))
 			return (0);
-		(*(autocomp->search_results))[*(autocomp->count)] = ft_strdup(entry->d_name);
-		if (!(*(autocomp->search_results))[*(autocomp->count)])
+		(*(ac->search_results))[*(ac->count)] = ft_strdup(entry->d_name);
+		if (!(*(ac->search_results))[*(ac->count)])
 		{
 			closedir(dir);
 			return (print_error(-1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 		}
-		if (!check_result_is_dir(path, autocomp, entry, dir))
+		if (!check_result_is_dir(path, ac, entry, dir))
 			return (-1);
-		(*(autocomp->count))++;
+		(*(ac->count))++;
 	}
 	return (0);
 }
@@ -128,7 +102,7 @@ int	search_path(char *path, t_auto *autocomp, bool bin)
 	{
 		if (bin && bin_search(path, autocomp, entry, dir) == -1)
 			return (-1);
-		else if (!bin && file_path_search(path, autocomp, entry, dir) == -1)
+		else if (!bin && fp_search(path, autocomp, entry, dir) == -1)
 			return (-1);
 		entry = readdir(dir);
 	}

@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 13:38:58 by amann             #+#    #+#             */
-/*   Updated: 2023/01/12 13:57:26 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 17:29:29 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ static char	*create_new_string(t_auto autocomp, size_t max_len)
 
 	new_string = ft_strnew(max_len);
 	if (!new_string)
-		return ((char *)print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
+		return ((char *)print_error_ptr(NULL, ERRTEMPLATE_SIMPLE,
+				ERR_MALLOC_FAIL));
 	ft_strcpy(new_string, *(autocomp.query));
 	return (new_string);
 }
@@ -74,7 +75,6 @@ bool	filter_matching(t_auto autocomp)
 	size_t	max_len;
 	size_t	i;
 	char	*new_string;
-	char	c;
 	bool	flag;
 
 	max_len = find_longest(*(autocomp.search_results));
@@ -85,15 +85,16 @@ bool	filter_matching(t_auto autocomp)
 	i = autocomp.query_len;
 	while (i < max_len)
 	{
-		c = (*(autocomp.search_results))[0][i];
-		filter_loop(autocomp, &i, &flag, c);
+		filter_loop(autocomp, &i, &flag, (*(autocomp.search_results))[0][i]);
 		if (flag && i == autocomp.query_len)
+		{
+			free(new_string);
 			return (false);
+		}
 		else if (flag)
 			break ;
-		new_string[i] = c;
+		new_string[i] = (*(autocomp.search_results))[0][i];
 		i++;
 	}
 	return (update_results(autocomp, new_string));
 }
-

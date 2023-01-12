@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 14:41:37 by amann             #+#    #+#             */
-/*   Updated: 2023/01/12 14:42:25 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 17:19:57 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ void	truncate_result(t_auto autocomp)
 {
 	char	*truncated;
 
-//	ft_printf("%zu", autocomp.query_len);
-	truncated = ft_strdup(((*(autocomp.search_results))[0]) + autocomp.query_len);
+	truncated = ft_strdup(
+			((*(autocomp.search_results))[0]) + autocomp.query_len
+			);
 	ft_strdel(&((*(autocomp.search_results))[0]));
 	if (!truncated)
 	{

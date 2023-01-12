@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/12 14:43:30 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 17:01:13 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef enum e_search_type
 	SEARCH_VARIABLE
 }	t_search_type;
 
-typedef struct	s_auto
+typedef struct s_auto
 {
 	int		*count;
 	char	**query;
@@ -43,10 +43,15 @@ typedef struct	s_auto
 
 /* autocomplete.c */
 int		autocomplete(t_state *state, bool second_tab);
-void	initialise_autocomp(t_auto *autocomp, char **query, char ***search_result, int *count);
+void	initialise_autocomp(t_auto *autocomp, char **query, \
+		char ***search_result, int *count);
+
+/* check_result_is_dir.c */
+bool	check_result_is_dir(char *path, t_auto *autocomp, \
+		struct dirent *entry, DIR *dir);
 
 /* search_commands.c */
-char	**search_commands(t_state *state, char *trimmed_input, bool second_tab);
+char	**search_commands(t_state *state, char **trimmed_input, bool second_tab);
 
 /* search_path.c */
 int		search_path(char *path, t_auto *autocomp, bool bin);

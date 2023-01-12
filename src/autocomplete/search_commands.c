@@ -6,28 +6,26 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:16:26 by amann             #+#    #+#             */
-/*   Updated: 2023/01/12 14:43:48 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 17:25:51 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
 
-static bool	search_builtins(char *query, char ***search_result, int *count)
+static bool	search_builtins(char *query, char ***sr, int *count, size_t len)
 {
 	const t_cmd_dispatch	*builtins;
 	size_t					i;
-	size_t					len;
 
 	builtins = get_built_in_dispatch();
-	len = ft_strlen(query);
 	i = 0;
 	while (builtins[i].run != NULL)
 	{
 		if (ft_strnequ(
 				query, builtins[i].name, len))
 		{
-			(*search_result)[*count] = ft_strdup((char *)builtins[i].name);
-			if (!(*search_result)[*count])
+			(*sr)[*count] = ft_strdup((char *)builtins[i].name);
+			if (!(*sr)[*count])
 			{
 				return (print_error_bool(false, ERRTEMPLATE_SIMPLE,
 						ERR_MALLOC_FAIL));
@@ -60,6 +58,15 @@ static char	**free_all_return(char ***search_result, char ***paths)
 	return (NULL);
 }
 
+static char	**check_and_update_result(t_auto ac, bool s_tab, char ***paths)
+{
+	if (*(ac.count) > 1 && !s_tab && !filter_matching(ac))
+		return (free_all_return(ac.search_results, paths));
+	if (ft_null_array_len((void **) *(ac.search_results)) == 1)
+		truncate_result(ac);
+	ft_free_null_array((void **)*paths);
+	return (*(ac.search_results));
+}
 /*
  * In the event that we are looking for a command, we much search from our list
  * of builtins, and then the path, to compile a list of potential commands.
@@ -72,7 +79,7 @@ static char	**free_all_return(char ***search_result, char ***paths)
  * stop unless there is a second tab press.
  */
 
-char	**search_commands(t_state *state, char *trimmed_input, bool second_tab)
+char	**search_commands(t_state *state, char **ti, bool second_tab)
 {
 	char	**search_result;
 	char	**paths;
@@ -81,14 +88,14 @@ char	**search_commands(t_state *state, char *trimmed_input, bool second_tab)
 	t_auto	autocomp;
 
 	paths = get_paths(state);
-	search_result = (char **) ft_memalloc(sizeof(char *) * 200);
+	search_result = (char **) ft_memalloc(sizeof(char *) * 200); //this will need to be expanded
 	if (!paths || !search_result)
 		print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
 	count = 0;
-	if (!search_builtins(trimmed_input, &search_result, &count))
+	initialise_autocomp(&autocomp, ti, &search_result, &count);
+	autocomp.query_len = ft_strlen(*ti);
+	if (!search_builtins(*ti, &search_result, &count, autocomp.query_len))
 		return (NULL);
-	initialise_autocomp(&autocomp, &trimmed_input, &search_result, &count);
-	autocomp.query_len = ft_strlen(trimmed_input);
 	i = 0;
 	while (paths[i])
 	{
@@ -96,10 +103,5 @@ char	**search_commands(t_state *state, char *trimmed_input, bool second_tab)
 			return (free_all_return(&search_result, &paths));
 		i++;
 	}
-	if (count > 1 && !second_tab && !filter_matching(autocomp))
-		return (free_all_return(&search_result, &paths));
-	if (ft_null_array_len((void **) *(autocomp.search_results)) == 1)
-		truncate_result(autocomp);
-	ft_free_null_array((void **)paths);
-	return (search_result);
+	return (check_and_update_result(autocomp, second_tab, &paths));
 }

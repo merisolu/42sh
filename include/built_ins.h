@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/11 13:54:47 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 16:03:06 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,12 @@ typedef struct s_cmd_env
 const t_cmd_dispatch	*get_built_in_dispatch(void);
 t_cmd					*built_in_get(const char *name);
 char					*built_in_search(const char *partial_name);
-pid_t					built_in_run(t_cmd cmd, char *const *args, t_state *state, \
-					t_ast_context *ast);
+pid_t					built_in_run(t_cmd cmd, char *const *args, \
+						t_state *state, t_ast_context *ast);
 
 /* built_ins_flags.c */
-int						parse_flags(char *const *args, char *valid, char *found, \
-					t_arg_parse_error *on_error);
+int						parse_flags(char *const *args, char *valid, \
+						char *found, t_arg_parse_error *on_error);
 
 /* cmd_echo.c */
 int						cmd_echo(char *const *args, t_state *state);
@@ -66,7 +66,8 @@ int						cmd_cd(char *const *args, t_state *state);
 int						cmd_export(char *const *args, t_state *state);
 
 /* export_set.c */
-int						export_set(const char *name, const char *value, char *const **env);
+int						export_set(const char *name, const char *value, \
+						char *const **env);
 
 /* cmd_hash.c */
 int						cmd_hash(char *const *args, t_state *state);

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/12 15:15:41 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 17:14:04 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ static size_t	last_slash(char *str)
 	return (len + 1);
 }
 
-char	**search_file_paths(char *trimmed_input, bool second_tab)
+char	**search_file_paths(char **trimmed_input, bool second_tab)
 {
 	char	**search_result;
 	char	*query;
@@ -156,7 +156,7 @@ char	**search_file_paths(char *trimmed_input, bool second_tab)
 	if (!search_result)
 		print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
 	count = 0;
-	query = find_query(trimmed_input);
+	query = find_query(*trimmed_input);
 	initialise_autocomp(&autocomp, &query, &search_result, &count);
 	if (ft_strchr(query, '/'))
 	{
@@ -170,6 +170,8 @@ char	**search_file_paths(char *trimmed_input, bool second_tab)
 //	ft_printf("\npath = %s | query = %s\n", path, query);
 	autocomp.query_len = ft_strlen(query);
 	search_path(path, &autocomp, false);
+	free(path);
+	free(query);
 	if (count > 1 && !second_tab && !filter_matching(autocomp))
 	{
 		ft_free_null_array((void **)search_result);
@@ -210,14 +212,14 @@ int	autocomplete(t_state *state, bool second_tab)
 	search_result = NULL;
 
 	if (search_type == SEARCH_COMMAND) //first word, not a path, search commands/builtins
-		search_result = search_commands(state, trimmed_input, second_tab);
+		search_result = search_commands(state, &trimmed_input, second_tab);
 	else if (search_type == SEARCH_FILE_PATH) //search file paths
-		search_result = search_file_paths(trimmed_input, second_tab);
+		search_result = search_file_paths(&trimmed_input, second_tab);
 	else if (search_type == SEARCH_VARIABLE) //search variables
 		search_result = NULL;
 
-	ft_strdel(&trimmed_input);
-
+	if (trimmed_input)
+		ft_strdel(&trimmed_input);
 	if (!search_result)
 		return (0);
 	//nb, results should be sorted alphabetically, duplicates removed and printed in columns
@@ -227,6 +229,7 @@ int	autocomplete(t_state *state, bool second_tab)
 		//ft_printf("\ninput: *%s* result: *%s* \n", ic.input, search_result[0]);
 		ft_strcpy((state->input_context.input) + ft_strlen(ic.input), search_result[0]);
 		state->input_context.cursor = ft_strlen(state->input_context.input);
+		ft_free_null_array((void **) search_result);
 		return (1);
 	}
 	else if (len)
@@ -238,6 +241,5 @@ int	autocomplete(t_state *state, bool second_tab)
 	}
 
 	ft_free_null_array((void **) search_result);
-	free(trimmed_input);
 	return (0);
 }
