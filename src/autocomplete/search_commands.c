@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:16:26 by amann             #+#    #+#             */
-/*   Updated: 2023/01/12 17:50:01 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 19:52:05 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,6 @@ static char	**free_all_return(char ***search_result, char ***paths)
 	return (NULL);
 }
 
-static char	**check_and_update_result(t_auto ac, bool s_tab, char ***paths)
-{
-	if (*(ac.count) > 1 && !s_tab && !filter_matching(ac))
-		return (free_all_return(ac.search_results, paths));
-	if (ft_null_array_len((void **) *(ac.search_results)) == 1)
-		truncate_result(ac);
-	ft_free_null_array((void **)*paths);
-	return (*(ac.search_results));
-}
 /*
  * In the event that we are looking for a command, we much search from our list
  * of builtins, and then the path, to compile a list of potential commands.
@@ -103,5 +94,6 @@ char	**search_commands(t_state *state, char **ti, bool second_tab)
 			return (free_all_return(&search_result, &paths));
 		i++;
 	}
-	return (check_and_update_result(autocomp, second_tab, &paths));
+	ft_free_null_array((void **)paths);
+	return (wrap_up(autocomp, second_tab));
 }

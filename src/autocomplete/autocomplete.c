@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/12 18:40:33 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 19:29:10 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,9 @@ static t_search_type	get_search_type(char *trimmed_input)
 //
 //autocomplete on an empty input will attempt to print out the whole path on the 2nd
 //tab press.
+
+// second+ query in the input string will not be expanded, eg:
+//	$> echo ${TERM} lib (tab press does not expand lib)
 
 int	autocomplete(t_state *state, bool second_tab)
 {

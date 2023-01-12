@@ -6,73 +6,26 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 18:37:40 by amann             #+#    #+#             */
-/*   Updated: 2023/01/12 18:52:08 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 19:51:54 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
 
-static size_t	find_equals(char *str)
+t_auto	autocomp_setup(char **query, bool brackets, char ***search_result)
 {
-	size_t	res;
+	t_auto	autocomp;
+	int		count;
 
-	res = 0;
-	while (str[res])
-	{
-		if (str[res] == '=')
-			return (res);
-		res++;
-	}
-	return (0);
-}
-
-static bool	search_env_intern(char *const *arr, char *query, char ***sr, bool brackets)
-{
-	size_t	i;
-	size_t	count;
-	size_t	len;
-	size_t	equals_idx;
-
-	char *temp;
-
-	len = ft_strlen(query);
-	count = ft_null_array_len((void **)*sr);
-	i = 0;
-	while (arr[i])
-	{
-		if (ft_strnequ(arr[i], query, len))
-		{
-			equals_idx = find_equals(arr[i]);
-			if (equals_idx == 0)
-				return (false);
-			temp = ft_strndup(arr[i], equals_idx);
-			if (!temp)
-				return (false);
-
-			if (brackets)
-			{
-				(*(sr))[count] = ft_strnew(sizeof(char) * (ft_strlen(temp) + 3));
-				if (!((*(sr))[count]))
-					return (false);
-				(*(sr))[count][0] = '$';
-				(*(sr))[count][1] = '{';
-				ft_strcpy(((*(sr))[count]) + 2, temp);
-				(*(sr))[count][ft_strlen(temp) + 2] = '}';
-			}
-			else
-			{
-				(*(sr))[count] = ft_strnew(sizeof(char) * (ft_strlen(temp) + 1));
-				if (!((*(sr))[count]))
-					return (false);
-				(*(sr))[count][0] = '$';
-				ft_strcpy(((*(sr))[count]) + 1, temp);
-			}
-			free(temp);
-			count++;
-		}
-		i++;
-	}
-	return (true);
+	count = ft_null_array_len((void **)*search_result);
+	autocomp.count = &count;
+	autocomp.query = query;
+	autocomp.query_len = ft_strlen(*query);
+	autocomp.search_results = search_result;
+	autocomp.query_len += 1;
+	if (brackets)
+		autocomp.query_len += 1;
+	return (autocomp);
 }
 
 char	**search_variables(t_state *state, char **ti, bool second_tab)
@@ -97,5 +50,6 @@ char	**search_variables(t_state *state, char **ti, bool second_tab)
 		ft_free_null_array((void **)search_result);
 		return (NULL);
 	}
-	return (search_result);
+	return (wrap_up(autocomp_setup(&query, brackets, &search_result),
+			second_tab));
 }

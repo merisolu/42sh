@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/12 18:38:46 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 19:50:34 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,17 @@ bool	check_result_is_dir(char *path, t_auto *autocomp, \
 		struct dirent *entry, DIR *dir);
 
 /* search_commands.c */
-char	**search_commands(t_state *state, char **trimmed_input, bool second_tab);
+char	**search_commands(t_state *state, char **trimmed_input, \
+		bool second_tab);
 
 /* search_file_paths.c */
 char	**search_file_paths(char **trimmed_input, bool second_tab);
 
 /* search_variables.c */
 char	**search_variables(t_state *state, char **ti, bool second_tab);
+
+/* search_env_intern.c */
+bool	search_env_intern(char *const *arr, char *query, char ***sr, bool b);
 
 /* directory_search.c */
 int		directory_search(char *path, t_auto *autocomp, bool bin);
@@ -67,4 +71,7 @@ bool	filter_matching(t_auto autocomp);
 
 /* truncate_result.c */
 void	truncate_result(t_auto autocomp);
+
+/* wrap_up.c */
+char	**wrap_up(t_auto autocomp, bool second_tab);
 #endif
