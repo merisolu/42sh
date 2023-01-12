@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/11 17:58:45 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 13:49:32 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,6 @@ char	**search_commands(t_state *state, char *trimmed_input, bool second_tab);
 /* search_path.c */
 int		search_path(char *path, t_auto *autocomp, bool bin);
 
+/* filter_matching.c */
+bool	filter_matching(t_auto autocomp);
 #endif
