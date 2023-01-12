@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/12 12:58:02 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 13:32:52 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ char	**search_file_paths(char *trimmed_input, bool second_tab)
 	char	*query;
 	int		count;
 	char	*path;
+	char	*temp;
 	t_auto	autocomp;
 
 	search_result = (char **) ft_memalloc(sizeof(char *) * 200);
@@ -157,16 +158,16 @@ char	**search_file_paths(char *trimmed_input, bool second_tab)
 	count = 0;
 	query = find_query(trimmed_input);
 	initialise_autocomp(&autocomp, &query, &search_result, &count);
-	if (query[0] == '/')
+	if (ft_strchr(query, '/'))
 	{
 		path = ft_strndup(query, last_slash(query));
-		char *temp = ft_strdup(ft_strrchr(query, '/') + 1);
+		temp = ft_strdup(ft_strrchr(query, '/') + 1);
 		ft_strdel(&query);
 		query = temp;
 	}
 	else
 		path = ft_strdup(".");
-	//ft_printf("\npath = %s | query = %s\n", path, query);
+	ft_printf("\npath = %s | query = %s\n", path, query);
 	autocomp.query_len = ft_strlen(query);
 	search_path(path, &autocomp, false);
 	if (count > 1 && !second_tab) // more enhanced check needed here
