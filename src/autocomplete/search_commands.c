@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:16:26 by amann             #+#    #+#             */
-/*   Updated: 2023/01/11 17:25:12 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 13:27:50 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,65 @@ static char	**free_all_return(char ***search_result, char ***paths)
 	return (NULL);
 }
 
+size_t	find_longest(char **search_results)
+{
+	size_t	max;
+	size_t	current_len;
+	size_t	i;
+
+	max = 0;
+	i = 0;
+	while (search_results[i])
+	{
+		current_len = ft_strlen(search_results[i]);
+		if (current_len > max)
+			max = current_len;
+		i++;
+	}
+	return (max);
+}
+
+bool	check_results_matching(t_auto autocomp)
+{
+	size_t	idx;
+	size_t	i;
+	size_t	max_len;
+	char	*new_string;
+	char	c;
+	bool	flag;
+
+	max_len = find_longest(*(autocomp.search_results));
+	new_string = ft_strnew(max_len);
+	ft_strcpy(new_string, *(autocomp.query));
+	flag = false;
+	i = autocomp.query_len;
+	while (i < max_len)
+	{
+		idx = 0;
+		c = (*(autocomp.search_results))[idx][i];
+		while ((*(autocomp.search_results))[idx])
+		{
+			if ((*(autocomp.search_results))[idx][i] != c)
+			{
+				flag = true;
+				break ;
+			}
+			else
+				idx++;
+		}
+		if (flag && i == autocomp.query_len)
+			return (false);
+		else if (flag)
+			break ;
+		new_string[i] = c;
+		i++;
+	}
+	ft_free_null_array((void **)*(autocomp.search_results));
+	*(autocomp.search_results) = (char **) ft_memalloc(sizeof(char *) * 2);
+	(*(autocomp.search_results))[0] = new_string;
+	return (true);
+}
+
 /*
  * In the event that we are looking for a command, we much search from our list
  * of builtins, and then the path, to compile a list of potential commands.
@@ -67,7 +126,9 @@ static char	**free_all_return(char ***search_result, char ***paths)
  * If the PATH cannot be found in the environment, we must also look for it in
  * the internal variables, as this is what bash seems to do.
  *
- * If there is more than 1 possible solution, we stop, unless second_tab is true.
+ * If there is more than 1 possible solution, we check if there matching chars
+ * beyond the end of the query string in all possible results. Otherwise, we
+ * stop unless there is a second tab press.
  */
 
 char	**search_commands(t_state *state, char *trimmed_input, bool second_tab)
@@ -90,11 +151,12 @@ char	**search_commands(t_state *state, char *trimmed_input, bool second_tab)
 	i = 0;
 	while (paths[i])
 	{
-		if (search_path(paths[i], &autocomp, true) == -1
-			|| (count > 1 && !second_tab))
+		if (search_path(paths[i], &autocomp, true) == -1)
 			return (free_all_return(&search_result, &paths));
 		i++;
 	}
+	if (count > 1 && !second_tab && !check_results_matching(autocomp))
+		return (free_all_return(&search_result, &paths));
 	ft_free_null_array((void **)paths);
 	return (search_result);
 }

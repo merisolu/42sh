@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/11 17:28:41 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 12:58:02 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ static char	*find_query(char *str)
 	size_t	start;
 
 	len = ft_strlen(str);
+	start = 0;
 	while (len)
 	{
 		if (str[len] == ' ')
@@ -168,7 +169,7 @@ char	**search_file_paths(char *trimmed_input, bool second_tab)
 	//ft_printf("\npath = %s | query = %s\n", path, query);
 	autocomp.query_len = ft_strlen(query);
 	search_path(path, &autocomp, false);
-	if (count > 1 && !second_tab)
+	if (count > 1 && !second_tab) // more enhanced check needed here
 	{
 		ft_free_null_array((void **)search_result);
 		return (NULL);
@@ -179,9 +180,13 @@ char	**search_file_paths(char *trimmed_input, bool second_tab)
 //edge case, if the query begins with '.' this will always expand to './' (test this!)
 //if the query begins './' we should search for executables in the current dir
 
-//maybe add the length of the query to autocomp struct to make the search more optimised
+//if there are multiple possible proposals, but they all start with the same next letter
+//or two, autocomplete will print those next letters. eg:
+//
+//$M will autocomplete to $MA on first tab press. Then 2 tab presses more suggest 3 poss
+//options, all starting with $MA.
 
-int	autocomplete(t_state *state, bool tab)
+int	autocomplete(t_state *state, bool second_tab)
 {
 	char			*trimmed_input;
 	char			**search_result;
@@ -199,9 +204,9 @@ int	autocomplete(t_state *state, bool tab)
 	search_result = NULL;
 
 	if (search_type == SEARCH_COMMAND) //first word, not a path, search commands/builtins
-		search_result = search_commands(state, trimmed_input, tab);
+		search_result = search_commands(state, trimmed_input, second_tab);
 	else if (search_type == SEARCH_FILE_PATH) //search file paths
-		search_result = search_file_paths(trimmed_input, tab);
+		search_result = search_file_paths(trimmed_input, second_tab);
 	else if (search_type == SEARCH_VARIABLE) //search variables
 		search_result = NULL;
 

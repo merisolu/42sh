@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/11 17:24:16 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/11 17:58:45 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct	s_auto
 /* Files */
 
 /* autocomplete.c */
-int		autocomplete(t_state *state, bool tab);
+int		autocomplete(t_state *state, bool second_tab);
 void	initialise_autocomp(t_auto *autocomp, char **query, char ***search_result, int *count);
 
 /* search_commands.c */
