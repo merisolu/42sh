@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/12 18:35:08 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 18:40:33 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,74 +120,6 @@ static t_search_type	get_search_type(char *trimmed_input)
 //
 //autocomplete on an empty input will attempt to print out the whole path on the 2nd
 //tab press.
-
-static size_t	find_equals(char *str)
-{
-	size_t	res;
-
-	res = 0;
-	while (str[res])
-	{
-		if (str[res] == '=')
-			return (res);
-		res++;
-	}
-	return (0);
-}
-
-static bool	search_env_intern(char *const *arr, char *query, char ***sr)
-{
-	size_t	i;
-	size_t	count;
-	size_t	len;
-	size_t	equals_idx;
-
-	len = ft_strlen(query);
-	count = ft_null_array_len((void **)*sr);
-	i = 0;
-	while (arr[i])
-	{
-		if (ft_strnequ(arr[i], query, len))
-		{
-			equals_idx = find_equals(arr[i]);
-			if (equals_idx == 0)
-				return (false);
-			(*(sr))[count] = ft_strndup(arr[i], equals_idx);
-			if (!((*(sr))[count]))
-				return (false);
-			count++;
-		}
-		i++;
-	}
-	return (true);
-}
-
-
-char	**search_variables(t_state *state, char **ti, bool second_tab)
-{
-	char	**search_result;
-	char	*dollar_start;
-	char	*query;
-	bool	brackets;
-
-	(void) second_tab;
-	search_result = (char **) ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE);
-	if (!search_result)
-		return (print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	dollar_start = ft_strchr(*ti, '$');
-	brackets = *(dollar_start + 1) == '{';
-	query = dollar_start + 1;
-	if (brackets)
-		query = dollar_start + 2;
-	//if query is an empty string, all env variables should be printed
-	if (!search_env_intern(state->env, query, &search_result)
-		|| !search_env_intern(state->intern, query, &search_result))
-	{
-		ft_free_null_array((void **)search_result);
-		return (NULL);
-	}
-	return (search_result);
-}
 
 int	autocomplete(t_state *state, bool second_tab)
 {
