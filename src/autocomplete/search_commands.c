@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:16:26 by amann             #+#    #+#             */
-/*   Updated: 2023/01/12 17:25:51 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 17:50:01 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ char	**search_commands(t_state *state, char **ti, bool second_tab)
 	i = 0;
 	while (paths[i])
 	{
-		if (search_path(paths[i], &autocomp, true) == -1)
+		if (directory_search(paths[i], &autocomp, true) == -1)
 			return (free_all_return(&search_result, &paths));
 		i++;
 	}

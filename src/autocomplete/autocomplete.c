@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/12 17:14:04 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 18:13:24 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,79 +108,6 @@ static t_search_type	get_search_type(char *trimmed_input)
  * static var from main that monitors this
  */
 
-/*
- * Here we are searching for an absolute path if the query begins with a '/',
- * in other cases a relative path.
- */
-
-static char	*find_query(char *str)
-{
-	size_t	len;
-	size_t	start;
-
-	len = ft_strlen(str);
-	start = 0;
-	while (len)
-	{
-		if (str[len] == ' ')
-			start = len + 1;
-		len--;
-	}
-	return (ft_strdup(str + start));
-}
-
-static size_t	last_slash(char *str)
-{
-	size_t	len;
-
-	len = ft_strlen(str);
-	while (len)
-	{
-		if (str[len] == '/')
-			break ;
-		len--;
-	}
-	return (len + 1);
-}
-
-char	**search_file_paths(char **trimmed_input, bool second_tab)
-{
-	char	**search_result;
-	char	*query;
-	int		count;
-	char	*path;
-	char	*temp;
-	t_auto	autocomp;
-
-	search_result = (char **) ft_memalloc(sizeof(char *) * 200);
-	if (!search_result)
-		print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
-	count = 0;
-	query = find_query(*trimmed_input);
-	initialise_autocomp(&autocomp, &query, &search_result, &count);
-	if (ft_strchr(query, '/'))
-	{
-		path = ft_strndup(query, last_slash(query));
-		temp = ft_strdup(ft_strrchr(query, '/') + 1);
-		ft_strdel(&query);
-		query = temp;
-	}
-	else
-		path = ft_strdup("./");
-//	ft_printf("\npath = %s | query = %s\n", path, query);
-	autocomp.query_len = ft_strlen(query);
-	search_path(path, &autocomp, false);
-	free(path);
-	free(query);
-	if (count > 1 && !second_tab && !filter_matching(autocomp))
-	{
-		ft_free_null_array((void **)search_result);
-		return (NULL);
-	}
-	if (ft_null_array_len((void **) *(autocomp.search_results)) == 1)
-		truncate_result(autocomp);
-	return (search_result);
-}
 
 //edge case, if the query begins with '.' this will always expand to './' (test this!)
 //if the query begins './' we should search for executables in the current dir
@@ -193,6 +120,30 @@ char	**search_file_paths(char **trimmed_input, bool second_tab)
 //
 //autocomplete on an empty input will attempt to print out the whole path on the 2nd
 //tab press.
+
+char	**search_variables(t_state *state, char **ti, bool second_tab)
+{
+	char	**search_result;
+	char	*dollar_start;
+	char	*query;
+	bool	brackets;
+
+	(void) state;
+	(void) second_tab;
+	search_result = (char **) ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE);
+	if (!search_result)
+		return (print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
+	dollar_start = ft_strchr(*ti, '$');
+	brackets = *(dollar_start + 1) == '{';
+	query = dollar_start + 1;
+	if (brackets)
+		query = dollar_start + 2;
+	//if query is an empty string, all env variables should be printed
+	ft_printf("\n%s\n", query);
+
+
+	return (search_result);
+}
 
 int	autocomplete(t_state *state, bool second_tab)
 {
@@ -216,10 +167,9 @@ int	autocomplete(t_state *state, bool second_tab)
 	else if (search_type == SEARCH_FILE_PATH) //search file paths
 		search_result = search_file_paths(&trimmed_input, second_tab);
 	else if (search_type == SEARCH_VARIABLE) //search variables
-		search_result = NULL;
+		search_result = search_variables(state, &trimmed_input, second_tab);
 
-	if (trimmed_input)
-		ft_strdel(&trimmed_input);
+	ft_strdel(&trimmed_input);
 	if (!search_result)
 		return (0);
 	//nb, results should be sorted alphabetically, duplicates removed and printed in columns
@@ -227,6 +177,7 @@ int	autocomplete(t_state *state, bool second_tab)
 	if (len == 1)
 	{
 		//ft_printf("\ninput: *%s* result: *%s* \n", ic.input, search_result[0]);
+		//this should be based on cursor position rather than length
 		ft_strcpy((state->input_context.input) + ft_strlen(ic.input), search_result[0]);
 		state->input_context.cursor = ft_strlen(state->input_context.input);
 		ft_free_null_array((void **) search_result);

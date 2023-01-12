@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/12 17:01:13 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 17:48:09 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,11 @@ bool	check_result_is_dir(char *path, t_auto *autocomp, \
 /* search_commands.c */
 char	**search_commands(t_state *state, char **trimmed_input, bool second_tab);
 
-/* search_path.c */
-int		search_path(char *path, t_auto *autocomp, bool bin);
+/* search_file_paths.c */
+char	**search_file_paths(char **trimmed_input, bool second_tab);
+
+/* directory_search.c */
+int		directory_search(char *path, t_auto *autocomp, bool bin);
 
 /* filter_matching.c */
 bool	filter_matching(t_auto autocomp);

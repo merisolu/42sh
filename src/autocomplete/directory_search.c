@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:19:04 by amann             #+#    #+#             */
-/*   Updated: 2023/01/12 17:23:37 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 17:48:25 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static int	fp_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir)
  * are looking for filepath, we do not need to check this.
  */
 
-int	search_path(char *path, t_auto *autocomp, bool bin)
+int	directory_search(char *path, t_auto *autocomp, bool bin)
 {
 	DIR				*dir;
 	struct dirent	*entry;
