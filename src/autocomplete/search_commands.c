@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:16:26 by amann             #+#    #+#             */
-/*   Updated: 2023/01/12 13:49:27 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 14:43:48 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ char	**search_commands(t_state *state, char *trimmed_input, bool second_tab)
 	}
 	if (count > 1 && !second_tab && !filter_matching(autocomp))
 		return (free_all_return(&search_result, &paths));
+	if (ft_null_array_len((void **) *(autocomp.search_results)) == 1)
+		truncate_result(autocomp);
 	ft_free_null_array((void **)paths);
 	return (search_result);
 }

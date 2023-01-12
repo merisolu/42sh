@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2023/01/12 13:40:09 by amann            ###   ########.fr        #
+#    Updated: 2023/01/12 14:43:27 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ AST_FILES = ast_add_args.c ast_pipe_sequence.c ast_redir_control.c \
 
 AUTOCOMPLETE_DIR = autocomplete
 AUTOCOMPLETE_FILES = autocomplete.c search_commands.c search_path.c \
-					filter_matching.c
+					filter_matching.c truncate_result.c
 
 BUILT_INS_DIR = built-ins
 BUILT_INS_FILES = built_ins.c built_ins_flags.c cmd_cd.c cmd_echo.c cmd_fc.c \

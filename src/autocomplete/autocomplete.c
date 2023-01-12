@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/12 13:37:39 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 14:41:21 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,11 +170,13 @@ char	**search_file_paths(char *trimmed_input, bool second_tab)
 //	ft_printf("\npath = %s | query = %s\n", path, query);
 	autocomp.query_len = ft_strlen(query);
 	search_path(path, &autocomp, false);
-	if (count > 1 && !second_tab) // more enhanced check needed here
+	if (count > 1 && !second_tab && !filter_matching(autocomp))
 	{
 		ft_free_null_array((void **)search_result);
 		return (NULL);
 	}
+	if (ft_null_array_len((void **) *(autocomp.search_results)) == 1)
+		truncate_result(autocomp);
 	return (search_result);
 }
 
@@ -216,19 +218,22 @@ int	autocomplete(t_state *state, bool second_tab)
 	if (!search_result)
 		return (0);
 	//nb, results should be sorted alphabetically, duplicates removed and printed in columns
-	ft_putendl("");
-	for (int i = 0; search_result[i]; i++)
-		ft_printf("%s\n", search_result[i]);
-
-	save_cursor(&(state->input_context));
-
-	/*
-	if (temp) //copies the found string over the input, will need to be refactored to handle inserting strings...
+	size_t len = ft_null_array_len((void **)search_result);
+	if (len == 1)
 	{
-		ft_strcpy(state->input_context.input, temp);
+		//ft_printf("\ninput: *%s* result: *%s* \n", ic.input, search_result[0]);
+		ft_strcpy((state->input_context.input) + ft_strlen(ic.input), search_result[0]);
 		state->input_context.cursor = ft_strlen(state->input_context.input);
-		free(temp);
-	}*/
+		return (1);
+	}
+	else if (len)
+	{
+		ft_putendl("");
+		for (int i = 0; search_result[i]; i++)
+			ft_printf("%s\n", search_result[i]);
+		save_cursor(&(state->input_context));
+	}
+
 	ft_free_null_array((void **) search_result);
 	free(trimmed_input);
 	return (0);

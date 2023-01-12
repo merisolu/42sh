@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/12 13:49:32 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/12 14:43:30 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,7 @@ int		search_path(char *path, t_auto *autocomp, bool bin);
 
 /* filter_matching.c */
 bool	filter_matching(t_auto autocomp);
+
+/* truncate_result.c */
+void	truncate_result(t_auto autocomp);
 #endif
