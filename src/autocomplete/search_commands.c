@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:16:26 by amann             #+#    #+#             */
-/*   Updated: 2023/01/13 15:54:15 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/13 16:40:43 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,11 @@ char	**search_commands(t_state *state, char **ti, bool second_tab)
 			search_result[0] = ft_strdup("./");
 			return (wrap_up(autocomp, second_tab));
 		}
+		else if (ft_strequ(*ti, "/"))
+		{
+			query = ft_strdup("");
+			path = ft_strdup("/");
+		}
 		else if (ft_strchr(*ti, '/'))
 		{
 			query = find_query(*ti, '/');
@@ -113,13 +118,16 @@ char	**search_commands(t_state *state, char **ti, bool second_tab)
 		}
 		else
 		{
+			ft_putendl("KO");
 			query = ft_strdup(*ti);
 			path = ft_strdup("./");
 		}
 		initialise_autocomp(&autocomp2, &query, &search_result, &count);
 		autocomp2.query_len = ft_strlen(query);
-		//ft_printf("\n%s %s\n", path, query);
+		ft_printf("\n%s %s\n", path, query);
 		directory_search(path, &autocomp2, false, true);
+		free(path);
+		free(query);
 		return (wrap_up(autocomp2, second_tab));
 	}
 	return (wrap_up(autocomp, second_tab));

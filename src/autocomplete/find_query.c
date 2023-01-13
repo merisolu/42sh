@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:54:23 by amann             #+#    #+#             */
-/*   Updated: 2023/01/13 15:19:42 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/13 16:43:41 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 char	*find_query(char *str, char c)
 {
-	size_t	len;
-	size_t	start;
+	int	len;
+	int	start;
 
-	len = ft_strlen(str);
+	len = (int)ft_strlen(str);
 	start = 0;
-	while (len)
+	while (len > -1)
 	{
 		if (str[len] == c)
 		{
