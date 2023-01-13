@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/11 11:33:58 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/13 13:03:06 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 /* Types */
 
 # define MAX_PIDS 709
+# define MAX_JOBS MAX_PIDS
 
 # define MAGIC_NUMBER "#!42\n"
 
@@ -159,6 +160,25 @@ typedef struct s_hash_entry
 	unsigned int		hits;
 }	t_hash_entry;
 
+typedef enum e_job_state
+{
+	JOB_EMPTY,
+	JOB_CREATED,
+	JOB_RUNNING,
+	JOB_STOPPED,
+	JOB_DONE
+}	t_job_state;
+
+typedef struct s_job
+{
+	int			id;
+	t_job_state	state;
+	bool		needs_status_print;
+	pid_t		pids[MAX_PIDS];
+	int			return_value;
+	char		*command;
+}	t_job;
+
 typedef struct s_state
 {
 	char *const		*env;
@@ -174,8 +194,8 @@ typedef struct s_state
 	char			*history[HISTORY_SIZE];
 	int				history_index;
 	t_hash_entry	**hash_table;
-	pid_t			pids[MAX_PIDS];
-	pid_t			background_pids[MAX_PIDS];
+	t_job			*current_job;
+	t_job			jobs[MAX_JOBS];
 	int				last_return_value;
 	int				exit_return_value;
 	int				exiting;

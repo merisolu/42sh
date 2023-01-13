@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2023/01/09 10:12:40 by jumanner         ###   ########.fr        #
+#    Updated: 2023/01/13 14:39:56 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ BUILT_INS_FILES = built_ins.c built_ins_flags.c cmd_cd.c cmd_echo.c \
 				cmd_fc.c cmd_fc_editor.c \
 				cmd_exit.c cmd_execute_script.c cmd_true_false.c \
 				cmd_type.c cmd_set.c cmd_export.c cmd_unset.c delete_var.c \
-				export_set.c print_exported.c cmd_hash.c
+				export_set.c print_exported.c cmd_hash.c cmd_jobs.c
 
 CLEANUP_DIR = cleanup
 CLEANUP_FILES = cleanup.c
@@ -61,7 +61,8 @@ EXECUTION_FILES = bin.c executor.c executor_path_utils.c fork.c pids.c pipes.c \
 					execute_fd_aggregation.c handle_logical_ops.c \
 					copy_orig_fd.c execute_redirection.c \
 					set_internal_variables.c execute_simple_command.c \
-					remove_temp_vars.c update_env_execution.c
+					remove_temp_vars.c update_env_execution.c \
+					jobs.c jobs_print.c jobs_utils.c
 
 EXPANSION_DIR = expansion
 EXPANSION_FILES = expand_tilde.c expand_variables.c expand_node.c \

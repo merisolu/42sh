@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2023/01/10 15:41:57 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/13 14:08:48 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_state *state)
 	ast_free(&ast);
 }
 
-static bool	execute_ast(t_ast_context *ctx, t_state *state)
+static bool	execute_ast(t_ast_context *ctx, t_job *job, t_state *state)
 {
 	bool	result;
 	pid_t	pid;
@@ -32,22 +32,31 @@ static bool	execute_ast(t_ast_context *ctx, t_state *state)
 		pid = execute_simple_command(ctx, state);
 		if (ctx->node->right)
 			reset_io(ctx->redirect);
-		if (pid == -1 || !pids_add(pid, ctx->background, state))
+		if (pid == -1 || !pids_add(pid, job))
 			return (false);
 		return (true);
 	}
 	else if (ctx->node->node_type == AST_PIPE_SEQUENCE)
 	{
 		result = execute_ast(&(t_ast_context){ctx->node->left, ctx->redirect,
-				ctx->pipes, ctx->background, !ctx->node->right}, state);
+				ctx->pipes, ctx->background, !ctx->node->right}, job, state);
 		if (result && ctx->node->right)
 			result = execute_ast(
 					&(t_ast_context){ctx->node->right, ctx->redirect,
 					ctx->pipes, ctx->background, (!ctx->node->right
 						|| ctx->node->right->node_type == AST_SIMPLE_COMMAND)},
-					state);
+					job, state);
 	}
 	return (result);
+}
+
+static bool	setup_ast_list_execution(t_redir ***redir, t_pipes *pipes)
+{
+	*redir = (t_redir **)ft_memalloc(sizeof(t_redir *) * (INPUT_MAX_SIZE / 2));
+	if (!redir)
+		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
+	pipes_reset(pipes->read, pipes->write);
+	return (true);
 }
 
 static void	execute_ast_list(t_ast **ast, t_state *state)
@@ -55,24 +64,25 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 	t_redir	**redir;
 	t_pipes	pipes;
 	int		i;
+	t_job	*job;
 
 	if (!ast)
 		return ;
 	check_print_ast(ast, state, false);
-	redir = (t_redir **) ft_memalloc(sizeof(t_redir *) * (INPUT_MAX_SIZE / 2));
-	if (!redir)
-		print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
-	pipes_reset(pipes.read, pipes.write);
+	setup_ast_list_execution(&redir, &pipes);
 	i = 0;
 	while (ast[i] != NULL && redir)
 	{
 		if (!parse_expansions(ast[i], state))
 			break ;
-		if (!execute_ast(
-				&(t_ast_context){ast[i], redir, &pipes, ast[i]->amp, 0}, state))
+		job = jobs_create(state);
+		if (!job || !execute_ast(&(t_ast_context){ast[i], redir, &pipes, \
+			ast[i]->amp, 0}, job, state))
 			break ;
-		if (!ast[i]->amp)
-			set_return_value(pids_wait(state), state);
+		if (ast[i]->amp)
+			job->needs_status_print = true;
+		else
+			job_wait(job, false, state);
 		handle_logical_ops(ast, state, &i);
 	}
 	cleanup_ast_list(ast, redir, &pipes, state);

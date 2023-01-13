@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/10 15:39:32 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/13 13:48:49 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,17 @@ int	g_last_signal;
 static void	repeating_state_checks(t_state *state)
 {
 	check_signal(state);
-	pids_wait_background(state);
+	jobs_check_status(state);
+}
+
+static void	finish_execution(t_state *state)
+{
+	if (g_last_signal != 0 && state->last_return_value > 128)
+		ft_putchar('\n');
+	jobs_print_changed(state);
+	save_cursor(&(state->input_context));
+	display(&(state->input_context), 1);
+	jobs_cleanup_finished(state);
 }
 
 static t_input_result	input_handler(t_state *state)
@@ -58,12 +68,7 @@ int	main(const int argc, const char **argv, char *const *env)
 		{
 			tokenize_and_execute(&state);
 			if (!state.exiting)
-			{
-				if (g_last_signal != 0 && state.last_return_value > 128)
-					ft_putchar('\n');
-				save_cursor(&(state.input_context));
-				display(&(state.input_context), 1);
-			}
+				finish_execution(&state);
 			g_last_signal = 0;
 		}
 	}

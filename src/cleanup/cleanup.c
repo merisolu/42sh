@@ -6,11 +6,23 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:22:48 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/27 12:14:24 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/13 14:05:37 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cleanup.h"
+
+static void	free_jobs(t_state *state)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < MAX_JOBS)
+	{
+		free(state->jobs[i].command);
+		i++;
+	}
+}
 
 int	cleanup(t_state *state, int return_value)
 {
@@ -21,6 +33,7 @@ int	cleanup(t_state *state, int return_value)
 		ft_free_array_elements((void **)state->history, HISTORY_SIZE);
 	ft_free_null_array((void **)(state->env));
 	hash_table_clear(state->hash_table);
+	free_jobs(state);
 	free(state->hash_table);
 	input_context_free(&(state->input_context));
 	return (return_value);

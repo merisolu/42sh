@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:21:45 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/11 11:11:32 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/13 13:02:55 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ static char	**get_reserved_sequences(void)
 		return (NULL);
 	ft_add_to_null_array((void ***)&result, var_copy(TAB));
 	return (result);
+}
+
+static bool	initialise_jobs(t_state *state)
+{
+	ft_bzero(state->jobs, sizeof(t_job) * MAX_JOBS);
+	return (true);
 }
 
 static bool	initialise_arrays(char *const **env, t_state *result)
@@ -52,7 +58,7 @@ static bool	initialise_arrays(char *const **env, t_state *result)
 				));
 		i++;
 	}
-	return (true);
+	return (initialise_jobs(result));
 }
 
 static int	get_state_struct(char *const **env, t_state *result)
@@ -62,7 +68,6 @@ static int	get_state_struct(char *const **env, t_state *result)
 
 	i = 0;
 	ft_bzero(result, sizeof(t_state));
-	ft_bzero(result->pids, sizeof(pid_t) * MAX_PIDS);
 	reserved_sequences = get_reserved_sequences();
 	if (!reserved_sequences)
 		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));

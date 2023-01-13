@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/10 13:27:58 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/13 14:44:18 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@
 # include "history.h"
 # include "terminal.h"
 # include "debug.h"
+
+/* Constants */
+# define JOB_BACKGROUND_CREATED_PRINT "[%d] %d\n"
+# define JOB_STATUS_PRINT "[%d]%c\t%s\t\t%s\n"
 
 /* Files */
 
@@ -65,9 +69,22 @@ void	handle_logical_ops(t_ast **ast, t_state *state, int *i);
 int		heredoc_run(t_ast *redir_node, t_pipes *pipes);
 
 /* pids.c */
-bool	pids_add(pid_t pid, bool background, t_state *state);
-int		pids_wait(t_state *state);
-void	pids_wait_background(t_state *state);
+bool	pids_add(pid_t pid, t_job *job);
+void	pid_wait(t_job *job, pid_t pid, bool non_blocking);
+void	pids_clean_up(t_job *job);
+
+/* jobs.c */
+t_job	*jobs_create(t_state *state);
+void	job_wait(t_job *job, bool non_blocking, t_state *state);
+void	jobs_check_status(t_state *state);
+void	jobs_print_changed(t_state *state);
+void	jobs_cleanup_finished(t_state *state);
+
+/* jobs_print.c */
+void	job_print(t_job *job, t_state *state);
+
+/* jobs_utils.c */
+pid_t	job_get_last_pid(t_job *job);
 
 /* pipes.c */
 void	pipe_reset(int pipe[2]);

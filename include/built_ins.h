@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/09 12:25:20 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/12 11:26:30 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,9 @@ int		export_set(const char *name, const char *value, char *const **env);
 
 /* cmd_hash.c */
 int		cmd_hash(char *const *args, t_state *state);
+
+/* cmd_jobs.c */
+int		cmd_jobs(char *const *args, t_state *state);
 
 /* cmd_fc.c */
 int		cmd_fc(char *const *args, t_state *state);

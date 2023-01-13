@@ -6,67 +6,74 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:02:59 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/11 13:23:41 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/13 14:47:07 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-bool	pids_add(pid_t pid, bool background, t_state *state)
+/*
+ * Adds the given pid to the pids array of the given job. If pid == 0, it will
+ * be ignored. Returns true on success, false if the pid array is full.
+ */
+bool	pids_add(pid_t pid, t_job *job)
 {
 	size_t	i;
-	pid_t	*target;
 
-	if (background)
-		target = state->background_pids;
-	else
-		target = state->pids;
+	if (pid == 0)
+		return (true);
 	i = 0;
-	while (i < MAX_PIDS && target[i] != 0)
+	while (i < MAX_PIDS && job->pids[i] != 0)
 		i++;
 	if (i == MAX_PIDS)
 		return (false);
-	target[i] = pid;
-	if (background)
-		ft_printf("[background process] %i\n", pid);
+	job->pids[i] = pid;
 	return (true);
 }
 
-int	pids_wait(t_state *state)
+/*
+ * Waits for the given pid and update's the state of the job accordingly. If
+ * non_blocking is set to true, the call to waitpid() won't block.
+ */
+void	pid_wait(t_job *job, pid_t pid, bool non_blocking)
 {
-	size_t	i;
-	int		return_value;
+	int			status;
+	int			wait_flags;
+	t_job_state	old_state;
 
-	i = 0;
-	return_value = state->last_return_value;
-	while (state->pids[i] != 0)
-	{
-		if (state->pids[i] != -1)
-		{
-			waitpid(state->pids[i], &return_value, WUNTRACED);
-			if (WIFSTOPPED(return_value))
-				ft_printf("\n[stopped] %i", state->pids[i]);
-			return_value = get_return_value_from_status(return_value);
-		}
-		i++;
-	}
-	ft_bzero(state->pids, sizeof(int) * MAX_PIDS);
-	return (return_value);
+	if (pid <= 0)
+		return ;
+	wait_flags = WUNTRACED;
+	if (non_blocking)
+		wait_flags |= WNOHANG;
+	if (waitpid(pid, &status, wait_flags) <= 0)
+		return ;
+	old_state = job->state;
+	if (WIFSTOPPED(status))
+		job->state = JOB_STOPPED;
+	else if (WIFEXITED(status) || WIFSIGNALED(status))
+		job->state = JOB_DONE;
+	else
+		job->state = JOB_RUNNING;
+	if (old_state != JOB_CREATED)
+		job->needs_status_print = old_state != job->state;
+	job->return_value = status;
 }
 
-void	pids_wait_background(t_state *state)
+/*
+ * Waits all pids in a given job to remove zombie processes. Empties the pids
+ * array after that.
+*/
+void	pids_clean_up(t_job *job)
 {
 	size_t	i;
 
 	i = 0;
-	while (i < MAX_PIDS)
+	while (job->pids[i] > 0)
 	{
-		if (state->background_pids[i] > 0
-			&& waitpid(state->background_pids[i], NULL, WNOHANG))
-		{
-			ft_printf("[done] %i\n", state->background_pids[i]);
-			state->background_pids[i] = 0;
-		}
+		if (job->pids[i] > 0)
+			waitpid(job->pids[i], NULL, WNOHANG);
 		i++;
 	}
+	ft_bzero(job->pids, sizeof(pid_t) * MAX_PIDS);
 }
