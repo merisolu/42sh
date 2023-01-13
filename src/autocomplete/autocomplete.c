@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/13 14:28:51 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/13 15:10:13 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static t_search_type	get_search_type(char *trimmed_input)
 	while (trimmed_input[i])
 	{
 		c = trimmed_input[i];
-		if (c == '/' || c == '.' || c == ' ')
+		if (/*c == '/' || c == '.' ||*/ c == ' ')
 			res = SEARCH_FILE_PATH;
 		else if (c == '$' && (i == 0 || trimmed_input[i - 1] == ' '))
 			res = SEARCH_VARIABLE;
@@ -114,10 +114,6 @@ static t_search_type	get_search_type(char *trimmed_input)
 //edge case, if the query begins with '.' this will always expand to './' (test this!)
 //if the query begins './' we should search for executables in the current dir
 
-//if there are multiple possible proposals, but they all start with the same next letter
-//or two, autocomplete will print those next letters. eg:
-//
-
 int	autocomplete(t_state *state, bool second_tab)
 {
 	char			*trimmed_input;
@@ -131,6 +127,7 @@ int	autocomplete(t_state *state, bool second_tab)
 	trimmed_input = trim_input_to_cursor(ic);
 	if (!trimmed_input)
 		return (0);
+
 	search_type = get_search_type(trimmed_input);
 	//ft_printf("\n-- *%s* cursor idx = %zu\n", trimmed_input, ic.cursor);
 	search_result = NULL;

@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:19:04 by amann             #+#    #+#             */
-/*   Updated: 2023/01/13 14:04:23 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/13 15:57:07 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,28 @@ static int	check_match_is_file(char *path, char *name)
 	result = (ft_is_file(temp) || ft_points_to_file(temp));
 	free(temp);
 	return (result);
+}
+
+static int	exec_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir)
+{
+	if (ft_strnequ(*(ac->query), entry->d_name, ac->query_len)
+		&& check_execution_rights(path, entry->d_name) == 1)
+	{
+		if (ac->query_len == 0
+			&& (ft_strequ(entry->d_name, ".")
+				|| ft_strequ(entry->d_name, "..")))
+			return (0);
+		(*(ac->search_results))[*(ac->count)] = ft_strdup(entry->d_name);
+		if (!(*(ac->search_results))[*(ac->count)])
+		{
+			closedir(dir);
+			return (print_error(-1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
+		}
+		if (!check_result_is_dir(path, ac, entry, dir))
+			return (-1);
+		(*(ac->count))++;
+	}
+	return (0);
 }
 
 static int	bin_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir)
@@ -89,7 +111,7 @@ static int	fp_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir)
  * are looking for filepath, we do not need to check this.
  */
 
-int	directory_search(char *path, t_auto *autocomp, bool bin)
+int	directory_search(char *path, t_auto *autocomp, bool bin, bool exec)
 {
 	DIR				*dir;
 	struct dirent	*entry;
@@ -100,9 +122,11 @@ int	directory_search(char *path, t_auto *autocomp, bool bin)
 	entry = readdir(dir);
 	while (entry)
 	{
-		if (bin && bin_search(path, autocomp, entry, dir) == -1)
+		if (bin && !exec && bin_search(path, autocomp, entry, dir) == -1)
 			return (-1);
-		else if (!bin && fp_search(path, autocomp, entry, dir) == -1)
+		else if (!bin && !exec && fp_search(path, autocomp, entry, dir) == -1)
+			return (-1);
+		else if (!bin && exec && exec_search(path, autocomp, entry, dir) == -1)
 			return (-1);
 		if (*(autocomp->count) >= INPUT_MAX_SIZE - 1)
 			break ;

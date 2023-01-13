@@ -6,13 +6,13 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 17:44:44 by amann             #+#    #+#             */
-/*   Updated: 2023/01/13 13:58:51 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/13 15:45:22 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
 
-static size_t	last_slash(char *str)
+size_t	last_slash(char *str)
 {
 	size_t	len;
 
@@ -48,7 +48,7 @@ char	**search_file_paths(char **trimmed_input, bool second_tab)
 	if (!search_result)
 		return (print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	count = 0;
-	query = find_query(*trimmed_input);
+	query = find_query(*trimmed_input, ' ');
 	initialise_autocomp(&autocomp, &query, &search_result, &count);
 	path = NULL;
 	if (ft_strchr(query, '/'))
@@ -58,7 +58,7 @@ char	**search_file_paths(char **trimmed_input, bool second_tab)
 	if (!path || !query)
 		return (print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	autocomp.query_len = ft_strlen(query);
-	directory_search(path, &autocomp, false);
+	directory_search(path, &autocomp, false, false);
 	free(path);
 	free(query);
 	return (wrap_up(autocomp, second_tab));

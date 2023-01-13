@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:16:26 by amann             #+#    #+#             */
-/*   Updated: 2023/01/13 14:00:19 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/13 15:54:15 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,37 @@ char	**search_commands(t_state *state, char **ti, bool second_tab)
 	i = 0;
 	while (paths[i])
 	{
-		if (directory_search(paths[i], &autocomp, true) == -1)
+		if (directory_search(paths[i], &autocomp, true, false) == -1)
 			return (free_all_return(&search_result, &paths));
 		i++;
 	}
 	ft_free_null_array((void **)paths);
+	if (ft_null_array_len((void **)search_result) == 0)
+	{
+		char *query;
+		char *path;
+		t_auto autocomp2;
+		//search dirs for executables
+		if (ft_strequ(*ti, "."))
+		{
+			search_result[0] = ft_strdup("./");
+			return (wrap_up(autocomp, second_tab));
+		}
+		else if (ft_strchr(*ti, '/'))
+		{
+			query = find_query(*ti, '/');
+			path = ft_strndup(*ti, last_slash(*ti));
+		}
+		else
+		{
+			query = ft_strdup(*ti);
+			path = ft_strdup("./");
+		}
+		initialise_autocomp(&autocomp2, &query, &search_result, &count);
+		autocomp2.query_len = ft_strlen(query);
+		//ft_printf("\n%s %s\n", path, query);
+		directory_search(path, &autocomp2, false, true);
+		return (wrap_up(autocomp2, second_tab));
+	}
 	return (wrap_up(autocomp, second_tab));
 }

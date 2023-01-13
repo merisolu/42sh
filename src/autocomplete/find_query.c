@@ -6,13 +6,13 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:54:23 by amann             #+#    #+#             */
-/*   Updated: 2023/01/13 14:00:51 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/13 15:19:42 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
 
-char	*find_query(char *str)
+char	*find_query(char *str, char c)
 {
 	size_t	len;
 	size_t	start;
@@ -21,7 +21,7 @@ char	*find_query(char *str)
 	start = 0;
 	while (len)
 	{
-		if (str[len] == ' ')
+		if (str[len] == c)
 		{
 			start = len + 1;
 			break ;
