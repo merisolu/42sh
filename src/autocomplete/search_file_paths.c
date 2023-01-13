@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 17:44:44 by amann             #+#    #+#             */
-/*   Updated: 2023/01/12 19:35:24 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/13 13:37:29 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ static char	*find_query(char *str)
 	while (len)
 	{
 		if (str[len] == ' ')
+		{
 			start = len + 1;
+			break ;
+		}
 		len--;
 	}
 	return (ft_strdup(str + start));
@@ -60,7 +63,7 @@ char	**search_file_paths(char **trimmed_input, bool second_tab)
 	char	*path;
 	t_auto	autocomp;
 
-	search_result = (char **) ft_memalloc(sizeof(char *) * 200);
+	search_result = (char **) ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE); //check this is not exceeded while searching
 	if (!search_result)
 		return (print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	count = 0;

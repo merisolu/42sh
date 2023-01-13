@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/12 19:29:10 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/13 13:35:14 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static char	*trim_input_to_cursor(t_input_context ic)
 	char	*trimmed_input;
 	int		i;
 
+	if (!ft_strlen(ic.input))
+		return (ft_strdup(""));
 	input_to_cursor = ft_strndup(ic.input, ic.cursor);
 	if (!input_to_cursor)
 		return (print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
@@ -132,7 +134,7 @@ int	autocomplete(t_state *state, bool second_tab)
 	t_input_context	ic;
 
 	ic = state->input_context;
-	if (!state || ft_strlen(ic.input) == 0)
+	if (!state)// || ft_strlen(ic.input) == 0)
 		return (0);
 	trimmed_input = trim_input_to_cursor(ic);
 	if (!trimmed_input)
@@ -165,8 +167,12 @@ int	autocomplete(t_state *state, bool second_tab)
 	else if (len)
 	{
 		ft_putendl("");
-		for (int i = 0; search_result[i]; i++)
+		int i = 0;
+		while (search_result[i])
+		{
 			ft_printf("%s\n", search_result[i]);
+			i++;
+		}
 		save_cursor(&(state->input_context));
 	}
 
