@@ -6,22 +6,22 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 18:37:40 by amann             #+#    #+#             */
-/*   Updated: 2023/01/12 19:51:54 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/13 13:58:25 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
 
-t_auto	autocomp_setup(char **query, bool brackets, char ***search_result)
+static t_auto	autocomp_setup(char **query, bool brackets, char ***sr)
 {
 	t_auto	autocomp;
 	int		count;
 
-	count = ft_null_array_len((void **)*search_result);
+	count = ft_null_array_len((void **)*sr);
 	autocomp.count = &count;
 	autocomp.query = query;
 	autocomp.query_len = ft_strlen(*query);
-	autocomp.search_results = search_result;
+	autocomp.search_results = sr;
 	autocomp.query_len += 1;
 	if (brackets)
 		autocomp.query_len += 1;
@@ -33,13 +33,14 @@ char	**search_variables(t_state *state, char **ti, bool second_tab)
 	char	**search_result;
 	char	*dollar_start;
 	char	*query;
+	char	*temp;
 	bool	brackets;
 
-	(void) second_tab;
 	search_result = (char **) ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE);
-	if (!search_result)
+	if (!search_result || !ti)
 		return (print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	dollar_start = ft_strchr(*ti, '$');
+	temp = find_query(*ti);
+	dollar_start = ft_strchr(temp, '$');
 	brackets = *(dollar_start + 1) == '{';
 	query = dollar_start + 1;
 	if (brackets)
@@ -47,9 +48,11 @@ char	**search_variables(t_state *state, char **ti, bool second_tab)
 	if (!search_env_intern(state->env, query, &search_result, brackets)
 		|| !search_env_intern(state->intern, query, &search_result, brackets))
 	{
+		free(temp);
 		ft_free_null_array((void **)search_result);
 		return (NULL);
 	}
+	free(temp);
 	return (wrap_up(autocomp_setup(&query, brackets, &search_result),
 			second_tab));
 }

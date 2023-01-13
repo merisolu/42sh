@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/12 19:50:34 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/13 13:55:14 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,9 @@ void	initialise_autocomp(t_auto *autocomp, char **query, \
 /* check_result_is_dir.c */
 bool	check_result_is_dir(char *path, t_auto *autocomp, \
 		struct dirent *entry, DIR *dir);
+
+/* find_query. */
+char	*find_query(char *str);
 
 /* search_commands.c */
 char	**search_commands(t_state *state, char **trimmed_input, \

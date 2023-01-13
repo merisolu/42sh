@@ -6,30 +6,11 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 17:44:44 by amann             #+#    #+#             */
-/*   Updated: 2023/01/13 13:37:29 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/13 13:58:51 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
-
-static char	*find_query(char *str)
-{
-	size_t	len;
-	size_t	start;
-
-	len = ft_strlen(str);
-	start = 0;
-	while (len)
-	{
-		if (str[len] == ' ')
-		{
-			start = len + 1;
-			break ;
-		}
-		len--;
-	}
-	return (ft_strdup(str + start));
-}
 
 static size_t	last_slash(char *str)
 {

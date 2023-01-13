@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:19:04 by amann             #+#    #+#             */
-/*   Updated: 2023/01/12 17:48:25 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/13 14:04:23 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ int	directory_search(char *path, t_auto *autocomp, bool bin)
 			return (-1);
 		else if (!bin && fp_search(path, autocomp, entry, dir) == -1)
 			return (-1);
+		if (*(autocomp->count) >= INPUT_MAX_SIZE - 1)
+			break ;
 		entry = readdir(dir);
 	}
 	closedir(dir);

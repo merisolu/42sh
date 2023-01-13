@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/13 13:35:14 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/13 14:28:51 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static char	*trim_input_to_cursor(t_input_context ic)
 	char	*trimmed_input;
 	int		i;
 
-	if (!ft_strlen(ic.input))
+	if (ft_strlen(ic.input) == 0 || ic.cursor == 0)
 		return (ft_strdup(""));
 	input_to_cursor = ft_strndup(ic.input, ic.cursor);
 	if (!input_to_cursor)
@@ -117,14 +117,6 @@ static t_search_type	get_search_type(char *trimmed_input)
 //if there are multiple possible proposals, but they all start with the same next letter
 //or two, autocomplete will print those next letters. eg:
 //
-//$M will autocomplete to $MA on first tab press. Then 2 tab presses more suggest 3 poss
-//options, all starting with $MA.
-//
-//autocomplete on an empty input will attempt to print out the whole path on the 2nd
-//tab press.
-
-// second+ query in the input string will not be expanded, eg:
-//	$> echo ${TERM} lib (tab press does not expand lib)
 
 int	autocomplete(t_state *state, bool second_tab)
 {
@@ -175,7 +167,6 @@ int	autocomplete(t_state *state, bool second_tab)
 		}
 		save_cursor(&(state->input_context));
 	}
-
 	ft_free_null_array((void **) search_result);
 	return (0);
 }

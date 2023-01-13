@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:16:26 by amann             #+#    #+#             */
-/*   Updated: 2023/01/13 13:23:03 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/13 14:00:19 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	**search_commands(t_state *state, char **ti, bool second_tab)
 	t_auto	autocomp;
 
 	paths = get_paths(state);
-	search_result = (char **) ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE); //this will need to be expanded
+	search_result = (char **) ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE);
 	if (!paths || !search_result)
 		print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
 	count = 0;
