@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/13 15:45:06 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/16 13:15:54 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,9 @@ size_t	last_slash(char *str);
 /* search_commands.c */
 char	**search_commands(t_state *state, char **trimmed_input, \
 		bool second_tab);
+
+/* search_exec.c */
+char	**search_exec(char ***sr, char **ti, bool second_tab);
 
 /* search_file_paths.c */
 char	**search_file_paths(char **trimmed_input, bool second_tab);
