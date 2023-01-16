@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:49:42 by amann             #+#    #+#             */
-/*   Updated: 2023/01/12 19:51:02 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/16 13:54:45 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,26 @@ static bool	allocate_new_result(char ***sr, size_t *count, char *temp, bool b)
 	return (true);
 }
 
+static char	*get_temp(char *const *arr, size_t i)
+{
+	size_t	equals_idx;
+	char	*res;
+
+	equals_idx = find_equals(arr[i]);
+	if (equals_idx == 0)
+		return (NULL);
+	res = ft_strndup(arr[i], equals_idx);
+	if (!res)
+		return ((char *)print_error_ptr(NULL, ERRTEMPLATE_SIMPLE,
+				ERR_MALLOC_FAIL));
+	return (res);
+}
+
 bool	search_env_intern(char *const *arr, char *query, char ***sr, bool b)
 {
 	size_t	i;
 	size_t	count;
 	size_t	len;
-	size_t	equals_idx;
 	char	*temp;
 
 	len = ft_strlen(query);
@@ -73,15 +87,14 @@ bool	search_env_intern(char *const *arr, char *query, char ***sr, bool b)
 	{
 		if (ft_strnequ(arr[i], query, len))
 		{
-			equals_idx = find_equals(arr[i]);
-			if (equals_idx == 0)
-				return (false);
-			temp = ft_strndup(arr[i], equals_idx);
+			temp = get_temp(arr, i);
 			if (!temp)
 				return (false);
 			if (!allocate_new_result(sr, &count, temp, b))
 				return (false);
 		}
+		if (count >= INPUT_MAX_SIZE - 1)
+			return (true);
 		i++;
 	}
 	return (true);

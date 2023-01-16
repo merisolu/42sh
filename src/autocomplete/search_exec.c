@@ -6,11 +6,21 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 13:03:36 by amann             #+#    #+#             */
-/*   Updated: 2023/01/16 13:23:04 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/16 13:55:08 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
+
+char	**check_exec(char ***sr, t_auto autocomp, char **ti, bool second_tab)
+{
+	if (ft_strequ(*ti, "."))
+	{
+		(*sr)[0] = ft_strdup("./");
+		return (wrap_up(autocomp, second_tab));
+	}
+	return (search_exec(sr, ti, second_tab));
+}
 
 /*
  *	If we cannot find a matching executable on the path, or a builtin, we then
@@ -38,6 +48,25 @@ static bool	check_allocations(char *path, char *query)
 	return (true);
 }
 
+static void	set_path_query(char **path, char **query, char **ti)
+{
+	if (ft_strequ(*ti, "/"))
+	{
+		*query = ft_strdup("");
+		*path = ft_strdup("/");
+	}
+	else if (ft_strchr(*ti, '/'))
+	{
+		*query = find_query(*ti, '/');
+		*path = ft_strndup(*ti, last_slash(*ti));
+	}
+	else
+	{
+		*query = ft_strdup(*ti);
+		*path = ft_strdup("./");
+	}
+}
+
 char	**search_exec(char ***sr, char **ti, bool second_tab)
 {
 	char	*query;
@@ -45,27 +74,14 @@ char	**search_exec(char ***sr, char **ti, bool second_tab)
 	int		count;
 	t_auto	autocomp;
 
-	if (ft_strequ(*ti, "/"))
-	{
-		query = ft_strdup("");
-		path = ft_strdup("/");
-	}
-	else if (ft_strchr(*ti, '/'))
-	{
-		query = find_query(*ti, '/');
-		path = ft_strndup(*ti, last_slash(*ti));
-	}
-	else
-	{
-		query = ft_strdup(*ti);
-		path = ft_strdup("./");
-	}
+	query = NULL;
+	path = NULL;
+	set_path_query(&path, &query, ti);
 	if (!check_allocations(path, query))
 		return (NULL);
 	count = 0;
 	initialise_autocomp(&autocomp, &query, sr, &count);
 	autocomp.query_len = ft_strlen(query);
-//	ft_printf("\n%s %s %d\n", path, query, (int)autocomp.query_len);
 	directory_search(path, &autocomp, false, true);
 	free(path);
 	free(query);

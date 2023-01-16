@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:16:26 by amann             #+#    #+#             */
-/*   Updated: 2023/01/16 13:21:33 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/16 13:40:22 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,20 @@ static char	**free_all_return(char ***search_result, char ***paths)
 	return (NULL);
 }
 
+static bool	search_paths_loop(char **paths, t_auto *autocomp)
+{
+	int	i;
+
+	i = 0;
+	while (paths[i])
+	{
+		if (directory_search(paths[i], autocomp, true, false) == -1)
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
 /*
  * In the event that we are looking for a command, we much search from our list
  * of builtins, and then the path, to compile a list of potential commands.
@@ -75,7 +89,6 @@ char	**search_commands(t_state *state, char **ti, bool second_tab)
 	char	**search_result;
 	char	**paths;
 	int		count;
-	int		i;
 	t_auto	autocomp;
 
 	paths = get_paths(state);
@@ -87,22 +100,10 @@ char	**search_commands(t_state *state, char **ti, bool second_tab)
 	autocomp.query_len = ft_strlen(*ti);
 	if (!search_builtins(*ti, &search_result, &count, autocomp.query_len))
 		return (NULL);
-	i = 0;
-	while (paths[i])
-	{
-		if (directory_search(paths[i], &autocomp, true, false) == -1)
-			return (free_all_return(&search_result, &paths));
-		i++;
-	}
+	if (!search_paths_loop(paths, &autocomp))
+		return (free_all_return(&search_result, &paths));
 	ft_free_null_array((void **)paths);
 	if (ft_null_array_len((void **)search_result) == 0)
-	{
-		if (ft_strequ(*ti, "."))
-		{
-			search_result[0] = ft_strdup("./");
-			return (wrap_up(autocomp, second_tab));
-		}
-		return (search_exec(&search_result, ti, second_tab));
-	}
+		return (check_exec(&search_result, autocomp, ti, second_tab));
 	return (wrap_up(autocomp, second_tab));
 }

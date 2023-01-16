@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2023/01/16 13:13:36 by amann            ###   ########.fr        #
+#    Updated: 2023/01/16 13:58:26 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ AUTOCOMPLETE_FILES = autocomplete.c search_commands.c directory_search.c \
 					filter_matching.c truncate_result.c \
 					check_result_is_dir.c search_file_paths.c \
 					search_variables.c wrap_up.c search_env_intern.c \
-					find_query.c search_exec.c
+					find_query.c search_exec.c directory_search_loops.c
 
 BUILT_INS_DIR = built-ins
 BUILT_INS_FILES = built_ins.c built_ins_flags.c cmd_cd.c cmd_echo.c cmd_fc.c \
