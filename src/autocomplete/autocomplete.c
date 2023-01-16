@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/16 18:23:14 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/16 18:56:06 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,42 @@ bool	autocomplete_display_warning(t_state *state, size_t len)
 	return (true);
 }
 
+void	free_and_reshuffle(char ***sr, int i)
+{
+	free((*sr)[i]);
+	while ((*sr)[i])
+	{
+		(*sr)[i] = (*sr)[i + 1];
+		i++;
+	}
+}
+void	sort_options(char ***sr)
+{
+	int		i;
+	int		res;
+	char	*temp;
+	bool	swapped;
+
+	swapped = false;
+	i = 0;
+	while ((*sr)[i + 1])
+	{
+		res = ft_strcmp((*sr)[i], (*sr)[i + 1]);
+		if (res == 0)
+			free_and_reshuffle(sr, i);
+		else if (res > 0)
+		{
+			temp = (*sr)[i];
+			(*sr)[i] = (*sr)[i + 1];
+			(*sr)[i + 1] = temp;
+			swapped = true;
+		}
+		i++;
+	}
+	if (swapped)
+		sort_options(sr);
+}
+
 /*
  * Provides contextual, dynamic, completion of:
  *		- commands
@@ -184,6 +220,8 @@ int	autocomplete(t_state *state, bool second_tab)
 	}
 	else if (len)
 	{
+		sort_options(&search_result);
+		len = ft_null_array_len((void **)search_result);
 		if (len > 100 && !autocomplete_display_warning(state, len))
 		{
 			ft_free_null_array((void **) search_result);
