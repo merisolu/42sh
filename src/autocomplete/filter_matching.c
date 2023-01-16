@@ -6,13 +6,13 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 13:38:58 by amann             #+#    #+#             */
-/*   Updated: 2023/01/12 17:29:29 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/16 17:11:12 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
 
-static size_t	find_longest(char **search_results)
+size_t	find_longest(char **search_results)
 {
 	size_t	max;
 	size_t	current_len;

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/16 16:30:57 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/16 18:23:14 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,14 +189,65 @@ int	autocomplete(t_state *state, bool second_tab)
 			ft_free_null_array((void **) search_result);
 			return (0);
 		}
-
+		//column display
+		//maybe use load_cursor and a custom t_input_context struct to move the cursor to position.
+		//update_window_size(ic) (utils.c) will add the window dimensions to the ic struct
+		//NB results must be sorted in lexicographical order
 		ft_putendl("");
-		int i = 0;
+		save_cursor(&(state->input_context));
+
+		size_t	max_len;
+		size_t	col_width;
+		size_t	col_height;
+		size_t	total_cols;
+		size_t	start_y;
+		size_t	start_x;
+		size_t	current_col;
+
+		max_len = find_longest(search_result);
+		col_width = max_len + 2;
+		total_cols = ic.width / col_width;
+		if (total_cols == 0)
+			total_cols = 1;
+		col_height = (len / total_cols) + 1;
+		if (len * col_width < ic.width)
+			col_height = 1;
+
+		start_x = ic.input_start_x - 1;
+		start_y = ic.input_start_y;
+		if (len > 100)
+			start_y += 1;
+//		ft_printf("total_cols = %zu | col_height = %zu | total options = %zu\n", total_cols, col_height, len);
+		current_col = 0;
+		size_t i = 0;
+		size_t row_counter = 0;
+		size_t offset = 0;
 		while (search_result[i])
 		{
-			ft_printf("%s\n", search_result[i]);
+			if (row_counter >= col_height)
+			{
+				row_counter = 0;
+				if (current_col == 0 && offset)
+					start_y -= offset + 2;
+				current_col++;
+			}
+			ft_putstr(tgoto(tgetstr("cm", NULL),
+					start_x + (current_col * col_width),
+					start_y + row_counter));
+			ft_printf("%s", search_result[i]);
+			if (col_height > 1)
+				ft_putendl("");
+			if (start_y + row_counter > ic.height)
+				offset++;
 			i++;
+			row_counter++;
 		}
+		if (start_y + col_height > ic.height)
+			ft_putendl("");
+		ft_putstr(tgoto(tgetstr("cm", NULL),
+				start_x,
+				start_y + col_height));
+
 		save_cursor(&(state->input_context));
 	}
 	ft_free_null_array((void **) search_result);

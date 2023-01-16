@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/16 15:56:08 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/16 17:10:14 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,11 @@ void	initialise_autocomp(t_auto *autocomp, char **query, \
 bool	check_result_is_dir(char *path, t_auto *autocomp, \
 		struct dirent *entry, DIR *dir);
 
+/* filter_matching.c */
+size_t	find_longest(char **search_results);
+bool	filter_matching(t_auto autocomp);
+
+
 /* find_query. */
 char	*find_query(char *str, char c);
 
@@ -80,9 +85,6 @@ int		directory_search(char *path, t_auto *autocomp, bool bin, bool exec);
 int		exec_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir);
 int		bin_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir);
 int		fp_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir);
-
-/* filter_matching.c */
-bool	filter_matching(t_auto autocomp);
 
 /* truncate_result.c */
 void	truncate_result(t_auto autocomp);
