@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/13 15:10:13 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/16 16:30:57 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,32 @@ static t_search_type	get_search_type(char *trimmed_input)
 	return (res);
 }
 
+bool	autocomplete_display_warning(t_state *state, size_t len)
+{
+	char	buffer[BUF_SIZE + 1];
+
+	ft_bzero(&buffer, BUF_SIZE + 1);
+	ft_dprintf(
+			STDOUT_FILENO,
+			"\nDisplay all %d possibilities? (y or n) ",
+			len);
+	while (1)
+	{
+		read(STDIN_FILENO, buffer, BUF_SIZE);
+		if (ft_strchr(buffer, 'y'))
+			break;
+		if (ft_strchr(buffer, 'n') || g_last_signal == SIGINT)
+		{
+			ft_putendl("");
+			if (g_last_signal == SIGINT)
+				g_last_signal = 0;
+			save_cursor(&(state->input_context));
+			return (false);
+		}
+	}
+	return (true);
+}
+
 /*
  * Provides contextual, dynamic, completion of:
  *		- commands
@@ -143,6 +169,9 @@ int	autocomplete(t_state *state, bool second_tab)
 	if (!search_result)
 		return (0);
 	//nb, results should be sorted alphabetically, duplicates removed and printed in columns
+	//we also need to print a warning if we have a large number of potential results to print.
+	//default min in bash is 100 (completion-query-items):
+	//	https://www.gnu.org/software/bash/manual/bash.html#Readline-Init-File-Syntax
 	size_t len = ft_null_array_len((void **)search_result);
 	if (len == 1)
 	{
@@ -155,6 +184,12 @@ int	autocomplete(t_state *state, bool second_tab)
 	}
 	else if (len)
 	{
+		if (len > 100 && !autocomplete_display_warning(state, len))
+		{
+			ft_free_null_array((void **) search_result);
+			return (0);
+		}
+
 		ft_putendl("");
 		int i = 0;
 		while (search_result[i])

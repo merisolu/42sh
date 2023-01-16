@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/16 14:01:22 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/16 15:56:08 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include "general.h"
 # include "built_ins.h"
 # include "cursor.h"
+# include "signals.h"
 
 /* Structs and enums */
 
