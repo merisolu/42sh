@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/16 17:10:14 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/16 19:39:18 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,33 @@ typedef struct s_auto
 	char	***search_results;
 }			t_auto;
 
+typedef struct s_autocomplete_display
+{
+	size_t	max_len;
+	size_t	col_width;
+	size_t	col_height;
+	size_t	total_cols;
+	size_t	start_y;
+	size_t	start_x;
+	size_t	current_col;
+	size_t	i;
+	size_t	row_counter;
+	size_t	offset;
+}			t_autocomplete_display;
+
 /* Files */
 
 /* autocomplete.c */
 int		autocomplete(t_state *state, bool second_tab);
 void	initialise_autocomp(t_auto *autocomp, char **query, \
 		char ***search_result, int *count);
+
+/* autocomplete_display_control.c */
+bool	autocomplete_display_control(t_state *state, char ***search_result);
+
+/* autocomplete_display_columns.c */
+void	autocomplete_display_columns(char **search_result, size_t len, \
+		t_state *state);
 
 /* check_result_is_dir.c */
 bool	check_result_is_dir(char *path, t_auto *autocomp, \
