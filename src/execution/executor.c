@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/10 15:56:54 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/17 15:10:13 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,14 @@ pid_t	execute(char *const *args, t_state *state, t_ast_context *ast)
 		if (fork_result == -1)
 			return (-1);
 		else if (fork_result != 0)
+		{
+			setpgid(fork_result, fork_result);
+			if (!ast->background)
+				ioctl(STDIN_FILENO, TIOCSPGRP, &fork_result);
 			return (fork_result);
-		if (ast->background)
-			setsid();
+		}
+		fork_result = getpid();
+		setpgid(fork_result, fork_result);
 	}
 	return (execute_child(args, state, ast, forking));
 }

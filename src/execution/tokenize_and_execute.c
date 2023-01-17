@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2023/01/13 14:08:48 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/17 15:26:51 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,10 @@ static bool	execute_ast(t_ast_context *ctx, t_job *job, t_state *state)
 	return (result);
 }
 
-static bool	setup_ast_list_execution(t_redir ***redir, t_pipes *pipes)
+static bool	setup_ast_list_execution(t_ast **ast, t_redir ***redir, \
+t_pipes *pipes, t_state *state)
 {
+	check_print_ast(ast, state, false);
 	*redir = (t_redir **)ft_memalloc(sizeof(t_redir *) * (INPUT_MAX_SIZE / 2));
 	if (!redir)
 		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
@@ -68,21 +70,21 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 
 	if (!ast)
 		return ;
-	check_print_ast(ast, state, false);
-	setup_ast_list_execution(&redir, &pipes);
+	setup_ast_list_execution(ast, &redir, &pipes, state);
 	i = 0;
 	while (ast[i] != NULL && redir)
 	{
-		if (!parse_expansions(ast[i], state))
-			break ;
 		job = jobs_create(state);
-		if (!job || !execute_ast(&(t_ast_context){ast[i], redir, &pipes, \
+		if (!job || !parse_expansions(ast[i], state)
+			|| !execute_ast(&(t_ast_context){ast[i], redir, &pipes, \
 			ast[i]->amp, 0}, job, state))
 			break ;
-		if (ast[i]->amp)
-			job->needs_status_print = true;
-		else
+		job->needs_status_print = ast[i]->amp;
+		if (!ast[i]->amp)
+		{
 			job_wait(job, false, state);
+			ioctl(STDIN_FILENO, TIOCSPGRP, &(state->group_id));
+		}
 		handle_logical_ops(ast, state, &i);
 	}
 	cleanup_ast_list(ast, redir, &pipes, state);

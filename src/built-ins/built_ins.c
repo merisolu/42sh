@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:18:43 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/12 11:27:20 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/13 14:57:42 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static const t_cmd_dispatch	*get_dispatch(void)
 	{"unset", &cmd_unset},
 	{"hash", &cmd_hash},
 	{"jobs", &cmd_jobs},
+	{"fg", &cmd_fg},
 	{"true", &cmd_true},
 	{"false", &cmd_false},
 	{"type", &cmd_type},

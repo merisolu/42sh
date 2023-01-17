@@ -6,11 +6,19 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 11:28:16 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/08 15:35:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/17 15:11:43 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+
+static void	reset_signals(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGWINCH, SIG_DFL);
+	signal(SIGTSTP, SIG_DFL);
+	signal(SIGTTOU, SIG_DFL);
+}
 
 /*
  * Calls fork(), sets up pipes, and resets signal handlers. Used to run both
@@ -40,7 +48,7 @@ pid_t	start_fork(t_ast_context *ast)
 	if (ast && ast->node->right
 		&& !handle_redirects(ast->node->right, ast->redirect))
 		exit(1);
-	signal(SIGINT, SIG_DFL);
+	reset_signals();
 	return (result);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/13 13:03:06 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/17 15:07:34 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@
 # define ERR_AMBIGUOUS_REDIR "ambiguous redirect"
 # define ERR_NOT_VALID_ID "not a valid identifier"
 # define ERR_STDIN_CLOSED "could not detect standard input"
+# define ERR_SIGNAL_SEND "failed to send signal to child process"
+# define ERR_FOREGROUND_GROUP "failed to set foreground process group"
 
 /* Globals */
 
@@ -196,6 +198,7 @@ typedef struct s_state
 	t_hash_entry	**hash_table;
 	t_job			*current_job;
 	t_job			jobs[MAX_JOBS];
+	pid_t			group_id;
 	int				last_return_value;
 	int				exit_return_value;
 	int				exiting;

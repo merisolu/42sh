@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:21:45 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/13 13:02:55 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/16 11:40:53 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ static int	get_state_struct(char *const **env, t_state *result)
 
 	i = 0;
 	ft_bzero(result, sizeof(t_state));
+	result->group_id = getpid();
 	reserved_sequences = get_reserved_sequences();
 	if (!reserved_sequences)
 		return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
@@ -91,7 +92,6 @@ static int	get_state_struct(char *const **env, t_state *result)
 
 bool	setup(char *const **env, t_state *state)
 {
-	setsid();
 	if (!get_state_struct(env, state) || !set_shlvl(&(state->env)))
 		return (false);
 	if (!setup_fd())

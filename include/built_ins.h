@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/12 11:26:30 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/13 15:17:19 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 /* Includes */
 
+# include <signal.h>
 # include "utils.h"
 # include "hash.h"
 # include "environment.h"
@@ -76,6 +77,9 @@ int		cmd_hash(char *const *args, t_state *state);
 
 /* cmd_jobs.c */
 int		cmd_jobs(char *const *args, t_state *state);
+
+/* cmd_fg.c */
+int		cmd_fg(char *const *args, t_state *state);
 
 /* cmd_fc.c */
 int		cmd_fc(char *const *args, t_state *state);
