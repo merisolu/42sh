@@ -6,29 +6,11 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 13:38:58 by amann             #+#    #+#             */
-/*   Updated: 2023/01/16 17:11:12 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/17 15:18:31 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
-
-size_t	find_longest(char **search_results)
-{
-	size_t	max;
-	size_t	current_len;
-	size_t	i;
-
-	max = 0;
-	i = 0;
-	while (search_results[i])
-	{
-		current_len = ft_strlen(search_results[i]);
-		if (current_len > max)
-			max = current_len;
-		i++;
-	}
-	return (max);
-}
 
 static char	*create_new_string(t_auto autocomp, size_t max_len)
 {
@@ -70,7 +52,13 @@ static bool	update_results(t_auto autocomp, char *new_string)
 	return (true);
 }
 
-bool	filter_matching(t_auto autocomp)
+static bool	free_return_false(char *str)
+{
+	free(str);
+	return (false);
+}
+
+bool	filter_matching(t_auto autocomp, bool *filtered)
 {
 	size_t	max_len;
 	size_t	i;
@@ -87,14 +75,12 @@ bool	filter_matching(t_auto autocomp)
 	{
 		filter_loop(autocomp, &i, &flag, (*(autocomp.search_results))[0][i]);
 		if (flag && i == autocomp.query_len)
-		{
-			free(new_string);
-			return (false);
-		}
+			return (free_return_false(new_string));
 		else if (flag)
 			break ;
 		new_string[i] = (*(autocomp.search_results))[0][i];
 		i++;
 	}
+	*filtered = true;
 	return (update_results(autocomp, new_string));
 }

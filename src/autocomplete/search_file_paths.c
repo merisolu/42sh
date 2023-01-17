@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 17:44:44 by amann             #+#    #+#             */
-/*   Updated: 2023/01/16 13:42:14 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/17 15:19:54 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ static void	reset_query_and_path(char **query, char **path)
 	*query = temp;
 }
 
-char	**search_file_paths(char **trimmed_input, bool second_tab)
+char	**search_file_paths(char **trimmed_input, bool second_tab, \
+		bool *filtered)
 {
 	char	**search_result;
 	char	*query;
@@ -61,5 +62,5 @@ char	**search_file_paths(char **trimmed_input, bool second_tab)
 	directory_search(path, &autocomp, false, false);
 	free(path);
 	free(query);
-	return (wrap_up(autocomp, second_tab));
+	return (wrap_up(autocomp, second_tab, filtered));
 }

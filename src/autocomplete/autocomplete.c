@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/16 20:20:37 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/17 15:13:20 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,16 @@ static t_search_type	get_search_type(char *trimmed_input)
 	return (res);
 }
 
+static int	free_and_display(char **ti, t_state *state, char ***sr, bool f)
+{
+	ft_strdel(ti);
+	if (!*sr)
+		return (0);
+	if (!autocomplete_display_control(state, sr, f))
+		return (0);
+	ft_free_null_array((void **) *sr);
+	return (0);
+}
 /*
  * Provides contextual, dynamic, completion of:
  *		- commands
@@ -118,6 +128,7 @@ int	autocomplete(t_state *state, bool second_tab)
 	char			*trimmed_input;
 	char			**search_result;
 	t_search_type	search_type;
+	bool			filtered;
 
 	if (!state)
 		return (0);
@@ -125,18 +136,16 @@ int	autocomplete(t_state *state, bool second_tab)
 	if (!trimmed_input)
 		return (0);
 	search_type = get_search_type(trimmed_input);
+	filtered = false;
 	search_result = NULL;
 	if (search_type == SEARCH_COMMAND)
-		search_result = search_commands(state, &trimmed_input, second_tab);
+		search_result = search_commands(state, &trimmed_input, second_tab,
+				&filtered);
 	else if (search_type == SEARCH_FILE_PATH)
-		search_result = search_file_paths(&trimmed_input, second_tab);
+		search_result = search_file_paths(&trimmed_input, second_tab,
+				&filtered);
 	else if (search_type == SEARCH_VARIABLE)
-		search_result = search_variables(state, &trimmed_input, second_tab);
-	ft_strdel(&trimmed_input);
-	if (!search_result)
-		return (0);
-	if (!autocomplete_display_control(state, &search_result))
-		return (0);
-	ft_free_null_array((void **) search_result);
-	return (0);
+		search_result = search_variables(state, &trimmed_input, second_tab,
+				&filtered);
+	return (free_and_display(&trimmed_input, state, &search_result, filtered));
 }

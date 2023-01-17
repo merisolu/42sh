@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2023/01/16 19:24:43 by amann            ###   ########.fr        #
+#    Updated: 2023/01/17 15:17:14 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ AUTOCOMPLETE_FILES = autocomplete.c search_commands.c directory_search.c \
 					check_result_is_dir.c search_file_paths.c \
 					search_variables.c wrap_up.c search_env_intern.c \
 					find_query.c search_exec.c directory_search_loops.c\
-					autocomplete_display_control.c \
+					autocomplete_display_control.c find_longest.c \
 					autocomplete_display_columns.c
 
 BUILT_INS_DIR = built-ins

@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 18:37:40 by amann             #+#    #+#             */
-/*   Updated: 2023/01/13 15:21:10 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/17 15:20:20 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static t_auto	autocomp_setup(char **query, bool brackets, char ***sr)
 	return (autocomp);
 }
 
-char	**search_variables(t_state *state, char **ti, bool second_tab)
+char	**search_variables(t_state *state, char **ti, bool second_tab, \
+		bool *filtered)
 {
 	char	**search_result;
 	char	*dollar_start;
@@ -54,5 +55,5 @@ char	**search_variables(t_state *state, char **ti, bool second_tab)
 	}
 	free(temp);
 	return (wrap_up(autocomp_setup(&query, brackets, &search_result),
-			second_tab));
+			second_tab, filtered));
 }

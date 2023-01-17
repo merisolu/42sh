@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:16:26 by amann             #+#    #+#             */
-/*   Updated: 2023/01/16 13:40:22 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/17 15:18:59 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ static bool	search_paths_loop(char **paths, t_auto *autocomp)
  * stop unless there is a second tab press.
  */
 
-char	**search_commands(t_state *state, char **ti, bool second_tab)
+char	**search_commands(t_state *state, char **ti, bool second_tab, \
+		bool *filtered)
 {
 	char	**search_result;
 	char	**paths;
@@ -104,6 +105,6 @@ char	**search_commands(t_state *state, char **ti, bool second_tab)
 		return (free_all_return(&search_result, &paths));
 	ft_free_null_array((void **)paths);
 	if (ft_null_array_len((void **)search_result) == 0)
-		return (check_exec(&search_result, autocomp, ti, second_tab));
-	return (wrap_up(autocomp, second_tab));
+		return (check_exec(autocomp, ti, second_tab, filtered));
+	return (wrap_up(autocomp, second_tab, filtered));
 }

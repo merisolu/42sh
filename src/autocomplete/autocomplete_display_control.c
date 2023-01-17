@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:02:48 by amann             #+#    #+#             */
-/*   Updated: 2023/01/17 13:43:46 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/17 15:14:54 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,14 @@ static void	append_space(char **text)
 	*text = temp;
 }
 
-static bool	insert_text(t_input_context *ctx, char **text)
+static bool	insert_text(t_input_context *ctx, char **text, bool filtered)
 {
 	int		limit_reached;
 	size_t	new_cursor_pos;
 	size_t	text_len;
 
-	if (!(ctx->input[ctx->cursor]) && (*text)[ft_strlen(*text) - 1] != '/')
+	if (!(ctx->input[ctx->cursor]) && !filtered
+		&& (*text)[ft_strlen(*text) - 1] != '/')
 		append_space(text);
 	text_len = ft_strlen(*text);
 	new_cursor_pos = ctx->cursor + text_len;
@@ -97,13 +98,15 @@ static bool	insert_text(t_input_context *ctx, char **text)
 	return (true);
 }
 
-bool	autocomplete_display_control(t_state *state, char ***search_result)
+bool	autocomplete_display_control(t_state *state, char ***search_result, \
+		bool filtered)
 {
 	size_t			len;
 
 	len = ft_null_array_len((void **)(*search_result));
 	if (len == 1)
-		return (insert_text(&(state->input_context), &((*search_result)[0])));
+		return (insert_text(&(state->input_context), &((*search_result)[0]), \
+				filtered));
 	else if (len)
 	{
 		len = ft_null_array_len((void **)(*search_result));
