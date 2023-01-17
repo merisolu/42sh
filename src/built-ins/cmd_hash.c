@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 13:34:40 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/17 17:32:52 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/17 18:20:47 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ int	cmd_hash(char *const *args, t_state *state)
 		i = 1 + (ft_strequ(args[1], "-r") || args[2]);
 		while (args[i])
 		{
-			if (path_exists(state) && find_binary(args[i], state, &path) == 1)
+			if (path_exists(state)
+				&& find_binary(args[i], state, &path, true) == 1)
 				hash_table_add(args[i], path, &(state->hash_table), 0);
 			else
 				print_error(
