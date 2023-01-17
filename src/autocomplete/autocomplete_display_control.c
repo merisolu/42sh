@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:02:48 by amann             #+#    #+#             */
-/*   Updated: 2023/01/16 20:17:49 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/17 13:43:46 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,19 +56,54 @@ bool	autocomplete_display_warning(t_state *state, size_t len)
  *
  */
 
+static void	append_space(char **text)
+{
+	char	*temp;
+
+	temp = ft_strnew(sizeof(char) * (ft_strlen(*text) + 1));
+	if (!temp)
+		return ;
+	ft_strcpy(temp, *text);
+	temp[ft_strlen(*text)] = ' ';
+	free(*text);
+	*text = temp;
+}
+
+static bool	insert_text(t_input_context *ctx, char **text)
+{
+	int		limit_reached;
+	size_t	new_cursor_pos;
+	size_t	text_len;
+
+	if (!(ctx->input[ctx->cursor]) && (*text)[ft_strlen(*text) - 1] != '/')
+		append_space(text);
+	text_len = ft_strlen(*text);
+	new_cursor_pos = ctx->cursor + text_len;
+	limit_reached = ft_strlen(ctx->input) + text_len >= INPUT_MAX_SIZE;
+	if (limit_reached)
+	{
+		(*text)[INPUT_MAX_SIZE - ft_strlen(ctx->input)] = '\0';
+		text_len = ft_strlen(*text);
+		new_cursor_pos = ctx->cursor + text_len;
+	}
+	ft_memmove(
+		ctx->input + ctx->cursor + text_len,
+		ctx->input + ctx->cursor,
+		ft_strlen(ctx->input + ctx->cursor));
+	ft_memcpy(ctx->input + ctx->cursor, *text, text_len);
+	ctx->cursor = new_cursor_pos;
+	if (limit_reached)
+		ft_putstr(tgetstr("bl", NULL));
+	return (true);
+}
+
 bool	autocomplete_display_control(t_state *state, char ***search_result)
 {
-	t_input_context	ic;
 	size_t			len;
 
-	ic = state->input_context;
 	len = ft_null_array_len((void **)(*search_result));
 	if (len == 1)
-	{
-		ft_strcpy(ic.input + ft_strlen(ic.input), (*search_result)[0]);
-		state->input_context.cursor = ft_strlen(state->input_context.input);
-		return (true);
-	}
+		return (insert_text(&(state->input_context), &((*search_result)[0])));
 	else if (len)
 	{
 		len = ft_null_array_len((void **)(*search_result));
