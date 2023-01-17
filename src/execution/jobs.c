@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:34:04 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/13 14:48:47 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/17 15:49:25 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,8 @@ void	jobs_cleanup_finished(t_state *state)
 		if (state->jobs[i].pids[0] == 0 || state->jobs[i].state == JOB_DONE)
 		{
 			state->jobs[i].state = JOB_EMPTY;
+			if (&(state->jobs[i]) == state->current_job)
+				state->current_job = NULL;
 			ft_memdel((void **)&(state->jobs[i].command));
 		}
 		i++;
