@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/09 12:25:20 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/17 16:54:50 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ int		cmd_type(char *const *args, t_state *state);
 
 /* cmd_unset.c */
 int		cmd_unset(char *const *args, t_state *state);
+
+int		check_path_change(char *const *args, t_state *state, int ret, bool unsetting);
 
 /* delete_var.c */
 void	delete_var(char *name, char *const **arr);
