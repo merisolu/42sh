@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:48:06 by amann             #+#    #+#             */
-/*   Updated: 2023/01/17 16:54:34 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/17 17:25:06 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,24 +107,6 @@ static bool	export_existing_variable(char *name, t_state *state)
  * When the -p flag is specified, all of the names of exported variables are
  * written to the stdout.
  */
-
-int	check_path_change(char *const *args, t_state *state, int ret, bool unsetting)
-{
-	int	i;
-
-	i = 0;
-	while (args[i])
-	{
-		if ((!unsetting && ft_strnequ(args[i], "PATH=", 5))
-			|| (unsetting && ft_strequ(args[i], "PATH")))
-		{
-			hash_table_clear(state->hash_table);
-			break ;
-		}
-		i++;
-	}
-	return (ret);
-}
 
 int	cmd_export(char *const *args, t_state *state)
 {
