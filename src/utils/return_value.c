@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 15:16:34 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/11 11:39:06 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/18 15:45:02 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,8 @@
  * Parses the given status code returned by wait() and sets
  * the last_return_value of the given state accordingly.
  */
-
 int	get_return_value_from_status(int status)
 {
-	if (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status));
 	if (WIFSTOPPED(status))
 		return (RETURN_SUSPENDED);
 	return (WEXITSTATUS(status));

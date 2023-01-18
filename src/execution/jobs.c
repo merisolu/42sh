@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:34:04 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/18 15:08:45 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/18 15:47:31 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ void	job_wait(t_job *job, bool non_blocking, t_state *state)
 	else
 		return ;
 	if (!non_blocking)
-		set_return_value(job->return_value, state);
+		set_return_value(
+			get_return_value_from_status(job->return_value), state);
 }
 
 /*
