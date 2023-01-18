@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/18 11:02:07 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/18 14:59:27 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,11 @@
 
 /* Constants */
 # define JOB_BACKGROUND_CREATED_PRINT "[%d] %d\n"
-# define JOB_STATUS_PRINT "[%d]%c\t%s\t\t%s\n"
-# define JOB_PID_STATUS_PRINT "%d\n"
-# define JOB_LONG_STATUS_PRINT "[%d]%c\t%d %s\t\t%s\n"
+
+# define JOB_PRINT_START "[%d]%c\t"
+# define JOB_PRINT_START_LONG "[%d]%c\t%d "
+# define JOB_PRINT_END "\t\t%s\n"
+# define JOB_PID_PRINT "%d\n"
 
 /* Files */
 

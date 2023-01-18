@@ -6,19 +6,31 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:00:53 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/18 11:01:38 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/18 15:04:15 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-static char	*get_state_string(t_job_state state)
+static void	print_state(t_job_state state, int value)
 {
 	if (state == JOB_RUNNING)
-		return ("Running");
-	if (state == JOB_STOPPED)
-		return ("Stopped");
-	return ("Done");
+		ft_putstr("Running");
+	else if (state == JOB_STOPPED)
+	{
+		if (WSTOPSIG(value) == SIGSTOP)
+			ft_putstr("Stopped (SIGSTOP)");
+		else if (WSTOPSIG(value) == SIGTTIN)
+			ft_putstr("Stopped (SIGTTIN)");
+		else if (WSTOPSIG(value) == SIGTTOU)
+			ft_putstr("Stopped (SIGTTOU)");
+		else
+			ft_putstr("Stopped");
+	}
+	else if (WEXITSTATUS(value) != 0)
+		ft_printf("Done (%i)", WEXITSTATUS(value));
+	else
+		ft_putstr("Done");
 }
 
 /*
@@ -37,11 +49,14 @@ void	job_print(t_job *job, char format, t_state *state)
 	if (job == state->current_job)
 		current = '+';
 	if (format == 'p')
-		ft_printf(JOB_PID_STATUS_PRINT, job->pids[0]);
-	else if (format == 'l')
-		ft_printf(JOB_LONG_STATUS_PRINT, job->id, current, job->pids[0],
-			get_state_string(job->state), job->command);
+		ft_printf(JOB_PID_PRINT, job->pids[0]);
 	else
-		ft_printf(JOB_STATUS_PRINT, job->id, current,
-			get_state_string(job->state), job->command);
+	{
+		if (format == 'l')
+			ft_printf(JOB_PRINT_START_LONG, job->id, current, job->pids[0]);
+		else
+			ft_printf(JOB_PRINT_START, job->id, current);
+		print_state(job->state, job->return_value);
+		ft_printf(JOB_PRINT_END, job->command);
+	}
 }
