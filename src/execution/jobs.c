@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:34:04 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/18 10:27:26 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/18 15:08:45 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ void	jobs_check_status(t_state *state)
 	i = 0;
 	while (i < MAX_JOBS)
 	{
-		if (state->jobs[i].state == JOB_RUNNING)
+		if (state->jobs[i].state == JOB_RUNNING
+			|| state->jobs[i].state == JOB_STOPPED)
 			job_wait(&(state->jobs[i]), true, state);
 		else if (state->jobs[i].state == JOB_CREATED)
 			state->jobs[i].state = JOB_RUNNING;
