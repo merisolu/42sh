@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:13:45 by amann             #+#    #+#             */
-/*   Updated: 2023/01/17 15:20:46 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/18 17:37:35 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,20 @@ static void	sort_options(char ***sr)
 		sort_options(sr);
 }
 
-char	**wrap_up(t_auto autocomp, bool second_tab, bool *filtered)
+char	**wrap_up(t_auto *autocomp, bool second_tab, bool *filtered)
 {
-	sort_options(autocomp.search_results);
-	*(autocomp.count) = ft_null_array_len((void **)*(autocomp.search_results));
-	if (*(autocomp.count) > 1 && !second_tab
-		&& !filter_matching(autocomp, filtered))
+	sort_options(autocomp->search_results);
+	*(autocomp->count) = ft_null_array_len(
+			(void **)*(autocomp->search_results));
+	if ((*(autocomp->count)) > 1 && !second_tab)
 	{
-		ft_free_null_array((void **)*(autocomp.search_results));
-		return (NULL);
+		if (!filter_matching(*autocomp, filtered))
+		{
+			ft_free_null_array((void **)*(autocomp->search_results));
+			return (NULL);
+		}
 	}
-	if (ft_null_array_len((void **) *(autocomp.search_results)) == 1)
-		truncate_result(autocomp);
-	return (*(autocomp.search_results));
+	if (ft_null_array_len((void **)*(autocomp->search_results)) == 1)
+		truncate_result(*autocomp);
+	return (*(autocomp->search_results));
 }

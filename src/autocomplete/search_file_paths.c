@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 17:44:44 by amann             #+#    #+#             */
-/*   Updated: 2023/01/17 15:19:54 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/18 17:09:58 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,5 @@ char	**search_file_paths(char **trimmed_input, bool second_tab, \
 	directory_search(path, &autocomp, false, false);
 	free(path);
 	free(query);
-	return (wrap_up(autocomp, second_tab, filtered));
+	return (wrap_up(&autocomp, second_tab, filtered));
 }

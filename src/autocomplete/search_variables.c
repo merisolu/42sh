@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 18:37:40 by amann             #+#    #+#             */
-/*   Updated: 2023/01/17 15:20:20 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/18 17:43:52 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ char	**search_variables(t_state *state, char **ti, bool second_tab, \
 	char	*query;
 	char	*temp;
 	bool	brackets;
+	t_auto	autocomp;
 
 	search_result = (char **) ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE);
 	if (!search_result || !ti)
@@ -54,6 +55,6 @@ char	**search_variables(t_state *state, char **ti, bool second_tab, \
 		return (NULL);
 	}
 	free(temp);
-	return (wrap_up(autocomp_setup(&query, brackets, &search_result),
-			second_tab, filtered));
+	autocomp = autocomp_setup(&query, brackets, &search_result);
+	return (wrap_up(&autocomp, second_tab, filtered));
 }

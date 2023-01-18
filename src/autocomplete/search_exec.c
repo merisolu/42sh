@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 13:03:36 by amann             #+#    #+#             */
-/*   Updated: 2023/01/17 15:19:23 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/18 17:13:04 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	**check_exec(t_auto autocomp, char **ti, bool second_tab, \
 	if (ft_strequ(*ti, "."))
 	{
 		(*(autocomp.search_results))[0] = ft_strdup("./");
-		return (wrap_up(autocomp, second_tab, filtered));
+		return (wrap_up(&autocomp, second_tab, filtered));
 	}
 	return (search_exec(autocomp.search_results, ti, second_tab, filtered));
 }
@@ -86,5 +86,5 @@ char	**search_exec(char ***sr, char **ti, bool second_tab, bool *filtered)
 	directory_search(path, &autocomp, false, true);
 	free(path);
 	free(query);
-	return (wrap_up(autocomp, second_tab, filtered));
+	return (wrap_up(&autocomp, second_tab, filtered));
 }

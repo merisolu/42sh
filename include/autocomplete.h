@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/17 15:16:45 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/18 17:10:48 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,5 +116,5 @@ int		fp_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir);
 void	truncate_result(t_auto autocomp);
 
 /* wrap_up.c */
-char	**wrap_up(t_auto autocomp, bool second_tab, bool *filtered);
+char	**wrap_up(t_auto *autocomp, bool second_tab, bool *filtered);
 #endif
