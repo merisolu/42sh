@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:34:04 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/17 15:49:25 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/18 10:27:26 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	jobs_print_changed(t_state *state)
 	{
 		if (state->jobs[i].needs_status_print)
 		{
-			job_print(&(state->jobs[i]), state);
+			job_print(&(state->jobs[i]), '\0', state);
 			state->jobs[i].needs_status_print = false;
 		}
 		i++;

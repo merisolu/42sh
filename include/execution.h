@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/13 14:44:18 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/18 11:02:07 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 /* Constants */
 # define JOB_BACKGROUND_CREATED_PRINT "[%d] %d\n"
 # define JOB_STATUS_PRINT "[%d]%c\t%s\t\t%s\n"
+# define JOB_PID_STATUS_PRINT "%d\n"
+# define JOB_LONG_STATUS_PRINT "[%d]%c\t%d %s\t\t%s\n"
 
 /* Files */
 
@@ -81,7 +83,7 @@ void	jobs_print_changed(t_state *state);
 void	jobs_cleanup_finished(t_state *state);
 
 /* jobs_print.c */
-void	job_print(t_job *job, t_state *state);
+void	job_print(t_job *job, char format, t_state *state);
 
 /* jobs_utils.c */
 pid_t	job_get_last_pid(t_job *job);

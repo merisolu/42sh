@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:00:53 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/13 14:50:32 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/18 11:01:38 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char	*get_state_string(t_job_state state)
 /*
  * Prints the given job.
  */
-void	job_print(t_job *job, t_state *state)
+void	job_print(t_job *job, char format, t_state *state)
 {
 	char	current;
 
@@ -36,6 +36,12 @@ void	job_print(t_job *job, t_state *state)
 	current = ' ';
 	if (job == state->current_job)
 		current = '+';
-	ft_printf(JOB_STATUS_PRINT, job->id, current,
-		get_state_string(job->state), job->command);
+	if (format == 'p')
+		ft_printf(JOB_PID_STATUS_PRINT, job->pids[0]);
+	else if (format == 'l')
+		ft_printf(JOB_LONG_STATUS_PRINT, job->id, current, job->pids[0],
+			get_state_string(job->state), job->command);
+	else
+		ft_printf(JOB_STATUS_PRINT, job->id, current,
+			get_state_string(job->state), job->command);
 }
