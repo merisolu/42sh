@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 18:37:40 by amann             #+#    #+#             */
-/*   Updated: 2023/01/18 17:43:52 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/19 14:47:20 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,33 +28,36 @@ static t_auto	autocomp_setup(char **query, bool brackets, char ***sr)
 	return (autocomp);
 }
 
-char	**search_variables(t_state *state, char **ti, bool second_tab, \
+static bool	c_b(char *dollar_start)
+{
+	return (*(dollar_start + 1) == '{');
+}
+
+char	**search_variables(t_state *s, char **ti, bool second_tab, \
 		bool *filtered)
 {
 	char	**search_result;
-	char	*dollar_start;
+	char	*dollar;
 	char	*query;
 	char	*temp;
-	bool	brackets;
 	t_auto	autocomp;
 
 	search_result = (char **) ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE);
 	if (!search_result || !ti)
 		return (print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	temp = find_query(*ti, ' ');
-	dollar_start = ft_strchr(temp, '$');
-	brackets = *(dollar_start + 1) == '{';
-	query = dollar_start + 1;
-	if (brackets)
-		query = dollar_start + 2;
-	if (!search_env_intern(state->env, query, &search_result, brackets)
-		|| !search_env_intern(state->intern, query, &search_result, brackets))
+	dollar = ft_strchr(temp, '$');
+	query = dollar + 1;
+	if (c_b(dollar))
+		query = dollar + 2;
+	if (!search_env_intern(s->env, query, &search_result, c_b(dollar))
+		|| !search_env_intern(s->intern, query, &search_result, c_b(dollar)))
 	{
 		free(temp);
 		ft_free_null_array((void **)search_result);
 		return (NULL);
 	}
 	free(temp);
-	autocomp = autocomp_setup(&query, brackets, &search_result);
+	autocomp = autocomp_setup(&query, c_b(dollar), &search_result);
 	return (wrap_up(&autocomp, second_tab, filtered));
 }
