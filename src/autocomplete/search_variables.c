@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 18:37:40 by amann             #+#    #+#             */
-/*   Updated: 2023/01/19 15:50:46 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/19 16:46:33 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 static t_auto	autocomp_setup(char **query, bool brackets, char ***sr)
 {
 	t_auto	autocomp;
-//	int		count;
 
-	//count = ft_null_array_len((void **)*sr);
-	autocomp.count = NULL;//&count;
+	autocomp.count = NULL;
 	autocomp.query = query;
 	autocomp.query_len = ft_strlen(*query);
 	autocomp.search_results = sr;

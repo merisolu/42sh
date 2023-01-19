@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:20:19 by amann             #+#    #+#             */
-/*   Updated: 2023/01/19 16:31:59 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/19 16:42:07 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static void	initialise_acd_struct(t_autocomplete_display *ad, \
 	ad->total_cols = (ic.width / ad->col_width);
 	if (ad->total_cols == 0)
 		ad->total_cols = 1;
-	ft_printf("len %zu tc %zu w %zu cw %zu\n", len, ad->total_cols, ic.width, ad->col_width);
+	else if (ad->total_cols > 1)
+		ad->total_cols -= 1;
 	ad->col_height = (len / ad->total_cols);
 	if (ad->col_height == 0)
 		ad->col_height = 1;
@@ -40,23 +41,19 @@ static void	display_loop(t_autocomplete_display *ad, char **search_result, \
 	size_t	count;
 
 	count = 0;
-//	ft_printf("%zu\n", len % (ad->total_cols));
 	while (count < len)
 	{
 		ft_putstr(tgoto(tgetstr("cm", NULL),
 				ad->start_x + (ad->current_col * ad->col_width),
 				ad->start_y + ad->row_counter));
 		ft_printf("%s", search_result[ad->i + ad->offset]);
-		ft_printf("%zu", ad->i + ad->offset);
 		count++;
 		(ad->current_col)++;
 		ad->i += ad->col_height;
 		if (ad->i + ad->offset >= len)
-//		if (ad->current_col == ad->total_cols)
 		{
 			(ad->offset)++;
 			ad->i = 0;
-
 			(ad->row_counter)++;
 			ad->current_col = 0;
 			ft_putendl("");
