@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:11:48 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/17 15:07:57 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/19 12:37:23 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	cmd_fg(char *const *args, t_state *state)
 	(void)args;
 	if (!state->current_job)
 		return (print_error(1, ERRTEMPLATE_DOUBLE_NAMED,
-				"fg", "current", "no such job"));
+				"fg", "current", ERR_NO_SUCH_JOB));
 	job = state->current_job;
 	if (!terminal_apply_config(&(state->orig_conf)))
 		return (print_error(1, ERRTEMPLATE_SIMPLE, ERR_TERMIOS_FAIL));

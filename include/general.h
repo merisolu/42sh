@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/19 10:49:37 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/19 12:51:33 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@
 # define ERR_STDIN_CLOSED "could not detect standard input"
 # define ERR_SIGNAL_SEND "failed to send signal to child process"
 # define ERR_FOREGROUND_GROUP "failed to set foreground process group"
+# define ERR_NO_SUCH_JOB "no such job"
 
 /* Globals */
 
