@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:34:04 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/18 15:47:31 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/19 11:22:21 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ void	job_wait(t_job *job, bool non_blocking, t_state *state)
 {
 	pid_wait(job, job_get_last_pid(job), non_blocking);
 	if (job->state == JOB_STOPPED)
+	{
+		state->previous_job = state->current_job;
 		state->current_job = job;
+	}
 	if (job->state == JOB_DONE)
 		pids_clean_up(job);
 	else
@@ -117,8 +120,10 @@ void	jobs_cleanup_finished(t_state *state)
 		if (state->jobs[i].pids[0] == 0 || state->jobs[i].state == JOB_DONE)
 		{
 			state->jobs[i].state = JOB_EMPTY;
+			if (&(state->jobs[i]) == state->previous_job)
+				state->previous_job = NULL;
 			if (&(state->jobs[i]) == state->current_job)
-				state->current_job = NULL;
+				state->current_job = state->previous_job;
 			ft_memdel((void **)&(state->jobs[i].command));
 		}
 		i++;

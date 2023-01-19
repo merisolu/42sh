@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:00:53 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/18 15:04:15 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/19 11:23:34 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	job_print(t_job *job, char format, t_state *state)
 	current = ' ';
 	if (job == state->current_job)
 		current = '+';
+	else if (job == state->previous_job)
+		current = '-';
 	if (format == 'p')
 		ft_printf(JOB_PID_PRINT, job->pids[0]);
 	else

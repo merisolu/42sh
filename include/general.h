@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/17 15:07:34 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/19 10:49:37 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,7 @@ typedef struct s_state
 	int				history_index;
 	t_hash_entry	**hash_table;
 	t_job			*current_job;
+	t_job			*previous_job;
 	t_job			jobs[MAX_JOBS];
 	pid_t			group_id;
 	int				last_return_value;
