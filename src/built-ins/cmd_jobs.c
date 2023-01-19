@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:11:48 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/18 11:08:42 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/19 14:43:53 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,31 +18,57 @@ static void	on_error(char c)
 	ft_putstr_fd("jobs: usage: jobs [-l|-p] [job_id...]\n", STDERR_FILENO);
 }
 
-int	cmd_jobs(char *const *args, t_state *state)
+static void	print_job(t_job *job, char *flags, t_state *state)
 {
-	char	flags[3];
+	if (job->state == JOB_EMPTY || job->state == JOB_CREATED
+		|| job->state == JOB_DONE)
+		return ;
+	if (ft_strchr(flags, 'p'))
+		job_print(job, 'p', state);
+	else if (ft_strchr(flags, 'l'))
+		job_print(job, 'l', state);
+	else
+		job_print(job, '\0', state);
+}
+
+static void	print_all_jobs(char *flags, t_state *state)
+{
 	size_t	i;
 	t_job	*job;
 
-	if (parse_flags(args + 1, "lp", flags, &on_error) == -1)
-		return (2);
 	i = 0;
 	while (i < MAX_JOBS)
 	{
 		job = &(state->jobs[i]);
-		if (job->state == JOB_EMPTY || job->state == JOB_CREATED
-			|| job->state == JOB_DONE)
-		{
-			i++;
-			continue ;
-		}
-		if (ft_strchr(flags, 'p'))
-			job_print(job, 'p', state);
-		else if (ft_strchr(flags, 'l'))
-			job_print(job, 'l', state);
-		else
-			job_print(job, '\0', state);
+		print_job(job, flags, state);
 		i++;
 	}
-	return (0);
+}
+
+int	cmd_jobs(char *const *args, t_state *state)
+{
+	char	flags[3];
+	t_job	*job;
+	int		i;
+	int		return_value;
+
+	i = parse_flags(args + 1, "lp", flags, &on_error);
+	if (i == -1)
+		return (2);
+	if (i == 0)
+		i++;
+	return_value = 0;
+	if (!args[i])
+		print_all_jobs(flags, state);
+	while (args[i])
+	{
+		job = job_id_to_job(args[i], state);
+		if (job)
+			print_job(job, flags, state);
+		else
+			return_value = print_error(1, ERRTEMPLATE_DOUBLE_NAMED, "jobs",
+					args[i], ERR_NO_SUCH_JOB);
+		i++;
+	}
+	return (return_value);
 }
