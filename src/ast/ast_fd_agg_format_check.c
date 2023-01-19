@@ -6,25 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 14:54:25 by amann             #+#    #+#             */
-/*   Updated: 2022/12/07 16:49:44 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/19 11:02:18 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
-
-bool	ft_isdigit_str(char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		if (!ft_isdigit(s[i]))
-			return (false);
-		i++;
-	}
-	return (true);
-}
 
 bool	ast_fd_agg_format_check(t_token **cursor)
 {

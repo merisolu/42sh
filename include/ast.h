@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:04 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/21 15:42:18 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/19 11:13:09 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ typedef struct s_token_dispatch
 typedef int	t_parse_function(t_token **cursor, t_state *state, char **result);
 
 /* Files */
-bool	ft_isdigit_str(char *s);
 
 /* ast_add_args.c */
 bool	allocate_args_array(t_ast **node, t_token **cursor);

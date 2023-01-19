@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 16:24:04 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/29 15:47:20 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/19 10:57:43 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <limits.h>
 # include <sys/stat.h>
 # include <stdarg.h>
+# include <stdbool.h>
 
 /* Buffer size for ft_get_next_line(). */
 # define GNL_BUFF_SIZE 32
@@ -136,6 +137,7 @@ char		*ft_strtoupper(char *s);
 int			ft_strisempty(const char *str);
 size_t		ft_strchrcount(char *str, char c);
 size_t		ft_strchrrcount(char *str, char c, size_t start);
+bool		ft_isdigit_str(char *s);
 
 /* Mem functions. */
 void		*ft_memset(void *b, int c, size_t len);
