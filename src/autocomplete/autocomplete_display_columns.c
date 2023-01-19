@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:20:19 by amann             #+#    #+#             */
-/*   Updated: 2023/01/19 16:42:07 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/19 17:11:44 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	initialise_acd_struct(t_autocomplete_display *ad, \
 	ad->total_cols = (ic.width / ad->col_width);
 	if (ad->total_cols == 0)
 		ad->total_cols = 1;
-	else if (ad->total_cols > 1)
+	else if (len % ad->total_cols)
 		ad->total_cols -= 1;
 	ad->col_height = (len / ad->total_cols);
 	if (ad->col_height == 0)
