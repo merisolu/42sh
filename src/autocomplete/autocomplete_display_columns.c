@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:20:19 by amann             #+#    #+#             */
-/*   Updated: 2023/01/18 17:51:40 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/19 14:09:45 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@ static void	initialise_acd_struct(t_autocomplete_display *ad, \
 {
 	ad->max_len = find_longest(*search_result);
 	ad->col_width = ad->max_len + 2;
-	ad->total_cols = ic.width / ad->col_width;
+	ad->total_cols = (ic.width / ad->col_width);
 	if (ad->total_cols == 0)
 		ad->total_cols = 1;
-	ad->col_height = (len / ad->total_cols) + 1;
-	if (len * ad->col_width < ic.width)
+	ad->col_height = (len / ad->total_cols);
+	if (ad->col_height == 0)
 		ad->col_height = 1;
+	if (len % ad->total_cols > ad->total_cols / 2)
+		ad->col_height += 1;
 	ad->start_x = ic.input_start_x - 1;
 	ad->start_y = ic.input_start_y - 1;
 	ad->current_col = 0;
@@ -46,7 +48,7 @@ static void	display_loop(t_autocomplete_display *ad, char **search_result, \
 		count++;
 		(ad->current_col)++;
 		ad->i += ad->col_height;
-		if (ad->i >= len)
+		if (ad->i + ad->offset >= len)
 		{
 			ft_putendl("");
 			(ad->offset)++;
@@ -55,6 +57,8 @@ static void	display_loop(t_autocomplete_display *ad, char **search_result, \
 			ad->current_col = 0;
 		}
 	}
+	if (ad->current_col != 0)
+		ft_putendl("");
 }
 
 void	autocomplete_display_columns(char **search_result, size_t len, \
@@ -68,10 +72,5 @@ void	autocomplete_display_columns(char **search_result, size_t len, \
 	save_cursor(&ic);
 	initialise_acd_struct(&ad, ic, &search_result, len);
 	display_loop(&ad, search_result, len);
-//	if (ad.start_y + ad.col_height > ic.height)
-	ft_putendl("");
-//	ft_putstr(tgoto(tgetstr("cm", NULL),
-//			ad.start_x,
-//			ad.start_y + ad.col_height));
 	save_cursor(&(state->input_context));
 }
