@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 13:23:36 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/09 13:59:26 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/17 18:17:41 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static bool	start_editor(char *editor, t_state *state)
 	};
 
 	args[0] = editor;
-	find_binary(editor, state, &path);
+	find_binary(editor, state, &path, true);
 	if (path == NULL)
 		return (print_error_bool(
 				false, ERRTEMPLATE_NAMED, "fc", "no command found"));

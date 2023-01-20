@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/17 15:10:13 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/20 15:44:24 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,9 @@ static void	update_hash_table(char *const *args, t_state *state)
 	if (built_in_get(args[0])
 		|| hash_table_get_path(args[0], state->hash_table))
 		return ;
-	if (!env_get("PATH", state->env)
-		|| !env_get("PATH", state->intern))
+	if (!path_exists(state))
 		return ;
-	if (find_binary(args[0], state, &path) == 1)
+	if (find_binary(args[0], state, &path, true) == 1)
 		hash_table_add(args[0], path, &(state->hash_table), 1);
 }
 
@@ -67,7 +66,7 @@ t_ast_context *ast, bool forking)
 	}
 	if (ft_strchr(args[0], '/') || (args[0][0] == '.'))
 		return (exit_if_forking(forking, execute_absolute_path(args, state)));
-	return_value = find_binary(args[0], state, &path);
+	return_value = find_binary(args[0], state, &path, false);
 	if (return_value == 0)
 		return (exit_if_forking(forking, print_error(RETURN_COMMAND_NOT_FOUND,
 					ERRTEMPLATE_NAMED, args[0], ERR_COM_NOT_FOUND)));

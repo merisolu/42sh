@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2023/01/20 14:21:35 by amann            ###   ########.fr        #
+#    Updated: 2023/01/20 15:46:47 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ BUILT_INS_FILES = built_ins.c built_ins_flags.c cmd_cd.c cmd_echo.c \
 				cmd_fc.c cmd_fc_editor.c \
 				cmd_exit.c cmd_execute_script.c cmd_true_false.c \
 				cmd_type.c cmd_set.c cmd_export.c cmd_unset.c delete_var.c \
-				export_set.c print_exported.c cmd_hash.c \
+				export_set.c print_exported.c cmd_hash.c check_path_change.c \
 				cmd_jobs.c cmd_fg.c cmd_bg.c
 
 CLEANUP_DIR = cleanup

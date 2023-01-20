@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 14:52:32 by amann             #+#    #+#             */
-/*   Updated: 2023/01/02 17:04:02 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/17 16:52:40 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,5 @@ int	cmd_unset(char *const *args, t_state *state)
 		delete_var(name, &(state->intern));
 		i++;
 	}
-	return (ret);
+	return (check_path_change(args, state, ret, true));
 }

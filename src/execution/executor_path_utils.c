@@ -6,11 +6,29 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:27:48 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/05 15:25:20 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/17 18:15:35 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+
+/*
+ * Returns true if a path exists, either in env or internal variables.
+ *
+ * Nothing fancy, but we need to check this in a couple of places.
+ */
+
+bool	path_exists(t_state *state)
+{
+	char	*path;
+
+	path = env_get("PATH", state->env);
+	if (!path)
+		path = env_get("PATH", state->intern);
+	if (!path)
+		return (false);
+	return (true);
+}
 
 /*
  * Checks whether or not the given path is OK for execution. Returns an integer
@@ -40,7 +58,7 @@ int	check_path_validity(char *path)
  * PATH in env. Returns -1 on malloc fail, 0 on not found, 1 on success.
  */
 
-int	find_binary(char *name, t_state *state, char **result)
+int	find_binary(char *name, t_state *state, char **result, bool silent)
 {
 	int		return_value;
 	char	*hash_table_result;
@@ -53,6 +71,9 @@ int	find_binary(char *name, t_state *state, char **result)
 			return (print_error(-1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 		return (1);
 	}
-	return_value = bin_env_find(name, state, result);
+	if (silent)
+		return_value = bin_env_find_silent(name, state, result);
+	else
+		return_value = bin_env_find(name, state, result);
 	return (return_value);
 }

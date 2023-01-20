@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:48:06 by amann             #+#    #+#             */
-/*   Updated: 2023/01/04 14:49:47 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/17 17:25:06 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,5 +133,5 @@ int	cmd_export(char *const *args, t_state *state)
 			ret = 1;
 		i++;
 	}
-	return (ret);
+	return (check_path_change(args, state, ret, false));
 }

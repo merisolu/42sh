@@ -6,11 +6,27 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:15:30 by amann             #+#    #+#             */
-/*   Updated: 2023/01/03 14:27:49 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/17 16:58:44 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+
+static int	handle_vars(t_ast_context *ctx, t_state *state)
+{
+	if (!ctx->node->left->arg_list[0] && ctx->node->left->var_list)
+	{
+		if (!set_internal_variables(ctx->node->left->var_list, state))
+			return (-1);
+		check_path_change(ctx->node->left->var_list, state, 1, false);
+	}
+	else if (ctx->node->left->arg_list[0] && ctx->node->left->var_list)
+	{
+		if (!remove_temp_vars_from_env(ctx, state))
+			return (-1);
+	}
+	return (0);
+}
 
 static int	execute_sc_helper(t_ast_context *ctx, t_state *state, pid_t *result)
 {
@@ -27,16 +43,8 @@ static int	execute_sc_helper(t_ast_context *ctx, t_state *state, pid_t *result)
 		*result = 0;
 		handle_redirects(ctx->node->right, ctx->redirect);
 	}
-	if (!ctx->node->left->arg_list[0] && ctx->node->left->var_list)
-	{
-		if (!set_internal_variables(ctx->node->left->var_list, state))
-			return (-1);
-	}
-	else if (ctx->node->left->arg_list[0] && ctx->node->left->var_list)
-	{
-		if (!remove_temp_vars_from_env(ctx, state))
-			return (-1);
-	}
+	if (handle_vars(ctx, state) == -1)
+		return (-1);
 	return (0);
 }
 
