@@ -6,13 +6,13 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:18:43 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/17 15:45:32 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/20 14:20:57 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "built_ins.h"
 
-static const t_cmd_dispatch	*get_dispatch(void)
+const t_cmd_dispatch	*get_built_in_dispatch(void)
 {
 	static const t_cmd_dispatch	dispatch_table[] = {
 	{"cd", &cmd_cd},
@@ -40,7 +40,7 @@ char	*built_in_search(const char *partial_name)
 	const t_cmd_dispatch	*dispatch_table;
 	size_t					i;
 
-	dispatch_table = get_dispatch();
+	dispatch_table = get_built_in_dispatch();
 	i = 0;
 	while (dispatch_table[i].run != NULL)
 	{
@@ -78,7 +78,7 @@ t_cmd	*built_in_get(const char *name)
 
 	if (ft_strnequ(name, "./", 2) && check_magic_num(name + 2))
 		return (&cmd_execute_script);
-	dispatch_table = get_dispatch();
+	dispatch_table = get_built_in_dispatch();
 	i = 0;
 	while (dispatch_table[i].run != NULL)
 	{
