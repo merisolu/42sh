@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2023/01/20 12:48:56 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/20 15:02:47 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 	int		i;
 	t_job	*job;
 
-	if (!ast)
-		return ;
 	setup_ast_list_execution(ast, &redir, &pipes, state);
 	i = 0;
 	while (ast[i] != NULL && redir)
@@ -82,9 +80,11 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 		job->needs_status_print = ast[i]->amp;
 		if (!ast[i]->amp)
 		{
-			job_wait(job, false, state);
 			ioctl(STDIN_FILENO, TIOCSPGRP, &(state->group_id));
+			job_wait(job, ast[i]->amp, state);
 		}
+		else
+			job->state = JOB_RUNNING;
 		handle_logical_ops(ast, state, &i);
 	}
 	cleanup_ast_list(ast, redir, &pipes, state);
@@ -93,6 +93,7 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 void	tokenize_and_execute(t_state *state)
 {
 	t_tokenizer	tokenizer;
+	t_ast		**ast_list;
 
 	if (ft_strisempty(state->input_context.input))
 	{
@@ -108,8 +109,10 @@ void	tokenize_and_execute(t_state *state)
 	state->input_context.cursor = ft_strlen(state->input_context.input);
 	move_cursor_to_saved_position(&(state->input_context));
 	ft_putchar('\n');
-	execute_ast_list(construct_ast_list(
-			tokenize(state->input_context.input, &tokenizer)), state);
+	ast_list = construct_ast_list(
+			tokenize(state->input_context.input, &tokenizer));
+	if (ast_list)
+		execute_ast_list(ast_list, state);
 	history_store(state->input_context.input, state, 0);
 	clear_input(&(state->input_context));
 	if (!terminal_apply_config(&(state->input_conf)))

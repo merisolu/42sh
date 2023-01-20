@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 12:20:30 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/20 12:58:55 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/20 15:00:24 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,16 @@ static void	handle_size_change(t_state *state)
 	display(&(state->input_context), 1);
 }
 
+static void	handle_child(t_state *state)
+{
+	jobs_check_status(state);
+}
+
 void	check_signal(t_state *state)
 {
-	if (g_last_signal == SIGINT)
+	if (g_last_signal == SIGCHLD)
+		handle_child(state);
+	else if (g_last_signal == SIGINT)
 		handle_interrupt(state);
 	else if (g_last_signal == SIGWINCH)
 		handle_size_change(state);
