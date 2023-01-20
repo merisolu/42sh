@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/20 12:47:03 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/20 12:59:27 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include "ast.h"
 # include "history.h"
 # include "terminal.h"
+# include "signals.h"
 # include "debug.h"
 
 /* Constants */

@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2023/01/17 15:45:23 by jumanner         ###   ########.fr        #
+#    Updated: 2023/01/20 12:58:06 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,7 +89,7 @@ SETUP_DIR = setup
 SETUP_FILES = setup.c setup_termcaps.c setup_input.c setup_fd.c
 
 SIGNALS_DIR = signals
-SIGNALS_FILES = signal.c
+SIGNALS_FILES = signal.c signal_handlers.c
 
 TERMINAL_DIR = terminal
 TERMINAL_FILES = terminal_configuration.c

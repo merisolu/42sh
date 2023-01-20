@@ -6,18 +6,13 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 12:20:30 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/17 15:08:39 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/20 12:58:55 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "signals.h"
 
 extern int	g_last_signal;
-
-static void	set_signal_int(int signal)
-{
-	g_last_signal = signal;
-}
 
 static void	handle_interrupt(t_state *state)
 {
@@ -33,15 +28,6 @@ static void	handle_size_change(t_state *state)
 {
 	update_window_size(&(state->input_context));
 	display(&(state->input_context), 1);
-}
-
-void	set_signal_handling(void)
-{
-	signal(SIGINT, set_signal_int);
-	signal(SIGWINCH, set_signal_int);
-	signal(SIGTSTP, SIG_IGN);
-	signal(SIGTTIN, SIG_IGN);
-	signal(SIGTTOU, SIG_IGN);
 }
 
 void	check_signal(t_state *state)
