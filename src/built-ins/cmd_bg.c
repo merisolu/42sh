@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 15:36:17 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/20 11:45:28 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/20 12:55:16 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,5 @@ int	cmd_bg(char *const *args, t_state *state)
 	if (killpg(job->pids[0], SIGCONT) == -1)
 		return (print_error(1, ERRTEMPLATE_SIMPLE, ERR_SIGNAL_SEND));
 	job->state = JOB_RUNNING;
-	job_wait(job, false, state);
 	return (0);
 }
