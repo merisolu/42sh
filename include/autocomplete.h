@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/18 17:10:48 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/20 13:46:15 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,10 @@ bool	autocomplete_display_control(t_state *state, char ***search_result, \
 /* autocomplete_display_columns.c */
 void	autocomplete_display_columns(char **search_result, size_t len, \
 		t_state *state);
+
+/* autocomplete_position_cursor.c */
+void	cursor_to_end(t_input_context *ic, size_t *orig_cursor);
+void	cursor_to_orig(t_input_context *ic, size_t orig_cursor);
 
 /* check_result_is_dir.c */
 bool	check_result_is_dir(char *path, t_auto *autocomp, \

@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:02:48 by amann             #+#    #+#             */
-/*   Updated: 2023/01/17 15:14:54 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/20 13:50:21 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,13 @@
 bool	autocomplete_display_warning(t_state *state, size_t len)
 {
 	char	buffer[BUF_SIZE + 1];
+	size_t	orig_cursor;
 
+	cursor_to_end(&(state->input_context), &orig_cursor);
 	ft_bzero(&buffer, BUF_SIZE + 1);
 	ft_dprintf(
 		STDOUT_FILENO,
-		"\nDisplay all %d possibilities? (y or n) ",
+		"Display all %d possibilities? (y or n) ",
 		len);
 	while (1)
 	{
@@ -31,10 +33,11 @@ bool	autocomplete_display_warning(t_state *state, size_t len)
 			ft_putendl("");
 			if (g_last_signal == SIGINT)
 				g_last_signal = 0;
-			save_cursor(&(state->input_context));
+			cursor_to_orig(&(state->input_context), orig_cursor);
 			return (false);
 		}
 	}
+	cursor_to_orig(&(state->input_context), orig_cursor);
 	return (true);
 }
 

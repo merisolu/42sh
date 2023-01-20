@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:20:19 by amann             #+#    #+#             */
-/*   Updated: 2023/01/19 17:11:44 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/20 13:51:17 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,13 @@ static void	display_loop(t_autocomplete_display *ad, char **search_result, \
 void	autocomplete_display_columns(char **search_result, size_t len, \
 		t_state *state)
 {
-	t_input_context			ic;
+	t_input_context			*ic;
 	t_autocomplete_display	ad;
+	size_t					orig_cursor;
 
-	ic = state->input_context;
-	ft_putendl("");
-	save_cursor(&ic);
-	initialise_acd_struct(&ad, ic, &search_result, len);
+	ic = &(state->input_context);
+	cursor_to_end(ic, &orig_cursor);
+	initialise_acd_struct(&ad, *ic, &search_result, len);
 	display_loop(&ad, search_result, len);
-	save_cursor(&(state->input_context));
+	cursor_to_orig(ic, orig_cursor);
 }
