@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2023/01/17 15:26:51 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/20 12:48:56 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_state *state)
 	ast_free(&ast);
 }
 
-static bool	execute_ast(t_ast_context *ctx, t_job *job, t_state *state)
+static bool	execute_ast(t_ast_context *ctx, t_state *state)
 {
 	bool	result;
 	pid_t	pid;
@@ -32,20 +32,20 @@ static bool	execute_ast(t_ast_context *ctx, t_job *job, t_state *state)
 		pid = execute_simple_command(ctx, state);
 		if (ctx->node->right)
 			reset_io(ctx->redirect);
-		if (pid == -1 || !pids_add(pid, job))
+		if (pid == -1 || !pids_add(pid, ctx->job))
 			return (false);
 		return (true);
 	}
 	else if (ctx->node->node_type == AST_PIPE_SEQUENCE)
 	{
-		result = execute_ast(&(t_ast_context){ctx->node->left, ctx->redirect,
-				ctx->pipes, ctx->background, !ctx->node->right}, job, state);
+		result = execute_ast(&(t_ast_context){ctx->node->left, ctx->redirect, \
+			ctx->pipes, ctx->background, ctx->job, !ctx->node->right}, state);
 		if (result && ctx->node->right)
 			result = execute_ast(
 					&(t_ast_context){ctx->node->right, ctx->redirect,
-					ctx->pipes, ctx->background, (!ctx->node->right
+					ctx->pipes, ctx->background, ctx->job, (!ctx->node->right
 						|| ctx->node->right->node_type == AST_SIMPLE_COMMAND)},
-					job, state);
+					state);
 	}
 	return (result);
 }
@@ -77,7 +77,7 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 		job = jobs_create(state);
 		if (!job || !parse_expansions(ast[i], state)
 			|| !execute_ast(&(t_ast_context){ast[i], redir, &pipes, \
-			ast[i]->amp, 0}, job, state))
+			ast[i]->amp, job, 0}, state))
 			break ;
 		job->needs_status_print = ast[i]->amp;
 		if (!ast[i]->amp)
