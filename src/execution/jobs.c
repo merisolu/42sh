@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:34:04 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/23 14:50:38 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/23 15:09:08 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ t_job	*jobs_create(t_state *state)
 		state->jobs[i].id = i + 1;
 		ft_bzero(&(state->jobs[i].pids), sizeof(pid_t) * MAX_PIDS);
 		state->jobs[i].state = JOB_CREATED;
-		state->previous_job = state->current_job;
-		state->current_job = &(state->jobs[i]);
+		job_current_update(&(state->jobs[i]), state);
 		return (&(state->jobs[i]));
 	}
 	print_error(0, ERRTEMPLATE_SIMPLE, "max job count reached");
@@ -58,10 +57,7 @@ void	job_wait(t_job *job, bool non_blocking, t_state *state)
 {
 	pid_wait(job, job_get_last_pid(job), non_blocking);
 	if (job->state == JOB_STOPPED)
-	{
-		state->previous_job = state->current_job;
-		state->current_job = job;
-	}
+		job_current_update(job, state);
 	if (job->state == JOB_DONE)
 		pids_clean_up(job);
 	else

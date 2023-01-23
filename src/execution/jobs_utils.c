@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:39:28 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/23 15:02:34 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/23 15:10:03 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,4 +106,10 @@ t_job	*job_id_to_job(char *id, t_state *state)
 	if (id[1] == '?')
 		return (find_job_with_command(id + 2, true, state));
 	return (find_job_with_command(id + 1, false, state));
+}
+
+void	job_current_update(t_job *new_current, t_state *state)
+{
+	state->previous_job = state->current_job;
+	state->current_job = new_current;
 }
