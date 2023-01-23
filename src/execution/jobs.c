@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:34:04 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/19 11:22:21 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/23 14:50:38 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ t_job	*jobs_create(t_state *state)
 		state->jobs[i].id = i + 1;
 		ft_bzero(&(state->jobs[i].pids), sizeof(pid_t) * MAX_PIDS);
 		state->jobs[i].state = JOB_CREATED;
+		state->previous_job = state->current_job;
+		state->current_job = &(state->jobs[i]);
 		return (&(state->jobs[i]));
 	}
 	print_error(0, ERRTEMPLATE_SIMPLE, "max job count reached");
