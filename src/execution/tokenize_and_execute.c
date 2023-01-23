@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2023/01/23 11:39:58 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/23 13:38:25 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 			ioctl(STDIN_FILENO, TIOCSPGRP, &(state->group_id));
 		}
 		else
-			job->state = JOB_RUNNING;
+			job->state = JOB_CREATED;
 		handle_logical_ops(ast, state, &i);
 	}
 	cleanup_ast_list(ast, redir, &pipes, state);

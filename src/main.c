@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/23 11:47:33 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/23 13:46:02 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static void	finish_execution(t_state *state)
 {
 	if (g_last_signal != 0 && state->last_return_value > 128)
 		ft_putchar('\n');
+	jobs_print_changed(state);
+	jobs_check_status(state);
 	jobs_print_changed(state);
 	save_cursor(&(state->input_context));
 	display(&(state->input_context), 1);
