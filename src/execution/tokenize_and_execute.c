@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2023/01/20 15:02:47 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/23 11:39:58 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 		job->needs_status_print = ast[i]->amp;
 		if (!ast[i]->amp)
 		{
+			job_wait(job, false, state);
 			ioctl(STDIN_FILENO, TIOCSPGRP, &(state->group_id));
-			job_wait(job, ast[i]->amp, state);
 		}
 		else
 			job->state = JOB_RUNNING;
