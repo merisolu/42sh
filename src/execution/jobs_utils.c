@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:39:28 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/20 12:51:42 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/23 11:30:21 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ pid_t	process_group_set(pid_t pid, pid_t job_first_pid, bool foreground)
 		target = job_first_pid;
 	else
 		target = pid;
-	if (setpgid(pid, job_first_pid) == -1)
+	if (setpgid(pid, target) == -1)
 		return (-1);
 	if (foreground)
 	{
