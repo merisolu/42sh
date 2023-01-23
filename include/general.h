@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/19 12:53:03 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:16:55 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,6 +280,7 @@ typedef struct s_ast_context
 	t_redir	**redirect;
 	t_pipes	*pipes;
 	bool	background;
+	t_job	*job;
 	int		is_at_end;
 }	t_ast_context;
 

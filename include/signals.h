@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:18 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/20 15:28:02 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/20 13:00:00 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@
 
 /* signal.c */
 void	check_signal(t_state *state);
+
+/* signal_handlers.c */
 void	set_signal_handling(void);
+void	reset_signal_handlers(void);
 
 #endif

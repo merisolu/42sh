@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 15:36:17 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/19 15:06:30 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/20 12:55:16 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ int	cmd_bg(char *const *args, t_state *state)
 		job = job_id_to_job(args[1], state);
 		if (!job)
 			return (print_error(1, ERRTEMPLATE_DOUBLE_NAMED,
-					"fg", args[1], ERR_NO_SUCH_JOB));
+					"bg", args[1], ERR_NO_SUCH_JOB));
 	}
 	else
 	{
 		if (!state->current_job)
 			return (print_error(1, ERRTEMPLATE_DOUBLE_NAMED,
-					"fg", "current", ERR_NO_SUCH_JOB));
+					"bg", "current", ERR_NO_SUCH_JOB));
 		job = state->current_job;
 	}
 	if (!terminal_apply_config(&(state->orig_conf)))
@@ -35,6 +35,5 @@ int	cmd_bg(char *const *args, t_state *state)
 	if (killpg(job->pids[0], SIGCONT) == -1)
 		return (print_error(1, ERRTEMPLATE_SIMPLE, ERR_SIGNAL_SEND));
 	job->state = JOB_RUNNING;
-	job_wait(job, false, state);
 	return (0);
 }

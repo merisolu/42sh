@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/20 15:45:03 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/23 11:50:54 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,19 +78,19 @@ int						export_set(const char *name, const char *value, \
 int						cmd_hash(char *const *args, t_state *state);
 
 /* cmd_jobs.c */
-int		cmd_jobs(char *const *args, t_state *state);
+int						cmd_jobs(char *const *args, t_state *state);
 
 /* cmd_fg.c */
-int		cmd_fg(char *const *args, t_state *state);
+int						cmd_fg(char *const *args, t_state *state);
 
 /* cmd_bg.c */
-int		cmd_bg(char *const *args, t_state *state);
+int						cmd_bg(char *const *args, t_state *state);
 
 /* cmd_fc.c */
 int						cmd_fc(char *const *args, t_state *state);
 
 /* cmd_fc_editor.c */
-bool	cmd_fc_history_edit(char *editor, t_state *state);
+bool					cmd_fc_history_edit(char *editor, t_state *state);
 
 /* cmd_exit.c */
 int						cmd_exit(char *const *args, t_state *state);
@@ -112,8 +112,8 @@ int						cmd_type(char *const *args, t_state *state);
 int						cmd_unset(char *const *args, t_state *state);
 
 /* check_path_change.c */
-int		check_path_change(char *const *args, t_state *state, int ret, \
-		bool unset);
+int						check_path_change(char *const *args, t_state *state, \
+						int ret, bool unset);
 
 /* delete_var.c */
 void					delete_var(char *name, char *const **arr);

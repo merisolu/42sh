@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2023/01/17 15:26:51 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/23 11:39:58 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_state *state)
 	ast_free(&ast);
 }
 
-static bool	execute_ast(t_ast_context *ctx, t_job *job, t_state *state)
+static bool	execute_ast(t_ast_context *ctx, t_state *state)
 {
 	bool	result;
 	pid_t	pid;
@@ -32,20 +32,20 @@ static bool	execute_ast(t_ast_context *ctx, t_job *job, t_state *state)
 		pid = execute_simple_command(ctx, state);
 		if (ctx->node->right)
 			reset_io(ctx->redirect);
-		if (pid == -1 || !pids_add(pid, job))
+		if (pid == -1 || !pids_add(pid, ctx->job))
 			return (false);
 		return (true);
 	}
 	else if (ctx->node->node_type == AST_PIPE_SEQUENCE)
 	{
-		result = execute_ast(&(t_ast_context){ctx->node->left, ctx->redirect,
-				ctx->pipes, ctx->background, !ctx->node->right}, job, state);
+		result = execute_ast(&(t_ast_context){ctx->node->left, ctx->redirect, \
+			ctx->pipes, ctx->background, ctx->job, !ctx->node->right}, state);
 		if (result && ctx->node->right)
 			result = execute_ast(
 					&(t_ast_context){ctx->node->right, ctx->redirect,
-					ctx->pipes, ctx->background, (!ctx->node->right
+					ctx->pipes, ctx->background, ctx->job, (!ctx->node->right
 						|| ctx->node->right->node_type == AST_SIMPLE_COMMAND)},
-					job, state);
+					state);
 	}
 	return (result);
 }
@@ -68,8 +68,6 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 	int		i;
 	t_job	*job;
 
-	if (!ast)
-		return ;
 	setup_ast_list_execution(ast, &redir, &pipes, state);
 	i = 0;
 	while (ast[i] != NULL && redir)
@@ -77,7 +75,7 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 		job = jobs_create(state);
 		if (!job || !parse_expansions(ast[i], state)
 			|| !execute_ast(&(t_ast_context){ast[i], redir, &pipes, \
-			ast[i]->amp, 0}, job, state))
+			ast[i]->amp, job, 0}, state))
 			break ;
 		job->needs_status_print = ast[i]->amp;
 		if (!ast[i]->amp)
@@ -85,6 +83,8 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 			job_wait(job, false, state);
 			ioctl(STDIN_FILENO, TIOCSPGRP, &(state->group_id));
 		}
+		else
+			job->state = JOB_RUNNING;
 		handle_logical_ops(ast, state, &i);
 	}
 	cleanup_ast_list(ast, redir, &pipes, state);
@@ -93,6 +93,7 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 void	tokenize_and_execute(t_state *state)
 {
 	t_tokenizer	tokenizer;
+	t_ast		**ast_list;
 
 	if (ft_strisempty(state->input_context.input))
 	{
@@ -108,8 +109,10 @@ void	tokenize_and_execute(t_state *state)
 	state->input_context.cursor = ft_strlen(state->input_context.input);
 	move_cursor_to_saved_position(&(state->input_context));
 	ft_putchar('\n');
-	execute_ast_list(construct_ast_list(
-			tokenize(state->input_context.input, &tokenizer)), state);
+	ast_list = construct_ast_list(
+			tokenize(state->input_context.input, &tokenizer));
+	if (ast_list)
+		execute_ast_list(ast_list, state);
 	history_store(state->input_context.input, state, 0);
 	clear_input(&(state->input_context));
 	if (!terminal_apply_config(&(state->input_conf)))

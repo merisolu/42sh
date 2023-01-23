@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/20 15:44:44 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/23 11:47:59 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include "ast.h"
 # include "history.h"
 # include "terminal.h"
+# include "signals.h"
 # include "debug.h"
 
 /* Constants */
@@ -93,6 +94,7 @@ void	job_print(t_job *job, char format, t_state *state);
 /* jobs_utils.c */
 pid_t	job_get_last_pid(t_job *job);
 t_job	*job_id_to_job(char *id, t_state *state);
+pid_t	process_group_set(pid_t pid, pid_t job_first_pid, bool foreground);
 
 /* pipes.c */
 void	pipe_reset(int pipe[2]);

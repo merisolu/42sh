@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/20 15:44:24 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/23 11:47:43 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ t_ast_context *ast, bool forking)
 pid_t	execute(char *const *args, t_state *state, t_ast_context *ast)
 {
 	bool	forking;
-	pid_t	fork_result;
+	pid_t	pid;
+	pid_t	gid;
 
 	if (!update_env_execution(state, ast))
 		return (-1);
@@ -91,18 +92,18 @@ pid_t	execute(char *const *args, t_state *state, t_ast_context *ast)
 	update_hash_table(args, state);
 	if (forking)
 	{
-		fork_result = start_fork(ast);
-		if (fork_result == -1)
+		pid = start_fork(ast);
+		if (pid == -1)
 			return (-1);
-		else if (fork_result != 0)
+		else if (pid != 0)
 		{
-			setpgid(fork_result, fork_result);
-			if (!ast->background)
-				ioctl(STDIN_FILENO, TIOCSPGRP, &fork_result);
-			return (fork_result);
+			gid = process_group_set(pid, ast->job->pids[0], (!ast->background));
+			if (gid == -1)
+				return (-1);
+			return (pid);
 		}
-		fork_result = getpid();
-		setpgid(fork_result, fork_result);
+		if (process_group_set(getpid(), ast->job->pids[0], false) == -1)
+			return (-1);
 	}
 	return (execute_child(args, state, ast, forking));
 }
