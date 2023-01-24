@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:11:48 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/24 11:31:19 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/24 11:51:18 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	cmd_jobs(char *const *args, t_state *state)
 	while (args[i])
 	{
 		job = job_id_to_job(args[i], state);
-		if (job)
+		if (job && job->state != JOB_CREATED)
 			print_job(job, flags, state);
 		else
 			return_value = print_error(1, ERRTEMPLATE_DOUBLE_NAMED, "jobs",
