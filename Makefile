@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2023/01/23 15:02:59 by jumanner         ###   ########.fr        #
+#    Updated: 2023/01/24 10:54:59 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,7 +70,8 @@ EXECUTION_FILES = bin.c executor.c executor_path_utils.c fork.c pids.c pipes.c \
 					copy_orig_fd.c execute_redirection.c \
 					set_internal_variables.c execute_simple_command.c \
 					remove_temp_vars.c update_env_execution.c \
-					jobs.c jobs_print.c jobs_utils.c process_group.c
+					jobs.c jobs_print.c jobs_find.c jobs_utils.c \
+					process_group.c
 
 EXPANSION_DIR = expansion
 EXPANSION_FILES = expand_tilde.c expand_variables.c expand_node.c \

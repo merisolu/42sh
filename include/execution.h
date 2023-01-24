@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/23 15:08:17 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/24 10:52:57 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,10 @@ void	job_print(t_job *job, char format, t_state *state);
 
 /* jobs_utils.c */
 pid_t	job_get_last_pid(t_job *job);
-t_job	*job_id_to_job(char *id, t_state *state);
 void	job_current_update(t_job *new_current, t_state *state);
+
+/* jobs_print.c */
+t_job	*job_id_to_job(char *id, t_state *state);
 
 /* process_group.c */
 pid_t	process_group_set(pid_t pid, pid_t job_first_pid, bool foreground);
