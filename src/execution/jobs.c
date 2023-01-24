@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:34:04 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/23 15:36:33 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/24 10:38:20 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ t_job	*jobs_create(t_state *state)
 		state->jobs[i].id = i + 1;
 		ft_bzero(&(state->jobs[i].pids), sizeof(pid_t) * MAX_PIDS);
 		state->jobs[i].state = JOB_CREATED;
-		job_current_update(&(state->jobs[i]), state);
 		return (&(state->jobs[i]));
 	}
 	print_error(0, ERRTEMPLATE_SIMPLE, "max job count reached");
@@ -120,8 +119,8 @@ void	jobs_cleanup_finished(t_state *state)
 			state->jobs[i].state = JOB_EMPTY;
 			if (&(state->jobs[i]) == state->current_job)
 				job_current_update(state->previous_job, state);
-			if (&(state->jobs[i]) == state->previous_job)
-				state->previous_job = NULL;
+			else if (&(state->jobs[i]) == state->previous_job)
+				job_find_new_previous_job(state);
 			ft_memdel((void **)&(state->jobs[i].command));
 		}
 		i++;

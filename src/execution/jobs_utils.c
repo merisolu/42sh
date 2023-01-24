@@ -46,3 +46,20 @@ void	job_execute(t_job *job, bool background, t_state *state)
 		job_current_update(job, state);
 	}
 }
+
+void	job_find_new_previous_job(t_state *state)
+{
+	int	i;
+
+	i = MAX_JOBS - 1;
+	while (i >= 0)
+	{
+		if (state->jobs[i].state != JOB_EMPTY
+			&& state->current_job != &(state->jobs[i]))
+		{
+			state->previous_job = &(state->jobs[i]);
+			return ;
+		}
+		i--;
+	}
+}

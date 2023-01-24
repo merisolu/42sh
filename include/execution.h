@@ -95,6 +95,7 @@ void	job_print(t_job *job, char format, t_state *state);
 pid_t	job_get_last_pid(t_job *job);
 void	job_current_update(t_job *new_current, t_state *state);
 void	job_execute(t_job *job, bool background, t_state *state);
+void	job_find_new_previous_job(t_state *state);
 
 /* jobs_print.c */
 t_job	*job_id_to_job(char *id, t_state *state);
