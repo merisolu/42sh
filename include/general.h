@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/20 11:16:55 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/24 13:55:51 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@
 # define ERR_FOREGROUND_GROUP "failed to set foreground process group"
 # define ERR_NO_SUCH_JOB "no such job"
 # define ERR_AMBIGUOUS_JOB_SPEC "ambiguous job spec"
+# define ERR_NO_JOB_CONTROL "no job control"
 
 /* Globals */
 
