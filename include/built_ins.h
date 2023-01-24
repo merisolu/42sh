@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/23 11:50:54 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/24 14:22:27 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,9 @@ int						cmd_fg(char *const *args, t_state *state);
 
 /* cmd_bg.c */
 int						cmd_bg(char *const *args, t_state *state);
+
+/* fg_bg_utils.c */
+t_job					*get_job(char *const *args, t_state *state);
 
 /* cmd_fc.c */
 int						cmd_fc(char *const *args, t_state *state);
