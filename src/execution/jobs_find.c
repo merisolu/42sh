@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 10:51:58 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/24 10:52:32 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/24 14:39:09 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static t_job	*find_job_with_id(int id, t_state *state)
 {
 	size_t	i;
 
+	if (id <= 0)
+		return (NULL);
 	i = 0;
 	while (i < MAX_JOBS)
 	{
