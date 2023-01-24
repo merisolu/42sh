@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:00:53 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/19 11:23:34 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/24 15:02:14 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static void	print_state(t_job_state state, int value)
 		else
 			ft_putstr("Stopped");
 	}
+	else if (WIFSIGNALED(value) != 0)
+		ft_printf("Terminated (%i)", WTERMSIG(value));
 	else if (WEXITSTATUS(value) != 0)
 		ft_printf("Done (%i)", WEXITSTATUS(value));
 	else
