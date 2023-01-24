@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:39:28 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/24 10:58:01 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/24 11:11:04 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,19 @@ void	job_current_update(t_job *new_current, t_state *state)
 {
 	state->previous_job = state->current_job;
 	state->current_job = new_current;
+}
+
+void	job_execute(t_job *job, bool background, t_state *state)
+{
+	job->needs_status_print = background;
+	if (!background)
+	{
+		job_wait(job, false, state);
+		ioctl(STDIN_FILENO, TIOCSPGRP, &(state->group_id));
+	}
+	else
+	{
+		job->state = JOB_CREATED;
+		job_current_update(job, state);
+	}
 }
