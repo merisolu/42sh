@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:04 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/19 11:13:09 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/25 14:11:59 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,12 @@ bool	check_var_syntax(char *str);
 bool	check_end(t_token **cursor, t_token *reset, t_ast **node);
 bool	recursion_end(t_token **cursor, t_token *reset, t_ast **node,
 			int recurs_count);
+
+/* ast_to_string.c */
+char	*ast_to_string(t_ast *ast);
+
+/* ast_to_string_utils.c */
+char	*ast_string_builder(char *s1, char *s2);
+char	*ast_string_builder_int(char *s1, int i);
 
 #endif

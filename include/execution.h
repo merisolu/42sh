@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/24 11:11:14 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/25 13:42:25 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	pid_wait(t_job *job, pid_t pid, bool non_blocking);
 void	pids_clean_up(t_job *job);
 
 /* jobs.c */
-t_job	*jobs_create(t_state *state);
+t_job	*jobs_create(t_ast *ast, t_state *state);
 void	job_wait(t_job *job, bool non_blocking, t_state *state);
 void	jobs_check_status(t_state *state);
 void	jobs_print_changed(t_state *state);

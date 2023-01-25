@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2023/01/24 11:11:36 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/25 13:44:59 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,10 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 	i = 0;
 	while (ast[i] != NULL && redir)
 	{
-		job = jobs_create(state);
-		if (!job || !parse_expansions(ast[i], state)
-			|| !execute_ast(&(t_ast_context){ast[i], redir, &pipes, \
+		if (!parse_expansions(ast[i], state))
+			break ;
+		job = jobs_create(ast[i], state);
+		if (!job || !execute_ast(&(t_ast_context){ast[i], redir, &pipes, \
 			ast[i]->amp, job, 0}, state))
 			break ;
 		job_execute(job, ast[i]->amp, state);

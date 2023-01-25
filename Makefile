@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2023/01/24 14:22:40 by jumanner         ###   ########.fr        #
+#    Updated: 2023/01/25 13:51:57 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,8 @@ AST_FILES = ast_add_args.c ast_pipe_sequence.c ast_redir_control.c \
 				construct_ast_list.c ast_simple_command.c \
 				ast_add_fd_aggregation.c ast_is_separator.c ast_end.c \
 				check_redir_syntax.c ast_add_redir_struct.c \
-				check_redir_tokens.c check_var_syntax.c
+				check_redir_tokens.c check_var_syntax.c \
+				ast_to_string.c ast_to_string_utils.c
 
 AUTOCOMPLETE_DIR = autocomplete
 AUTOCOMPLETE_FILES = autocomplete.c search_commands.c directory_search.c \

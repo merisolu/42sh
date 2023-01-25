@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:34:04 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/24 10:38:20 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/25 13:38:39 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  * The command text needs to be updated to only take the specific section
  * of input that created this job!
  */
-t_job	*jobs_create(t_state *state)
+t_job	*jobs_create(t_ast *ast, t_state *state)
 {
 	int	i;
 
@@ -32,7 +32,7 @@ t_job	*jobs_create(t_state *state)
 			continue ;
 		}
 		ft_bzero(&(state->jobs[i]), sizeof(t_job));
-		state->jobs[i].command = ft_strdup(state->input_context.input);
+		state->jobs[i].command = ast_to_string(ast);
 		if (!state->jobs[i].command)
 		{
 			print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
