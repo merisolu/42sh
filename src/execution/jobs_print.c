@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:00:53 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/24 15:02:14 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/25 15:50:42 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ static void	print_state(t_job_state state, int value)
 		ft_putstr("Done");
 }
 
+static bool	job_create_print(t_job *job)
+{
+	if (job->state == JOB_CREATED)
+		ft_printf(JOB_BACKGROUND_CREATED_PRINT, job->id, job_get_last_pid(job));
+	return (job->state == JOB_CREATED);
+}
+
 /*
  * Prints the given job.
  */
@@ -42,9 +49,11 @@ void	job_print(t_job *job, char format, t_state *state)
 {
 	char	current;
 
-	if (job->state == JOB_CREATED)
+	if (job_create_print(job))
+		return ;
+	if (format == 'p')
 	{
-		ft_printf(JOB_BACKGROUND_CREATED_PRINT, job->id, job_get_last_pid(job));
+		ft_printf(JOB_PID_PRINT, job->pids[0]);
 		return ;
 	}
 	current = ' ';
@@ -52,15 +61,13 @@ void	job_print(t_job *job, char format, t_state *state)
 		current = '+';
 	else if (job == state->previous_job)
 		current = '-';
-	if (format == 'p')
-		ft_printf(JOB_PID_PRINT, job->pids[0]);
+	if (format == 'l')
+		ft_printf(JOB_PRINT_START_LONG, job->id, current, job->pids[0]);
 	else
-	{
-		if (format == 'l')
-			ft_printf(JOB_PRINT_START_LONG, job->id, current, job->pids[0]);
-		else
-			ft_printf(JOB_PRINT_START, job->id, current);
-		print_state(job->state, job->return_value);
+		ft_printf(JOB_PRINT_START, job->id, current);
+	print_state(job->state, job->return_value);
+	if (job->state == JOB_RUNNING)
+		ft_printf(JOB_PRINT_END_RUNNING, job->command);
+	else
 		ft_printf(JOB_PRINT_END, job->command);
-	}
 }

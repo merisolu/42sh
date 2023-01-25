@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/25 13:42:25 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/25 15:37:20 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define JOB_PRINT_START "[%d]%c\t"
 # define JOB_PRINT_START_LONG "[%d]%c\t%d "
 # define JOB_PRINT_END "\t\t%s\n"
+# define JOB_PRINT_END_RUNNING "\t\t%s &\n"
 # define JOB_PID_PRINT "%d\n"
 
 /* Files */
