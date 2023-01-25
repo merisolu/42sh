@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/24 13:55:51 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/25 11:13:20 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,6 +206,7 @@ typedef struct s_state
 	int				last_return_value;
 	int				exit_return_value;
 	int				exiting;
+	bool			stopped_jobs_warning_shown;
 	bool			running_script;
 }	t_state;
 

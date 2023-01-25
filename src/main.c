@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/23 13:46:02 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/25 11:37:42 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,27 @@ static void	finish_execution(t_state *state)
 	save_cursor(&(state->input_context));
 	display(&(state->input_context), 1);
 	jobs_cleanup_finished(state);
+}
+
+static void	check_stopped_jobs(t_state *state)
+{
+	size_t	i;
+
+	if (state->stopped_jobs_warning_shown)
+		return ;
+	i = 0;
+	while (i < MAX_JOBS)
+	{
+		if (state->jobs[i].state == JOB_STOPPED)
+		{
+			ft_putendl("There are stopped jobs.");
+			state->exiting = 0;
+			state->stopped_jobs_warning_shown = true;
+			finish_execution(state);
+			return ;
+		}
+		i++;
+	}
 }
 
 static t_input_result	input_handler(t_state *state)
@@ -73,6 +94,8 @@ int	main(const int argc, const char **argv, char *const *env)
 				finish_execution(&state);
 			g_last_signal = 0;
 		}
+		if (state.exiting)
+			check_stopped_jobs(&state);
 	}
 	history_save(&state);
 	ft_putendl("exit");
