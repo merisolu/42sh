@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:02:59 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/13 14:47:07 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/26 13:02:46 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ bool	pids_add(pid_t pid, t_job *job)
 
 /*
  * Waits for the given pid and update's the state of the job accordingly. If
- * non_blocking is set to true, the call to waitpid() won't block.
+ * no_hang is set to true, the call to waitpid() won't block.
  */
-void	pid_wait(t_job *job, pid_t pid, bool non_blocking)
+void	pid_wait(t_job *job, pid_t pid, bool no_hang)
 {
 	int			status;
 	int			wait_flags;
@@ -44,7 +44,7 @@ void	pid_wait(t_job *job, pid_t pid, bool non_blocking)
 	if (pid <= 0)
 		return ;
 	wait_flags = WUNTRACED;
-	if (non_blocking)
+	if (no_hang)
 		wait_flags |= WNOHANG;
 	if (waitpid(pid, &status, wait_flags) <= 0)
 		return ;

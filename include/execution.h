@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/25 15:37:20 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/26 13:03:08 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,12 @@ int		heredoc_run(t_ast *redir_node, t_pipes *pipes);
 
 /* pids.c */
 bool	pids_add(pid_t pid, t_job *job);
-void	pid_wait(t_job *job, pid_t pid, bool non_blocking);
+void	pid_wait(t_job *job, pid_t pid, bool no_hang);
 void	pids_clean_up(t_job *job);
 
 /* jobs.c */
 t_job	*jobs_create(t_ast *ast, t_state *state);
-void	job_wait(t_job *job, bool non_blocking, t_state *state);
+void	job_wait(t_job *job, bool no_hang, t_state *state);
 void	jobs_check_status(t_state *state);
 void	jobs_print_changed(t_state *state);
 void	jobs_cleanup_finished(t_state *state);

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:34:04 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/25 13:38:39 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/26 13:03:00 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,20 +48,20 @@ t_job	*jobs_create(t_ast *ast, t_state *state)
 }
 
 /*
- * Waits for a job to finish, or if non_blocking is set to true, check's job's
+ * Waits for a job to finish, or if no_hang is set to true, check's job's
  * progress. Update's state->current_job when necessary. Sets the state's
  * return value if blocking.
  */
-void	job_wait(t_job *job, bool non_blocking, t_state *state)
+void	job_wait(t_job *job, bool no_hang, t_state *state)
 {
-	pid_wait(job, job_get_last_pid(job), non_blocking);
+	pid_wait(job, job_get_last_pid(job), no_hang);
 	if (job->state == JOB_STOPPED)
 		job_current_update(job, state);
 	if (job->state == JOB_DONE)
 		pids_clean_up(job);
 	else
 		return ;
-	if (!non_blocking)
+	if (!no_hang)
 		set_return_value(
 			get_return_value_from_status(job->return_value), state);
 }
