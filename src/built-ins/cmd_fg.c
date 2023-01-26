@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:11:48 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/24 14:26:05 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/26 11:05:13 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	cmd_fg(char *const *args, t_state *state)
 	job = get_job(args, state);
 	if (!job)
 		return (1);
+	ft_putendl(job->command);
 	if (!terminal_apply_config(&(state->orig_conf)))
 		return (print_error(1, ERRTEMPLATE_SIMPLE, ERR_TERMIOS_FAIL));
 	if (killpg(job->pids[0], SIGCONT) == -1)
