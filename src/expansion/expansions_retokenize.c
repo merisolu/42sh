@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:21:06 by amann             #+#    #+#             */
-/*   Updated: 2023/01/26 13:02:53 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/26 14:54:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@ static const t_token_dispatch	*get_parse_token_dispatch(void)
 	{'/', TOKEN_FWD_SLASH},
 	{'\\', TOKEN_BACKSLASH},
 	{'=', TOKEN_EQUALS},
+	{'#', TOKEN_HASH},
+	{'%', TOKEN_PERCENT},
+	{'?', TOKEN_QUESTION_MARK},
 	{'\0', TOKEN_NULL}
 	};
 

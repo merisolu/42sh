@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/26 13:47:54 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/26 13:58:22 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,6 @@ t_token	*tokenize(char *input, t_tokenizer *tokenizer)
 	}
 	token_add(&result, type, ft_strdup(tokenizer->buff));
 	free(tokenizer->buff);
-	print_tokens(result);
+//	print_tokens(result);
 	return (result);
 }

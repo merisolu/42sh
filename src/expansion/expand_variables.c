@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:26:38 by amann             #+#    #+#             */
-/*   Updated: 2023/01/26 11:57:55 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/26 14:57:11 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static int	expand_name(char *value, t_state *state, char **res)
 	char	*valid;
 	char	*temp;
 
+	//this will probably have to be handled in a separate function
 	if (ft_strequ(value, "?"))
 	{
 		temp = ft_itoa(state->last_return_value);
@@ -52,13 +53,27 @@ static int	expand_name(char *value, t_state *state, char **res)
 	return (return_code);
 }
 
+/*
+ * 
+ *
+ */
+
+int	extended_expansions_control(t_token **cursor, t_state *state, char **res)
+{
+	(void) state;
+	(void) res;
+	print_tokens(*cursor);
+
+	ft_printf("var name = %s\n", (*cursor)->previous->previous->value);
+	return (0);
+}
+
 int	expand_variable(t_token **cursor, t_state *state, char **res)
 {
 	t_token	*original;
 	int		return_code;
 
 	original = *cursor;
-//	print_tokens(original);
 	if (eat_token(cursor, TOKEN_DOLLAR, original)
 		&& eat_token(cursor, TOKEN_WORD, original))
 	{
@@ -72,5 +87,10 @@ int	expand_variable(t_token **cursor, t_state *state, char **res)
 		&& eat_token(cursor, TOKEN_WORD, original)
 		&& eat_token(cursor, TOKEN_CURLY_CLOSED, original))
 		return (expand_name(original->next->next->value, state, res));
+	if (eat_token(cursor, TOKEN_DOLLAR, original)
+		&& eat_token(cursor, TOKEN_CURLY_OPEN, original)
+		&& eat_token(cursor, TOKEN_WORD, original)
+		&& eat_token(cursor, (TOKEN_COLON | TOKEN_HASH | TOKEN_PERCENT), original))
+		return (extended_expansions_control(cursor, state, res));
 	return (0);
 }

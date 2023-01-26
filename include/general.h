@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/26 13:50:56 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/26 14:55:44 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,10 @@ typedef enum e_token_type
 	TOKEN_FWD_SLASH = 1 << 21,
 	TOKEN_NEWLINE = 1 << 22,
 	TOKEN_EQUALS = 1 << 24,
-	TOKEN_NULL = 1 << 25
+	TOKEN_HASH = 1 << 25,
+	TOKEN_PERCENT = 1 << 26,
+	TOKEN_QUESTION_MARK = 1 << 27,
+	TOKEN_NULL = 1 << 28
 }	t_token_type;
 
 typedef struct s_hash_entry
