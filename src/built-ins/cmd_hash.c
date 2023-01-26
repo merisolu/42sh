@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 13:34:40 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/26 12:42:31 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/26 12:55:11 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	cmd_hash(char *const *args, t_state *state)
 		clear_hash_stable(&(state->hash_table));
 	if (args[1])
 	{
-		i = (ft_strequ(args[1], "-r") || args[2]);
+		i = ft_strequ(args[1], "-r");
 		while (args[++i])
 		{
 			if (built_in_get(args[i]))
