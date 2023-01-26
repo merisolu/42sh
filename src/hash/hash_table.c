@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 11:12:01 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/26 11:37:33 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/26 11:50:20 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,29 +32,40 @@ bool	hash_table_add(char *name, char *path, t_hash_entry ***table, \
 unsigned int hits)
 {
 	t_hash_entry	*entry;
-	bool			new_entry;
-	int				add_to_array_result;
+	bool			old_entry;
 
 	if (!(*table))
 		return (print_error_bool(false, ERRTEMPLATE_SIMPLE,
 				"unable to update hash table: table has not been allocated"));
 	entry = hash_table_get(name, *table);
-	new_entry = entry != NULL;
-	if (!new_entry)
+	old_entry = entry != NULL;
+	if (!old_entry)
 	{
 		entry = ft_memalloc(sizeof(t_hash_entry));
 		if (!entry)
 			return (false);
 	}
+	else
+		free(entry->path);
 	entry->hash = fnv1_hash(name);
 	entry->path = path;
 	entry->hits = hits;
-	if (new_entry)
+	if (old_entry)
 		return (true);
-	add_to_array_result = ft_add_to_null_array((void ***)table, entry);
-	if (!add_to_array_result)
-		free(entry);
-	return (add_to_array_result == 1);
+	if (!ft_add_to_null_array((void ***)table, entry))
+		hash_entry_free(entry);
+	return (entry != NULL);
+}
+
+/*
+ * Frees the path inside the hash entry, then the entry itself. *entry is also
+ * set to NULL.
+ */
+
+void	hash_entry_free(t_hash_entry *entry)
+{
+	free(entry->path);
+	ft_memdel((void **)&(entry));
 }
 
 /*
@@ -68,10 +79,9 @@ void	hash_table_clear(t_hash_entry **table)
 	if (!table)
 		return ;
 	i = 0;
-	while ((table)[i])
+	while (table[i])
 	{
-		free((table)[i]->path);
+		hash_entry_free(table[i]);
 		i++;
 	}
-	ft_free_null_array_elements((void **)table);
 }
