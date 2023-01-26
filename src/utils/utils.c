@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:03:49 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/11 15:21:11 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/26 11:24:35 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,15 @@ void	update_window_size(t_input_context *context)
 		return ;
 	context->width = size.ws_col;
 	context->height = size.ws_row;
+}
+
+void	print_tokens(t_token *list)
+{
+	ft_putendl("*** TOKENS ***");
+	while (list)
+	{
+		ft_printf("type: %10d | value = %s\n", list->type, list->value);
+		list = list->next;
+	}
+	return ;
 }
