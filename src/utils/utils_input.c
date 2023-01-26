@@ -6,25 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:04:07 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/20 11:17:21 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/26 12:59:38 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
-
-/*
- * Returns the properties of a line of text contained in context->input at
- * the given index.
- *
- * The values returned will indicate a line that either:
- *		- Starts from the beginning of context->input and ends at '/0'.
- *		- Starts from the beginning of context->input and ends in a '\n'.
- *		- Starts and ends in a '\n'.
- *		- Starts from a '\n' and ends at '/0'.
- *
- * The function sets the start index and the length of the line to *start and
- * *length respectively.
- */
 
 static void	ret_zero(size_t *start, size_t *length)
 {
@@ -41,6 +27,20 @@ static void	iglp_helper(size_t *start, size_t *length, size_t ss, size_t se)
 	if (start)
 		*start = ss;
 }
+
+/*
+ * Returns the properties of a line of text contained in context->input at
+ * the given index.
+ *
+ * The values returned will indicate a line that either:
+ *		- Starts from the beginning of context->input and ends at '/0'.
+ *		- Starts from the beginning of context->input and ends in a '\n'.
+ *		- Starts and ends in a '\n'.
+ *		- Starts from a '\n' and ends at '/0'.
+ *
+ * The function sets the start index and the length of the line to *start and
+ * *length respectively.
+ */
 
 void	input_get_line_properties(\
 	t_input_context *context, size_t index, size_t *start, size_t *length)
