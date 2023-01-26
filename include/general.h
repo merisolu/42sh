@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/20 11:16:55 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/26 11:49:23 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,6 +223,7 @@ typedef struct s_tokenizer
 	char	quote_type;
 	char	*buff;
 	size_t	buff_idx;
+	size_t	brace_count;
 }	t_tokenizer;
 
 typedef enum e_ast_node_type

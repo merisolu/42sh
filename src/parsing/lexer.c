@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/05 13:14:05 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/26 11:48:47 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static bool	tokenize_init(t_tokenizer *t, char *line)
 	ft_bzero(t, sizeof(t_tokenizer));
 	t->quote_type = '\0';
 	t->buff = ft_strnew(sizeof(char) * (ft_strlen(line) + 1));
+	t->brace_count = 0;
 	if (!(t->buff))
 		return (false);
 	return (true);
