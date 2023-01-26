@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:12 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/20 15:28:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/26 12:35:53 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ int		expand_variable(t_token **cursor, t_state *state, char **result);
 
 /* expand_node.c */
 bool	expand_node(char **word, t_state *state);
+
+/* expansions_retokenize.c */
+t_token	*expansions_retokenize(char *line);
 
 /* parse_expansions.c */
 bool	parse_expansions(t_ast *root, t_state *state);

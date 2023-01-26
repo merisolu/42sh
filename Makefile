@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2023/01/23 11:48:16 by jumanner         ###   ########.fr        #
+#    Updated: 2023/01/26 12:36:22 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ SRC_DIR = ./src
 
 AST_DIR = ast
 AST_FILES = ast_add_args.c ast_pipe_sequence.c ast_redir_control.c \
-				ast_retokenize.c ast_free.c	ast_fd_agg_format_check.c \
+				ast_free.c	ast_fd_agg_format_check.c \
 				construct_ast_list.c ast_simple_command.c \
 				ast_add_fd_aggregation.c ast_is_separator.c ast_end.c \
 				check_redir_syntax.c ast_add_redir_struct.c \
@@ -74,7 +74,7 @@ EXECUTION_FILES = bin.c executor.c executor_path_utils.c fork.c pids.c pipes.c \
 
 EXPANSION_DIR = expansion
 EXPANSION_FILES = expand_tilde.c expand_variables.c expand_node.c \
-				  	parse_expansions.c
+				  	parse_expansions.c expansions_retokenize.c
 
 HASH_DIR = hash
 HASH_FILES = hash_table.c fnv1.c

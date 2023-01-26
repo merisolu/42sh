@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:21:06 by amann             #+#    #+#             */
-/*   Updated: 2023/01/05 14:57:41 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/26 12:32:59 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static void	rt_loop(t_tokenizer *t, t_token **res, t_token_type *type, char *lc)
 	t->buff_idx = 0;
 }
 
-t_token	*ast_retokenize(char *line)
+t_token	*expansions_retokenize(char *line)
 {
 	t_token			*result;
 	t_token_type	type;

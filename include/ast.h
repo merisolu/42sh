@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:04 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/19 11:13:09 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/26 12:36:39 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,6 @@ bool	ast_pipe_sequence(t_token **cursor, t_ast **node, int x);
 /* ast_redirect_control.c */
 bool	ast_redirect_control(t_ast *node, t_token **cursor);
 bool	add_redir_struct(t_ast_redir ***redirs, t_ast_redir *new);
-
-/* ast_retokenize.c */
-t_token	*ast_retokenize(char *line);
 
 /* ast_simple_command.c */
 bool	ast_simple_command(t_token **cursor, t_ast **node);
