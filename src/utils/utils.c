@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:03:49 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/26 11:24:35 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/26 13:37:05 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	print_tokens(t_token *list)
 	ft_putendl("*** TOKENS ***");
 	while (list)
 	{
-		ft_printf("type: %10d | value = %s\n", list->type, list->value);
+		ft_printf("type: %10d | value = '%s'\n", list->type, list->value);
 		list = list->next;
 	}
 	return ;

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:18:51 by amann             #+#    #+#             */
-/*   Updated: 2023/01/26 12:39:19 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/26 13:09:19 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ bool	expand_node(char **word, t_state *state)
 	if (!*word)
 		return (true);
 	list = expansions_retokenize(*word);
-	print_tokens(list);
+//	print_tokens(list);
 	if (!list)
 		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	result = expansions_loop(list, state);

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 13:14:18 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/26 11:53:12 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/26 13:53:19 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,30 +35,35 @@
 
 void	check_quotes(char c, t_tokenizer *tokenizer)
 {
+	if (c == '$')
+		tokenizer->dollar = true;
 	if (tokenizer->backslash_inhibited
 		&& ((tokenizer->in_quotes && tokenizer->quote_type != '\'')
 			|| !tokenizer->in_quotes))
 		return ;
-	if ((c == '\'' || c == '\"' || c == '{') && !(tokenizer->in_quotes))
+	if ((c == '\'' || c == '\"') && !(tokenizer->in_quotes))
 	{
 		tokenizer->in_quotes = true;
 		tokenizer->quote_type = c;
+	}
+	else if (c == '{' && !(tokenizer->in_quotes) && !(tokenizer->in_braces) && tokenizer->dollar)
+	{
+		tokenizer->in_braces = true;
+		(tokenizer->brace_count)++;
+	}
+	else if (c == '{' && tokenizer->in_braces && tokenizer->dollar)
+	{
 		(tokenizer->brace_count)++;
 	}
 	else if (c == tokenizer->quote_type && tokenizer->in_quotes)
-	{
-		if (c == '{')
-		{
-			(tokenizer->brace_count)++;
-			return ;
-		}
 		tokenizer->in_quotes = false;
-	}
-	else if (c == '}' && tokenizer->quote_type == '{' && tokenizer->in_quotes)
+	else if (c == '}' && tokenizer->in_braces && !(tokenizer->in_quotes))
 	{
-		(tokenizer->brace_count)--;
+		if (tokenizer->brace_count > 0)
+			(tokenizer->brace_count)--;
 		if (tokenizer->brace_count == 0)
-			tokenizer->in_quotes = false;
-		return ;
+			tokenizer->in_braces = false;
 	}
+	if (c != '$' && tokenizer->dollar)
+		tokenizer->dollar = false;
 }

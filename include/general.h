@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/26 11:49:23 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/26 13:50:56 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,8 @@ typedef struct s_token
 typedef struct s_tokenizer
 {
 	bool	in_quotes;
+	bool	in_braces;
+	bool	dollar;
 	bool	backslash_inhibited;
 	char	quote_type;
 	char	*buff;

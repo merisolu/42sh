@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:21:06 by amann             #+#    #+#             */
-/*   Updated: 2023/01/26 12:32:59 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/26 13:02:53 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static t_tokenizer	retokenize_init(char *line)
 
 	ft_bzero(&t, sizeof(t_tokenizer));
 	t.buff = ft_strnew(ft_strlen(line) + 1);
+	t.brace_count = 0;
 	return (t);
 }
 
@@ -91,7 +92,7 @@ t_token	*expansions_retokenize(char *line)
 	while (line[i])
 	{
 		if (get_parser_token_type(line[i], &t) != type || (i > 0 \
-		&& type & (TOKEN_DOUBLE_QUOTE | TOKEN_SINGLE_QUOTE | TOKEN_BACKSLASH)))
+		&& type & (TOKEN_DOUBLE_QUOTE | TOKEN_SINGLE_QUOTE | TOKEN_BACKSLASH | TOKEN_CURLY_OPEN | TOKEN_CURLY_CLOSED)))
 			rt_loop(&t, &result, &type, line + i);
 		check_quotes(line[i], &t);
 		t.buff[t.buff_idx++] = line[i++];
