@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 13:23:36 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 15:09:27 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:25:45 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,5 @@ int	cmd_fc_read_and_execute_file(t_state *state)
 		tokenize_and_execute(state);
 		free(line);
 	}
-	return (0);
+	return (state->last_return_value);
 }
