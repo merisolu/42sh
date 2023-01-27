@@ -6,29 +6,32 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 13:23:36 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 11:58:58 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/27 13:22:38 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "built_ins.h"
 
-// TODO: Read multiple commands.
-bool	cmd_fc_read_command_from_file(t_state *state)
+bool	cmd_fc_read_and_execute_file(t_state *state)
 {
 	int		fd;
-	int		read_return;
+	char	*line;
 	char	*last_newline;
 
-	ft_bzero(state->history[1], INPUT_MAX_SIZE);
 	fd = open(FC_EDIT_FILE, O_RDONLY);
 	if (fd == -1)
 		return (print_error_bool(
 				false, ERRTEMPLATE_NAMED, "fc", ERR_OPEN_FAIL));
-	read_return = read(fd, state->history[1], INPUT_MAX_SIZE);
-	if (read_return == -1)
-		return (print_error_bool(false, ERRTEMPLATE_NAMED "fc", ERR_READ_FAIL));
-	last_newline = ft_strrchr(state->history[1], '\n');
-	if (last_newline)
-		*last_newline = '\0';
+	while (ft_get_next_line(fd, &line) > 0)
+	{
+		ft_strclr(state->input_context.input);
+		ft_strncpy(state->input_context.input, line, INPUT_MAX_SIZE);
+		last_newline = ft_strrchr(state->input_context.input, '\n');
+		if (last_newline)
+			*last_newline = '\0';
+		ft_putstr(state->input_context.input);
+		tokenize_and_execute(state);
+		free(line);
+	}
 	return (true);
 }

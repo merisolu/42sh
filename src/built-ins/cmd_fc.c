@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:03:39 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 11:46:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/27 13:17:18 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,7 @@ int	cmd_fc(char *const *args, t_state *state)
 			if (editor_return_value != 0)
 				return (editor_return_value);
 		}
-		// TODO: Execute and print all edited commands.
-		ft_putstr(state->history[1]);
-		ft_strclr(state->input_context.input);
-		ft_strcpy(state->input_context.input, state->history[1]);
-		tokenize_and_execute(state);
+		cmd_fc_read_and_execute_file(state);
 	}
 	return (0);
 }

@@ -45,5 +45,5 @@ static bool	start_editor(char *editor, t_state *state)
 bool	cmd_fc_history_edit(char *editor, t_fc_range *range, t_state *state)
 {
 	return (cmd_fc_write_commands_to_file(range, state)
-		&& start_editor(editor, state) && cmd_fc_read_command_from_file(state));
+		&& start_editor(editor, state));
 }
