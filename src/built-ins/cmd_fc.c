@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:03:39 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 15:10:44 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:17:36 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,29 @@ static int	edit_and_execute(char *const *args, char *flags, t_fc_range *range,
 	else if (!cmd_fc_history_edit(args[2], range, state))
 		return (1);
 	return (cmd_fc_read_and_execute_file(state));
+}
+
+static int	execute_from_history(t_fc_range *range, t_state *state)
+{
+	int	i;
+
+	i = range->start;
+	while (1)
+	{
+		ft_strclr(state->input_context.input);
+		ft_strncpy(state->input_context.input,
+			state->history[cmd_fc_range_number_to_index(i, state)],
+			INPUT_MAX_SIZE);
+		ft_putstr(state->input_context.input);
+		tokenize_and_execute(state);
+		if (i == range->end)
+			break ;
+		if (range->start > range->end)
+			i--;
+		else
+			i++;
+	}
+	return (state->last_return_value);
 }
 
 static void	print_history(bool show_numbers, t_fc_range *range,
@@ -82,7 +105,7 @@ int	cmd_fc(char *const *args, t_state *state)
 	{
 		if (!ft_strchr(flags, 's'))
 			return (edit_and_execute(args, flags, &range, state));
-		return (cmd_fc_read_and_execute_file(state));
+		return (execute_from_history(&range, state));
 	}
 	return (0);
 }
