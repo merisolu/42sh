@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:03:39 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 13:51:04 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/27 14:59:43 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ static int	launch_editor(char *const *args, char *flags, t_fc_range *range,
 	return (0);
 }
 
-// TODO: Make sure this runs okay, even if the full default 16 entries cannot be displayed.
 static void	print_history(bool show_numbers, t_fc_range *range,
 	t_state *state)
 {

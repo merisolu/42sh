@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 13:41:49 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 13:45:39 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/27 14:58:20 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ static int	get_history_length(t_state *state)
 {
 	int	i;
 
-	i = HISTORY_SIZE - 2;
-	while (i >= 0 && state->history[i] != '\0')
-		i--;
-	return (HISTORY_SIZE - i - 2);
+	i = 1;
+	while (i < HISTORY_SIZE && state->history[i][0] != '\0')
+		i++;
+	return (i - 1);
 }
 
 void	cmd_fc_parse_range(char *const *args, char *flags, t_fc_range *range,
@@ -33,7 +33,7 @@ t_state *state)
 	if (!args[0 + offset])
 	{
 		if (ft_strchr(flags, 'l'))
-			range->start = length - 15;
+			range->start = ft_clamp(length - 15, 1, length);
 		else
 			range->start = length;
 		range->end = length;
