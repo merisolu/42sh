@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:03:39 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 13:31:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/27 13:39:38 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,11 @@ static int	launch_editor(char *const *args, char *flags, t_fc_range *range,
 }
 
 // TODO: Make sure this runs okay, even if the full default 16 entries cannot be displayed.
-static void	print_history(bool show_numbers, bool reverse, t_fc_range *range,
+static void	print_history(bool show_numbers, t_fc_range *range,
 	t_state *state)
 {
 	int	i;
 
-	if (reverse)
-		cmd_fc_reverse_range(range);
 	i = range->start;
 	while (1)
 	{
@@ -74,14 +72,14 @@ int	cmd_fc(char *const *args, t_state *state)
 
 	offset = parse_flags(args + 1, "elnrs", flags, &on_error);
 	cmd_fc_parse_range(args + offset + 1, flags, &range, state);
+	if (ft_strchr(flags, 'r'))
+		cmd_fc_reverse_range(&range);
 	if (ft_strchr(flags, 'l'))
 	{
-		print_history(!ft_strchr(flags, 'n'), ft_strchr(flags, 'r'),
-			&range, state);
+		print_history(!ft_strchr(flags, 'n'), &range, state);
 		return (0);
 	}
-	else if (ft_strchr(flags, 'e') || ft_strchr(flags, 's')
-		|| ft_strlen(flags) == 0)
+	else
 	{
 		if (!ft_strchr(flags, 's'))
 		{
