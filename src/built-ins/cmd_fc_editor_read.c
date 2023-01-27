@@ -6,13 +6,13 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 13:23:36 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 13:22:38 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:09:27 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "built_ins.h"
 
-bool	cmd_fc_read_and_execute_file(t_state *state)
+int	cmd_fc_read_and_execute_file(t_state *state)
 {
 	int		fd;
 	char	*line;
@@ -20,8 +20,8 @@ bool	cmd_fc_read_and_execute_file(t_state *state)
 
 	fd = open(FC_EDIT_FILE, O_RDONLY);
 	if (fd == -1)
-		return (print_error_bool(
-				false, ERRTEMPLATE_NAMED, "fc", ERR_OPEN_FAIL));
+		return (print_error(
+				1, ERRTEMPLATE_NAMED, "fc", ERR_OPEN_FAIL));
 	while (ft_get_next_line(fd, &line) > 0)
 	{
 		ft_strclr(state->input_context.input);
@@ -33,5 +33,5 @@ bool	cmd_fc_read_and_execute_file(t_state *state)
 		tokenize_and_execute(state);
 		free(line);
 	}
-	return (true);
+	return (0);
 }

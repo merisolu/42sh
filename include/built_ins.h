@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 13:48:59 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:09:10 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ bool					cmd_fc_write_commands_to_file(t_fc_range *range,
 							t_state *state);
 
 /* cmd_fc_editor_read.c */
-bool					cmd_fc_read_and_execute_file(t_state *state);
+int						cmd_fc_read_and_execute_file(t_state *state);
 
 /* cmd_fc_range.c */
 void					cmd_fc_parse_range(char *const *args, char *flags,

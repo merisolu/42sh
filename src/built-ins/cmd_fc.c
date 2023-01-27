@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:03:39 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 14:59:43 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:10:44 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	on_error(char c)
 	ft_putstr_fd(FC_USAGE, STDERR_FILENO);
 }
 
-static int	launch_editor(char *const *args, char *flags, t_fc_range *range,
+static int	edit_and_execute(char *const *args, char *flags, t_fc_range *range,
 							t_state *state)
 {
 	if (!ft_strchr(flags, 'e'))
@@ -37,7 +37,7 @@ static int	launch_editor(char *const *args, char *flags, t_fc_range *range,
 	}
 	else if (!cmd_fc_history_edit(args[2], range, state))
 		return (1);
-	return (0);
+	return (cmd_fc_read_and_execute_file(state));
 }
 
 static void	print_history(bool show_numbers, t_fc_range *range,
@@ -63,7 +63,6 @@ static void	print_history(bool show_numbers, t_fc_range *range,
 
 int	cmd_fc(char *const *args, t_state *state)
 {
-	int			editor_return_value;
 	char		flags[6];
 	t_fc_range	range;
 	int			offset;
@@ -82,12 +81,8 @@ int	cmd_fc(char *const *args, t_state *state)
 	else
 	{
 		if (!ft_strchr(flags, 's'))
-		{
-			editor_return_value = launch_editor(args, flags, &range, state);
-			if (editor_return_value != 0)
-				return (editor_return_value);
-		}
-		cmd_fc_read_and_execute_file(state);
+			return (edit_and_execute(args, flags, &range, state));
+		return (cmd_fc_read_and_execute_file(state));
 	}
 	return (0);
 }
