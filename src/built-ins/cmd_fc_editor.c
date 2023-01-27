@@ -6,29 +6,53 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 13:23:36 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/17 18:17:41 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/27 11:52:05 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "built_ins.h"
 
-static bool	write_command_to_file(char *command)
+static bool	write_command_to_fd(int fd, int history_index, t_state *state)
 {
-	int	fd;
-	int	write_return;
+	int	write_result;
+
+	write_result = write(fd, state->history[history_index],
+			ft_strlen(state->history[history_index]));
+	if (write_result == -1)
+		return (false);
+	write_result = write(fd, "\n", 1);
+	return (write_result != -1);
+}
+
+static bool	write_commands_to_file(t_fc_range *range, t_state *state)
+{
+	int		fd;
+	bool	write_successful;
+	int		i;
 
 	fd = open(FC_EDIT_FILE, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
 	if (fd == -1)
 		return (print_error_bool(
 				false, ERRTEMPLATE_NAMED, "fc", ERR_OPEN_FAIL));
-	write_return = write(fd, command, ft_strlen(command));
-	if (write_return == -1)
-		return (print_error_bool(
-				false, ERRTEMPLATE_NAMED, "fc", ERR_WRITE_FAIL));
+	i = range->start;
+	while (1)
+	{
+		write_successful = write_command_to_fd(
+				fd, cmd_fc_range_number_to_index(i, state), state);
+		if (!write_successful || i == range->end)
+			break ;
+		if (range->start > range->end)
+			i--;
+		else
+			i++;
+	}
 	close(fd);
-	return (write_return != -1);
+	if (!write_successful)
+		print_error(0, ERRTEMPLATE_NAMED, "fc", ERR_WRITE_FAIL);
+	return (write_successful);
 }
 
+// TODO: Read multiple commands.
 static bool	read_command_from_file(t_state *state)
 {
 	int		fd;
@@ -78,8 +102,8 @@ static bool	start_editor(char *editor, t_state *state)
 	return (true);
 }
 
-bool	cmd_fc_history_edit(char *editor, t_state *state)
+bool	cmd_fc_history_edit(char *editor, t_fc_range *range, t_state *state)
 {
-	return (write_command_to_file(state->history[1])
+	return (write_commands_to_file(range, state)
 		&& start_editor(editor, state) && read_command_from_file(state));
 }

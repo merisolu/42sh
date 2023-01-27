@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:03:39 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 11:08:57 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/27 11:46:53 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,13 @@ static void	on_error(char c)
 	ft_putstr_fd("fc: usage: fc [-e ename] [-nlr] or fc -s\n", STDERR_FILENO);
 }
 
-static int	launch_editor(char *const *args, char *flags, t_state *state)
+static int	launch_editor(char *const *args, char *flags, t_fc_range *range,
+							t_state *state)
 {
 	if (!ft_strchr(flags, 'e'))
 	{
-		if (!cmd_fc_history_edit(env_get_or("FCEDIT", "vi", state->env), state))
+		if (!cmd_fc_history_edit(
+				env_get_or("FCEDIT", "vi", state->env), range, state))
 			return (1);
 		return (0);
 	}
@@ -34,7 +36,7 @@ static int	launch_editor(char *const *args, char *flags, t_state *state)
 			"fc: usage: fc [-e ename] [-nlr] or fc -s\n", STDERR_FILENO);
 		return (2);
 	}
-	else if (!cmd_fc_history_edit(args[2], state))
+	else if (!cmd_fc_history_edit(args[2], range, state))
 		return (1);
 	return (0);
 }
@@ -83,10 +85,11 @@ int	cmd_fc(char *const *args, t_state *state)
 	{
 		if (!ft_strchr(flags, 's'))
 		{
-			editor_return_value = launch_editor(args, flags, state);
+			editor_return_value = launch_editor(args, flags, &range, state);
 			if (editor_return_value != 0)
 				return (editor_return_value);
 		}
+		// TODO: Execute and print all edited commands.
 		ft_putstr(state->history[1]);
 		ft_strclr(state->input_context.input);
 		ft_strcpy(state->input_context.input, state->history[1]);
