@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:18:51 by amann             #+#    #+#             */
-/*   Updated: 2023/01/27 16:37:25 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/27 17:48:28 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,11 @@ void	expansions_loop(t_token **cursor, t_state *state, char **result, bool recur
 	int		func_result;
 	t_token *head;
 
-	if (recurs)
+	if (!recurs)
 		head = *cursor;
 	while (*cursor)
 	{
 		func_result = run_functions(cursor, state, result);
-//		if (*cursor)
-///			ft_printf("%d %s\n", func_result, (*cursor)->value);
 		if (func_result == 0 && *cursor)
 		{
 			func_result = add_to_result(result, (*cursor)->value, state);
@@ -61,7 +59,7 @@ void	expansions_loop(t_token **cursor, t_state *state, char **result, bool recur
 		if (func_result == -1)
 			free(*result);
 	}
-	if (recurs)
+	if (!recurs)
 		token_list_free(&head);
 	return ;
 }
@@ -77,11 +75,11 @@ bool	expand_node(char **word, t_state *state)
 //	ft_printf("list orig: %p\n", list);
 	if (!list)
 		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	print_tokens(list);
+	//print_tokens(list);
 	result = NULL;
 //	head = list;
 //	ft_printf("1 head %p list %p\n", head, list);
-	expansions_loop(&list, state, &result, true);
+	expansions_loop(&list, state, &result, false);
 //	ft_printf("2 head %p list %p\n", head, list);
 	//ft_putendl("head tokens:");
 //	token_list_free(&head);

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 15:05:55 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 16:50:53 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/27 17:53:56 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,16 @@ int	check_literals(t_token **cursor, t_state *state, char **result)
 {
 	t_token	*original;
 
+	//if (state->in_quotes)
+	//	ft_printf("toki %s\n", (*cursor)->value);
+//	ft_putendl(*result);
 	original = *cursor;
 	if (eat_token(cursor, TOKEN_WHITESPACE, original))
 	{
 		if (state->in_braces && !(state->in_quotes))
-				return (add_to_result(result, " ", state));
+			return (add_to_result(result, " ", state));
 		if (state->in_quotes)
-				return (add_to_result(result, original->value, state));
+			return (add_to_result(result, original->value, state));
 		state->continue_previous_node = 0;
 		return (1);
 	}
