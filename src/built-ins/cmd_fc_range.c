@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 13:41:49 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 13:29:36 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/27 13:45:39 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,11 @@ void	cmd_fc_parse_range(char *const *args, char *flags, t_fc_range *range,
 t_state *state)
 {
 	int	length;
+	int	offset;
 
+	offset = ft_strchr(flags, 'e') != NULL;
 	length = get_history_length(state);
-	if (!args[0])
+	if (!args[0 + offset])
 	{
 		if (ft_strchr(flags, 'l'))
 			range->start = length - 15;
@@ -37,9 +39,9 @@ t_state *state)
 		range->end = length;
 		return ;
 	}
-	range->start = ft_clamp(atoi(args[0]), 1, length);
+	range->start = ft_clamp(atoi(args[0 + offset]), 1, length);
 	if (args[1])
-		range->end = ft_clamp(atoi(args[1]), 1, length);
+		range->end = ft_clamp(atoi(args[1 + offset]), 1, length);
 	else
 		range->end = range->start + 1;
 }
