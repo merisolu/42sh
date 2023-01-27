@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 13:41:49 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 11:21:40 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/27 13:29:36 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,18 @@ static int	get_history_length(t_state *state)
 	return (HISTORY_SIZE - i - 2);
 }
 
-void	cmd_fc_parse_range(char *const *args, t_fc_range *range, t_state *state)
+void	cmd_fc_parse_range(char *const *args, char *flags, t_fc_range *range,
+t_state *state)
 {
 	int	length;
 
 	length = get_history_length(state);
 	if (!args[0])
 	{
-		range->start = length - 15;
+		if (ft_strchr(flags, 'l'))
+			range->start = length - 15;
+		else
+			range->start = length;
 		range->end = length;
 		return ;
 	}
