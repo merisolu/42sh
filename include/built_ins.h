@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 10:58:38 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/27 11:07:26 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ int						cmd_fc(char *const *args, t_state *state);
 bool					cmd_fc_history_edit(char *editor, t_state *state);
 
 /* cmd_fc_range.c */
-void					cmd_fc_set_default_range(t_fc_range *range, \
-t_state *state);
+void					cmd_fc_parse_range(char *const *args, t_fc_range *range,
+							t_state *state);
 int						cmd_fc_range_number_to_index(int num, t_state *state);
 void					cmd_fc_reverse_range(t_fc_range *range);
 
