@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 13:28:36 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/27 13:48:59 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 /* Constants */
 
 # define FC_EDIT_FILE "/tmp/42sh_fc_edit_file"
+# define FC_USAGE "fc: usage: fc [-nlr] [-e ename] [first [last]] \
+or fc -s [first]\n"
 
 /* Types */
 

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:03:39 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 13:39:38 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/27 13:49:43 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	on_error(char c)
 {
 	ft_dprintf(STDERR_FILENO, "42sh: fc: -%c: invalid option\n", c);
-	ft_putstr_fd("fc: usage: fc [-e ename] [-nlr] or fc -s\n", STDERR_FILENO);
+	ft_putstr_fd(FC_USAGE, STDERR_FILENO);
 }
 
 static int	launch_editor(char *const *args, char *flags, t_fc_range *range,
@@ -32,8 +32,7 @@ static int	launch_editor(char *const *args, char *flags, t_fc_range *range,
 	{
 		ft_putstr_fd(
 			"42sh: fc: -e: option requires an argument\n", STDERR_FILENO);
-		ft_putstr_fd(
-			"fc: usage: fc [-e ename] [-nlr] or fc -s\n", STDERR_FILENO);
+		ft_putstr_fd(FC_USAGE, STDERR_FILENO);
 		return (2);
 	}
 	else if (!cmd_fc_history_edit(args[2], range, state))
