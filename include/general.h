@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/26 17:28:09 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/27 15:26:04 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,8 @@ typedef struct s_state
 	t_input_context	input_context;
 	int				continue_previous_node;
 	bool			in_quotes;
+	bool			in_braces;
+	int				brace_count;
 	t_token_type	quote_type;
 	struct termios	input_conf;
 	struct termios	orig_conf;
