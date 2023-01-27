@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:03:39 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 15:17:36 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:26:01 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	edit_and_execute(char *const *args, char *flags, t_fc_range *range,
 		if (!cmd_fc_history_edit(
 				env_get_or("FCEDIT", "vi", state->env), range, state))
 			return (1);
-		return (0);
+		return (cmd_fc_read_and_execute_file(state));
 	}
 	if (!args[2])
 	{
