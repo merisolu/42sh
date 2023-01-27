@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:03:39 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 13:49:43 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/27 13:51:04 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ int	cmd_fc(char *const *args, t_state *state)
 	int			offset;
 
 	offset = parse_flags(args + 1, "elnrs", flags, &on_error);
+	if (offset == -1)
+		return (1);
 	cmd_fc_parse_range(args + offset + 1, flags, &range, state);
 	if (ft_strchr(flags, 'r'))
 		cmd_fc_reverse_range(&range);
