@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 15:05:55 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 15:43:15 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/27 16:50:53 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int	check_literals(t_token **cursor, t_state *state, char **result)
 		return (manage_quotes(original, state, result));
 	if (eat_token(cursor, TOKEN_CURLY_CLOSED, original) && state->in_braces && !state->in_quotes)
 		return (manage_braces(state, result));
+	*cursor = original;
 	if (eat_token(cursor, TOKEN_WORD, original))
 		return (add_to_result(result, original->value, state));
 	return (0);

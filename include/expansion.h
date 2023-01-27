@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:12 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 14:37:14 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/27 16:12:53 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ t_token	*expansions_retokenize(char *line);
 
 /* expansion_utils.c */
 bool	var_exists_and_set(char *name, t_state *state);
+void	move_cursor_to_end(t_token **cursor, t_state *state);
 
 /* parse_expansions.c */
 bool	parse_expansions(t_ast *root, t_state *state);

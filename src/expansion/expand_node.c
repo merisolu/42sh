@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:18:51 by amann             #+#    #+#             */
-/*   Updated: 2023/01/27 15:22:33 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/27 16:37:25 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,13 @@ bool	expand_node(char **word, t_state *state)
 //	ft_printf("list orig: %p\n", list);
 	if (!list)
 		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
+	print_tokens(list);
 	result = NULL;
 //	head = list;
 //	ft_printf("1 head %p list %p\n", head, list);
 	expansions_loop(&list, state, &result, true);
 //	ft_printf("2 head %p list %p\n", head, list);
 	//ft_putendl("head tokens:");
-//	print_tokens(head);
 //	token_list_free(&head);
 //	ft_printf("3 head %p list %p\n", head, list);
 	reset_state(state);

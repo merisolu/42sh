@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:26:38 by amann             #+#    #+#             */
-/*   Updated: 2023/01/27 15:39:31 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/27 16:18:57 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,19 @@ int	extended_expansions_control(t_token **cursor, t_state *state, char **res)
 	//a plus means we expand to the alternative if the param exists and has a value
 	if ((*cursor)->previous->type == TOKEN_COLON && (*cursor)->type == TOKEN_PLUS)
 	{
+		*cursor = (*cursor)->next;
+		state->in_braces = true;
+		(state->brace_count)++;
 		if (var_exists_and_set(param->value, state))
 		{
-			//eat_token(cursor, TOKEN_PLUS, NULL);
-			*cursor = (*cursor)->next;
-			print_tokens(*cursor);
-			state->in_braces = true;
-			(state->brace_count)++;
 			expansions_loop(cursor, state, res, false);
-			return (0);
+			return (1);
 		}
 		else
-			return (0);
+		{
+			move_cursor_to_end(cursor, state);
+			return (add_to_result(res, "", state));
+		}
 
 	}
 
