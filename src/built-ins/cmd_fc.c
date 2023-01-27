@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:03:39 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/09 12:24:06 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/27 10:56:22 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,6 @@ static void	on_error(char c)
 {
 	ft_dprintf(STDERR_FILENO, "42sh: fc: -%c: invalid option\n", c);
 	ft_putstr_fd("fc: usage: fc [-e ename] [-nlr] or fc -s\n", STDERR_FILENO);
-}
-
-static int	get_start_index(t_state *state)
-{
-	int	i;
-
-	i = 1;
-	while (i < HISTORY_SIZE - 1 && ft_strlen(state->history[i]) > 0)
-		i++;
-	return (i - 1);
 }
 
 static int	launch_editor(char *const *args, char *flags, t_state *state)
@@ -49,42 +39,42 @@ static int	launch_editor(char *const *args, char *flags, t_state *state)
 	return (0);
 }
 
-static void	print_history(bool show_numbers, bool reverse, t_state *state)
+// TODO: Make sure this runs okay, even if the full default 16 entries cannot be displayed.
+static void	print_history(bool show_numbers, bool reverse, t_fc_range *range,
+	t_state *state)
 {
 	int	i;
-	int	start;
-	int	end;
 
-	start = get_start_index(state);
-	i = start;
-	if (start > 16)
-		i -= start - 16;
 	if (reverse)
-		i = 1;
-	end = 0;
-	if (reverse)
-		end = ft_min(start + 1, 17);
-	while (i != end)
+		cmd_fc_reverse_range(range);
+	i = range->start;
+	while (1)
 	{
 		if (show_numbers)
-			ft_printf("%d", (start - i) + 1);
-		ft_printf("\t%s\n", state->history[i]);
-		if (reverse)
-			i++;
-		else
+			ft_printf("%d", i);
+		ft_printf("\t%s\n",
+			state->history[cmd_fc_range_number_to_index(i, state)]);
+		if (i == range->end)
+			break ;
+		if (range->start > range->end)
 			i--;
+		else
+			i++;
 	}
 }
 
 int	cmd_fc(char *const *args, t_state *state)
 {
-	int		editor_return_value;
-	char	flags[6];
+	int			editor_return_value;
+	char		flags[6];
+	t_fc_range	range;
 
+	cmd_fc_set_default_range(&range, state);
 	parse_flags(args + 1, "elnrs", flags, &on_error);
 	if (ft_strchr(flags, 'l'))
 	{
-		print_history(!ft_strchr(flags, 'n'), ft_strchr(flags, 'r'), state);
+		print_history(!ft_strchr(flags, 'n'), ft_strchr(flags, 'r'),
+			&range, state);
 		return (0);
 	}
 	else if (ft_strchr(flags, 'e') || ft_strchr(flags, 's')

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/24 14:22:27 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/27 10:58:38 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,12 @@ typedef struct s_cmd_env
 	char	**args;
 	char	**env;
 }	t_cmd_env;
+
+typedef struct s_fc_range
+{
+	int	start;
+	int	end;
+}	t_fc_range;
 
 /* Files */
 
@@ -94,6 +100,12 @@ int						cmd_fc(char *const *args, t_state *state);
 
 /* cmd_fc_editor.c */
 bool					cmd_fc_history_edit(char *editor, t_state *state);
+
+/* cmd_fc_range.c */
+void					cmd_fc_set_default_range(t_fc_range *range, \
+t_state *state);
+int						cmd_fc_range_number_to_index(int num, t_state *state);
+void					cmd_fc_reverse_range(t_fc_range *range);
 
 /* cmd_exit.c */
 int						cmd_exit(char *const *args, t_state *state);
