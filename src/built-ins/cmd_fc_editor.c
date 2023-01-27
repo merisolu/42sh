@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 13:23:36 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 11:59:45 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/27 13:23:51 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static bool	start_editor(char *editor, t_state *state)
 				false, ERRTEMPLATE_NAMED, "fc", ERR_CHILD_PROC_FAIL));
 	if (fork_result != 0)
 	{
+		free(path);
 		waitpid(fork_result, NULL, 0);
 		return (true);
 	}
