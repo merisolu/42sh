@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2023/01/26 12:36:22 by amann            ###   ########.fr        #
+#    Updated: 2023/01/27 13:34:48 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,7 +74,8 @@ EXECUTION_FILES = bin.c executor.c executor_path_utils.c fork.c pids.c pipes.c \
 
 EXPANSION_DIR = expansion
 EXPANSION_FILES = expand_tilde.c expand_variables.c expand_node.c \
-				  	parse_expansions.c expansions_retokenize.c
+				  	parse_expansions.c expansions_retokenize.c \
+					expansion_utils.c
 
 HASH_DIR = hash
 HASH_FILES = hash_table.c fnv1.c

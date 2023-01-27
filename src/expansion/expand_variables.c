@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:26:38 by amann             #+#    #+#             */
-/*   Updated: 2023/01/26 15:31:06 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/27 15:00:15 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,21 +60,37 @@ static int	expand_name(char *value, t_state *state, char **res)
 
 int	extended_expansions_control(t_token **cursor, t_state *state, char **res)
 {
-	(void) state;
-	(void) res;
-	print_tokens(*cursor);
+	t_token	*param;
+	//print_tokens(*cursor);
 
-	ft_printf("var name = %s\n", (*cursor)->previous->previous->value);
+	param = (*cursor)->previous->previous;
+	//we should only display the text from the offending token sequence in the error message
+	if ((*cursor)->previous->type == TOKEN_COLON && (*cursor)->type == TOKEN_CURLY_CLOSED)
+		return (print_error(-1, ERRTEMPLATE_NAMED, state->input_context.input, ERR_BAD_SUB));
+//	ft_printf("var name = %s\n", param->value);
 	//the cursor will be pointing to token after the colon/hash/percent
 	//the parser will ensure that the token sequence will end with the closing brace
+
+	//a plus means we expand to the alternative if the param exists and has a value
+	if ((*cursor)->previous->type == TOKEN_COLON && (*cursor)->type == TOKEN_PLUS)
+	{
+		if (var_exists_and_set(param->value, state))
+		{
+			//eat_token(cursor, TOKEN_PLUS, NULL);
+			*cursor = (*cursor)->next;
+			print_tokens(*cursor);
+			expansions_loop(cursor, state, res, false);
+			return (0);
+		}
+		else
+			return (0);
+
+	}
 
 	//with plus, minus, questionmark and equals we need to check first whether the param is valid before we decide
 	//what to expand to. If we are indeed expanding the parameter, we can skip past the rest of the tokens
 	//up to the closing curly brace.
 
-	//we should only display the text from the offending token sequence in the error message
-	if ((*cursor)->previous->type == TOKEN_COLON && (*cursor)->type == TOKEN_CURLY_CLOSED)
-		return (print_error(-1, ERRTEMPLATE_NAMED, state->input_context.input, ERR_BAD_SUB));
 
 
 	return (0);

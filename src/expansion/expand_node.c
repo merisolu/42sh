@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:18:51 by amann             #+#    #+#             */
-/*   Updated: 2023/01/26 14:22:48 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/27 15:01:03 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	run_functions(t_token **cursor, t_state *state, char **result)
 	static t_parse_function	*functions[] = {
 		&expand_variable,
 		&expand_tilde,
-		&check_literals,
+//		&check_literals,
 		NULL
 	};
 	size_t					i;
@@ -41,24 +41,29 @@ static int	run_functions(t_token **cursor, t_state *state, char **result)
 	return (0);
 }
 
-static char	*expansions_loop(t_token *cursor, t_state *state)
+void	expansions_loop(t_token **cursor, t_state *state, char **result, bool recurs)
 {
-	char	*result;
 	int		func_result;
+	t_token *head;
 
-	result = NULL;
-	while (cursor)
+	if (recurs)
+		head = *cursor;
+	while (*cursor)
 	{
-		func_result = run_functions(&cursor, state, &result);
-		if (func_result == 0 && cursor)
+		func_result = run_functions(cursor, state, result);
+//		if (*cursor)
+///			ft_printf("%d %s\n", func_result, (*cursor)->value);
+		if (func_result == 0 && *cursor)
 		{
-			func_result = add_to_result(&result, cursor->value, state);
-			cursor = cursor->next;
+			func_result = add_to_result(result, (*cursor)->value, state);
+			*cursor = (*cursor)->next;
 		}
 		if (func_result == -1)
-			free(result);
+			free(*result);
 	}
-	return (result);
+	if (recurs)
+		token_list_free(&head);
+	return ;
 }
 
 bool	expand_node(char **word, t_state *state)
@@ -69,11 +74,18 @@ bool	expand_node(char **word, t_state *state)
 	if (!*word)
 		return (true);
 	list = expansions_retokenize(*word);
-//	print_tokens(list);
+//	ft_printf("list orig: %p\n", list);
 	if (!list)
 		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	result = expansions_loop(list, state);
-	token_list_free(&list);
+	result = NULL;
+//	head = list;
+//	ft_printf("1 head %p list %p\n", head, list);
+	expansions_loop(&list, state, &result, true);
+//	ft_printf("2 head %p list %p\n", head, list);
+	//ft_putendl("head tokens:");
+//	print_tokens(head);
+//	token_list_free(&head);
+//	ft_printf("3 head %p list %p\n", head, list);
 	reset_state(state);
 	if (!result)
 		return (false);
