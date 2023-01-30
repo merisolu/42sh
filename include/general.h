@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 15:26:04 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/30 14:14:55 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,11 @@ typedef struct s_state
 	int				continue_previous_node;
 	bool			in_quotes;
 	bool			in_braces;
+	bool			in_squote_braces;
+	bool			in_dquote_braces;
 	int				brace_count;
+	int				brace_sq_count;
+	int				brace_dq_count;
 	t_token_type	quote_type;
 	struct termios	input_conf;
 	struct termios	orig_conf;
@@ -226,12 +230,16 @@ typedef struct s_tokenizer
 {
 	bool	in_quotes;
 	bool	in_braces;
+	bool	in_squote_braces;
+	bool	in_dquote_braces;
+	size_t	brace_count;
+	size_t	brace_sq_count;
+	size_t	brace_dq_count;
 	bool	dollar;
 	bool	backslash_inhibited;
 	char	quote_type;
 	char	*buff;
 	size_t	buff_idx;
-	size_t	brace_count;
 }	t_tokenizer;
 
 typedef enum e_ast_node_type

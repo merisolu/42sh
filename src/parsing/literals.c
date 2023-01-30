@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 15:05:55 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 17:53:56 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/30 14:16:15 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,27 @@ static int	manage_quotes(t_token *original, t_state *state, char **result)
 	return (1);
 }
 
-static int	manage_braces(t_state *state, char **result)
+static int	manage_close_braces(t_state *state, char **result)
 {
 	(void) result;
-	(state->brace_count)--;
-	if (state->brace_count == 0)
-		state->in_braces = false;
+	if (!state->in_quotes)
+	{
+		(state->brace_count)--;
+		if (state->brace_count == 0)
+			state->in_braces = false;
+	}
+	else if (state->in_quotes && state->quote_type == '\'')
+	{
+		(state->brace_sq_count)--;
+		if (state->brace_sq_count == 0)
+			state->in_squote_braces = false;
+	}
+	else if (state->in_quotes && state->quote_type == '"')
+	{
+		(state->brace_dq_count)--;
+		if (state->brace_dq_count == 0)
+			state->in_dquote_braces = false;
+	}
 	return (1);
 }
 
@@ -43,8 +58,7 @@ int	check_literals(t_token **cursor, t_state *state, char **result)
 {
 	t_token	*original;
 
-	//if (state->in_quotes)
-	//	ft_printf("toki %s\n", (*cursor)->value);
+//	ft_printf("in quotes: %d | in braces: %d | %s\n", state->in_quotes,	state->in_braces, (*cursor)->value);
 //	ft_putendl(*result);
 	original = *cursor;
 	if (eat_token(cursor, TOKEN_WHITESPACE, original))
@@ -58,8 +72,8 @@ int	check_literals(t_token **cursor, t_state *state, char **result)
 	}
 	if (eat_token(cursor, TOKEN_DOUBLE_QUOTE | TOKEN_SINGLE_QUOTE, original))
 		return (manage_quotes(original, state, result));
-	if (eat_token(cursor, TOKEN_CURLY_CLOSED, original) && state->in_braces && !state->in_quotes)
-		return (manage_braces(state, result));
+	if (eat_token(cursor, TOKEN_CURLY_CLOSED, original))
+		return (manage_close_braces(state, result));
 	*cursor = original;
 	if (eat_token(cursor, TOKEN_WORD, original))
 		return (add_to_result(result, original->value, state));

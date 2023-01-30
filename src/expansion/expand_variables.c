@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:26:38 by amann             #+#    #+#             */
-/*   Updated: 2023/01/27 17:59:41 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/30 14:15:42 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,24 @@ static int	expand_name(char *value, t_state *state, char **res)
  * 
  *
  */
+void	set_braces_state(t_state *state)
+{
+	if (!state->in_quotes)
+	{
+		state->in_braces = true;
+		(state->brace_count)++;
+	}
+	else if (state->in_quotes && state->quote_type == '\'')
+	{
+		state->in_squote_braces = true;
+		(state->brace_sq_count)++;
+	}
+	else if (state->in_quotes && state->quote_type == '"')
+	{
+		state->in_dquote_braces = true;
+		(state->brace_dq_count)++;
+	}
+}
 
 int	extended_expansions_control(t_token **cursor, t_state *state, char **res)
 {
@@ -71,12 +89,12 @@ int	extended_expansions_control(t_token **cursor, t_state *state, char **res)
 	//the cursor will be pointing to token after the colon/hash/percent
 	//the parser will ensure that the token sequence will end with the closing brace
 
+	ft_printf("%d %d\n", state->in_dquote_braces, state->in_quotes);
 	//a plus means we expand to the alternative if the param exists and has a value
 	if ((*cursor)->previous->type == TOKEN_COLON)
 	{
 		*cursor = (*cursor)->next;
-		state->in_braces = true;
-		(state->brace_count)++;
+		set_braces_state(state);
 		if ((*cursor)->previous->type == TOKEN_PLUS)
 		{
 			if ((*cursor)->type == TOKEN_WHITESPACE)

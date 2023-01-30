@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 13:14:18 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/26 13:53:19 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/30 14:00:57 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,23 +46,49 @@ void	check_quotes(char c, t_tokenizer *tokenizer)
 		tokenizer->in_quotes = true;
 		tokenizer->quote_type = c;
 	}
-	else if (c == '{' && !(tokenizer->in_quotes) && !(tokenizer->in_braces) && tokenizer->dollar)
+	else if (c == '{' && tokenizer->dollar)
 	{
-		tokenizer->in_braces = true;
-		(tokenizer->brace_count)++;
-	}
-	else if (c == '{' && tokenizer->in_braces && tokenizer->dollar)
-	{
-		(tokenizer->brace_count)++;
+		if (!(tokenizer->in_quotes))
+		{
+			tokenizer->in_braces = true;
+			(tokenizer->brace_count)++;
+		}
+		else if (tokenizer->in_quotes && tokenizer->quote_type == '\'')
+		{
+			tokenizer->in_squote_braces = true;
+			(tokenizer->brace_sq_count)++;
+		}
+		else if (tokenizer->in_quotes && tokenizer->quote_type == '\"')
+		{
+			tokenizer->in_dquote_braces = true;
+			(tokenizer->brace_dq_count)++;
+		}
 	}
 	else if (c == tokenizer->quote_type && tokenizer->in_quotes)
 		tokenizer->in_quotes = false;
-	else if (c == '}' && tokenizer->in_braces && !(tokenizer->in_quotes))
+	else if (c == '}')
 	{
-		if (tokenizer->brace_count > 0)
-			(tokenizer->brace_count)--;
-		if (tokenizer->brace_count == 0)
-			tokenizer->in_braces = false;
+		if (!(tokenizer->in_quotes))
+		{
+			if (tokenizer->brace_count > 0)
+				(tokenizer->brace_count)--;
+			if (tokenizer->brace_count == 0)
+				tokenizer->in_braces = false;
+		}
+		else if (tokenizer->in_quotes && tokenizer->quote_type == '\'')
+		{
+			if (tokenizer->brace_sq_count > 0)
+				(tokenizer->brace_sq_count)--;
+			if (tokenizer->brace_sq_count == 0)
+				tokenizer->in_squote_braces = false;
+		}
+		else if (tokenizer->in_quotes && tokenizer->quote_type == '\"')
+		{
+			if (tokenizer->brace_dq_count > 0)
+				(tokenizer->brace_dq_count)--;
+			if (tokenizer->brace_dq_count == 0)
+				tokenizer->in_dquote_braces = false;
+		}
 	}
 	if (c != '$' && tokenizer->dollar)
 		tokenizer->dollar = false;

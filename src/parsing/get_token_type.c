@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 15:49:38 by amann             #+#    #+#             */
-/*   Updated: 2023/01/26 13:31:37 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/30 13:26:34 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,11 @@ static const t_token_dispatch	*get_token_dispatch(void)
 	return (dispatch_table);
 }
 
-t_token_type	get_token_type(char value, bool in_quotes, bool in_braces, \
-bool backslash_inhibited)
+t_token_type	get_token_type(char value, t_tokenizer *t)
 {
+	bool in_quotes = t->in_quotes;
+	bool in_braces = t->in_braces;
+	bool backslash_inhibited = t->backslash_inhibited;
 	const t_token_dispatch	*dispatch_table;
 	size_t					i;
 

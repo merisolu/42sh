@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:15:29 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/26 13:35:31 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/30 13:48:39 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int	is_inhibited(char *input)
 	}
 	token_list_free(&tokens);
 	return (tokenizer.in_quotes || tokenizer.backslash_inhibited
-			|| tokenizer.in_braces);
+			|| tokenizer.in_braces || tokenizer.in_squote_braces
+			|| tokenizer.in_dquote_braces);
 }
 
 void	append_input(t_input_context *ctx, char character)
