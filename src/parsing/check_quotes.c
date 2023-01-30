@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 13:14:18 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/30 14:00:57 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/30 16:32:15 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,21 @@ void	check_quotes(char c, t_tokenizer *tokenizer)
 	{
 		tokenizer->in_quotes = true;
 		tokenizer->quote_type = c;
+		if (tokenizer->quote_type == '\'')
+			tokenizer->in_squotes = true;
+	}
+	else if (c == tokenizer->quote_type && tokenizer->in_quotes)
+	{
+		tokenizer->in_quotes = false;
+		if (tokenizer->quote_type == '\'')
+			tokenizer->in_squotes = false;
+	}
+	else if (c == '\'')
+	{
+			if (tokenizer->in_squotes)
+				tokenizer->in_squotes = false;
+			else
+				tokenizer->in_squotes = true;
 	}
 	else if (c == '{' && tokenizer->dollar)
 	{
@@ -64,8 +79,6 @@ void	check_quotes(char c, t_tokenizer *tokenizer)
 			(tokenizer->brace_dq_count)++;
 		}
 	}
-	else if (c == tokenizer->quote_type && tokenizer->in_quotes)
-		tokenizer->in_quotes = false;
 	else if (c == '}')
 	{
 		if (!(tokenizer->in_quotes))
@@ -82,7 +95,8 @@ void	check_quotes(char c, t_tokenizer *tokenizer)
 			if (tokenizer->brace_sq_count == 0)
 				tokenizer->in_squote_braces = false;
 		}
-		else if (tokenizer->in_quotes && tokenizer->quote_type == '\"')
+		else if (tokenizer->in_quotes && tokenizer->quote_type == '\"'
+				&& !(tokenizer->in_squotes))
 		{
 			if (tokenizer->brace_dq_count > 0)
 				(tokenizer->brace_dq_count)--;

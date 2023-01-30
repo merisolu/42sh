@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/30 14:14:55 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/30 16:01:41 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,7 @@ typedef struct s_state
 	t_input_context	input_context;
 	int				continue_previous_node;
 	bool			in_quotes;
+	bool			in_squotes;
 	bool			in_braces;
 	bool			in_squote_braces;
 	bool			in_dquote_braces;
@@ -229,6 +230,7 @@ typedef struct s_token
 typedef struct s_tokenizer
 {
 	bool	in_quotes;
+	bool	in_squotes;
 	bool	in_braces;
 	bool	in_squote_braces;
 	bool	in_dquote_braces;

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 15:05:55 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/30 14:16:15 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/30 16:43:22 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,23 @@ static int	manage_quotes(t_token *original, t_state *state, char **result)
 	{
 		state->in_quotes = true;
 		state->quote_type = original->type;
+		if (state->quote_type == TOKEN_SINGLE_QUOTE)
+			state->in_squotes = true;
 	}
 	else if (original->type == state->quote_type)
+	{
 		state->in_quotes = false;
+		if (state->quote_type == TOKEN_SINGLE_QUOTE)
+			state->in_squotes = false;
+	}
+	else if (original->type == TOKEN_SINGLE_QUOTE)
+	{
+		if (state->in_squotes)
+			state->in_squotes = false;
+		else
+			state->in_squotes = true;
+		return (add_to_result(result, original->value, state));
+	}
 	else
 		return (add_to_result(result, original->value, state));
 	if (original && original->previous
@@ -32,25 +46,30 @@ static int	manage_quotes(t_token *original, t_state *state, char **result)
 
 static int	manage_close_braces(t_state *state, char **result)
 {
-	(void) result;
-	if (!state->in_quotes)
+	if (!(state->in_quotes))
 	{
 		(state->brace_count)--;
 		if (state->brace_count == 0)
 			state->in_braces = false;
 	}
-	else if (state->in_quotes && state->quote_type == '\'')
+	else if (state->in_quotes && state->quote_type == TOKEN_SINGLE_QUOTE)
 	{
 		(state->brace_sq_count)--;
 		if (state->brace_sq_count == 0)
 			state->in_squote_braces = false;
 	}
-	else if (state->in_quotes && state->quote_type == '"')
+	else if (state->in_quotes && state->quote_type == TOKEN_DOUBLE_QUOTE
+			&& !(state->in_squotes))
 	{
 		(state->brace_dq_count)--;
 		if (state->brace_dq_count == 0)
 			state->in_dquote_braces = false;
 	}
+	else
+	{
+		return (add_to_result(result, "}", state));
+	}
+//	(void) result;
 	return (1);
 }
 
@@ -60,6 +79,7 @@ int	check_literals(t_token **cursor, t_state *state, char **result)
 
 //	ft_printf("in quotes: %d | in braces: %d | %s\n", state->in_quotes,	state->in_braces, (*cursor)->value);
 //	ft_putendl(*result);
+//	ft_putendl((*cursor)->value);
 	original = *cursor;
 	if (eat_token(cursor, TOKEN_WHITESPACE, original))
 	{
