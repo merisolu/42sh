@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 16:24:04 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/19 10:57:43 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/31 10:57:15 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ char		*ft_strnjoinfree(char const *s1, char const *s2, size_t n);
 char		*ft_strins(const char *s, size_t i, char c);
 char		*ft_strtrim(char const *s);
 char		**ft_strsplit(char const *s, char c);
+char		*ft_strreplace(char *src, char *target, char *replacement);
 char		*ft_strtolower(char *s);
 char		*ft_strtoupper(char *s);
 int			ft_strisempty(const char *str);
