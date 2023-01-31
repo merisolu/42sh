@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 13:28:03 by amann             #+#    #+#             */
-/*   Updated: 2023/01/27 16:39:39 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/31 15:24:06 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,25 @@ static void	handle_quotes(t_token **cursor, t_state *state)
 	else if ((*cursor)->type == state->quote_type)
 		state->in_quotes = false;
 	*cursor = (*cursor)->next;
+}
+
+void	set_braces_state(t_state *state)
+{
+	if (!state->in_quotes)
+	{
+		state->in_braces = true;
+		(state->brace_count)++;
+	}
+	else if (state->in_quotes && state->quote_type == TOKEN_SINGLE_QUOTE)
+	{
+		state->in_squote_braces = true;
+		(state->brace_sq_count)++;
+	}
+	else if (state->in_quotes && state->quote_type == TOKEN_DOUBLE_QUOTE)
+	{
+		state->in_dquote_braces = true;
+		(state->brace_dq_count)++;
+	}
 }
 
 void	move_cursor_to_end(t_token **cursor, t_state *state)

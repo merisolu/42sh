@@ -6,80 +6,21 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:26:38 by amann             #+#    #+#             */
-/*   Updated: 2023/01/31 15:09:06 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/31 15:34:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expansion.h"
 
-static int	expand_name_helper(char **res, char *valid, t_state *state)
-{
-	if (env_get_or(valid, NULL, state->intern))
-		return (add_to_result(
-				res,
-				env_get_or(valid, "", state->intern),
-				state
-			));
-	return (add_to_result(
-			res,
-			env_get_or(valid, "", state->env),
-			state
-		));
-}
-
-static int	expand_name(char *value, t_state *state, char **res)
-{
-	int		return_code;
-	char	*valid;
-	char	*temp;
-
-	//this will probably have to be handled in a separate function
-	if (ft_strequ(value, "?"))
-	{
-		temp = ft_itoa(state->last_return_value);
-		return_code = add_to_result(res, temp, state);
-		free(temp);
-		return (return_code);
-	}
-	if (valid_env_name_length(value) == 0)
-		return (0);
-	valid = ft_strsub(value, 0, valid_env_name_length(value));
-	if (!valid)
-		return (-1);
-	return_code = expand_name_helper(res, valid, state);
-	if (return_code == 1)
-		add_to_result(res, value + valid_env_name_length(value), state);
-	free(valid);
-	return (return_code);
-}
-
 /*
  * 
  *
  */
-void	set_braces_state(t_state *state)
-{
-	if (!state->in_quotes)
-	{
-		state->in_braces = true;
-		(state->brace_count)++;
-	}
-	else if (state->in_quotes && state->quote_type == TOKEN_SINGLE_QUOTE)
-	{
-		state->in_squote_braces = true;
-		(state->brace_sq_count)++;
-	}
-	else if (state->in_quotes && state->quote_type == TOKEN_DOUBLE_QUOTE)
-	{
-		state->in_dquote_braces = true;
-		(state->brace_dq_count)++;
-	}
-}
 
 int	extended_expansions_control(t_token **cursor, t_state *state, char **res)
 {
 	t_token	*param;
-	int		return_code;
+//	int		return_code;
 	//print_tokens(*cursor);
 
 	param = (*cursor)->previous->previous;
@@ -92,31 +33,13 @@ int	extended_expansions_control(t_token **cursor, t_state *state, char **res)
 
 	//print_tokens(*cursor);
 	//a plus means we expand to the alternative if the param exists and has a value
-	if ((*cursor)->previous->type == TOKEN_COLON && (*cursor)->type & (TOKEN_MINUS | TOKEN_PLUS))
-	{
-		*cursor = (*cursor)->next;
-		set_braces_state(state);
 	//	ft_printf("%d %d\n", state->in_dquote_braces, state->in_quotes);
-		if (((*cursor)->previous->type == TOKEN_PLUS && var_exists_and_set(param->value, state))
-			|| ((*cursor)->previous->type == TOKEN_MINUS && !var_exists_and_set(param->value, state)))
-		{
-			if ((*cursor)->type == TOKEN_WHITESPACE)
-				*cursor = (*cursor)->next;
-			expansions_loop(cursor, state, res, true);
-			return (1);
-		}
-		else
-		{
-			return_code = expand_name(param->value, state, res);
-			move_cursor_to_end(cursor, state);
-			return (return_code);
-		}
+	if ((*cursor)->previous->type == TOKEN_COLON
+		&& (*cursor)->type & (TOKEN_MINUS | TOKEN_PLUS | TOKEN_EQUALS))
+		return (expand_plus_minus(cursor, state, res, param));
 
-	}
-
-	//with plus, minus, questionmark and equals we need to check first whether the param is valid before we decide
-	//what to expand to. If we are indeed expanding the parameter, we can skip past the rest of the tokens
-	//up to the closing curly brace.
+//	if ((*cursor)->previous->type == TOKEN_COLON && (*cursor)->type & (TOKEN_MINUS | TOKEN_PLUS))
+//		return (expand_plus_minus(cursor, state, res, param));
 
 
 
