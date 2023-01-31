@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 10:56:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/19 11:50:19 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/31 13:56:51 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,11 @@ static void	input_loop(t_input_context *ctx)
 	input_result = get_input(ctx);
 	while (input_result != INPUT_MARK_FOUND
 		&& input_result != INPUT_CALLED_FOR_EXIT)
+	{
+		if (input_result == INPUT_NO_MARK_FOUND)
+			display(ctx, 0);
 		input_result = get_input(ctx);
+	}
 	if (input_result == INPUT_MARK_FOUND)
 	{
 		ft_putchar('\n');

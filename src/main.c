@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/25 11:37:42 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/31 13:54:30 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ static t_input_result	input_handler(t_state *state)
 	static bool		tab;
 
 	result = get_input(&(state->input_context));
+	if (result == INPUT_NO_MARK_FOUND)
+		display(&(state->input_context), 0);
 	if (result == INPUT_CALLED_FOR_EXIT)
 	{
 		state->exiting = 1;
