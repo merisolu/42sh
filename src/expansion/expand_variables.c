@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:26:38 by amann             #+#    #+#             */
-/*   Updated: 2023/01/30 16:05:17 by amann            ###   ########.fr       */
+/*   Updated: 2023/01/31 15:09:06 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	set_braces_state(t_state *state)
 int	extended_expansions_control(t_token **cursor, t_state *state, char **res)
 {
 	t_token	*param;
+	int		return_code;
 	//print_tokens(*cursor);
 
 	param = (*cursor)->previous->previous;
@@ -89,45 +90,28 @@ int	extended_expansions_control(t_token **cursor, t_state *state, char **res)
 	//the cursor will be pointing to token after the colon/hash/percent
 	//the parser will ensure that the token sequence will end with the closing brace
 
-	print_tokens(*cursor);
+	//print_tokens(*cursor);
 	//a plus means we expand to the alternative if the param exists and has a value
-	if ((*cursor)->previous->type == TOKEN_COLON)
+	if ((*cursor)->previous->type == TOKEN_COLON && (*cursor)->type & (TOKEN_MINUS | TOKEN_PLUS))
 	{
 		*cursor = (*cursor)->next;
 		set_braces_state(state);
-		ft_printf("%d %d\n", state->in_dquote_braces, state->in_quotes);
-		if ((*cursor)->previous->type == TOKEN_PLUS)
+	//	ft_printf("%d %d\n", state->in_dquote_braces, state->in_quotes);
+		if (((*cursor)->previous->type == TOKEN_PLUS && var_exists_and_set(param->value, state))
+			|| ((*cursor)->previous->type == TOKEN_MINUS && !var_exists_and_set(param->value, state)))
 		{
 			if ((*cursor)->type == TOKEN_WHITESPACE)
 				*cursor = (*cursor)->next;
-			if (var_exists_and_set(param->value, state))
-			{
-				expansions_loop(cursor, state, res, true);
-				return (1);
-			}
-			else
-			{
-				move_cursor_to_end(cursor, state);
-				return (add_to_result(res, "", state));
-			}
-
+			expansions_loop(cursor, state, res, true);
+			return (1);
 		}
-		if ((*cursor)->previous->type == TOKEN_MINUS)
+		else
 		{
-			if ((*cursor)->type == TOKEN_WHITESPACE)
-				*cursor = (*cursor)->next;
-			if (!var_exists_and_set(param->value, state))
-			{
-				expansions_loop(cursor, state, res, true);
-				return (1);
-			}
-			else
-			{
-				move_cursor_to_end(cursor, state);
-				return (add_to_result(res, "", state));
-			}
-
+			return_code = expand_name(param->value, state, res);
+			move_cursor_to_end(cursor, state);
+			return (return_code);
 		}
+
 	}
 
 	//with plus, minus, questionmark and equals we need to check first whether the param is valid before we decide
