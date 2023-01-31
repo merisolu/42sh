@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/31 14:37:51 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/31 14:54:58 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,8 @@ static t_input_result	input_handler(t_state *state)
 	}
 	if (result == INPUT_FOUND_RESERVED_SEQUENCE)
 	{
-		if (ft_strequ(ARROW_UP, state->input_context.found_reserved_sequence))
-			history_recall(1, state);
-		if (ft_strequ(ARROW_DOWN, state->input_context.found_reserved_sequence))
-			history_recall(-1, state);
-		if (ft_strequ(CTRL_R, state->input_context.found_reserved_sequence))
-		{
-			history_search(state);
+		if (check_history_reserved_sequences(state))
 			result = INPUT_MARK_FOUND;
-		}
 		if (ft_strequ(TAB, state->input_context.found_reserved_sequence))
 		{
 			if (autocomplete(state, tab) == 0)

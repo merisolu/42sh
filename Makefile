@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2023/01/31 13:20:02 by jumanner         ###   ########.fr        #
+#    Updated: 2023/01/31 14:43:07 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,7 +84,7 @@ HASH_FILES = hash_table.c hash_table_getters.c fnv1.c
 
 HISTORY_DIR = history
 HISTORY_FILES = history.c history_save.c history_load.c history_search.c \
-				history_utils.c
+				history_input.c history_utils.c
 
 INPUT_DIR = input
 INPUT_FILES = clipboard_copy.c clipboard_cut.c clipboard_paste.c \
