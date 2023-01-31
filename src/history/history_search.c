@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:56:28 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/31 14:40:14 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/31 15:12:05 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,6 @@ void	history_search(t_state *state)
 		if (result != INPUT_NO_MARK_FOUND)
 			break ;
 	}
-	ft_strcpy(state->input_context.input, search_result);
+	if (search_result)
+		ft_strcpy(state->input_context.input, search_result);
 }
