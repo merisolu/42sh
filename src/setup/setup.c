@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:21:45 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/16 11:40:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/31 12:54:22 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ static char	**get_reserved_sequences(void)
 	if (!result)
 		return (NULL);
 	ft_add_to_null_array((void ***)&result, var_copy(TAB));
+	if (!result)
+		return (NULL);
+	ft_add_to_null_array((void ***)&result, var_copy(CTRL_R));
 	return (result);
 }
 

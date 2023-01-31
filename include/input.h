@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:14 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/20 15:28:39 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/01/31 12:52:38 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 # define CTRL_F "\x06"
 # define CTRL_K "\x0b"
 # define CTRL_P "\x10"
+# define CTRL_R "\x12"
 # define CTRL_U "\x15"
 # define CTRL_W "\x17"
 # define CTRL_Y "\x19"
