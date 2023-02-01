@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 10:52:45 by jumanner          #+#    #+#             */
-/*   Updated: 2021/11/08 09:44:21 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/01 13:27:03 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@
  * at the end). */
 char	*ft_strcpy(char *dst, const char *src)
 {
+	if (!dst)
+		return (dst);
+	if (!src)
+	{
+		dst[0] = '\0';
+		return (dst);
+	}
 	ft_memcpy(dst, src, ft_strlen(src) + 1);
 	return (dst);
 }
