@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:14:31 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/01 13:39:54 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/01 14:15:06 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@ bool	history_search(t_state *state);
 
 /* history_input.c */
 bool	check_history_reserved_sequences(t_state *state);
+
+/* history_expansions.c */
+int		history_expand(t_state *state);
 
 /* history_utils.c */
 char	*get_history_file_path(void);

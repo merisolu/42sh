@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2023/01/25 13:44:59 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/01 14:21:26 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,20 +89,8 @@ void	tokenize_and_execute(t_state *state)
 	t_tokenizer	tokenizer;
 	t_ast		**ast_list;
 
-	if (ft_strisempty(state->input_context.input))
-	{
-		ft_putchar('\n');
-		clear_input(&(state->input_context));
+	if (!execution_setup(state))
 		return ;
-	}
-	if (!terminal_apply_config(&(state->orig_conf)))
-	{
-		print_error(1, ERRTEMPLATE_SIMPLE, ERR_TERMIOS_FAIL);
-		return ;
-	}
-	state->input_context.cursor = ft_strlen(state->input_context.input);
-	move_cursor_to_saved_position(&(state->input_context));
-	ft_putchar('\n');
 	ast_list = construct_ast_list(
 			tokenize(state->input_context.input, &tokenizer));
 	if (ast_list)

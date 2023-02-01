@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/26 13:03:08 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/01 14:19:16 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ int		bin_env_find_silent(const char *name, t_state *state, char **result);
 
 /* copy_orig_fd.c */
 bool	copy_orig_fd(t_ast_redir *redir, t_redir **r, t_redir **head);
+
+/* execution_setup.c */
+bool	execution_setup(t_state *state);
 
 /* executor.c */
 int		execute(char *const *args, t_state *state, t_ast_context *ast);

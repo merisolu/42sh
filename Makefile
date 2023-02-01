@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2023/01/31 14:43:07 by jumanner         ###   ########.fr        #
+#    Updated: 2023/02/01 14:17:49 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,7 +67,8 @@ ENVIRONMENT_FILES = environment.c environment_getters.c shlvl.c
 
 EXECUTION_DIR = execution
 EXECUTION_FILES = bin.c executor.c executor_path_utils.c fork.c pids.c pipes.c \
-					heredocs.c reset_io.c redirects.c tokenize_and_execute.c \
+					heredocs.c reset_io.c redirects.c \
+					tokenize_and_execute.c execution_setup.c \
 					execute_fd_aggregation.c handle_logical_ops.c \
 					copy_orig_fd.c execute_redirection.c \
 					set_internal_variables.c execute_simple_command.c \
@@ -84,7 +85,7 @@ HASH_FILES = hash_table.c hash_table_getters.c fnv1.c
 
 HISTORY_DIR = history
 HISTORY_FILES = history.c history_save.c history_load.c history_search.c \
-				history_input.c history_utils.c
+				history_input.c history_expansions.c history_utils.c
 
 INPUT_DIR = input
 INPUT_FILES = clipboard_copy.c clipboard_cut.c clipboard_paste.c \
