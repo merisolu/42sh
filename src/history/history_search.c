@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:56:28 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/01 13:45:50 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/01 13:49:35 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static void	print_search(t_input_context *ctx, char *search_result,
 	size_t	total_length;
 	size_t	rows;
 
+	ctx->cursor = ft_strlen(ctx->input);
 	load_cursor(ctx);
 	ft_printf("%s%s(reverse-i-search)`%s': %s",
 		tgetstr("cr", NULL), tgetstr("cd", NULL), ctx->input, search_result);
