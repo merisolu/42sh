@@ -6,16 +6,18 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:56:28 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/01 12:45:50 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/01 13:45:50 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "history.h"
 
-static bool	research_called(t_input_result result, t_state *state)
+static bool	should_exit(t_input_result result, t_state *state)
 {
-	return (result == INPUT_FOUND_RESERVED_SEQUENCE
-		&& ft_strequ(CTRL_R, state->input_context.found_reserved_sequence));
+	return (result == INPUT_MARK_FOUND || result == INPUT_CALLED_FOR_EXIT
+		|| (result == INPUT_FOUND_RESERVED_SEQUENCE
+			&& !ft_strequ(CTRL_R,
+				state->input_context.found_reserved_sequence)));
 }
 
 static char	*seek_in_history(t_state *state, size_t	*cursor, char *look_for,
@@ -61,7 +63,7 @@ static void	print_search(t_input_context *ctx, char *search_result,
 			0, (prompt_length + found_index) % ctx->width));
 }
 
-void	history_search(t_state *state)
+bool	history_search(t_state *state)
 {
 	t_input_result	result;
 	char			*search_result;
@@ -77,14 +79,15 @@ void	history_search(t_state *state)
 		result = get_input(&(state->input_context));
 		if (result == INPUT_NOTHING_READ)
 			continue ;
+		if (should_exit(result, state))
+			break ;
 		if (result == INPUT_NO_MARK_FOUND)
 			seek_cursor = 0;
 		search_result = seek_in_history(
 				state, &seek_cursor, state->input_context.input, &found_index);
 		print_search(&(state->input_context), search_result, found_index);
-		if (result != INPUT_NO_MARK_FOUND && !research_called(result, state))
-			break ;
 	}
-	if (search_result)
-		ft_strcpy(state->input_context.input, search_result);
+	ft_strcpy(state->input_context.input, search_result);
+	state->input_context.cursor = ft_strlen(state->input_context.input);
+	return (result == INPUT_MARK_FOUND);
 }
