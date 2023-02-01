@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:26:38 by amann             #+#    #+#             */
-/*   Updated: 2023/02/01 15:48:48 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/01 17:02:28 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,6 @@ int	extended_expansions_control(t_token **cursor, t_state *state, char **res)
 //	if ((*cursor)->previous->type == TOKEN_COLON && (*cursor)->type & (TOKEN_MINUS | TOKEN_PLUS))
 //		return (expand_plus_minus(cursor, state, res, param));
 
-	//pattern matching, hash works from the start of the string, percent from the end
-	//One char means shortest matching pattern, two means the longest. However, we do not need
-	//to concern ourselves with this, the shell does not incorporate globbing, so patterns will not
-	//vary in length
-	//first, we expand the param into a temp string
-	//then we expand what follows the hash or percent token into another temp string
-	//We then take the length of the expansion and compare it to the start or end of the expanded
-	//param.
-	//If it matches, we truncate that respective part of the string
-	//We then append the result to res
 	if ((*cursor)->previous->type & (TOKEN_HASH | TOKEN_PERCENT)
 		&& (*cursor)->type != TOKEN_CURLY_CLOSED)
 		return (expand_hash_percent(cursor, state, res, param));
@@ -85,9 +75,7 @@ int	expand_variable(t_token **cursor, t_state *state, char **res)
 		return (extended_expansions_control(cursor, state, res));
 	if (eat_token(cursor, TOKEN_DOLLAR, original)
 		&& eat_token(cursor, TOKEN_CURLY_OPEN, original)
-		&& eat_token(cursor, TOKEN_HASH, original)
-		&& eat_token(cursor, TOKEN_WORD, original)
-		&& eat_token(cursor, TOKEN_CURLY_CLOSED, original))
-		return (expand_to_value_len(original->next->next->next->value, state, res));
+		&& eat_token(cursor, TOKEN_HASH, original))
+		return (expand_to_value_len(cursor, state, res));
 	return (0);
 }

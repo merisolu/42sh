@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 17:10:29 by amann             #+#    #+#             */
-/*   Updated: 2023/01/31 17:12:54 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/01 17:14:48 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,21 @@
  * be found, we just print 0.
  */
 
-int	expand_to_value_len(char *name, t_state *state, char **res)
+int	expand_to_value_len(t_token **cursor, t_state *state, char **res)
 {
 	char	*temp;
 	char	*temp2;
+	char	*name;
 	int		return_code;
 
+	if (cursor && *cursor && (*cursor)->type != TOKEN_WORD
+		&& (*cursor)->next && (*cursor)->next->type != TOKEN_CURLY_CLOSED)
+	{
+		print_error(0, ERRTEMPLATE_NAMED, (*cursor)->value, ERR_BAD_SUB);
+		move_cursor_to_end(cursor, state);
+		return (0);
+	}
+	name = (*cursor)->value;
 	temp = NULL;
 	expand_name(name, state, &temp);
 	temp2 = ft_itoa((int)ft_strlen(temp));
@@ -32,5 +41,6 @@ int	expand_to_value_len(char *name, t_state *state, char **res)
 	return_code = add_to_result(res, temp2, state);
 	free(temp);
 	free(temp2);
+	move_cursor_to_end(cursor, state);
 	return (return_code);
 }
