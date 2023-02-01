@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:56:28 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/31 15:33:05 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/01 11:17:07 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,17 @@ static char	*seek_in_history(t_state *state, size_t	*cursor, char *look_for)
 
 static void	print_search(t_input_context *ctx, char *search_result)
 {
-	move_cursor_to_saved_position(ctx);
+	size_t	total_length;
+	size_t	rows;
+
+	load_cursor(ctx);
 	ft_printf("%s%s(reverse-i-search)`%s': %s",
 		tgetstr("cr", NULL), tgetstr("cd", NULL), ctx->input, search_result);
+	total_length = ft_strlen("(reverse-i-search)") + ft_strlen(ctx->input)
+		+ ft_strlen(search_result) + 3;
+	rows = ft_min_size_t((total_length / ctx->width), ctx->height);
+	if (ctx->input_start_y + rows >= ctx->height)
+		ctx->input_start_y -= (ctx->input_start_y + rows) - ctx->height;
 }
 
 void	history_search(t_state *state)
