@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 14:41:36 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/31 15:00:57 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/01 11:58:07 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ bool	check_history_reserved_sequences(t_state *state)
 	if (ft_strequ(CTRL_R, state->input_context.found_reserved_sequence))
 	{
 		history_search(state);
-		return (INPUT_MARK_FOUND);
+		return (true);
 	}
-	return (INPUT_FOUND_RESERVED_SEQUENCE);
+	return (false);
 }
