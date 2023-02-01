@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:26:38 by amann             #+#    #+#             */
-/*   Updated: 2023/01/31 17:09:53 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/01 15:48:48 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,19 @@ int	extended_expansions_control(t_token **cursor, t_state *state, char **res)
 //	if ((*cursor)->previous->type == TOKEN_COLON && (*cursor)->type & (TOKEN_MINUS | TOKEN_PLUS))
 //		return (expand_plus_minus(cursor, state, res, param));
 
+	//pattern matching, hash works from the start of the string, percent from the end
+	//One char means shortest matching pattern, two means the longest. However, we do not need
+	//to concern ourselves with this, the shell does not incorporate globbing, so patterns will not
+	//vary in length
+	//first, we expand the param into a temp string
+	//then we expand what follows the hash or percent token into another temp string
+	//We then take the length of the expansion and compare it to the start or end of the expanded
+	//param.
+	//If it matches, we truncate that respective part of the string
+	//We then append the result to res
+	if ((*cursor)->previous->type & (TOKEN_HASH | TOKEN_PERCENT)
+		&& (*cursor)->type != TOKEN_CURLY_CLOSED)
+		return (expand_hash_percent(cursor, state, res, param));
 
 
 	return (0);

@@ -6,8 +6,8 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2023/01/31 17:15:56 by amann            ###   ########.fr        #
-#                                                                              #
+#    Updated: 2023/02/01 15:46:13 by amann            ###   ########.fr        #
+
 # **************************************************************************** #
 
 NAME = 42sh
@@ -76,7 +76,8 @@ EXPANSION_DIR = expansion
 EXPANSION_FILES = expand_tilde.c expand_variables.c expand_node.c \
 				  	parse_expansions.c expansions_retokenize.c \
 					expand_plus_minus.c	expansion_utils.c \
-					expand_name.c expand_to_value_len.c
+					expand_name.c expand_to_value_len.c \
+					expand_hash_percent.c
 
 HASH_DIR = hash
 HASH_FILES = hash_table.c fnv1.c

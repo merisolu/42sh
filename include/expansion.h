@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:12 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/31 17:16:54 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/01 15:49:13 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ int	expand_name(char *value, t_state *state, char **res);
 
 /* expand_variables.c */
 int		expand_variable(t_token **cursor, t_state *state, char **result);
+
+/* expand_hash_percent.c */
+int	expand_hash_percent(t_token **cursor, t_state *state, char **res, t_token *param);
 
 /* expand_plus_minus.c */
 int	expand_plus_minus(t_token **cursor, t_state *state, char **res, t_token *param);
