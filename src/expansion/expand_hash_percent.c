@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 15:34:43 by amann             #+#    #+#             */
-/*   Updated: 2023/02/02 13:57:06 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/02 15:29:10 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,20 @@ static void	handle_hash(char *temp_res, char *temp_exp)
 	}
 }
 
+static void	position_cursor(t_token **cursor, char **temp, bool hash)
+{
+	if ((*cursor)->type == TOKEN_WHITESPACE)
+	{
+		*temp = ft_strdup((*cursor)->value);
+		*cursor = (*cursor)->next;
+		return ;
+	}
+	if ((*cursor)->type == TOKEN_HASH && hash)
+		*cursor = (*cursor)->next;
+	if ((*cursor)->type == TOKEN_PERCENT && !hash)
+		*cursor = (*cursor)->next;
+}
+
 /*
 	pattern matching, hash works from the start of the string, percent from the
 	end.
@@ -66,11 +80,7 @@ int	expand_hash_percent(t_token **cursor, t_state *state, char **res, \
 
 	hash = (*cursor)->previous->type == TOKEN_HASH;
 	temp_exp = NULL;
-	if ((*cursor)->type == TOKEN_WHITESPACE)
-	{
-		temp_exp = ft_strdup((*cursor)->value);
-		*cursor = (*cursor)->next;
-	}
+	position_cursor(cursor, &temp_exp, hash);
 	temp_res = NULL;
 	set_braces_state(state);
 	expand_name(param->value, state, &temp_res);

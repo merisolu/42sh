@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 13:14:18 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/02 14:44:57 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/02 14:58:26 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void	handle_close_brace(t_tokenizer *tokenizer)
 	}
 }
 
-static void	enter_quotes(t_tokenizer *tokenizer)
+static void	enter_quotes(char c, t_tokenizer *tokenizer)
 {
 	tokenizer->in_quotes = true;
 	tokenizer->quote_type = c;
@@ -103,7 +103,7 @@ void	check_quotes(char c, t_tokenizer *tokenizer)
 			|| !tokenizer->in_quotes))
 		return ;
 	if ((c == '\'' || c == '\"') && !(tokenizer->in_quotes))
-		enter_quotes(tokenizer);
+		enter_quotes(c, tokenizer);
 	else if (c == tokenizer->quote_type && tokenizer->in_quotes)
 	{
 		tokenizer->in_quotes = false;
