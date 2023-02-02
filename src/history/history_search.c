@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:56:28 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/02 13:43:29 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/02 14:43:27 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ static bool	should_exit(t_input_result result, t_state *state)
 				state->input_context.found_reserved_sequence)));
 }
 
-static char	*seek_in_history(t_state *state, size_t	*cursor, char *look_for,
-							size_t *found_index)
+static char	*seek_in_history(t_state *state, int *cursor, char *look_for,
+							int *found_index)
 {
-	size_t	i;
-	size_t	found;
+	int		i;
+	int		found;
 	char	*temp;
 
 	*found_index = 0;
@@ -33,7 +33,7 @@ static char	*seek_in_history(t_state *state, size_t	*cursor, char *look_for,
 	temp = ft_strstr(state->history[found], look_for);
 	if (temp)
 	{
-		*found_index = (size_t)(temp - state->history[found]);
+		*found_index = (temp - state->history[found]);
 		*cursor = found + 1;
 		return (state->history[found]);
 	}
@@ -66,8 +66,8 @@ bool	history_search(t_state *state)
 {
 	t_input_result	result;
 	char			*search_result;
-	size_t			seek_cursor;
-	size_t			found_index;
+	int				seek_cursor;
+	int				found_index;
 
 	seek_cursor = 0;
 	search_result = NULL;
