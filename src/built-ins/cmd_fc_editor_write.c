@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 13:23:36 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 11:57:39 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/02 13:03:51 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ bool	cmd_fc_write_commands_to_file(t_fc_range *range, t_state *state)
 	while (1)
 	{
 		write_successful = write_command_to_fd(
-				fd, cmd_fc_range_number_to_index(i, state), state);
+				fd, history_number_to_index(i, state), state);
 		if (!write_successful || i == range->end)
 			break ;
 		if (range->start > range->end)

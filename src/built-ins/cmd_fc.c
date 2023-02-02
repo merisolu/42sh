@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:03:39 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/31 12:25:04 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/02 13:03:51 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int	execute_from_history(t_fc_range *range, char *replace,
 	{
 		ft_strclr(state->input_context.input);
 		temp = cmd_fc_apply_replacement(
-				state->history[cmd_fc_range_number_to_index(i, state)],
+				state->history[history_number_to_index(i, state)],
 				replace);
 		if (!temp)
 			return (print_error(1, ERRTEMPLATE_NAMED, "fc", ERR_MALLOC_FAIL));
@@ -80,7 +80,7 @@ static void	print_history(bool show_numbers, t_fc_range *range,
 		if (show_numbers)
 			ft_printf("%d", i);
 		ft_printf("\t%s\n",
-			state->history[cmd_fc_range_number_to_index(i, state)]);
+			state->history[history_number_to_index(i, state)]);
 		if (i == range->end)
 			break ;
 		if (range->start > range->end)
