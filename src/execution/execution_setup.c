@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:17:10 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/01 14:23:12 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/02 14:26:53 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ bool	run_history_expansion(t_state *state)
 	if (expansion_result == 1)
 		ft_printf("\n%s", state->input_context.input);
 	else if (expansion_result == -1)
-		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
+	{
+		clear_input(&(state->input_context));
+		return (false);
+	}
 	return (true);
 }
 
