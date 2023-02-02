@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 13:28:03 by amann             #+#    #+#             */
-/*   Updated: 2023/01/31 15:24:06 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/02 11:53:27 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	move_cursor_to_end(t_token **cursor, t_state *state)
 	{
 		if ((*cursor)->type == TOKEN_DOLLAR)
 		{
-			 *cursor = (*cursor)->next;
+			*cursor = (*cursor)->next;
 			if ((*cursor)->type == TOKEN_CURLY_OPEN)
 				(state->brace_count)++;
 		}
@@ -79,6 +79,16 @@ void	move_cursor_to_end(t_token **cursor, t_state *state)
 			if (state->brace_count == 0)
 			{
 				state->in_braces = false;
+				return ;
+			}
+		}
+		else if ((*cursor)->type == TOKEN_CURLY_CLOSED && (state->in_dquote_braces) && (state->in_quotes))
+		{
+			(state->brace_dq_count)--;
+			*cursor = (*cursor)->next;
+			if (state->brace_dq_count == 0)
+			{
+				state->in_dquote_braces = false;
 				return ;
 			}
 		}

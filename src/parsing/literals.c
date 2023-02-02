@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 15:05:55 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/01 16:29:19 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/02 12:30:50 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static int	manage_quotes(t_token *original, t_state *state, char **result)
 
 static int	manage_close_braces(t_state *state, char **result)
 {
+//	ft_printf("braces: %d\n", state->in_braces);
 	if (!(state->in_quotes) && state->in_braces && !(state->in_squote_braces)
 		&& !(state->in_dquote_braces))
 	{
@@ -71,9 +72,9 @@ static int	manage_close_braces(t_state *state, char **result)
 	}
 	else
 	{
-		ft_putendl("bonjour");
+//		ft_putendl("bonjour");
 		add_to_result(result, "}", state);
-		ft_putendl(*result);
+//		ft_putendl(*result);
 	}
 //	(void) result;
 	return (1);

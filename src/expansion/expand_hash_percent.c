@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 15:34:43 by amann             #+#    #+#             */
-/*   Updated: 2023/02/01 16:31:35 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/02 12:58:32 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	handle_percent(char *temp_res, char *temp_exp)
 	res_len = ft_strlen(temp_res);
 	if (len != 0 && len <= res_len
 		&& (ft_strequ(temp_res + (res_len - len), temp_exp)))
-		ft_bzero(temp_res + (res_len - len), len);
+		ft_strclr(temp_res + (res_len - len));
 }
 
 static void	handle_hash(char *temp_res, char *temp_exp)
@@ -35,7 +35,7 @@ static void	handle_hash(char *temp_res, char *temp_exp)
 		&& (ft_strnequ(temp_res, temp_exp, len)))
 	{
 		ft_memmove((void *)temp_res, (void *)temp_res + len, res_len);
-		ft_bzero(temp_res + res_len, res_len - len);
+		ft_strclr(temp_res + res_len);
 	}
 }
 
@@ -81,6 +81,5 @@ int	expand_hash_percent(t_token **cursor, t_state *state, char **res, t_token *p
 	return_code = add_to_result(res, temp_res, state);
 	free(temp_res);
 	free(temp_exp);
-	move_cursor_to_end(cursor, state);
 	return (0);
 }
