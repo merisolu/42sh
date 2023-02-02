@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 15:26:29 by amann             #+#    #+#             */
-/*   Updated: 2023/02/02 12:50:29 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/02 13:57:20 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	expand_name(char *value, t_state *state, char **res)
 	char	*valid;
 	char	*temp;
 
-	//this will probably have to be handled in a separate function
 	if (ft_strequ(value, "?"))
 	{
 		temp = ft_itoa(state->last_return_value);

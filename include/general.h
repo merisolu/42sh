@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/30 16:01:41 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/02 14:21:02 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,19 +229,20 @@ typedef struct s_token
 
 typedef struct s_tokenizer
 {
-	bool	in_quotes;
-	bool	in_squotes;
-	bool	in_braces;
-	bool	in_squote_braces;
-	bool	in_dquote_braces;
-	size_t	brace_count;
-	size_t	brace_sq_count;
-	size_t	brace_dq_count;
-	bool	dollar;
-	bool	backslash_inhibited;
-	char	quote_type;
-	char	*buff;
-	size_t	buff_idx;
+	bool			in_quotes;
+	bool			in_squotes;
+	bool			in_braces;
+	bool			in_squote_braces;
+	bool			in_dquote_braces;
+	size_t			brace_count;
+	size_t			brace_sq_count;
+	size_t			brace_dq_count;
+	bool			dollar;
+	bool			backslash_inhibited;
+	char			quote_type;
+	char			*buff;
+	size_t			buff_idx;
+	t_token_type	special;
 }	t_tokenizer;
 
 typedef enum e_ast_node_type

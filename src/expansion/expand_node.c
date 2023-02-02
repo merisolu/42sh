@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:18:51 by amann             #+#    #+#             */
-/*   Updated: 2023/02/02 11:58:57 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/02 14:01:39 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ static int	run_functions(t_token **cursor, t_state *state, char **result)
 	return (0);
 }
 
-void	expansions_loop(t_token **cursor, t_state *state, char **result, bool recurs)
+void	expansions_loop(t_token **cursor, t_state *state, char **result, bool r)
 {
 	int		func_result;
-	t_token *head;
+	t_token	*head;
 
-	if (!recurs)
+	if (!r)
 		head = *cursor;
 	while (*cursor)
 	{
@@ -58,10 +58,10 @@ void	expansions_loop(t_token **cursor, t_state *state, char **result, bool recur
 		}
 		if (func_result == -1)
 			free(*result);
-		if (!(state->in_braces) && recurs)
+		if (!(state->in_braces) && r)
 			break ;
 	}
-	if (!recurs)
+	if (!r)
 		token_list_free(&head);
 	return ;
 }
@@ -90,7 +90,6 @@ bool	expand_node(char **word, t_state *state)
 	list = expansions_retokenize(*word);
 	if (!list)
 		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	//print_tokens(list);
 	result = NULL;
 	expansions_loop(&list, state, &result, false);
 	reset_state(state);
@@ -98,12 +97,10 @@ bool	expand_node(char **word, t_state *state)
 		return (false);
 	if (ft_strequ(*word, result))
 	{
-//		ft_printf("result: %s\n", *word);
 		free(result);
 		return (true);
 	}
 	ft_strdel(word);
 	*word = result;
-//	ft_printf("result: %s\n", *word);
 	return (true);
 }

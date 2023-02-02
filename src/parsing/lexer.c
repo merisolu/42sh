@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/30 13:35:35 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/02 14:34:11 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static int	skip_whitespace(char *line)
 {
-	int	i;
-	t_tokenizer t;
+	int			i;
+	t_tokenizer	t;
 
 	ft_bzero((void *)&t, sizeof(t_tokenizer));
 	i = 0;
@@ -82,6 +82,5 @@ t_token	*tokenize(char *input, t_tokenizer *tokenizer)
 	}
 	token_add(&result, type, ft_strdup(tokenizer->buff));
 	free(tokenizer->buff);
-//	print_tokens(result);
 	return (result);
 }

@@ -6,13 +6,13 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 15:19:14 by amann             #+#    #+#             */
-/*   Updated: 2023/02/02 11:47:05 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/02 14:02:33 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expansion.h"
 
-static bool handle_equals_helper(t_token *param, t_state *state, char **res)
+static bool	handle_equals_helper(t_token *param, t_state *state, char **res)
 {
 	char	**var;
 
@@ -31,7 +31,7 @@ static bool handle_equals_helper(t_token *param, t_state *state, char **res)
 	return (true);
 }
 
-static bool handle_equals(t_token *param, t_state *state, char **res)
+static bool	handle_equals(t_token *param, t_state *state, char **res)
 {
 	if (!env_get_pointer(param->value, state->env)
 		&& !env_get_pointer(param->value, state->intern))
@@ -81,8 +81,8 @@ int	expand_plus_minus(t_token **cursor, t_state *state, char **res, \
 	set_braces_state(state);
 	if (((*cursor)->previous->type == TOKEN_PLUS
 			&& var_exists_and_set(param->value, state))
-			|| ((*cursor)->previous->type & minus_eq_qm
-				&& !var_exists_and_set(param->value, state)))
+		|| ((*cursor)->previous->type & minus_eq_qm
+			&& !var_exists_and_set(param->value, state)))
 		return (handle_minus_eq_qm(cursor, state, res, param));
 	return_code = expand_name(param->value, state, res);
 	move_cursor_to_end(cursor, state);

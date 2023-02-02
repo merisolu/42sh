@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 15:34:43 by amann             #+#    #+#             */
-/*   Updated: 2023/02/02 12:58:32 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/02 13:57:06 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ static void	handle_hash(char *temp_res, char *temp_exp)
 	We then append the result to res
 */
 
-int	expand_hash_percent(t_token **cursor, t_state *state, char **res, t_token *param)
+int	expand_hash_percent(t_token **cursor, t_state *state, char **res, \
+		t_token *param)
 {
 	char	*temp_res;
 	char	*temp_exp;
