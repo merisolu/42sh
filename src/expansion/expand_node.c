@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:18:51 by amann             #+#    #+#             */
-/*   Updated: 2023/02/02 14:01:39 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/02 16:03:00 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	expansions_loop(t_token **cursor, t_state *state, char **result, bool r)
 	return ;
 }
 
-void	reset_state_lexing(t_state *state)
+static void	reset_state_lexing(t_state *state)
 {
 	state->in_quotes = false;
 	state->in_squotes = false;

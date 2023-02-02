@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:12 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/01 17:03:51 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/02 17:45:11 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,14 @@ void	set_braces_state(t_state *state);
 
 /* parse_expansions.c */
 bool	parse_expansions(t_ast *root, t_state *state);
+
+/* tilde_param_exp.c */
+bool	check_param_exp(t_state *s, t_token *fb);
+bool	check_recursive(t_token **csr, t_state *s, t_token *fb, \
+		t_token_type token_type);
+
+/* tilde_if_checks.c */
+bool	basic_exp(t_token **csr, t_token *fb, t_state *s, t_token_type scn);
+bool	minus_exp(t_token **csr, t_token *fb, t_state *s, t_token_type scn);
+bool	plus_exp(t_token **csr, t_token *fb, t_state *s, t_token_type scn);
 #endif
