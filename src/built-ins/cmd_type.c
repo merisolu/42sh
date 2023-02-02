@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 16:17:26 by amann             #+#    #+#             */
-/*   Updated: 2023/01/05 15:58:14 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/02 14:55:50 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
  *
  * Type will cycle through the args given and confirm if they are:
  *	-	a shell builtin
+ *	-	an executable in the hash table
  *	-	an executable in the PATH
  *	-	an alias
  *	-	a function
@@ -45,7 +46,12 @@ static void	search_bins(char const *name, int *res, t_state *state)
 {
 	char	*path;
 
-	path = NULL;
+	path = hash_table_get_path((char *)name, state->hash_table);
+	if (path)
+	{
+		ft_printf("%s is hashed (%s)\n", name, path);
+		return ;
+	}
 	bin_env_find(name, state, &path);
 	if (path)
 	{
