@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:56:28 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/01 13:49:35 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/02 13:43:29 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,18 @@ static char	*seek_in_history(t_state *state, size_t	*cursor, char *look_for,
 							size_t *found_index)
 {
 	size_t	i;
+	size_t	found;
 	char	*temp;
 
 	*found_index = 0;
 	i = *cursor;
-	while (i < HISTORY_SIZE)
+	found = history_seek(state, *cursor, look_for, true);
+	temp = ft_strstr(state->history[found], look_for);
+	if (temp)
 	{
-		temp = ft_strstr(state->history[i], look_for);
-		if (temp)
-		{
-			*found_index = (size_t)(temp - state->history[i]);
-			*cursor = i + 1;
-			return (state->history[i]);
-		}
-		i++;
+		*found_index = (size_t)(temp - state->history[found]);
+		*cursor = found + 1;
+		return (state->history[found]);
 	}
 	if (*cursor == 0)
 		return (NULL);

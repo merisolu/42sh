@@ -6,11 +6,29 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 11:39:01 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/02 13:04:58 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/02 13:44:56 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "history.h"
+
+size_t	history_seek(t_state *state, size_t start, char *look_for,
+					bool anywhere)
+{
+	size_t	i;
+
+	i = start;
+	while (i < HISTORY_SIZE)
+	{
+		if (anywhere && ft_strstr(state->history[i], look_for))
+			return (i);
+		if (!anywhere && ft_strnequ(state->history[i], look_for,
+				ft_strlen(look_for)))
+			return (i);
+		i++;
+	}
+	return (0);
+}
 
 int	history_number_to_index(int num, t_state *state)
 {
