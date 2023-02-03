@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:10:58 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/03 13:44:18 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/03 14:46:40 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	history_expand(t_state *state)
 	cursor = find_expansion(state->input_context.input, 0);
 	if (cursor == -1)
 		return (0);
-	while (cursor > 0 && state->input_context.input[cursor])
+	while (cursor >= 0 && state->input_context.input[cursor])
 	{
 		target = parse_expansion(state->input_context.input, cursor);
 		if (!target)
