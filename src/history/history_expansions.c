@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:10:58 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/02 14:36:11 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/03 11:56:12 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,35 +36,37 @@ static int	expansion_to_history_index(char *expansion, t_state *state)
 	return (result);
 }
 
-static char	*parse_expansion(char *expansion)
+static char	*parse_expansion(char *expansion, int index)
 {
 	size_t	length;
 
 	length = 0;
-	while (!ft_is_whitespace(expansion[length]) && expansion[length])
+	while (!ft_is_whitespace(expansion[index + length])
+		&& expansion[index + length])
 		length++;
-	return (ft_strndup(expansion, length));
+	return (ft_strndup(expansion + index, length));
 }
 
-static char	*find_expansion(char *input)
+static int	find_expansion(char *input, int index)
 {
-	char	*cursor;
+	int	cursor;
 
-	cursor = input;
-	while (*cursor)
+	cursor = index;
+	while (input[cursor])
 	{
-		if (*cursor != '!')
+		if (input[cursor] != '!')
 		{
 			cursor++;
 			continue ;
 		}
-		if (*cursor != ' ' && *cursor != '\t' && *cursor != '\n')
+		if (input[cursor] != ' ' && input[cursor] != '\t'
+			&& input[cursor] != '\n')
 			return (cursor);
 	}
-	return (NULL);
+	return (-1);
 }
 
-static bool	apply_expansion(char *target, char **cursor, t_state *state)
+static bool	apply_expansion(char *target, int *cursor, t_state *state)
 {
 	char	*temp;
 	int		index;
@@ -77,7 +79,8 @@ static bool	apply_expansion(char *target, char **cursor, t_state *state)
 	if (!temp)
 		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	ft_strncpy(state->input_context.input, temp, INPUT_MAX_SIZE);
-	*cursor = find_expansion(*cursor + ft_strlen(target) + 1);
+	*cursor = find_expansion(
+			state->input_context.input, *cursor + ft_strlen(target) + 1);
 	free(temp);
 	return (true);
 }
@@ -89,14 +92,14 @@ static bool	apply_expansion(char *target, char **cursor, t_state *state)
 int	history_expand(t_state *state)
 {
 	char	*target;
-	char	*cursor;
+	int		cursor;
 
-	cursor = find_expansion(state->input_context.input);
-	if (!cursor)
+	cursor = find_expansion(state->input_context.input, 0);
+	if (cursor == -1)
 		return (0);
-	while (cursor)
+	while (cursor > 0 && state->input_context.input[cursor])
 	{
-		target = parse_expansion(cursor);
+		target = parse_expansion(state->input_context.input, cursor);
 		if (!target)
 			return (print_error_bool(-1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 		if (!apply_expansion(target, &cursor, state))
