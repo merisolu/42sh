@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:10:58 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/03 11:56:12 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/03 13:15:06 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,11 @@ static int	find_expansion(char *input, int index)
 			continue ;
 		}
 		if (input[cursor] != ' ' && input[cursor] != '\t'
-			&& input[cursor] != '\n')
+			&& input[cursor] != '\n' && input[cursor + 1] != '\0'
+			&& !is_history_expansion_inhibited(input, cursor))
 			return (cursor);
+		else
+			cursor++;
 	}
 	return (-1);
 }
