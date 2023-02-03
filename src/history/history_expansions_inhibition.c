@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 11:02:50 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/03 13:40:22 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/03 14:40:36 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static bool	is_quote_inhibited_at_index(char *input, int end)
 	quote = '\0';
 	while (i < end)
 	{
-		if (quote == '\0' && (input[i] == '\'' || input[i] == '"'))
+		if (quote == '\0' && (input[i] == '\'' || input[i] == '"')
+			&& (i == 0 || input[i - 1] != '\\'))
 			quote = input[i];
 		else if (input[i] == quote)
 			quote = '\0';
