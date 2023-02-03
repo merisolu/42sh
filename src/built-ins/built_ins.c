@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 12:18:43 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/20 14:20:57 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/03 15:27:33 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ const t_cmd_dispatch	*get_built_in_dispatch(void)
 	{"jobs", &cmd_jobs},
 	{"fg", &cmd_fg},
 	{"bg", &cmd_bg},
+	{"test", &cmd_test},
 	{"true", &cmd_true},
 	{"false", &cmd_false},
 	{"type", &cmd_type},
