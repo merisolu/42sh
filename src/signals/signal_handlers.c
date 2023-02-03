@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:57:03 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/20 14:54:28 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/03 14:51:53 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,6 @@ void	reset_signal_handlers(void)
 	signal(SIGWINCH, SIG_DFL);
 	signal(SIGCHLD, SIG_DFL);
 	signal(SIGTSTP, SIG_DFL);
-	signal(SIGTTOU, SIG_DFL);
+	signal(SIGTTIN, SIG_DFL);
 	signal(SIGTTOU, SIG_DFL);
 }
