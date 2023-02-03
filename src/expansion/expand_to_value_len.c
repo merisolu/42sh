@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 17:10:29 by amann             #+#    #+#             */
-/*   Updated: 2023/02/01 17:14:48 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/03 14:58:13 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@ int	expand_to_value_len(t_token **cursor, t_state *state, char **res)
 	char	*name;
 	int		return_code;
 
-	if (cursor && *cursor && (*cursor)->type != TOKEN_WORD
-		&& (*cursor)->next && (*cursor)->next->type != TOKEN_CURLY_CLOSED)
+	if (!cursor || !(*cursor) || !((*cursor)->next)
+		|| (*cursor)->type != TOKEN_WORD
+		|| (*cursor)->next->type != TOKEN_CURLY_CLOSED)
 	{
-		print_error(0, ERRTEMPLATE_NAMED, (*cursor)->value, ERR_BAD_SUB);
+		set_braces_state(state);
+		print_error(0, ERRTEMPLATE_NAMED, state->expansion_word, ERR_BAD_SUB);
 		move_cursor_to_end(cursor, state);
 		return (0);
 	}

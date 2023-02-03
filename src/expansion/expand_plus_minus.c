@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 15:19:14 by amann             #+#    #+#             */
-/*   Updated: 2023/02/02 14:02:33 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/03 15:22:31 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,10 @@ static int	handle_minus_eq_qm(t_token **cursor, t_state *state, char **res, \
 	qm = (*cursor)->previous->type == TOKEN_QUESTION_MARK;
 	if ((*cursor)->type == TOKEN_WHITESPACE)
 		*cursor = (*cursor)->next;
-	expansions_loop(cursor, state, res, true);
+	if ((*cursor)->type == TOKEN_CURLY_CLOSED)
+		*res = ft_strdup("");
+	else
+		expansions_loop(cursor, state, res, true);
 	if (equals && !handle_equals(param, state, res))
 		return (0);
 	if (qm)

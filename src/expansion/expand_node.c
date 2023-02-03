@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:18:51 by amann             #+#    #+#             */
-/*   Updated: 2023/02/02 16:03:00 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/03 13:46:15 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ bool	expand_node(char **word, t_state *state)
 
 	if (!*word)
 		return (true);
+	state->expansion_word = *word;
 	reset_state_lexing(state);
 	list = expansions_retokenize(*word);
 	if (!list)
