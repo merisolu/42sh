@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:21:06 by amann             #+#    #+#             */
-/*   Updated: 2023/01/05 14:57:41 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/03 14:40:07 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@ static const t_token_dispatch	*get_parse_token_dispatch(void)
 	{'/', TOKEN_FWD_SLASH},
 	{'\\', TOKEN_BACKSLASH},
 	{'=', TOKEN_EQUALS},
+	{'#', TOKEN_HASH},
+	{'%', TOKEN_PERCENT},
+	{'?', TOKEN_QUESTION_MARK},
 	{'\0', TOKEN_NULL}
 	};
 
@@ -50,7 +53,10 @@ static t_token_type	get_parser_token_type(char value, t_tokenizer *tokenizer)
 	}
 	if (ft_is_whitespace(value))
 		return (TOKEN_WHITESPACE);
-	return (TOKEN_WORD);
+	if (ft_isalnum(value))
+		return (TOKEN_WORD);
+	else
+		return (TOKEN_JUNK);
 }
 
 static t_tokenizer	retokenize_init(char *line)
@@ -59,6 +65,10 @@ static t_tokenizer	retokenize_init(char *line)
 
 	ft_bzero(&t, sizeof(t_tokenizer));
 	t.buff = ft_strnew(ft_strlen(line) + 1);
+	t.brace_count = 0;
+	t.special = (TOKEN_DOUBLE_QUOTE | TOKEN_SINGLE_QUOTE | TOKEN_BACKSLASH \
+			| TOKEN_CURLY_OPEN | TOKEN_CURLY_CLOSED | TOKEN_PERCENT \
+			| TOKEN_HASH | TOKEN_EQUALS | TOKEN_QUESTION_MARK);
 	return (t);
 }
 
@@ -75,7 +85,7 @@ static void	rt_loop(t_tokenizer *t, t_token **res, t_token_type *type, char *lc)
 	t->buff_idx = 0;
 }
 
-t_token	*ast_retokenize(char *line)
+t_token	*expansions_retokenize(char *line)
 {
 	t_token			*result;
 	t_token_type	type;
@@ -90,8 +100,8 @@ t_token	*ast_retokenize(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (get_parser_token_type(line[i], &t) != type || (i > 0 \
-		&& type & (TOKEN_DOUBLE_QUOTE | TOKEN_SINGLE_QUOTE | TOKEN_BACKSLASH)))
+		if (get_parser_token_type(line[i], &t) != type
+			|| (i > 0 && type & t.special))
 			rt_loop(&t, &result, &type, line + i);
 		check_quotes(line[i], &t);
 		t.buff[t.buff_idx++] = line[i++];

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/25 11:13:20 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/03 16:59:27 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@
 # define ERRTEMPLATE_NAMED "42sh: %s: %s\n"
 # define ERRTEMPLATE_DOUBLE_NAMED "42sh: %s: %s: %s\n"
 # define ERRTEMPLATE_DOUBLE_NAMED_QUOTED "42sh: %s: `%s': %s\n"
+# define ERRTEMPLATE_EXPANSION_SYNTAX "42sh: %s: %s: %s \"%s\")\n"
 
 # define ERR_ENV_MISSING_TERM "No TERM environment variable set."
 # define ERR_TERMCAP_NO_ACCESS "Unable to access termcap database."
@@ -96,6 +97,8 @@
 # define ERR_NO_SUCH_JOB "no such job"
 # define ERR_AMBIGUOUS_JOB_SPEC "ambiguous job spec"
 # define ERR_NO_JOB_CONTROL "no job control"
+# define ERR_BAD_SUB "bad substitution"
+# define ERR_EXPANSION_SYNTAX "syntax error: operand expected (error token is"
 
 /* Globals */
 
@@ -155,7 +158,11 @@ typedef enum e_token_type
 	TOKEN_FWD_SLASH = 1 << 21,
 	TOKEN_NEWLINE = 1 << 22,
 	TOKEN_EQUALS = 1 << 24,
-	TOKEN_NULL = 1 << 25
+	TOKEN_HASH = 1 << 25,
+	TOKEN_PERCENT = 1 << 26,
+	TOKEN_QUESTION_MARK = 1 << 27,
+	TOKEN_JUNK = 1 << 28,
+	TOKEN_NULL = 1 << 29
 }	t_token_type;
 
 typedef struct s_hash_entry
@@ -191,7 +198,15 @@ typedef struct s_state
 	char *const		*exported;
 	t_input_context	input_context;
 	int				continue_previous_node;
+	char			*expansion_word;
 	bool			in_quotes;
+	bool			in_squotes;
+	bool			in_braces;
+	bool			in_squote_braces;
+	bool			in_dquote_braces;
+	int				brace_count;
+	int				brace_sq_count;
+	int				brace_dq_count;
 	t_token_type	quote_type;
 	struct termios	input_conf;
 	struct termios	orig_conf;
@@ -220,11 +235,20 @@ typedef struct s_token
 
 typedef struct s_tokenizer
 {
-	bool	in_quotes;
-	bool	backslash_inhibited;
-	char	quote_type;
-	char	*buff;
-	size_t	buff_idx;
+	bool			in_quotes;
+	bool			in_squotes;
+	bool			in_braces;
+	bool			in_squote_braces;
+	bool			in_dquote_braces;
+	size_t			brace_count;
+	size_t			brace_sq_count;
+	size_t			brace_dq_count;
+	bool			dollar;
+	bool			backslash_inhibited;
+	char			quote_type;
+	char			*buff;
+	size_t			buff_idx;
+	t_token_type	special;
 }	t_tokenizer;
 
 typedef enum e_ast_node_type

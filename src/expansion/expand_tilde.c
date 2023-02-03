@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:47:12 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/12 14:40:04 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/02 17:46:48 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,23 +71,19 @@ static int	find_user(char **res, t_token **cursor, t_state *state)
 int	expand_tilde(t_token **csr, t_state *s, char **res)
 {
 	t_token			*fb;
-	t_token_type	scn;
 
-	scn = TOKEN_FWD_SLASH | TOKEN_COLON | TOKEN_NULL;
 	fb = *csr;
 	if (!fb || fb->type != TOKEN_TILDE || ft_strlen(fb->value) > 1)
 		return (0);
 	if (!fb->previous || check_first_equals(fb->previous)
-		|| check_colon(fb->previous))
+		|| check_colon(fb->previous) || check_param_exp(s, fb))
 	{
-		if (eat_token(csr, TOKEN_TILDE, fb) && read_token(csr, scn, fb))
+		if (basic_exp(csr, fb, s, (TOKEN_FWD_SLASH | TOKEN_COLON | TOKEN_NULL)))
 			return (add_to_result(res, env_get_or("HOME", "~", s->env), s));
-		if (eat_token(csr, TOKEN_TILDE, fb) && eat_token(csr, TOKEN_PLUS, fb)
-			&& read_token(csr, TOKEN_FWD_SLASH | TOKEN_COLON | TOKEN_NULL, fb))
-			return (add_to_result(res, env_get_or("PWD", "~+", s->env), s));
-		if (eat_token(csr, TOKEN_TILDE, fb) && eat_token(csr, TOKEN_MINUS, fb)
-			&& read_token(csr, TOKEN_FWD_SLASH | TOKEN_COLON | TOKEN_NULL, fb))
+		if (minus_exp(csr, fb, s, (TOKEN_FWD_SLASH | TOKEN_COLON | TOKEN_NULL)))
 			return (add_to_result(res, env_get_or("OLDPWD", "~-", s->env), s));
+		if (plus_exp(csr, fb, s, (TOKEN_FWD_SLASH | TOKEN_COLON | TOKEN_NULL)))
+			return (add_to_result(res, env_get_or("PWD", "~+", s->env), s));
 		if (eat_token(csr, TOKEN_TILDE, fb) && read_token(csr, TOKEN_WORD, fb))
 			return (find_user(res, csr, s));
 	}

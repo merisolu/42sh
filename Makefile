@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2023/02/03 11:03:32 by jumanner         ###   ########.fr        #
+#    Updated: 2023/02/03 17:00:33 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ SRC_DIR = ./src
 
 AST_DIR = ast
 AST_FILES = ast_add_args.c ast_pipe_sequence.c ast_redir_control.c \
-				ast_retokenize.c ast_free.c	ast_fd_agg_format_check.c \
+				ast_free.c	ast_fd_agg_format_check.c \
 				construct_ast_list.c ast_simple_command.c \
 				ast_add_fd_aggregation.c ast_is_separator.c ast_end.c \
 				check_redir_syntax.c ast_add_redir_struct.c \
@@ -78,7 +78,11 @@ EXECUTION_FILES = bin.c executor.c executor_path_utils.c fork.c pids.c pipes.c \
 
 EXPANSION_DIR = expansion
 EXPANSION_FILES = expand_tilde.c expand_variables.c expand_node.c \
-				  	parse_expansions.c
+				  	parse_expansions.c expansions_retokenize.c \
+					expand_plus_minus.c	expansion_utils.c \
+					expand_name.c expand_to_value_len.c \
+					expand_hash_percent.c tilde_param_exp.c \
+					tilde_if_checks.c
 
 HASH_DIR = hash
 HASH_FILES = hash_table.c hash_table_getters.c fnv1.c
@@ -136,7 +140,7 @@ SRCS := $(patsubst %, $(SRC_DIR)/%, $(SRC_FILES))
 OBJ_DIR = ./obj
 OBJS := $(patsubst %, $(OBJ_DIR)/%, $(SRC_FILES:.c=.o))
 
-GCC_FLAGS = -Wall -Wextra -Werror -g
+GCC_FLAGS = -Wall -Wextra -Werror -g 
 
 $(NAME): $(LIB_PATH) $(OBJS)
 	$(CC) $(GCC_FLAGS) $(OBJS) -o $(NAME) -ltermcap -L $(LIB_DIR) -lft

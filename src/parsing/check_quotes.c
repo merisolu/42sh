@@ -6,11 +6,72 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 13:14:18 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/05 14:26:25 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/02 14:58:26 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+
+static void	handle_squote(t_tokenizer *tokenizer)
+{
+	if (tokenizer->in_squotes)
+		tokenizer->in_squotes = false;
+	else
+		tokenizer->in_squotes = true;
+}
+
+static void	handle_open_brace(t_tokenizer *tokenizer)
+{
+	if (!(tokenizer->in_quotes))
+	{
+		tokenizer->in_braces = true;
+		(tokenizer->brace_count)++;
+	}
+	else if (tokenizer->in_quotes && tokenizer->quote_type == '\'')
+	{
+		tokenizer->in_squote_braces = true;
+		(tokenizer->brace_sq_count)++;
+	}
+	else if (tokenizer->in_quotes && tokenizer->quote_type == '\"')
+	{
+		tokenizer->in_dquote_braces = true;
+		(tokenizer->brace_dq_count)++;
+	}
+}
+
+static void	handle_close_brace(t_tokenizer *tokenizer)
+{
+	if (!(tokenizer->in_quotes))
+	{
+		if (tokenizer->brace_count > 0)
+			(tokenizer->brace_count)--;
+		if (tokenizer->brace_count == 0)
+			tokenizer->in_braces = false;
+	}
+	else if (tokenizer->in_quotes && tokenizer->quote_type == '\'')
+	{
+		if (tokenizer->brace_sq_count > 0)
+			(tokenizer->brace_sq_count)--;
+		if (tokenizer->brace_sq_count == 0)
+			tokenizer->in_squote_braces = false;
+	}
+	else if (tokenizer->in_quotes && tokenizer->quote_type == '\"'
+		&& !(tokenizer->in_squotes))
+	{
+		if (tokenizer->brace_dq_count > 0)
+			(tokenizer->brace_dq_count)--;
+		if (tokenizer->brace_dq_count == 0)
+			tokenizer->in_dquote_braces = false;
+	}
+}
+
+static void	enter_quotes(char c, t_tokenizer *tokenizer)
+{
+	tokenizer->in_quotes = true;
+	tokenizer->quote_type = c;
+	if (tokenizer->quote_type == '\'')
+		tokenizer->in_squotes = true;
+}
 
 /*
  * New process for merging quote handling and tokenisation.
@@ -35,15 +96,26 @@
 
 void	check_quotes(char c, t_tokenizer *tokenizer)
 {
+	if (c == '$')
+		tokenizer->dollar = true;
 	if (tokenizer->backslash_inhibited
 		&& ((tokenizer->in_quotes && tokenizer->quote_type != '\'')
 			|| !tokenizer->in_quotes))
 		return ;
 	if ((c == '\'' || c == '\"') && !(tokenizer->in_quotes))
-	{
-		tokenizer->in_quotes = true;
-		tokenizer->quote_type = c;
-	}
+		enter_quotes(c, tokenizer);
 	else if (c == tokenizer->quote_type && tokenizer->in_quotes)
+	{
 		tokenizer->in_quotes = false;
+		if (tokenizer->quote_type == '\'')
+			tokenizer->in_squotes = false;
+	}
+	else if (c == '\'')
+		handle_squote(tokenizer);
+	else if (c == '{' && tokenizer->dollar)
+		handle_open_brace(tokenizer);
+	else if (c == '}')
+		handle_close_brace(tokenizer);
+	if (c != '$' && tokenizer->dollar)
+		tokenizer->dollar = false;
 }

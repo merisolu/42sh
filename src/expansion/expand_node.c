@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:18:51 by amann             #+#    #+#             */
-/*   Updated: 2022/12/19 11:44:53 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/03 13:46:15 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,42 @@ static int	run_functions(t_token **cursor, t_state *state, char **result)
 	return (0);
 }
 
-static char	*expansions_loop(t_token *cursor, t_state *state)
+void	expansions_loop(t_token **cursor, t_state *state, char **result, bool r)
 {
-	char	*result;
 	int		func_result;
+	t_token	*head;
 
-	result = NULL;
-	while (cursor)
+	if (!r)
+		head = *cursor;
+	while (*cursor)
 	{
-		func_result = run_functions(&cursor, state, &result);
-		if (func_result == 0 && cursor)
+		func_result = run_functions(cursor, state, result);
+		if (func_result == 0 && *cursor)
 		{
-			func_result = add_to_result(&result, cursor->value, state);
-			cursor = cursor->next;
+			func_result = add_to_result(result, (*cursor)->value, state);
+			*cursor = (*cursor)->next;
 		}
 		if (func_result == -1)
-			free(result);
+			free(*result);
+		if (!(state->in_braces) && r)
+			break ;
 	}
-	return (result);
+	if (!r)
+		token_list_free(&head);
+	return ;
+}
+
+static void	reset_state_lexing(t_state *state)
+{
+	state->in_quotes = false;
+	state->in_squotes = false;
+	state->in_braces = false;
+	state->in_squote_braces = false;
+	state->in_dquote_braces = false;
+	state->brace_count = 0;
+	state->brace_sq_count = 0;
+	state->brace_dq_count = 0;
+	state->quote_type = 0;
 }
 
 bool	expand_node(char **word, t_state *state)
@@ -68,11 +86,13 @@ bool	expand_node(char **word, t_state *state)
 
 	if (!*word)
 		return (true);
-	list = ast_retokenize(*word);
+	state->expansion_word = *word;
+	reset_state_lexing(state);
+	list = expansions_retokenize(*word);
 	if (!list)
 		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	result = expansions_loop(list, state);
-	token_list_free(&list);
+	result = NULL;
+	expansions_loop(&list, state, &result, false);
 	reset_state(state);
 	if (!result)
 		return (false);
