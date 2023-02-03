@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:10:58 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/03 13:15:06 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/03 13:44:18 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,11 @@ static int	expansion_to_history_index(char *expansion, t_state *state)
 static char	*parse_expansion(char *expansion, int index)
 {
 	size_t	length;
+	char	*end_chars;
 
 	length = 0;
-	while (!ft_is_whitespace(expansion[index + length])
+	end_chars = " \t\n'\"";
+	while (!ft_strchr(end_chars, expansion[index + length])
 		&& expansion[index + length])
 		length++;
 	return (ft_strndup(expansion + index, length));
@@ -49,8 +51,10 @@ static char	*parse_expansion(char *expansion, int index)
 
 static int	find_expansion(char *input, int index)
 {
-	int	cursor;
+	int		cursor;
+	char	*end_chars;
 
+	end_chars = " \t\n'\"";
 	cursor = index;
 	while (input[cursor])
 	{
@@ -59,8 +63,7 @@ static int	find_expansion(char *input, int index)
 			cursor++;
 			continue ;
 		}
-		if (input[cursor] != ' ' && input[cursor] != '\t'
-			&& input[cursor] != '\n' && input[cursor + 1] != '\0'
+		if (!ft_strchr(end_chars, input[cursor]) && input[cursor + 1] != '\0'
 			&& !is_history_expansion_inhibited(input, cursor))
 			return (cursor);
 		else
