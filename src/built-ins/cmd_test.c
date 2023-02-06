@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 15:21:29 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/06 12:51:47 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/06 12:55:06 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static int	check_unary(char *flag, char *arg, int invert)
 	{
 		if (ft_strchr("bcdfgLpSu", flag[1]))
 			result = cmd_test_does_file_type_match(arg, flag[1]);
+		else if (ft_strchr("rwx", flag[1]))
+			result = cmd_test_does_file_have_permission(arg, flag[1]);
 	}
 	else if (ft_strlen(flag) != 0)
 		result = 1;

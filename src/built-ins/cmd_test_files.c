@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 12:40:11 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/06 12:43:57 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/06 13:03:28 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,22 @@ int	cmd_test_does_file_type_match(char *path, char type)
 	if (type == 'u')
 		return (!ft_file_is_type(path, S_ISUID));
 	return (1);
+}
+
+/*
+ * Returns 0 if the permission of the given path matches the given permission, 1
+ * otherwise. The return values are seemingly opposite of what they should be
+ * to make it easier to return the value directly from cmd_test().
+ */
+int	cmd_test_does_file_have_permission(char *path, char permission)
+{
+	int	mode;
+
+	if (permission == 'r')
+		mode = R_OK;
+	else if (permission == 'w')
+		mode = W_OK;
+	else
+		mode = X_OK;
+	return (!(access(path, mode) == 0));
 }

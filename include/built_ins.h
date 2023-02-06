@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/06 12:41:17 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/06 13:04:14 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,8 @@ int						cmd_test(char *const *args, t_state *state);
 
 /* cmd_test_files.c */
 int						cmd_test_does_file_type_match(char *path, char type);
+int						cmd_test_does_file_have_permission(char *path,
+							char permission);
 
 /* cmd_true_false.c */
 int						cmd_true(char *const *args, t_state *state);
