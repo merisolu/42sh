@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:10:58 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/06 11:07:11 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/06 15:34:03 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	find_expansion(char *input, int index)
 	int		cursor;
 	char	*end_chars;
 
-	end_chars = " \t\n'\"\0";
+	end_chars = " \t\n'\"=\0";
 	cursor = index;
 	while (input[cursor])
 	{

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 15:21:29 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/06 15:12:19 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/06 15:24:34 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@ static int	check_binary(char *flag, char *arg1, char *arg2, int invert)
 		|| ft_strequ(flag, "-gt") || ft_strequ(flag, "-ge")
 		|| ft_strequ(flag, "-lt") || ft_strequ(flag, "-le"))
 		result = cmd_test_numbers(flag, arg1, arg2);
+	else if (ft_strequ(flag, "="))
+		result = !ft_strequ(arg1, arg2);
+	else if (ft_strequ(flag, "!="))
+		result = ft_strequ(arg1, arg2);
 	if (invert && result != 2)
 		return (!result);
 	return (result);
