@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/06 14:27:27 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/06 15:17:50 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static t_search_type	get_search_type(char *trimmed_input)
 	while (trimmed_input[i])
 	{
 		c = trimmed_input[i];
-		if (c == ' ')
+		if (c == ' ' || c == '/')
 			res = SEARCH_FILE_PATH;
 		else if (c == '$' && (i == 0 || trimmed_input[i - 1] == ' '))
 			res = SEARCH_VARIABLE;
