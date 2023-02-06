@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:54:23 by amann             #+#    #+#             */
-/*   Updated: 2023/02/06 17:22:38 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/06 17:38:40 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,9 @@ char	*find_query(char *str, char c, t_state *state, bool expand)
 	char	*res;
 	bool	var;
 
-	(void) str;
-	last_word = find_query_loop((int) state->input_context.cursor,
-			state->input_context.input, ' ');
+	last_word = find_query_loop((int)ft_strlen(str), str, ' ');
 	if (!last_word)
 		return (NULL);
-//	ft_printf("\n*%s*\n", str);
 	if (expand)
 	{
 		var = last_word[0] == '$';
@@ -93,9 +90,6 @@ char	*find_query(char *str, char c, t_state *state, bool expand)
 			free(last_word);
 			return (NULL);
 		}
-		//need to know length of variable name
-		//need to know if expansion is a directory
-//		ft_printf("\n*%s*\n", last_word);
 		if (var)
 			insert_expansion(&(state->input_context), last_word);
 	}

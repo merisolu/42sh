@@ -6,22 +6,22 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 13:03:36 by amann             #+#    #+#             */
-/*   Updated: 2023/02/06 14:59:55 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/06 18:05:22 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
 
-char	**check_exec(t_auto autocomp, char **query, bool second_tab, \
-		bool *filtered, t_state *state)
+char	**check_exec(t_auto autocomp, char **query, t_auto_bools *a_bools,
+		t_state *state)
 {
 	if (ft_strequ(*query, "."))
 	{
 		(*(autocomp.search_results))[0] = ft_strdup("./");
 		free(*query);
-		return (wrap_up(&autocomp, second_tab, filtered));
+		return (wrap_up(&autocomp, a_bools));
 	}
-	return (search_exec(autocomp.search_results, query, second_tab, filtered, state));
+	return (search_exec(autocomp.search_results, query, a_bools, state));
 }
 
 /*
@@ -50,7 +50,8 @@ static bool	check_allocations(char *path, char *query)
 	return (true);
 }
 
-static void	set_path_query(char **path, char **query, char **orig, t_state *state)
+static void	set_path_query(char **path, char **query, char **orig, \
+		t_state *state)
 {
 	if (ft_strequ(*orig, "/"))
 	{
@@ -69,7 +70,8 @@ static void	set_path_query(char **path, char **query, char **orig, t_state *stat
 	}
 }
 
-char	**search_exec(char ***sr, char **orig, bool second_tab, bool *filtered, t_state *state)
+char	**search_exec(char ***sr, char **orig, t_auto_bools *a_bools, \
+		t_state *state)
 {
 	char	*query;
 	char	*path;
@@ -88,5 +90,5 @@ char	**search_exec(char ***sr, char **orig, bool second_tab, bool *filtered, t_s
 	free(path);
 	free(query);
 	free(*orig);
-	return (wrap_up(&autocomp, second_tab, filtered));
+	return (wrap_up(&autocomp, a_bools));
 }

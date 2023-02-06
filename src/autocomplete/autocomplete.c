@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/06 15:17:50 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/06 18:05:36 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,25 +129,23 @@ int	autocomplete(t_state *state, bool second_tab)
 	char			*trimmed_input;
 	char			**search_result;
 	t_search_type	search_type;
-	bool			filtered;
+	t_auto_bools	a_bools;
 
 	if (!state)
 		return (0);
 	trimmed_input = trim_input_to_cursor(state->input_context);
 	if (!trimmed_input)
 		return (0);
-	//expand_node(&trimmed_input, state);
 	search_type = get_search_type(trimmed_input);
-	filtered = false;
+	a_bools.filtered = false;
+	a_bools.second_tab = second_tab;
 	search_result = NULL;
 	if (search_type == SEARCH_COMMAND)
-		search_result = search_commands(state, &trimmed_input, second_tab,
-				&filtered);
+		search_result = search_commands(state, &trimmed_input, &a_bools);
 	else if (search_type == SEARCH_FILE_PATH)
-		search_result = search_file_paths(&trimmed_input, second_tab,
-				&filtered, state);
+		search_result = search_file_paths(&trimmed_input, &a_bools, state);
 	else if (search_type == SEARCH_VARIABLE)
-		search_result = search_variables(state, &trimmed_input, second_tab,
-				&filtered);
-	return (free_and_display(&trimmed_input, state, &search_result, filtered));
+		search_result = search_variables(state, &trimmed_input, &a_bools);
+	return (free_and_display(&trimmed_input, state, &search_result,
+			a_bools.filtered));
 }

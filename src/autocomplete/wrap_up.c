@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:13:45 by amann             #+#    #+#             */
-/*   Updated: 2023/01/19 16:46:02 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/06 17:57:32 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ static void	sort_options(char ***sr)
 		sort_options(sr);
 }
 
-char	**wrap_up(t_auto *autocomp, bool second_tab, bool *filtered)
+char	**wrap_up(t_auto *autocomp, t_auto_bools *a_bool)
 {
 	sort_options(autocomp->search_results);
-	if (!second_tab
+	if (!(a_bool->second_tab)
 		&& ft_null_array_len((void **)(*(autocomp->search_results))) > 1)
 	{
-		if (!filter_matching(*autocomp, filtered))
+		if (!filter_matching(*autocomp, a_bool))
 		{
 			ft_free_null_array((void **)*(autocomp->search_results));
 			return (NULL);
