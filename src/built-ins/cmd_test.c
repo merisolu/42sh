@@ -6,11 +6,25 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 15:21:29 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/06 13:27:41 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/06 15:04:37 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "built_ins.h"
+
+static int	check_binary(char *flag, char *arg1, char *arg2, int invert)
+{
+	int	result;
+
+	result = 0;
+	if (ft_strequ(flag, "-eq") || ft_strequ(flag, "-ne")
+		|| ft_strequ(flag, "-gt") || ft_strequ(flag, "-ge")
+		|| ft_strequ(flag, "-lt") || ft_strequ(flag, "-le"))
+		result = cmd_test_numbers(flag, arg1, arg2);
+	if (invert)
+		return (!result);
+	return (result);
+}
 
 static int	check_unary(char *flag, char *arg, int invert)
 {
@@ -54,5 +68,8 @@ int	cmd_test(char *const *args, t_state *state)
 	invert = ft_strequ(args[1], "!");
 	if (args_len - invert == 2)
 		return (check_unary(args[1 + invert], args[2 + invert], invert));
+	if (args_len - invert == 3)
+		return (check_binary(
+				args[2 + invert], args[1 + invert], args[3 + invert], invert));
 	return (0);
 }
