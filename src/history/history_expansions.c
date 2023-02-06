@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:10:58 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/03 14:46:40 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/06 11:07:11 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	find_expansion(char *input, int index)
 	int		cursor;
 	char	*end_chars;
 
-	end_chars = " \t\n'\"";
+	end_chars = " \t\n'\"\0";
 	cursor = index;
 	while (input[cursor])
 	{
@@ -63,7 +63,7 @@ static int	find_expansion(char *input, int index)
 			cursor++;
 			continue ;
 		}
-		if (!ft_strchr(end_chars, input[cursor]) && input[cursor + 1] != '\0'
+		if (!ft_strchr(end_chars, input[cursor + 1])
 			&& !is_history_expansion_inhibited(input, cursor))
 			return (cursor);
 		else
