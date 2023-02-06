@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 15:21:29 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/06 15:24:34 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/06 15:39:33 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ static int	check_binary(char *flag, char *arg1, char *arg2, int invert)
 		result = !ft_strequ(arg1, arg2);
 	else if (ft_strequ(flag, "!="))
 		result = ft_strequ(arg1, arg2);
+	else
+		return (print_error(2, ERRTEMPLATE_DOUBLE_NAMED,
+				"test", flag, "binary operator expected"));
 	if (invert && result != 2)
 		return (!result);
 	return (result);
