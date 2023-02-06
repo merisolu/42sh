@@ -6,16 +6,11 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:26:38 by amann             #+#    #+#             */
-/*   Updated: 2023/02/03 15:47:19 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/06 11:50:34 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expansion.h"
-
-/*
- * 
- *
- */
 
 static bool	check_ext_exp_errors(t_token **cursor, t_state *state, \
 		t_token *param)
@@ -29,7 +24,7 @@ static bool	check_ext_exp_errors(t_token **cursor, t_state *state, \
 		{
 			set_braces_state(state);
 			if ((*cursor)->type == TOKEN_CURLY_CLOSED)
-				print_error(-1, ERRTEMPLATE_NAMED, state->expansion_word,
+				print_error(-1, ERRTEMPLATE_NAMED, state->t.expansion_word,
 					ERR_BAD_SUB);
 			else if ((*cursor)->type != TOKEN_WHITESPACE)
 				print_error(-1, ERRTEMPLATE_EXPANSION_SYNTAX, param->value,
@@ -86,9 +81,11 @@ int	check_extended_expansions(t_token **cursor, t_state *state, char **res)
 	if (eat_token(cursor, TOKEN_DOLLAR, original)
 		&& eat_token(cursor, TOKEN_CURLY_OPEN, original))
 	{
-		print_error(-1, ERRTEMPLATE_NAMED, state->expansion_word, ERR_BAD_SUB);
+		print_error(-1, ERRTEMPLATE_NAMED, state->t.expansion_word,
+			ERR_BAD_SUB);
 		set_braces_state(state);
-		move_cursor_to_end(cursor, state);
+		while (*cursor)
+			*cursor = (*cursor)->next;
 		return (-1);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:18:51 by amann             #+#    #+#             */
-/*   Updated: 2023/02/03 13:46:15 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/06 11:47:00 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	expansions_loop(t_token **cursor, t_state *state, char **result, bool r)
 		}
 		if (func_result == -1)
 			free(*result);
-		if (!(state->in_braces) && r)
+		if (!(state->t.in_braces) && r)
 			break ;
 	}
 	if (!r)
@@ -66,28 +66,15 @@ void	expansions_loop(t_token **cursor, t_state *state, char **result, bool r)
 	return ;
 }
 
-static void	reset_state_lexing(t_state *state)
-{
-	state->in_quotes = false;
-	state->in_squotes = false;
-	state->in_braces = false;
-	state->in_squote_braces = false;
-	state->in_dquote_braces = false;
-	state->brace_count = 0;
-	state->brace_sq_count = 0;
-	state->brace_dq_count = 0;
-	state->quote_type = 0;
-}
-
 bool	expand_node(char **word, t_state *state)
 {
-	t_token	*list;
-	char	*result;
+	t_token		*list;
+	char		*result;
 
 	if (!*word)
 		return (true);
-	state->expansion_word = *word;
-	reset_state_lexing(state);
+	ft_bzero((void *)&(state->t), sizeof(state->t));
+	state->t.expansion_word = *word;
 	list = expansions_retokenize(*word);
 	if (!list)
 		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));

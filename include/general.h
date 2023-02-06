@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/03 16:59:27 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/06 11:29:21 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,26 @@ typedef struct s_job
 	char		*command;
 }	t_job;
 
+typedef struct s_tokenizer
+{
+	bool			in_quotes;
+	bool			in_squotes;
+	bool			in_braces;
+	bool			in_squote_braces;
+	bool			in_dquote_braces;
+	size_t			brace_count;
+	size_t			brace_sq_count;
+	size_t			brace_dq_count;
+	bool			dollar;
+	bool			backslash_inhibited;
+	char			quote_type;
+	t_token_type	quote_token_type;
+	char			*expansion_word;
+	char			*buff;
+	size_t			buff_idx;
+	t_token_type	special;
+}	t_tokenizer;
+
 typedef struct s_state
 {
 	char *const		*env;
@@ -198,16 +218,7 @@ typedef struct s_state
 	char *const		*exported;
 	t_input_context	input_context;
 	int				continue_previous_node;
-	char			*expansion_word;
-	bool			in_quotes;
-	bool			in_squotes;
-	bool			in_braces;
-	bool			in_squote_braces;
-	bool			in_dquote_braces;
-	int				brace_count;
-	int				brace_sq_count;
-	int				brace_dq_count;
-	t_token_type	quote_type;
+	t_tokenizer		t;
 	struct termios	input_conf;
 	struct termios	orig_conf;
 	bool			terminal_conf_applied;
@@ -232,24 +243,6 @@ typedef struct s_token
 	struct s_token	*next;
 	struct s_token	*previous;
 }	t_token;
-
-typedef struct s_tokenizer
-{
-	bool			in_quotes;
-	bool			in_squotes;
-	bool			in_braces;
-	bool			in_squote_braces;
-	bool			in_dquote_braces;
-	size_t			brace_count;
-	size_t			brace_sq_count;
-	size_t			brace_dq_count;
-	bool			dollar;
-	bool			backslash_inhibited;
-	char			quote_type;
-	char			*buff;
-	size_t			buff_idx;
-	t_token_type	special;
-}	t_tokenizer;
 
 typedef enum e_ast_node_type
 {

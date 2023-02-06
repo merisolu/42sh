@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 15:05:55 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/02 14:29:27 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/06 11:49:52 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,27 +15,27 @@
 static int	handle_single_quotes(t_token *original, t_state *state, \
 		char **result)
 {
-	if (state->in_squotes)
-		state->in_squotes = false;
+	if (state->t.in_squotes)
+		state->t.in_squotes = false;
 	else
-		state->in_squotes = true;
+		state->t.in_squotes = true;
 	return (add_to_result(result, original->value, state));
 }
 
 static int	manage_quotes(t_token *original, t_state *state, char **result)
 {
-	if (!state->in_quotes)
+	if (!state->t.in_quotes)
 	{
-		state->in_quotes = true;
-		state->quote_type = original->type;
-		if (state->quote_type == TOKEN_SINGLE_QUOTE)
-			state->in_squotes = true;
+		state->t.in_quotes = true;
+		state->t.quote_token_type = original->type;
+		if (state->t.quote_token_type == TOKEN_SINGLE_QUOTE)
+			state->t.in_squotes = true;
 	}
-	else if (original->type == state->quote_type)
+	else if (original->type == state->t.quote_token_type)
 	{
-		state->in_quotes = false;
-		if (state->quote_type == TOKEN_SINGLE_QUOTE)
-			state->in_squotes = false;
+		state->t.in_quotes = false;
+		if (state->t.quote_token_type == TOKEN_SINGLE_QUOTE)
+			state->t.in_squotes = false;
 	}
 	else if (original->type == TOKEN_SINGLE_QUOTE)
 		return (handle_single_quotes(original, state, result));
@@ -50,25 +50,27 @@ static int	manage_quotes(t_token *original, t_state *state, char **result)
 
 static int	manage_close_braces(t_state *state, char **result)
 {
-	if (!(state->in_quotes) && state->in_braces && !(state->in_squote_braces)
-		&& !(state->in_dquote_braces))
+	if (!(state->t.in_quotes) && state->t.in_braces
+		&& !(state->t.in_squote_braces) && !(state->t.in_dquote_braces))
 	{
-		(state->brace_count)--;
-		if (state->brace_count == 0)
-			state->in_braces = false;
+		(state->t.brace_count)--;
+		if (state->t.brace_count == 0)
+			state->t.in_braces = false;
 	}
-	else if (state->in_quotes && state->quote_type == TOKEN_SINGLE_QUOTE)
+	else if (state->t.in_quotes
+		&& state->t.quote_token_type == TOKEN_SINGLE_QUOTE)
 	{
-		(state->brace_sq_count)--;
-		if (state->brace_sq_count == 0)
-			state->in_squote_braces = false;
+		(state->t.brace_sq_count)--;
+		if (state->t.brace_sq_count == 0)
+			state->t.in_squote_braces = false;
 	}
-	else if (state->in_quotes && state->quote_type == TOKEN_DOUBLE_QUOTE
-		&& !(state->in_squotes))
+	else if (state->t.in_quotes
+		&& state->t.quote_token_type == TOKEN_DOUBLE_QUOTE
+		&& !(state->t.in_squotes))
 	{
-		(state->brace_dq_count)--;
-		if (state->brace_dq_count == 0)
-			state->in_dquote_braces = false;
+		(state->t.brace_dq_count)--;
+		if (state->t.brace_dq_count == 0)
+			state->t.in_dquote_braces = false;
 	}
 	else
 		add_to_result(result, "}", state);
@@ -84,9 +86,9 @@ int	check_literals(t_token **cursor, t_state *state, char **result)
 	original = *cursor;
 	if (eat_token(cursor, TOKEN_WHITESPACE, original))
 	{
-		if (state->in_braces && !(state->in_quotes))
+		if (state->t.in_braces && !(state->t.in_quotes))
 			return (add_to_result(result, " ", state));
-		if (state->in_quotes)
+		if (state->t.in_quotes)
 			return (add_to_result(result, original->value, state));
 		state->continue_previous_node = 0;
 		return (1);

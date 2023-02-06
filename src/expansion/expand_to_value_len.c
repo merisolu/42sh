@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 17:10:29 by amann             #+#    #+#             */
-/*   Updated: 2023/02/03 14:58:13 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/06 11:19:33 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	expand_to_value_len(t_token **cursor, t_state *state, char **res)
 		|| (*cursor)->next->type != TOKEN_CURLY_CLOSED)
 	{
 		set_braces_state(state);
-		print_error(0, ERRTEMPLATE_NAMED, state->expansion_word, ERR_BAD_SUB);
+		print_error(0, ERRTEMPLATE_NAMED, state->t.expansion_word, ERR_BAD_SUB);
 		move_cursor_to_end(cursor, state);
 		return (0);
 	}
