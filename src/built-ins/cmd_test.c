@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 15:21:29 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/06 13:16:02 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/06 13:27:41 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ static int	check_unary(char *flag, char *arg, int invert)
 			result = !(access(arg, F_OK) == 0);
 		else if (flag[1] == 'z')
 			result = !(ft_strlen(arg) == 0);
+		else
+			return (print_error(2, ERRTEMPLATE_DOUBLE_NAMED,
+					"test", flag, "unary operator expected"));
 	}
 	else if (ft_strlen(flag) != 0)
 		result = 1;
