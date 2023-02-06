@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/19 15:50:26 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/06 14:27:27 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ static int	free_and_display(char **ti, t_state *state, char ***sr, bool f)
  */
 
 //TODO add expansions to autocomp??
+//with a dollar expansion the string should be replaced, not with tilde
 
 int	autocomplete(t_state *state, bool second_tab)
 {
@@ -135,6 +136,7 @@ int	autocomplete(t_state *state, bool second_tab)
 	trimmed_input = trim_input_to_cursor(state->input_context);
 	if (!trimmed_input)
 		return (0);
+	//expand_node(&trimmed_input, state);
 	search_type = get_search_type(trimmed_input);
 	filtered = false;
 	search_result = NULL;
@@ -143,7 +145,7 @@ int	autocomplete(t_state *state, bool second_tab)
 				&filtered);
 	else if (search_type == SEARCH_FILE_PATH)
 		search_result = search_file_paths(&trimmed_input, second_tab,
-				&filtered);
+				&filtered, state);
 	else if (search_type == SEARCH_VARIABLE)
 		search_result = search_variables(state, &trimmed_input, second_tab,
 				&filtered);

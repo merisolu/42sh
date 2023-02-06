@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/20 13:46:15 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/06 14:40:56 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include "built_ins.h"
 # include "cursor.h"
 # include "signals.h"
+# include "expansion.h"
 
 /* Structs and enums */
 
@@ -84,7 +85,7 @@ bool	filter_matching(t_auto autocomp, bool *filtered);
 size_t	find_longest(char **search_results);
 
 /* find_query. */
-char	*find_query(char *str, char c);
+char	*find_query(char *str, char c, t_state *state, bool expand);
 
 size_t	last_slash(char *str);
 
@@ -93,13 +94,13 @@ char	**search_commands(t_state *state, char **trimmed_input, \
 		bool second_tab, bool *filtered);
 
 /* search_exec.c */
-char	**search_exec(char ***sr, char **ti, bool second_tab, bool *filtered);
+char	**search_exec(char ***sr, char **ti, bool second_tab, bool *filtered, t_state *state);
 char	**check_exec(t_auto autocomp, char **ti, bool second_tab, \
-		bool *filtered);
+		bool *filtered, t_state *state);
 
 /* search_file_paths.c */
 char	**search_file_paths(char **trimmed_input, bool second_tab, \
-		bool *filtered);
+		bool *filtered, t_state *state);
 
 /* search_variables.c */
 char	**search_variables(t_state *state, char **ti, bool second_tab, \
