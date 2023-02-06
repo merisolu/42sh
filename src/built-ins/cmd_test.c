@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 15:21:29 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/06 15:39:33 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/06 15:42:30 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,5 @@ int	cmd_test(char *const *args, t_state *state)
 	if (args_len - invert == 3)
 		return (check_binary(
 				args[2 + invert], args[1 + invert], args[3 + invert], invert));
-	return (0);
+	return (print_error(2, ERRTEMPLATE_NAMED, "test", ERR_TOO_MANY_ARGS));
 }

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/25 11:13:20 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/06 15:42:14 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@
 # define ERR_COM_NOT_FOUND "command not found"
 # define ERR_NO_PERMISSION "Permission denied"
 # define ERR_TOO_FEW_ARGS "too few arguments"
+# define ERR_TOO_MANY_ARGS "too many arguments"
 # define ERR_NO_SUCH_FILE_OR_DIR "No such file or directory"
 # define ERR_IS_DIR "is a directory"
 # define ERR_IS_NOT_DIR "Not a directory"
