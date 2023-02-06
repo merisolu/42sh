@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/28 16:25:00 by jumanner          #+#    #+#              #
-#    Updated: 2023/01/31 10:56:18 by jumanner         ###   ########.fr        #
+#    Updated: 2023/02/06 14:07:13 by jumanner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ SRC_FILES = ft_tolower.c ft_toupper.c \
 		ft_putchar_fd.c ft_putcharn_fd.c ft_putstr_fd.c ft_putstrn_fd.c ft_putendl_fd.c ft_putchar.c ft_putcharn.c ft_putstr.c ft_putstrn.c ft_putendl.c \
 		ft_putnbr_fd.c ft_putnbr.c ft_putnbrn_fd.c ft_putnbrn.c \
 		ft_lstnew.c ft_lstdelone.c ft_lstdel.c ft_lstadd.c ft_lstiter.c ft_lstmap.c \
-		ft_itoa.c ft_itoa_base.c ft_atoi.c \
+		ft_itoa.c ft_itoa_base.c ft_atoi.c ft_atoll.c \
 		ft_getdigits.c ft_getdigits_base.c ft_getnumlen.c ft_getsign.c \
 		ft_bzero.c ft_realloc.c \
 		ft_sort.c \
