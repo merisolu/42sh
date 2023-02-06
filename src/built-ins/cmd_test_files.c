@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 12:40:11 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/06 13:03:28 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/06 13:18:41 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,18 @@ int	cmd_test_does_file_have_permission(char *path, char permission)
 	else
 		mode = X_OK;
 	return (!(access(path, mode) == 0));
+}
+
+/*
+ * Returns 0 if the file at the given path is more than zero bytes in size, 1
+ * otherwise. The return values are seemingly opposite of what they should be
+ * to make it easier to return the value directly from cmd_test().
+ */
+int	cmd_test_file_has_data(char *path)
+{
+	struct stat	temp;
+
+	if (lstat(path, &temp) == -1)
+		return (1);
+	return (!(temp.st_size > 0));
 }

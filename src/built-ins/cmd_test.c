@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 15:21:29 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/06 12:55:06 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/06 13:16:02 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@ static int	check_unary(char *flag, char *arg, int invert)
 			result = cmd_test_does_file_type_match(arg, flag[1]);
 		else if (ft_strchr("rwx", flag[1]))
 			result = cmd_test_does_file_have_permission(arg, flag[1]);
+		else if (flag[1] == 's')
+			result = cmd_test_file_has_data(arg);
+		else if (flag[1] == 'e')
+			result = !(access(arg, F_OK) == 0);
+		else if (flag[1] == 'z')
+			result = !(ft_strlen(arg) == 0);
 	}
 	else if (ft_strlen(flag) != 0)
 		result = 1;
