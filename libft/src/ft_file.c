@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 15:11:34 by jumanner          #+#    #+#             */
-/*   Updated: 2022/04/06 12:20:36 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/06 11:59:56 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,21 @@ int	ft_points_to_file(const char *path)
 	if (stat(path, &temp) == -1)
 		return (0);
 	else if ((temp.st_mode & S_IFMT) == S_IFREG)
+		return (1);
+	return (0);
+}
+
+/*
+ * Returns 1 if the given type matches the type of the file provided in path.
+ * Returns 0 otherwise.
+ */
+int	ft_file_is_type(char *path, mode_t type)
+{
+	struct stat		temp;
+
+	if (lstat(path, &temp) == -1)
+		return (0);
+	else if ((temp.st_mode & S_IFMT) == type)
 		return (1);
 	return (0);
 }
