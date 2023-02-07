@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 12:20:30 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/20 15:00:24 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/07 15:29:26 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,21 @@ static void	handle_child(t_state *state)
 	jobs_check_status(state);
 }
 
+static void	handle_hangup(t_state *state)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < MAX_JOBS)
+	{
+		if (state->jobs[i].state == JOB_STOPPED)
+			killpg(state->jobs[i].pids[0], SIGCONT);
+		killpg(state->jobs[i].pids[0], SIGHUP);
+		i++;
+	}
+	exit(0);
+}
+
 void	check_signal(t_state *state)
 {
 	if (g_last_signal == SIGCHLD)
@@ -43,5 +58,7 @@ void	check_signal(t_state *state)
 		handle_interrupt(state);
 	else if (g_last_signal == SIGWINCH)
 		handle_size_change(state);
+	else if (g_last_signal == SIGHUP)
+		handle_hangup(state);
 	g_last_signal = 0;
 }

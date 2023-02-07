@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/31 14:54:58 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/07 14:59:17 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ int	main(const int argc, const char **argv, char *const *env)
 			tokenize_and_execute(&state);
 			if (!state.exiting)
 				finish_execution(&state);
-			g_last_signal = 0;
 		}
 		if (state.exiting)
 			check_stopped_jobs(&state);
