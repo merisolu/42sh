@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 16:24:04 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/31 10:57:15 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/06 14:07:35 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,7 @@ char		*ft_itoa_llong_base(long long n, int base);
 char		*ft_itoa_ullong_base(t_ull n, int base);
 
 int			ft_atoi(const char *str);
+long long	ft_atoll(const char *str);
 
 /* Numerical comparisons. */
 int			ft_abs(int i);
@@ -310,6 +311,7 @@ int			ft_points_to_dir(const char *path);
 
 int			ft_is_file(const char *path);
 int			ft_points_to_file(const char *path);
+int			ft_file_is_type(char *path, mode_t type);
 
 void		ft_path_join(const char *a, const char *b, char **dst);
 
