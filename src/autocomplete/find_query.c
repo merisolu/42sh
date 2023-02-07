@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:54:23 by amann             #+#    #+#             */
-/*   Updated: 2023/02/06 17:38:40 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/07 14:59:45 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	insert_expansion(t_input_context *ctx, char *exp)
 	if (!check_exp_is_dir(exp, exp_len))
 		return ;
 	orig_len = 0;
-	start = ctx->cursor;
+	start = ctx->cursor - 1;
 	while (start && (ctx->input)[start] != ' ')
 	{
 		start--;
@@ -65,12 +65,15 @@ static void	insert_expansion(t_input_context *ctx, char *exp)
 	}
 	if (start != 0)
 		start++;
+	else
+		orig_len++;
+	if (ctx->cursor + (exp_len - orig_len) > INPUT_MAX_SIZE
+		|| ft_strlen(ctx->input) + (exp_len - orig_len) > INPUT_MAX_SIZE)
+		return ;
 	ft_memmove((ctx->input) + start + exp_len, (ctx->input) + start + orig_len,
-		orig_len);
+		ft_strlen((ctx->input) + start + orig_len));
 	ft_memcpy((void *)((ctx->input) + start), (void *)exp, exp_len);
 	ctx->cursor += exp_len - orig_len;
-	if (start != 0)
-		ctx->cursor += 1;
 }
 
 char	*find_query(char *str, char c, t_state *state, bool expand)
