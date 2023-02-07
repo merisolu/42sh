@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:16:26 by amann             #+#    #+#             */
-/*   Updated: 2023/01/18 17:09:33 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/06 17:48:27 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,11 @@ static bool	search_paths_loop(char **paths, t_auto *autocomp)
  * stop unless there is a second tab press.
  */
 
-char	**search_commands(t_state *state, char **ti, bool second_tab, \
-		bool *filtered)
+char	**search_commands(t_state *state, char **ti, t_auto_bools *a_bools)
 {
 	char	**search_result;
 	char	**paths;
+	char	*query;
 	int		count;
 	t_auto	autocomp;
 
@@ -97,14 +97,16 @@ char	**search_commands(t_state *state, char **ti, bool second_tab, \
 	if (!paths || !search_result)
 		print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
 	count = 0;
-	initialise_autocomp(&autocomp, ti, &search_result, &count);
-	autocomp.query_len = ft_strlen(*ti);
-	if (!search_builtins(*ti, &search_result, &count, autocomp.query_len))
+	query = find_query(*ti, ' ', state, true);
+	initialise_autocomp(&autocomp, &query, &search_result, &count);
+	autocomp.query_len = ft_strlen(query);
+	if (!search_builtins(query, &search_result, &count, autocomp.query_len))
 		return (NULL);
 	if (!search_paths_loop(paths, &autocomp))
 		return (free_all_return(&search_result, &paths));
 	ft_free_null_array((void **)paths);
 	if (ft_null_array_len((void **)search_result) == 0)
-		return (check_exec(autocomp, ti, second_tab, filtered));
-	return (wrap_up(&autocomp, second_tab, filtered));
+		return (check_exec(autocomp, &query, a_bools, state));
+	free(query);
+	return (wrap_up(&autocomp, a_bools));
 }

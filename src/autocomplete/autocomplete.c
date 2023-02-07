@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/19 15:50:26 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/06 18:05:36 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static t_search_type	get_search_type(char *trimmed_input)
 	while (trimmed_input[i])
 	{
 		c = trimmed_input[i];
-		if (c == ' ')
+		if (c == ' ' || c == '/')
 			res = SEARCH_FILE_PATH;
 		else if (c == '$' && (i == 0 || trimmed_input[i - 1] == ' '))
 			res = SEARCH_VARIABLE;
@@ -122,13 +122,14 @@ static int	free_and_display(char **ti, t_state *state, char ***sr, bool f)
  */
 
 //TODO add expansions to autocomp??
+//with a dollar expansion the string should be replaced, not with tilde
 
 int	autocomplete(t_state *state, bool second_tab)
 {
 	char			*trimmed_input;
 	char			**search_result;
 	t_search_type	search_type;
-	bool			filtered;
+	t_auto_bools	a_bools;
 
 	if (!state)
 		return (0);
@@ -136,16 +137,15 @@ int	autocomplete(t_state *state, bool second_tab)
 	if (!trimmed_input)
 		return (0);
 	search_type = get_search_type(trimmed_input);
-	filtered = false;
+	a_bools.filtered = false;
+	a_bools.second_tab = second_tab;
 	search_result = NULL;
 	if (search_type == SEARCH_COMMAND)
-		search_result = search_commands(state, &trimmed_input, second_tab,
-				&filtered);
+		search_result = search_commands(state, &trimmed_input, &a_bools);
 	else if (search_type == SEARCH_FILE_PATH)
-		search_result = search_file_paths(&trimmed_input, second_tab,
-				&filtered);
+		search_result = search_file_paths(&trimmed_input, &a_bools, state);
 	else if (search_type == SEARCH_VARIABLE)
-		search_result = search_variables(state, &trimmed_input, second_tab,
-				&filtered);
-	return (free_and_display(&trimmed_input, state, &search_result, filtered));
+		search_result = search_variables(state, &trimmed_input, &a_bools);
+	return (free_and_display(&trimmed_input, state, &search_result,
+			a_bools.filtered));
 }

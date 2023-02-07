@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/20 13:46:15 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/06 18:01:38 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include "built_ins.h"
 # include "cursor.h"
 # include "signals.h"
+# include "expansion.h"
 
 /* Structs and enums */
 
@@ -39,6 +40,12 @@ typedef struct s_auto
 	size_t	query_len;
 	char	***search_results;
 }			t_auto;
+
+typedef struct s_auto_bools
+{
+	bool	filtered;
+	bool	second_tab;
+}			t_auto_bools;
 
 typedef struct s_autocomplete_display
 {
@@ -78,32 +85,32 @@ bool	check_result_is_dir(char *path, t_auto *autocomp, \
 		struct dirent *entry, DIR *dir);
 
 /* filter_matching.c */
-bool	filter_matching(t_auto autocomp, bool *filtered);
+bool	filter_matching(t_auto autocomp, t_auto_bools *a_bool);
 
 /* find_longest.c */
 size_t	find_longest(char **search_results);
 
 /* find_query. */
-char	*find_query(char *str, char c);
+char	*find_query(char *str, char c, t_state *state, bool expand);
 
 size_t	last_slash(char *str);
 
 /* search_commands.c */
 char	**search_commands(t_state *state, char **trimmed_input, \
-		bool second_tab, bool *filtered);
+		t_auto_bools *a_bool);
 
 /* search_exec.c */
-char	**search_exec(char ***sr, char **ti, bool second_tab, bool *filtered);
-char	**check_exec(t_auto autocomp, char **ti, bool second_tab, \
-		bool *filtered);
+char	**search_exec(char ***sr, char **ti, t_auto_bools *a_bool, \
+		t_state *state);
+char	**check_exec(t_auto autocomp, char **ti, t_auto_bools *a_bool, \
+		t_state *state);
 
 /* search_file_paths.c */
-char	**search_file_paths(char **trimmed_input, bool second_tab, \
-		bool *filtered);
+char	**search_file_paths(char **trimmed_input, t_auto_bools *a_bool, \
+		t_state *state);
 
 /* search_variables.c */
-char	**search_variables(t_state *state, char **ti, bool second_tab, \
-		bool *filtered);
+char	**search_variables(t_state *state, char **ti, t_auto_bools *a_bool);
 
 /* search_env_intern.c */
 bool	search_env_intern(char *const *arr, char *query, char ***sr, bool b);
@@ -120,5 +127,5 @@ int		fp_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir);
 void	truncate_result(t_auto autocomp);
 
 /* wrap_up.c */
-char	**wrap_up(t_auto *autocomp, bool second_tab, bool *filtered);
+char	**wrap_up(t_auto *autocomp, t_auto_bools *a_bool);
 #endif

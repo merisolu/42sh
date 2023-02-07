@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 18:37:40 by amann             #+#    #+#             */
-/*   Updated: 2023/01/19 16:46:33 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/06 17:55:33 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,7 @@ static bool	c_b(char *dollar_start)
 	return (*(dollar_start + 1) == '{');
 }
 
-char	**search_variables(t_state *s, char **ti, bool second_tab, \
-		bool *filtered)
+char	**search_variables(t_state *s, char **ti, t_auto_bools *a_bools)
 {
 	char	**search_result;
 	char	*dollar;
@@ -43,7 +42,7 @@ char	**search_variables(t_state *s, char **ti, bool second_tab, \
 	search_result = (char **) ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE);
 	if (!search_result || !ti)
 		return (print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	temp = find_query(*ti, ' ');
+	temp = find_query(*ti, ' ', s, false);
 	dollar = ft_strchr(temp, '$');
 	query = dollar + 1;
 	if (c_b(dollar))
@@ -57,5 +56,5 @@ char	**search_variables(t_state *s, char **ti, bool second_tab, \
 	}
 	free(temp);
 	autocomp = autocomp_setup(&query, c_b(dollar), &search_result);
-	return (wrap_up(&autocomp, second_tab, filtered));
+	return (wrap_up(&autocomp, a_bools));
 }

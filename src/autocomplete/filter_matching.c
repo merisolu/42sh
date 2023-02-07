@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 13:38:58 by amann             #+#    #+#             */
-/*   Updated: 2023/01/19 15:49:37 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/06 17:58:30 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static bool	free_return_false(char *str)
 	return (false);
 }
 
-bool	filter_matching(t_auto autocomp, bool *filtered)
+bool	filter_matching(t_auto autocomp, t_auto_bools *a_bool)
 {
 	size_t	max_len;
 	size_t	i;
@@ -81,6 +81,6 @@ bool	filter_matching(t_auto autocomp, bool *filtered)
 		new_string[i] = (*(autocomp.search_results))[0][i];
 		i++;
 	}
-	*filtered = true;
+	a_bool->filtered = true;
 	return (update_results(autocomp, new_string));
 }
