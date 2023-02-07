@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 12:20:30 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/07 15:29:26 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/07 15:39:33 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ static void	handle_hangup(t_state *state)
 		killpg(state->jobs[i].pids[0], SIGHUP);
 		i++;
 	}
-	exit(0);
+	signal(SIGHUP, SIG_DFL);
+	kill(getpid(), SIGHUP);
 }
 
 void	check_signal(t_state *state)
