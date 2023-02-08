@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 15:26:29 by amann             #+#    #+#             */
-/*   Updated: 2023/02/02 13:57:20 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/08 11:35:35 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ int	expand_name(char *value, t_state *state, char **res)
 	if (!valid)
 		return (-1);
 	return_code = expand_name_helper(res, valid, state);
-	if (return_code == 1)
-		add_to_result(res, value + valid_env_name_length(value), state);
 	free(valid);
 	return (return_code);
 }

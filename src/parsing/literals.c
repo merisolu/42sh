@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 15:05:55 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/06 11:49:52 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/08 11:37:05 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	manage_close_braces(t_state *state, char **result)
 		if (state->t.brace_count == 0)
 			state->t.in_braces = false;
 	}
-	else if (state->t.in_quotes
+	else if (state->t.in_quotes && state->t.brace_sq_count > 0
 		&& state->t.quote_token_type == TOKEN_SINGLE_QUOTE)
 	{
 		(state->t.brace_sq_count)--;
@@ -66,7 +66,7 @@ static int	manage_close_braces(t_state *state, char **result)
 	}
 	else if (state->t.in_quotes
 		&& state->t.quote_token_type == TOKEN_DOUBLE_QUOTE
-		&& !(state->t.in_squotes))
+		&& !(state->t.in_squotes) && state->t.brace_dq_count > 0)
 	{
 		(state->t.brace_dq_count)--;
 		if (state->t.brace_dq_count == 0)
@@ -86,10 +86,10 @@ int	check_literals(t_token **cursor, t_state *state, char **result)
 	original = *cursor;
 	if (eat_token(cursor, TOKEN_WHITESPACE, original))
 	{
-		if (state->t.in_braces && !(state->t.in_quotes))
-			return (add_to_result(result, " ", state));
 		if (state->t.in_quotes)
 			return (add_to_result(result, original->value, state));
+		else
+			return (add_to_result(result, " ", state));
 		state->continue_previous_node = 0;
 		return (1);
 	}
