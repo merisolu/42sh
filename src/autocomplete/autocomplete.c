@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/06 18:05:36 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/08 13:04:32 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,9 +120,6 @@ static int	free_and_display(char **ti, t_state *state, char ***sr, bool f)
  * possible propositions are printed to the STDOUT. The tab arg is a
  * static var from main that monitors this
  */
-
-//TODO add expansions to autocomp??
-//with a dollar expansion the string should be replaced, not with tilde
 
 int	autocomplete(t_state *state, bool second_tab)
 {
