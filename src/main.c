@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/07 14:59:17 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/09 14:21:34 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	g_last_signal;
 
 static void	finish_execution(t_state *state)
 {
+	update_window_size(&(state->input_context));
 	if (g_last_signal != 0 && state->last_return_value > 128)
 		ft_putchar('\n');
 	jobs_print_changed(state);

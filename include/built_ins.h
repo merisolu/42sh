@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/09 14:55:55 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/09 15:01:15 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,6 @@ typedef struct s_cmd_dispatch
 	const char	*name;
 	t_cmd		*run;
 }	t_cmd_dispatch;
-
-typedef struct s_cmd_env
-{
-	char	flags[1];
-	char	**args;
-	char	**env;
-}	t_cmd_env;
 
 typedef struct s_fc_range
 {
