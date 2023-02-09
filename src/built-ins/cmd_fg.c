@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:11:48 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/26 11:05:13 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/09 11:46:22 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,7 @@ int	cmd_fg(char *const *args, t_state *state)
 		return (print_error(1, ERRTEMPLATE_SIMPLE, ERR_FOREGROUND_GROUP));
 	job->state = JOB_RUNNING;
 	job_wait(job, false, state);
+	if (job->state == JOB_DONE)
+		job->needs_status_print = false;
 	return (0);
 }
