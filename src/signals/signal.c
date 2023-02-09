@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 12:20:30 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/20 15:00:24 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/08 12:59:01 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,40 @@ static void	handle_size_change(t_state *state)
 	display(&(state->input_context), 1);
 }
 
-static void	handle_child(t_state *state)
+static void	handle_hangup(t_state *state)
 {
-	jobs_check_status(state);
+	size_t	i;
+
+	i = 0;
+	while (i < MAX_JOBS)
+	{
+		if (state->jobs[i].state == JOB_STOPPED)
+			killpg(state->jobs[i].pids[0], SIGCONT);
+		killpg(state->jobs[i].pids[0], SIGHUP);
+		i++;
+	}
+	signal(SIGHUP, SIG_DFL);
+	kill(getpid(), SIGHUP);
+}
+
+static void	handle_continue(t_state *state)
+{
+	if (!terminal_apply_config(&(state->input_conf)))
+		print_error(1, ERRTEMPLATE_SIMPLE, ERR_TERMIOS_FAIL);
+	display(&(state->input_context), 1);
 }
 
 void	check_signal(t_state *state)
 {
 	if (g_last_signal == SIGCHLD)
-		handle_child(state);
+		jobs_check_status(state);
 	else if (g_last_signal == SIGINT)
 		handle_interrupt(state);
 	else if (g_last_signal == SIGWINCH)
 		handle_size_change(state);
+	else if (g_last_signal == SIGHUP)
+		handle_hangup(state);
+	else if (g_last_signal == SIGCONT)
+		handle_continue(state);
 	g_last_signal = 0;
 }

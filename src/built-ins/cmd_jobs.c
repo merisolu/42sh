@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:11:48 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/24 11:51:18 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/09 11:41:10 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ static void	on_error(char c)
 
 static void	print_job(t_job *job, char *flags, t_state *state)
 {
-	if (job->state == JOB_EMPTY || job->state == JOB_CREATED
-		|| job->state == JOB_DONE)
+	if (job->state == JOB_EMPTY || job->state == JOB_CREATED)
 		return ;
 	if (ft_strchr(flags, 'p'))
 		job_print(job, 'p', state);
