@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 14:43:11 by amann             #+#    #+#             */
-/*   Updated: 2023/02/09 14:56:13 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/09 15:07:13 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static bool	check_flags(char *const *args, int *i, bool *p_flag)
 	while (args[*i] && args[*i][0] == '-')
 	{
 		j = 0;
+		if (ft_strequ(args[*i], "-"))
+			break ;
 		while (args[*i][j])
 		{
 			*p_flag = args[*i][j] == 'P';
