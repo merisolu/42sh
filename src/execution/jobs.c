@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:34:04 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/09 11:23:48 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/09 11:50:13 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ void	jobs_print_changed(t_state *state)
 	{
 		if (state->jobs[i].needs_status_print)
 		{
-			if (!(WIFSIGNALED(state->jobs[i].return_value) && WTERMSIG(state->jobs[i].return_value) == SIGINT))
+			if (!(WIFSIGNALED(state->jobs[i].return_value)
+					&& WTERMSIG(state->jobs[i].return_value) == SIGINT))
 				job_print(&(state->jobs[i]), '\0', state);
 			state->jobs[i].needs_status_print = false;
 		}
