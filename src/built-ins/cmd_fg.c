@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:11:48 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/09 11:46:22 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/09 13:21:15 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	cmd_fg(char *const *args, t_state *state)
 	if (!job)
 		return (1);
 	ft_putendl(job->command);
+	if (job->state == JOB_DONE)
+		return (print_error(1, ERRTEMPLATE_NAMED, "fg", ERR_JOB_TERMINATED));
 	if (!terminal_apply_config(&(state->orig_conf)))
 		return (print_error(1, ERRTEMPLATE_SIMPLE, ERR_TERMIOS_FAIL));
 	if (killpg(job->pids[0], SIGCONT) == -1)

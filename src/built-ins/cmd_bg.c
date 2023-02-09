@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 15:36:17 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/26 10:54:03 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/09 13:21:25 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	cmd_bg(char *const *args, t_state *state)
 	if (job->state == JOB_RUNNING)
 		return (print_error(1,
 				"42sh: bg: job %i already in background\n", job->id));
+	if (job->state == JOB_DONE)
+		return (print_error(1, ERRTEMPLATE_NAMED, "bg", ERR_JOB_TERMINATED));
 	if (!terminal_apply_config(&(state->orig_conf)))
 		return (print_error(1, ERRTEMPLATE_SIMPLE, ERR_TERMIOS_FAIL));
 	if (killpg(job->pids[0], SIGCONT) == -1)
