@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 15:27:43 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/13 13:02:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/09 13:18:46 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static char	*get_target(char *const *args, size_t count, char *const *env)
 	}
 	if (count > 2 && ft_strequ(args[1], "--"))
 		return (args[2]);
-	return (args[1]);
+	return (args[count - 1]);
 }
 
 static int	construct_path(char *target, char **result)
@@ -81,12 +81,27 @@ static int	construct_path(char *target, char **result)
 	return (1);
 }
 
+static int	change_directory(char *arg_one, char *path, char *target)
+{
+	int	return_value;
+
+	if (!ft_strequ(arg_one, "-P"))
+		ft_normalize_path(path, &target);
+	else
+		target = ft_strdup(path);
+	return_value = chdir(target);
+	free(target);
+	free(path);
+	return (return_value);
+}
+
 int	cmd_cd(char *const *args, t_state *state)
 {
 	char	*target;
 	char	*path;
 	size_t	arg_count;
 	int		return_value;
+	char	buff[PATH_MAX];
 
 	arg_count = ft_null_array_len((void **)args);
 	target = get_target(args, arg_count, state->env);
@@ -102,10 +117,8 @@ int	cmd_cd(char *const *args, t_state *state)
 	}
 	if (env_get("PWD", state->env))
 		env_set("OLDPWD", env_get("PWD", state->env), &(state->env));
-	ft_normalize_path(path, &target);
-	env_set("PWD", target, &(state->env));
-	return_value = chdir(target);
-	free(target);
-	free(path);
+	return_value = change_directory(args[1], path, target);
+	getcwd(buff, PATH_MAX);
+	env_set("PWD", buff, &(state->env));
 	return (return_value);
 }
