@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:39:28 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/25 11:34:03 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/09 10:58:07 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ void	job_execute(t_job *job, bool background, t_state *state)
 		job_wait(job, false, state);
 		ioctl(STDIN_FILENO, TIOCSPGRP, &(state->group_id));
 		if (job->state == JOB_STOPPED)
+		{
+			job->needs_status_print = true;
 			state->stopped_jobs_warning_shown = false;
+		}
 	}
 	else
 	{
