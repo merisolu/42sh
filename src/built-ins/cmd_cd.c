@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 15:27:43 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/09 13:18:46 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/09 14:44:57 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,34 +27,6 @@ static int	check_destination_errors(char *name, char *path)
 		return (print_error(1, ERRTEMPLATE_DOUBLE_NAMED,
 				"cd", name, ERR_NO_PERMISSION));
 	return (0);
-}
-
-static char	*get_target(char *const *args, size_t count, char *const *env)
-{
-	char	*temp;
-
-	if (count <= 1 || (count == 2 && ft_strequ(args[1], "--")))
-	{
-		temp = env_get("HOME", env);
-		if (!temp)
-			print_error(0, ERRTEMPLATE_NAMED, "cd", ERR_NO_HOME);
-		return (temp);
-	}
-	else
-	{
-		if (ft_strequ(args[1], "-"))
-		{
-			temp = env_get("OLDPWD", env);
-			if (!temp)
-				print_error(0, ERRTEMPLATE_NAMED, "cd", ERR_NO_OLDPWD);
-			if (ft_is_dir(temp))
-				ft_putendl(temp);
-			return (temp);
-		}
-	}
-	if (count > 2 && ft_strequ(args[1], "--"))
-		return (args[2]);
-	return (args[count - 1]);
 }
 
 static int	construct_path(char *target, char **result)
@@ -81,11 +53,11 @@ static int	construct_path(char *target, char **result)
 	return (1);
 }
 
-static int	change_directory(char *arg_one, char *path, char *target)
+static int	change_directory(bool p_flag, char *path, char *target)
 {
 	int	return_value;
 
-	if (!ft_strequ(arg_one, "-P"))
+	if (!p_flag)
 		ft_normalize_path(path, &target);
 	else
 		target = ft_strdup(path);
@@ -99,12 +71,11 @@ int	cmd_cd(char *const *args, t_state *state)
 {
 	char	*target;
 	char	*path;
-	size_t	arg_count;
 	int		return_value;
+	bool	p_flag;
 	char	buff[PATH_MAX];
 
-	arg_count = ft_null_array_len((void **)args);
-	target = get_target(args, arg_count, state->env);
+	target = get_cd_target(args, state, &p_flag);
 	if (!target)
 		return (1);
 	if (!ft_path_is_within_limits(target) || !construct_path(target, &path))
@@ -115,9 +86,9 @@ int	cmd_cd(char *const *args, t_state *state)
 		free(path);
 		return (1);
 	}
-	if (env_get("PWD", state->env))
-		env_set("OLDPWD", env_get("PWD", state->env), &(state->env));
-	return_value = change_directory(args[1], path, target);
+	if (var_get("PWD", state))
+		env_set("OLDPWD", var_get("PWD", state), &(state->env));
+	return_value = change_directory(p_flag, path, target);
 	getcwd(buff, PATH_MAX);
 	env_set("PWD", buff, &(state->env));
 	return (return_value);

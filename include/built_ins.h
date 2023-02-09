@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/06 13:58:14 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/09 14:55:55 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 
 /* Constants */
 
+# define CD_USAGE "cd: usage: cd [-L|-P] [dir]"
 # define FC_EDIT_FILE "/tmp/42sh_fc_edit_file"
 # define FC_USAGE "fc: usage: fc [-nlr] [-e ename] [first [last]] \
 or fc -s [old=new] [first]\n"
@@ -74,6 +75,10 @@ int						cmd_echo(char *const *args, t_state *state);
 
 /* cmd_cd.c */
 int						cmd_cd(char *const *args, t_state *state);
+
+/* get_cd_target.c */
+char					*get_cd_target(char *const *args, t_state *state, \
+							bool *p_flag);
 
 /* cmd_export.c */
 int						cmd_export(char *const *args, t_state *state);

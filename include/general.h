@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/07 11:00:38 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/09 14:13:26 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@
 # define ERRTEMPLATE_DOUBLE_NAMED "42sh: %s: %s: %s\n"
 # define ERRTEMPLATE_DOUBLE_NAMED_QUOTED "42sh: %s: `%s': %s\n"
 # define ERRTEMPLATE_EXPANSION_SYNTAX "42sh: %s: %s: %s \"%s\")\n"
+# define ERRTEMPLATE_CD "42sh: cd: -%c: %s\n"
 
 # define ERR_ENV_MISSING_TERM "No TERM environment variable set."
 # define ERR_TERMCAP_NO_ACCESS "Unable to access termcap database."
@@ -100,6 +101,7 @@
 # define ERR_NO_JOB_CONTROL "no job control"
 # define ERR_BAD_SUB "bad substitution"
 # define ERR_EXPANSION_SYNTAX "syntax error: operand expected (error token is"
+# define ERR_INVALID_OPTION "invalid option"
 
 /* Globals */
 

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 09:52:18 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/30 17:52:51 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/09 14:27:12 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,16 @@ char	*env_get(const char *name, char *const *env)
 	if (temp)
 		return (ft_strchr(*temp, '=') + 1);
 	return (NULL);
+}
+
+char	*var_get(const char *name, t_state *state)
+{
+	char	*res;
+
+	res = env_get(name, state->env);
+	if (!res)
+		res = env_get(name, state->intern);
+	return (res);
 }
 
 /*
