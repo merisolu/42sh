@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 17:06:54 by amann             #+#    #+#             */
-/*   Updated: 2022/12/20 15:35:49 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/09 15:01:22 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	create_print_file(t_ast **ast_list)
 	int	permissions;
 
 	permissions = S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR | S_IROTH;
-	fd = open(TMP_FILE_PATH, O_RDWR | O_CREAT, permissions);
+	fd = open(TMP_FILE_PATH, O_RDWR | O_CREAT | O_TRUNC, permissions);
 	if (fd == -1)
 		return ;
 	print_ast(ast_list, fd);
