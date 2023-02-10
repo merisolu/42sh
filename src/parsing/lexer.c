@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/02 14:34:11 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/10 15:20:39 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ t_token	*tokenize(char *input, t_tokenizer *tokenizer)
 		check_quotes(input[i], tokenizer);
 		t_loop(input + i, tokenizer, &type, &result);
 		tokenizer->backslash_inhibited = \
-			(input[i] == '\\' && !tokenizer->backslash_inhibited);
+			(input[i] == '\\' && !tokenizer->backslash_inhibited
+				&& !(tokenizer->in_quotes && tokenizer->quote_type == '\''));
 		i += 1 + (input[i + 1] == '\n' && tokenizer->backslash_inhibited);
 	}
 	token_add(&result, type, ft_strdup(tokenizer->buff));

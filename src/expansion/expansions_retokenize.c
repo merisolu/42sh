@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:21:06 by amann             #+#    #+#             */
-/*   Updated: 2023/02/10 13:14:04 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/10 14:54:34 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static t_token_type	get_parser_token_type(char value, t_tokenizer *tokenizer)
 	const t_token_dispatch	*dispatch_table;
 	size_t					i;
 
-	if (value != '\'' && tokenizer->in_quotes && tokenizer->quote_type == '\'')
+	if (value != '\'' && tokenizer->in_quotes && tokenizer->quote_type == '\''
+		&& !ft_is_whitespace(value))
 		return (TOKEN_WORD);
 	dispatch_table = get_parse_token_dispatch();
 	i = 0;
@@ -79,7 +80,8 @@ static void	rt_loop(t_tokenizer *t, t_token **res, t_token_type *type, char *lc)
 	else if (*type != TOKEN_BACKSLASH)
 		token_add(res, *type, ft_strdup(t->buff));
 	t->backslash_inhibited = (*type == TOKEN_BACKSLASH
-			&& !t->backslash_inhibited);
+			&& !t->backslash_inhibited
+			&& !(t->in_quotes && t->quote_type == '\''));
 	ft_bzero(t->buff, ft_strlen(t->buff) + 1);
 	*type = get_parser_token_type(*lc, t);
 	t->buff_idx = 0;
