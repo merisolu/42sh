@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:21:06 by amann             #+#    #+#             */
-/*   Updated: 2023/02/03 14:40:07 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/10 13:14:04 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static t_token_type	get_parser_token_type(char value, t_tokenizer *tokenizer)
 	}
 	if (ft_is_whitespace(value))
 		return (TOKEN_WHITESPACE);
-	if (ft_isalnum(value))
+	if (ft_isalnum(value) || value == '_')
 		return (TOKEN_WORD);
 	else
 		return (TOKEN_JUNK);
