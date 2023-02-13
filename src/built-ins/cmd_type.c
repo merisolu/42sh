@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/29 16:17:26 by amann             #+#    #+#             */
-/*   Updated: 2023/02/02 14:55:50 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/13 14:13:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	search_bins(char const *name, int *res, t_state *state)
 		ft_printf("%s is hashed (%s)\n", name, path);
 		return ;
 	}
-	bin_env_find(name, state, &path);
+	bin_env_find(name, state, &path, true);
 	if (path)
 	{
 		print_type_res(name, path);

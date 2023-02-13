@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:29:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/17 18:21:07 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/13 14:28:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,25 +54,6 @@ static int	bin_find(const char *name, char **paths, char **result)
 	return (0);
 }
 
-int	bin_env_find_silent(const char *name, t_state *state, char **result)
-{
-	char	*path;
-	char	**paths;
-	int		return_value;
-
-	*result = NULL;
-	path = env_get("PATH", state->env);
-	if (!path)
-		path = env_get("PATH", state->intern);
-	if (!path || ft_strlen(path) == 0)
-		return (-1);
-	paths = ft_strsplit(path, ':');
-	if (!paths)
-		return (-1);
-	return_value = bin_find(name, paths, result);
-	ft_free_null_array((void **)paths);
-	return (return_value);
-}
 /*
  * Attempts to find the given binary from all paths in the given environment,
  * or if an absolute path was passed directly from the given path.
@@ -83,21 +64,27 @@ int	bin_env_find_silent(const char *name, t_state *state, char **result)
  * Returns 1 on success, 0 on not found, -1 on malloc failure.
  */
 
-int	bin_env_find(const char *name, t_state *state, char **result)
+int	bin_env_find(const char *name, t_state *state, char **result, bool silent)
 {
 	char	*path;
 	char	**paths;
 	int		return_value;
 
 	*result = NULL;
-	path = env_get("PATH", state->env);
-	if (!path)
-		path = env_get("PATH", state->intern);
+	path = var_get("PATH", state);
 	if (!path || ft_strlen(path) == 0)
-		return (print_error(-1, ERRTEMPLATE_SIMPLE, ERR_NO_SUCH_FILE_OR_DIR));
+	{
+		if (silent)
+			return (-1);
+		return (print_error(-1, "42sh: %s", ERR_NO_SUCH_FILE_OR_DIR));
+	}
 	paths = ft_strsplit(path, ':');
 	if (!paths)
+	{
+		if (silent)
+			return (-1);
 		return (print_error(-1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
+	}
 	return_value = bin_find(name, paths, result);
 	ft_free_null_array((void **)paths);
 	return (return_value);

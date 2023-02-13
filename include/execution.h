@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/13 10:22:33 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/13 14:09:04 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,9 @@
 /* Files */
 
 /* bin.c */
-int		bin_env_find(const char *name, t_state *state, char **result);
+int		bin_env_find(const char *name, t_state *state, char **result, \
+		bool silent);
 void	bin_execve(char *path, char **args, char *const *env);
-
-int		bin_env_find_silent(const char *name, t_state *state, char **result);
 
 /* copy_orig_fd.c */
 bool	copy_orig_fd(t_ast_redir *redir, t_redir **r, t_redir **head);
