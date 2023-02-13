@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 10:51:58 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/24 14:39:09 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/13 08:53:20 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,25 +73,29 @@ static t_job	*find_job_with_command(char *cmd, bool contains, t_state *state)
  * valid ids are:
  *
  * %, %%, %-, %-, %n, %string, %?string
+ *
+ * Variants of the above without the % at the beginning are also accepted.
  */
 t_job	*job_id_to_job(char *id, t_state *state)
 {
 	size_t	length;
 	int		numerical_id;
 
-	if (!id || id[0] != '%')
+	if (!id)
 		return (NULL);
+	if (id[0] == '%')
+		id++;
 	length = ft_strlen(id);
-	if (length == 1 || (length == 2 && (id[1] == '%' || id[1] == '+')))
+	if (length == 0 || (length == 1 && (id[0] == '%' || id[0] == '+')))
 		return (state->current_job);
-	if (length == 2 && id[1] == '-')
+	if (length == 1 && id[0] == '-')
 		return (state->previous_job);
-	if (ft_isdigit_str(id + 1))
+	if (ft_isdigit_str(id))
 	{
-		numerical_id = ft_atoi(id + 1);
+		numerical_id = ft_atoi(id);
 		return (find_job_with_id(numerical_id, state));
 	}
-	if (id[1] == '?')
-		return (find_job_with_command(id + 2, true, state));
-	return (find_job_with_command(id + 1, false, state));
+	if (id[0] == '?')
+		return (find_job_with_command(id + 1, true, state));
+	return (find_job_with_command(id, false, state));
 }
