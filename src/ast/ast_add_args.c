@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:55:34 by amann             #+#    #+#             */
-/*   Updated: 2023/01/09 14:22:05 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/13 17:23:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ static bool	check_intern(t_ast **node, t_token **cursor)
 	{
 		((*node)->var_list)[idx] = ft_strdup((*cursor)->value);
 		if (!(((*node)->var_list)[idx]))
-			return (print_error_bool(false, ERR_MALLOC_FAIL));
+			return (print_error_bool(false, ERRTEMPLATE_SIMPLE,
+					ERR_MALLOC_FAIL));
 		idx++;
 		*cursor = (*cursor)->next;
 		if (*cursor && (*cursor)->type == TOKEN_WHITESPACE)
