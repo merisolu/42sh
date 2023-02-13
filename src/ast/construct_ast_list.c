@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:27:35 by amann             #+#    #+#             */
-/*   Updated: 2023/02/02 13:56:41 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/13 13:37:47 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,11 @@ t_ast	**construct_ast_list(t_token *cursor)
 	len = ast_count(cursor);
 	ast_list = (t_ast **) ft_memalloc(sizeof(t_ast *) * (len + 1));
 	if (!ast_list)
-		return (NULL);
+	{
+		token_list_free(&cursor);
+		return ((t_ast **)print_error_ptr(NULL, ERRTEMPLATE_SIMPLE,
+				ERR_MALLOC_FAIL));
+	}
 	ast_list_loop(&ast_list, &cursor, len);
 	cursor = reset;
 	token_list_free(&cursor);

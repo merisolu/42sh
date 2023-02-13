@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2022/12/20 15:16:12 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/13 13:27:02 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static bool	add_redir(t_ast *node, t_token **cursor)
 
 	res = (t_ast_redir *) ft_memalloc(sizeof(t_ast_redir));
 	if (!res)
-		return (print_error_bool(false, ERR_MALLOC_FAIL));
+		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	res->redir_fd = -1;
 	if ((*cursor)->type == TOKEN_WORD && !set_specified_fd(&res, cursor))
 		return (false);

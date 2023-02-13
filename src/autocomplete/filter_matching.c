@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 13:38:58 by amann             #+#    #+#             */
-/*   Updated: 2023/02/06 17:58:30 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/13 13:41:20 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ static bool	update_results(t_auto autocomp, char *new_string)
 	ft_free_null_array((void **)*(autocomp.search_results));
 	*(autocomp.search_results) = (char **) ft_memalloc(sizeof(char *) * 2);
 	if (!(*(autocomp.search_results)))
+	{
+		free(new_string);
 		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
+	}
 	(*(autocomp.search_results))[0] = new_string;
 	return (true);
 }

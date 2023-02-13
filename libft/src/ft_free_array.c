@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 11:26:25 by jumanner          #+#    #+#             */
-/*   Updated: 2022/05/09 13:59:11 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/13 14:39:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	ft_free_array_elements(void **array, size_t size)
 	while (i < size)
 	{
 		free(array[i]);
+		array[i] = NULL;
 		i++;
 	}
 }
