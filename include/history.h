@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:14:31 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/03 11:04:34 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/13 13:25:41 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ bool	is_history_expansion_inhibited(char *input, int index);
 int		history_seek(t_state *state, int start, char *look_for,
 			bool anywhere);
 int		history_number_to_index(int num, t_state *state);
+int		history_index_to_number(int index, t_state *state);
 int		get_history_length(t_state *state);
 char	*get_history_file_path(void);
 

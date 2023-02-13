@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 11:39:01 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/02 14:39:03 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/13 13:30:07 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ int	history_seek(t_state *state, int start, char *look_for,
 int	history_number_to_index(int num, t_state *state)
 {
 	return (get_history_length(state) - num + 1);
+}
+
+int	history_index_to_number(int index, t_state *state)
+{
+	return (ft_abs(index - get_history_length(state)) + 1);
 }
 
 int	get_history_length(t_state *state)
