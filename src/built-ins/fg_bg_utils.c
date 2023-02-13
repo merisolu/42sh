@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:21:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/24 14:35:06 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/13 10:21:16 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,10 @@ t_job	*get_job(char *const *args, t_state *state)
 	}
 	if (args[1] != NULL)
 	{
-		job = job_id_to_job(args[1], state);
+		job_id_to_job_error_print(
+			job_id_to_job(args[1], state, &job), args[0], args[1]);
 		if (job && job->state == JOB_CREATED)
 			job = NULL;
-		if (!job)
-			print_error(1, ERRTEMPLATE_DOUBLE_NAMED,
-				args[0], args[1], ERR_NO_SUCH_JOB);
 		return (job);
 	}
 	if (!state->current_job)

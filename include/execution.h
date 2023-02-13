@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/01 14:19:16 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/13 10:22:33 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,10 @@
 # define JOB_PRINT_END "\t\t%s\n"
 # define JOB_PRINT_END_RUNNING "\t\t%s &\n"
 # define JOB_PID_PRINT "%d\n"
+
+# define JOB_FIND_FOUND 1
+# define JOB_FIND_NOT_FOUND 0
+# define JOB_FIND_AMBIGUOUS -1
 
 /* Files */
 
@@ -101,8 +105,9 @@ void	job_current_update(t_job *new_current, t_state *state);
 void	job_execute(t_job *job, bool background, t_state *state);
 void	job_find_new_previous_job(t_state *state);
 
-/* jobs_print.c */
-t_job	*job_id_to_job(char *id, t_state *state);
+/* jobs_find.c */
+int		job_id_to_job(char *id, t_state *state, t_job **result);
+int		job_id_to_job_error_print(int value, char *caller, char *id);
 
 /* process_group.c */
 pid_t	process_group_set(pid_t pid, pid_t job_first_pid, bool foreground);
