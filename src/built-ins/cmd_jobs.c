@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:11:48 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/13 10:50:03 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/13 11:17:33 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void	print_job(t_job *job, char *flags, t_state *state)
 		job_print(job, 'l', state);
 	else
 		job_print(job, '\0', state);
+	job->needs_status_print = false;
 }
 
 static void	print_all_jobs(char *flags, t_state *state)
