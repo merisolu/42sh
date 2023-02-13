@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:02:48 by amann             #+#    #+#             */
-/*   Updated: 2023/01/20 13:50:21 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/13 12:36:40 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static void	append_space(char **text)
 	*text = temp;
 }
 
-static bool	insert_text(t_input_context *ctx, char **text, bool filtered)
+static int	insert_text(t_input_context *ctx, char **text, bool filtered)
 {
 	int		limit_reached;
 	size_t	new_cursor_pos;
@@ -98,10 +98,10 @@ static bool	insert_text(t_input_context *ctx, char **text, bool filtered)
 	ctx->cursor = new_cursor_pos;
 	if (limit_reached)
 		ft_putstr(tgetstr("bl", NULL));
-	return (true);
+	return (1);
 }
 
-bool	autocomplete_display_control(t_state *state, char ***search_result, \
+int	autocomplete_display_control(t_state *state, char ***search_result, \
 		bool filtered)
 {
 	size_t			len;
@@ -114,11 +114,8 @@ bool	autocomplete_display_control(t_state *state, char ***search_result, \
 	{
 		len = ft_null_array_len((void **)(*search_result));
 		if (len > 100 && !autocomplete_display_warning(state, len))
-		{
-			ft_free_null_array((void **)*search_result);
-			return (false);
-		}
+			return (0);
 		autocomplete_display_columns(*search_result, len, state);
 	}
-	return (true);
+	return (-1);
 }

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/08 13:04:32 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/13 12:27:01 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,15 +85,19 @@ static t_search_type	get_search_type(char *trimmed_input)
 	return (res);
 }
 
+//if an autocommpletion happens, tab should be reset.
+//This can be controlled by the return value
+
 static int	free_and_display(char **ti, t_state *state, char ***sr, bool f)
 {
+	int	ret;
+
 	ft_strdel(ti);
 	if (!*sr)
 		return (0);
-	if (!autocomplete_display_control(state, sr, f))
-		return (0);
+	ret = autocomplete_display_control(state, sr, f);
 	ft_free_null_array((void **) *sr);
-	return (0);
+	return (ret);
 }
 /*
  * Provides contextual, dynamic, completion of:

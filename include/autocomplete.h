@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/06 18:01:38 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/13 12:28:31 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	initialise_autocomp(t_auto *autocomp, char **query, \
 		char ***search_result, int *count);
 
 /* autocomplete_display_control.c */
-bool	autocomplete_display_control(t_state *state, char ***search_result, \
+int		autocomplete_display_control(t_state *state, char ***search_result, \
 		bool filtered);
 
 /* autocomplete_display_columns.c */
