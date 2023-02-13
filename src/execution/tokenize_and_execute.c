@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2023/02/10 14:36:32 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/13 16:40:29 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_pipes *pipes, t_state *state)
 {
 	check_print_ast(ast, state, false);
 	*redir = (t_redir **)ft_memalloc(sizeof(t_redir *) * (INPUT_MAX_SIZE / 2));
-	if (!redir)
+	if (!redir || !*redir)
 		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	pipes_reset(pipes->read, pipes->write);
 	return (true);
