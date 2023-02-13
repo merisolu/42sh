@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 13:41:49 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/02 13:04:07 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/13 12:21:57 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ t_state *state)
 		range->end = length;
 		return ;
 	}
-	range->start = ft_clamp(atoi(args[0 + offset]), 1, length);
+	range->start = ft_clamp(ft_atoi(args[0 + offset]), 1, length);
 	if (args[1])
-		range->end = ft_clamp(atoi(args[1 + offset]), 1, length);
+		range->end = ft_clamp(ft_atoi(args[1 + offset]), 1, length);
 	else
 		range->end = range->start + 1;
 }
