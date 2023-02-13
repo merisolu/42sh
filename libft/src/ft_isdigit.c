@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 10:22:23 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/19 11:02:51 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/13 13:08:37 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ bool	ft_isdigit_str(char *s)
 {
 	int	i;
 
+	if (!s)
+		return (false);
 	i = 0;
 	while (s[i])
 	{

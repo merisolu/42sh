@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 12:54:56 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 14:30:57 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/13 12:56:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static t_token	*token_new(t_token_type type, char *value, t_token *previous)
 {
 	t_token	*result;
 
-	result = (t_token *)malloc(sizeof(t_token));
+	result = (t_token *)ft_memalloc(sizeof(t_token));
 	if (!result)
 	{
 		free(value);
