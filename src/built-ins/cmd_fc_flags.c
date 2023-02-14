@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 14:02:23 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/14 14:53:28 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/14 15:14:26 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_arg_parse_error *on_error)
 	i = 0;
 	while (args[i])
 	{
-		if (args[i][0] != '-')
+		if (args[i][0] != '-' || ft_strlen(args[i]) == 1)
 			return (i);
 		flag_parse_result = parse_flag(args[i], valid, found, on_error);
 		if (flag_parse_result == 1)

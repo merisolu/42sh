@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 13:41:49 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/14 14:25:36 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/14 15:14:32 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ static int	parse_numerical_range(char *arg, int length)
 
 static int	parse_range(char *arg, int length, t_state *state)
 {
+	if (ft_strequ(arg, "-"))
+		return (-1);
 	if (ft_isdigit_str(arg) || (arg[0] == '-' && ft_isdigit_str(arg + 1)))
 		return (parse_numerical_range(arg, length));
 	return (parse_string_range(arg, length, state));
@@ -48,7 +50,7 @@ t_state *state)
 
 	offset = ft_strchr(flags, 'e') != NULL;
 	length = get_history_length(state);
-	if (!args[0 + offset])
+	if (!args[offset])
 	{
 		if (ft_strchr(flags, 'l'))
 			range->start = ft_clamp(length - 15, 1, length);
@@ -57,7 +59,7 @@ t_state *state)
 		range->end = length;
 		return (true);
 	}
-	range->start = parse_range(args[0 + offset], length, state);
+	range->start = parse_range(args[offset], length, state);
 	if (args[1 + offset])
 		range->end = parse_range(args[1 + offset], length, state);
 	else
