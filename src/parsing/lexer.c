@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/14 13:28:36 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/14 14:21:21 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,42 +47,48 @@ static bool	tokenize_init(t_tokenizer *t, char *line)
  * This is needed in situations when we are dealing with fd aggregation
  */
 
-static void	t_loop(char *lc, t_tokenizer *t, t_token_type *type, t_token **r)
+static bool	t_loop(char *lc, t_tokenizer *t, t_token_type *type, t_token **r)
 {
 	if (get_token_type(*lc, t) != *type
 		&& !((*type == TOKEN_LT || *type == TOKEN_GT) && get_token_type(\
 		*lc, t) == TOKEN_AMPERSAND))
 	{
-		token_add(r, *type, ft_strdup(t->buff));
+		if (!token_add(r, *type, ft_strdup(t->buff)))
+		{
+			ft_strdel(&(t->buff));
+			return (print_error_bool(false, "\n42sh: %s\n", ERR_MALLOC_FAIL));
+		}
 		ft_bzero(t->buff, ft_strlen(t->buff) + 1);
 		*type = get_token_type(*lc, t);
 		t->buff_idx = 0;
 	}
 	(t->buff)[t->buff_idx] = *lc;
 	(t->buff_idx)++;
+	return (true);
 }
 
-t_token	*tokenize(char *input, t_tokenizer *tokenizer)
+t_token	*tokenize(char *input, t_tokenizer *t)
 {
 	t_token			*result;
 	t_token_type	type;
 	int				i;
 
-	if (!tokenize_init(tokenizer, input))
+	if (!tokenize_init(t, input))
 		return (NULL);
 	result = NULL;
 	i = skip_whitespace(input);
-	type = get_token_type(input[i], tokenizer);
-	while (input[i])
+	type = get_token_type(input[i], t);
+	while (input[i] && t->buff)
 	{
-		check_quotes(input[i], tokenizer);
-		t_loop(input + i, tokenizer, &type, &result);
-		tokenizer->backslash_inhibited = \
-			(input[i] == '\\' && !tokenizer->backslash_inhibited
-				&& !(tokenizer->in_quotes && tokenizer->quote_type == '\''));
-		i += 1 + (input[i + 1] == '\n' && tokenizer->backslash_inhibited);
+		check_quotes(input[i], t);
+		t_loop(input + i, t, &type, &result);
+		t->backslash_inhibited = \
+			(input[i] == '\\' && !t->backslash_inhibited
+				&& !(t->in_quotes && t->quote_type == '\''));
+		i += 1 + (input[i + 1] == '\n' && t->backslash_inhibited);
 	}
-	token_add(&result, type, ft_strdup(tokenizer->buff));
-	free(tokenizer->buff);
+	if (t->buff && !token_add(&result, type, ft_strdup(t->buff)))
+		print_error_ptr(NULL, "\n42sh: %s\n", ERR_MALLOC_FAIL);
+	free(t->buff);
 	return (result);
 }
