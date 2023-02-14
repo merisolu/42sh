@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/10 15:20:39 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/14 13:28:36 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,12 @@ static int	skip_whitespace(char *line)
 
 static bool	tokenize_init(t_tokenizer *t, char *line)
 {
+	(void) line;
 	ft_bzero(t, sizeof(t_tokenizer));
 	t->quote_type = '\0';
 	t->buff = ft_strnew(sizeof(char) * (ft_strlen(line) + 1));
 	if (!(t->buff))
-		return (false);
+		return (print_error_bool(false, "\n42sh: %s\n", ERR_MALLOC_FAIL));
 	return (true);
 }
 

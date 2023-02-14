@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 12:42:30 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/31 13:53:43 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/14 13:25:46 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,19 @@ static int	check_mark_validity(t_input_context *ctx)
 
 static t_input_result	append_char(char c, t_input_context *ctx)
 {
+	int	inhibited;
+
 	if (ft_isprint(c))
 		append_input(ctx, c);
 	else if (c == '\n')
 	{
-		if (check_mark_validity(ctx) && !is_inhibited(ctx->input))
+		inhibited = is_inhibited(ctx->input);
+		if (inhibited == -1)
+		{
+			clear_input(ctx);
+			return (INPUT_NO_MARK_FOUND);
+		}
+		if (check_mark_validity(ctx) && !inhibited)
 			return (INPUT_MARK_FOUND);
 		else
 			append_input(ctx, c);
