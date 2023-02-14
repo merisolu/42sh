@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 12:54:56 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/13 12:56:16 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/14 14:22:02 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ t_token	*token_add(t_token **list, t_token_type type, char *value)
 {
 	t_token	*cursor;
 
+	if (!value)
+		return (NULL);
 	if (!list)
 	{
 		free(value);
