@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 16:14:26 by amann             #+#    #+#             */
-/*   Updated: 2023/01/02 18:16:45 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/14 15:57:12 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,8 @@ static void	shuffle_down(char *const **arr, int i)
 	*temp = NULL;
 }
 
-void	delete_var(char *name, char *const **arr)
+static size_t	get_name_len(char *name)
 {
-	int		i;
 	size_t	name_len;
 
 	if (ft_strchr(name, '='))
@@ -53,10 +52,24 @@ void	delete_var(char *name, char *const **arr)
 	}
 	else
 		name_len = ft_strlen(name);
+	return (name_len);
+}
+
+void	delete_var(char *name, char *const **arr)
+{
+	int		i;
+	size_t	name_len;
+	size_t	var_len;
+
+	if (!name || !arr || !*arr)
+		return ;
+	name_len = get_name_len(name);
 	i = 0;
 	while ((*arr)[i])
 	{
-		if (ft_strnequ(name, (*arr)[i], name_len))
+		var_len = valid_env_name_length((*arr)[i]);
+		if (var_len == name_len
+			&& ft_strnequ(name, (*arr)[i], var_len))
 		{
 			free((*arr)[i]);
 			shuffle_down(arr, i);

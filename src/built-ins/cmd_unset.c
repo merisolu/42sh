@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 14:52:32 by amann             #+#    #+#             */
-/*   Updated: 2023/01/17 16:52:40 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/14 15:50:03 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	cmd_unset(char *const *args, t_state *state)
 		if (name[valid_env_name_length(name)])
 		{
 			print_error_bool(false, ERRTEMPLATE_DOUBLE_NAMED_QUOTED,
-				"export", name, ERR_NOT_VALID_ID);
+				"unset", name, ERR_NOT_VALID_ID);
 			ret = 1;
 		}
 		if (!env_unset(name, &(state->env)))
