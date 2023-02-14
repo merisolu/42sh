@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/13 13:58:38 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/14 17:09:17 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@
 # define ERR_EXPANSION_SYNTAX "syntax error: operand expected (error token is"
 # define ERR_INVALID_OPTION "invalid option"
 # define ERR_HISTORY_SPEC_OUT_OF_RANGE "history specification out of range"
+# define ERR_NUMERIC_ARG "numeric argument required"
 
 /* Globals */
 
@@ -237,6 +238,7 @@ typedef struct s_state
 	int				last_return_value;
 	int				exit_return_value;
 	int				exiting;
+	bool			exit_builtin;
 	bool			stopped_jobs_warning_shown;
 	bool			running_script;
 }	t_state;

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/13 12:37:43 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/14 17:09:31 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ int	main(const int argc, const char **argv, char *const *env)
 			check_stopped_jobs(&state);
 	}
 	history_save(&state);
-	ft_putendl("exit");
+	if (!(state.exit_builtin))
+		ft_dprintf(STDERR_FILENO, "exit\n");
 	return (cleanup(&state, state.exit_return_value));
 }
