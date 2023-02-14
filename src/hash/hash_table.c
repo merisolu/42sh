@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 11:12:01 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/13 15:11:58 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/14 12:35:01 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,17 @@ bool	hash_table_setup(t_hash_entry ***table)
 	return (*table != NULL);
 }
 
+static bool	hash_add_entry(t_hash_entry **entry, char *path)
+{
+	*entry = ft_memalloc(sizeof(t_hash_entry));
+	if (!(*entry))
+	{
+		free(path);
+		return (print_error_bool(false, ERRTEMPLATE_SIMPLE,
+				ERR_MALLOC_FAIL));
+	}
+	return (true);
+}
 /*
  * Adds an entry to the hash table. 'hits' specifies the hit count the entry
  * should have when put into the table. If the entry already exists, it is
@@ -54,8 +65,7 @@ unsigned int hits)
 	old_entry = entry != NULL;
 	if (!old_entry)
 	{
-		entry = ft_memalloc(sizeof(t_hash_entry));
-		if (!entry)
+		if (!hash_add_entry(&entry, path))
 			return (false);
 	}
 	else
