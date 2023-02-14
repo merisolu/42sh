@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/13 13:58:53 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/14 14:10:36 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,10 @@ t_job					*get_job(char *const *args, t_state *state);
 
 /* cmd_fc.c */
 int						cmd_fc(char *const *args, t_state *state);
+
+/* cmd_fc_flags.c */
+int						cmd_fc_parse_flags(char *const *args, char *valid,
+							char *found, t_arg_parse_error *on_error);
 
 /* cmd_fc_editor.c */
 bool					cmd_fc_history_edit(char *editor, t_fc_range *range,
