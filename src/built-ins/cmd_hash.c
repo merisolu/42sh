@@ -6,11 +6,18 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 13:34:40 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/26 13:01:05 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/14 15:35:57 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "built_ins.h"
+
+static int	print_flag_error(char flag)
+{
+	ft_dprintf(STDERR_FILENO, "42sh: hash: -%c: invalid option\n", flag);
+	ft_dprintf(STDERR_FILENO, "hash: usage: hash [utility...] or hash -r\n");
+	return (1);
+}
 
 static void	print_hash_table(t_hash_entry **table)
 {
@@ -51,6 +58,8 @@ int	cmd_hash(char *const *args, t_state *state)
 
 	if (ft_strequ(args[1], "-r"))
 		clear_hash_table(&(state->hash_table));
+	else if (args[1][0] == '-')
+		return (print_flag_error(args[1][1]));
 	if (args[1])
 	{
 		i = ft_strequ(args[1], "-r");

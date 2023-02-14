@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:11:48 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/13 11:17:33 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/14 15:53:45 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	cmd_jobs(char *const *args, t_state *state)
 	int		return_value;
 
 	i = parse_flags(args + 1, "lp", flags, &on_error) + 1;
-	if (i == -1)
+	if (i == 0)
 		return (2);
 	return_value = 0;
 	if (!args[i])
