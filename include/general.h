@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/09 15:00:33 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/13 13:58:38 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@
 # define ERR_BAD_SUB "bad substitution"
 # define ERR_EXPANSION_SYNTAX "syntax error: operand expected (error token is"
 # define ERR_INVALID_OPTION "invalid option"
+# define ERR_HISTORY_SPEC_OUT_OF_RANGE "history specification out of range"
 
 /* Globals */
 
