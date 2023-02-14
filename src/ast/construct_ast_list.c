@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:27:35 by amann             #+#    #+#             */
-/*   Updated: 2023/02/14 13:33:29 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/14 14:32:34 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ t_ast	**construct_ast_list(t_token *cursor)
 	size_t	len;
 	t_token	*reset;
 
-	ft_putendl("KO");
 	if (!cursor)
 		return (NULL);
 	reset = cursor;
