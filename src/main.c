@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/14 17:09:31 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/15 16:14:45 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static t_input_result	input_handler(t_state *state)
 	if (result == INPUT_CALLED_FOR_EXIT)
 	{
 		state->exiting = 1;
-		state->exit_return_value = RETURN_CTRL_D;
+		state->exit_return_value = state->last_return_value;
 	}
 	if (result == INPUT_FOUND_RESERVED_SEQUENCE)
 	{
