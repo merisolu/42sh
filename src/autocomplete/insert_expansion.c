@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 17:32:37 by amann             #+#    #+#             */
-/*   Updated: 2023/02/15 17:40:16 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/15 18:16:32 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	insert_expansion(t_input_context *ctx, char *exp)
 	size_t	orig_len;
 
 	exp_len = ft_strlen(exp);
-	if (!check_exp_is_dir(exp, exp_len))
+	if (ft_strequ(exp, "/") || !check_exp_is_dir(exp, exp_len))
 		return ;
 	orig_len = 0;
 	start = ctx->cursor;

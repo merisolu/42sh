@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:26:38 by amann             #+#    #+#             */
-/*   Updated: 2023/02/15 17:54:00 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/15 18:06:32 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ static bool	check_ext_exp_errors(t_token **cursor, t_state *state, \
 			if ((*cursor)->type == TOKEN_CURLY_CLOSED && !(state->t.autocomp))
 				print_error(-1, ERRTEMPLATE_NAMED, state->t.expansion_word,
 					ERR_BAD_SUB);
-			else if ((*cursor)->type != TOKEN_WHITESPACE && !(state->t.autocomp))
+			else if ((*cursor)->type != TOKEN_WHITESPACE
+				&& !(state->t.autocomp))
 				print_error(-1, ERRTEMPLATE_EXPANSION_SYNTAX, param->value,
 					(*cursor)->value, ERR_EXPANSION_SYNTAX, (*cursor)->value);
 			else if (!(state->t.autocomp))
