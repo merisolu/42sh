@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 15:19:14 by amann             #+#    #+#             */
-/*   Updated: 2023/02/03 15:22:31 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/15 17:49:04 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	handle_minus_eq_qm(t_token **cursor, t_state *state, char **res, \
 		expansions_loop(cursor, state, res, true);
 	if (equals && !handle_equals(param, state, res))
 		return (0);
-	if (qm)
+	if (qm && !(state->t.autocomp))
 	{
 		print_error(0, ERRTEMPLATE_NAMED, param->value, *res);
 		ft_strdel(res);

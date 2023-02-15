@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/15 16:48:46 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/15 17:55:18 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,6 +213,7 @@ typedef struct s_tokenizer
 	char			*expansion_word;
 	char			*buff;
 	size_t			buff_idx;
+	bool			autocomp;
 	t_token_type	special;
 }	t_tokenizer;
 

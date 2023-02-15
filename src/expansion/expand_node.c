@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:18:51 by amann             #+#    #+#             */
-/*   Updated: 2023/02/10 15:04:48 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/15 17:51:07 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	expansions_loop(t_token **cursor, t_state *state, char **result, bool r)
 	return ;
 }
 
-bool	expand_node(char **word, t_state *state)
+bool	expand_node(char **word, t_state *state, bool autocomp)
 {
 	t_token		*list;
 	char		*result;
@@ -75,9 +75,14 @@ bool	expand_node(char **word, t_state *state)
 		return (true);
 	ft_bzero((void *)&(state->t), sizeof(state->t));
 	state->t.expansion_word = *word;
+	state->t.autocomp = autocomp;
 	list = expansions_retokenize(*word);
 	if (!list)
-		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
+	{
+		if (!(state->t.autocomp))
+			return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
+		return (false);
+	}
 	result = NULL;
 	expansions_loop(&list, state, &result, false);
 	reset_state(state);

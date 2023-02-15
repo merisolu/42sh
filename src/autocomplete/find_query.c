@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:54:23 by amann             #+#    #+#             */
-/*   Updated: 2023/02/15 17:40:25 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/15 17:55:33 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*find_query(char *str, char c, t_state *state, bool expand)
 	if (expand)
 	{
 		var = last_word[0] == '$';
-		if (!expand_node(&last_word, state))
+		if (!expand_node(&last_word, state, true))
 		{
 			free(last_word);
 			return (NULL);

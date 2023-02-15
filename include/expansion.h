@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:12 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/02 17:45:11 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/15 17:57:12 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int		expand_to_value_len(t_token **cursor, t_state *state, char **res);
 /* expand_node.c */
 void	expansions_loop(t_token **cursor, t_state *state, char **result, \
 		bool recurs);
-bool	expand_node(char **word, t_state *state);
+bool	expand_node(char **word, t_state *state, bool autocomp);
 
 /* expansions_retokenize.c */
 t_token	*expansions_retokenize(char *line);
