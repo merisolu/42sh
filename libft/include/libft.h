@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 16:24:04 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/06 14:07:35 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/15 14:37:53 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,7 @@ char		*ft_itoa_ullong_base(t_ull n, int base);
 
 int			ft_atoi(const char *str);
 long long	ft_atoll(const char *str);
+t_ull		ft_atoull(const char *str);
 
 /* Numerical comparisons. */
 int			ft_abs(int i);
