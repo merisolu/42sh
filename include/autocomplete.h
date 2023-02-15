@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/13 12:28:31 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/15 17:39:42 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,11 @@ bool	filter_matching(t_auto autocomp, t_auto_bools *a_bool);
 /* find_longest.c */
 size_t	find_longest(char **search_results);
 
-/* find_query. */
+/* find_query.c */
 char	*find_query(char *str, char c, t_state *state, bool expand);
 
-size_t	last_slash(char *str);
+/* insert_expansion.c */
+void	insert_expansion(t_input_context *ctx, char *exp);
 
 /* search_commands.c */
 char	**search_commands(t_state *state, char **trimmed_input, \
@@ -108,6 +109,7 @@ char	**check_exec(t_auto autocomp, char **ti, t_auto_bools *a_bool, \
 /* search_file_paths.c */
 char	**search_file_paths(char **trimmed_input, t_auto_bools *a_bool, \
 		t_state *state);
+size_t	last_slash(char *str);
 
 /* search_variables.c */
 char	**search_variables(t_state *state, char **ti, t_auto_bools *a_bool);
