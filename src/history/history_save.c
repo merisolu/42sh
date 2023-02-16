@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 10:45:48 by jumanner          #+#    #+#             */
-/*   Updated: 2022/11/18 14:27:47 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/16 14:47:32 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ void	history_save(t_state *state)
 		i--;
 	while (i > 0)
 	{
-		write(file, state->history[i], ft_strlen(state->history[i]));
-		write(file, "\n", 1);
+		if (write(file, state->history[i], ft_strlen(state->history[i])) == -1
+			|| write(file, "\n", 1) == -1)
+			break ;
 		i--;
 	}
 	close(file);
