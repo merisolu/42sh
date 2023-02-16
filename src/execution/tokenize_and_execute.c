@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2023/02/13 16:40:29 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/16 13:41:12 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,10 @@ static bool	setup_ast_list_execution(t_ast **ast, t_redir ***redir, \
 t_pipes *pipes, t_state *state)
 {
 	check_print_ast(ast, state, false);
+	if (!redir)
+		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	*redir = (t_redir **)ft_memalloc(sizeof(t_redir *) * (INPUT_MAX_SIZE / 2));
-	if (!redir || !*redir)
+	if (!*redir)
 		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	pipes_reset(pipes->read, pipes->write);
 	return (true);
