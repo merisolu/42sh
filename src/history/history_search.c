@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:56:28 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/02 14:43:27 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/16 13:09:01 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,10 @@ static bool	should_exit(t_input_result result, t_state *state)
 static char	*seek_in_history(t_state *state, int *cursor, char *look_for,
 							int *found_index)
 {
-	int		i;
 	int		found;
 	char	*temp;
 
 	*found_index = 0;
-	i = *cursor;
 	found = history_seek(state, *cursor, look_for, true);
 	temp = ft_strstr(state->history[found], look_for);
 	if (temp)
