@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:12 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/15 17:57:12 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/16 14:46:05 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,30 +23,32 @@
 
 /* Files */
 
-/* expand_tilde.c */
-int		expand_tilde(t_token **cursor, t_state *state, char **result);
+/* expand_hash.c */
+void	handle_hash(t_state *state, char *temp_res, char *temp_exp);
 
 /* expand_name.c */
 int		expand_name(char *value, t_state *state, char **res);
-
-/* expand_variables.c */
-int		expand_variable(t_token **cursor, t_state *state, char **result);
-
-/* expand_hash_percent.c */
-int		expand_hash_percent(t_token **cursor, t_state *state, char **res, \
-		t_token *param);
-
-/* expand_plus_minus.c */
-int		expand_plus_minus(t_token **cursor, t_state *state, char **res, \
-		t_token *param);
-
-/* expand_to_value_len.c */
-int		expand_to_value_len(t_token **cursor, t_state *state, char **res);
 
 /* expand_node.c */
 void	expansions_loop(t_token **cursor, t_state *state, char **result, \
 		bool recurs);
 bool	expand_node(char **word, t_state *state, bool autocomp);
+
+/* expand_percent.c */
+void	handle_percent(t_state *state, char *temp_res, char *temp_exp);
+
+/* expand_plus_minus.c */
+int		expand_plus_minus(t_token **cursor, t_state *state, char **res, \
+		t_token *param);
+
+/* expand_tilde.c */
+int		expand_tilde(t_token **cursor, t_state *state, char **result);
+
+/* expand_to_value_len.c */
+int		expand_to_value_len(t_token **cursor, t_state *state, char **res);
+
+/* expand_variables.c */
+int		expand_variable(t_token **cursor, t_state *state, char **result);
 
 /* expansions_retokenize.c */
 t_token	*expansions_retokenize(char *line);
@@ -58,6 +60,10 @@ void	set_braces_state(t_state *state);
 
 /* parse_expansions.c */
 bool	parse_expansions(t_ast *root, t_state *state);
+
+/* pattern_matching_control.c */
+int		pattern_matching_control(t_token **cursor, t_state *state, char **res, \
+		t_token *param);
 
 /* tilde_param_exp.c */
 bool	check_param_exp(t_state *s, t_token *fb);
