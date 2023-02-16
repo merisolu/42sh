@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 13:41:49 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/14 15:14:32 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/16 11:01:19 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,12 @@ static int	parse_string_range(char *arg, int length, t_state *state)
 
 static int	parse_numerical_range(char *arg, int length)
 {
-	return (ft_clamp(ft_atoi(arg), 1, length));
+	int	num;
+
+	num = ft_atoi(arg);
+	if (num > 0)
+		return (ft_clamp(num, 1, length));
+	return (ft_clamp(length + num + 1, 1, length));
 }
 
 static int	parse_range(char *arg, int length, t_state *state)
@@ -63,7 +68,7 @@ t_state *state)
 	if (args[1 + offset])
 		range->end = parse_range(args[1 + offset], length, state);
 	else
-		range->end = ft_clamp(range->start + 1, 1, length);
+		range->end = length;
 	if (range->start < 1 || range->end < 1)
 		return (print_error_bool(false,
 				ERRTEMPLATE_NAMED, "fc", ERR_HISTORY_SPEC_OUT_OF_RANGE));
