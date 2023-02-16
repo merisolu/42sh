@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   filter_matching.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 13:38:58 by amann             #+#    #+#             */
-/*   Updated: 2023/02/13 13:41:20 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/16 13:35:50 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char	*create_new_string(t_auto autocomp, size_t max_len)
 	return (new_string);
 }
 
-static void	filter_loop(t_auto autocomp, size_t *i, bool *flag, char c)
+static void	filter_loop(t_auto autocomp, const size_t *i, bool *flag, char c)
 {
 	size_t	idx;
 

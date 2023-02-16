@@ -6,13 +6,13 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 11:02:50 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/03 14:40:36 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/16 13:45:53 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "history.h"
 
-static bool	is_quote_inhibited_at_index(char *input, int end)
+static bool	is_quote_inhibited_at_index(const char *input, int end)
 {
 	int		i;
 	char	quote;
