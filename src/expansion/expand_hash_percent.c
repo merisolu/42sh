@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 15:34:43 by amann             #+#    #+#             */
-/*   Updated: 2023/02/03 14:10:58 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/16 11:28:17 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ static void	handle_hash(char *temp_res, char *temp_exp)
 	}
 }
 
-static void	position_cursor(t_token **cursor, char **temp, bool hash)
+static void	position_cursor(t_token **cursor, t_state *state, char **temp, \
+		bool hash)
 {
 	if ((*cursor)->type == TOKEN_WHITESPACE)
 	{
@@ -47,10 +48,12 @@ static void	position_cursor(t_token **cursor, char **temp, bool hash)
 		*cursor = (*cursor)->next;
 		return ;
 	}
-	if ((*cursor)->type == TOKEN_HASH && hash)
+	if (((*cursor)->type == TOKEN_HASH && hash)
+		|| ((*cursor)->type == TOKEN_PERCENT && !hash))
+	{
 		*cursor = (*cursor)->next;
-	if ((*cursor)->type == TOKEN_PERCENT && !hash)
-		*cursor = (*cursor)->next;
+		state->t.last = true;
+	}
 }
 
 /*
@@ -80,7 +83,7 @@ int	expand_hash_percent(t_token **cursor, t_state *state, char **res, \
 
 	hash = (*cursor)->previous->type == TOKEN_HASH;
 	temp_exp = NULL;
-	position_cursor(cursor, &temp_exp, hash);
+	position_cursor(cursor, state, &temp_exp, hash);
 	temp_res = NULL;
 	set_braces_state(state);
 	expand_name(param->value, state, &temp_res);

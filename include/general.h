@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/15 17:55:18 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/16 11:24:51 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,8 +166,9 @@ typedef enum e_token_type
 	TOKEN_HASH = 1 << 25,
 	TOKEN_PERCENT = 1 << 26,
 	TOKEN_QUESTION_MARK = 1 << 27,
-	TOKEN_JUNK = 1 << 28,
-	TOKEN_NULL = 1 << 29
+	TOKEN_STAR = 1 << 28,
+	TOKEN_JUNK = 1 << 29,
+	TOKEN_NULL = 1 << 30
 }	t_token_type;
 
 typedef struct s_hash_entry
@@ -214,6 +215,7 @@ typedef struct s_tokenizer
 	char			*buff;
 	size_t			buff_idx;
 	bool			autocomp;
+	bool			last;
 	t_token_type	special;
 }	t_tokenizer;
 

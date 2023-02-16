@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:26:38 by amann             #+#    #+#             */
-/*   Updated: 2023/02/15 18:06:32 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/16 11:04:29 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int	expand_variable(t_token **cursor, t_state *state, char **res)
 	t_token	*original;
 	int		return_code;
 
+	print_tokens(*cursor);
 	original = *cursor;
 	if (eat_token(cursor, TOKEN_DOLLAR, original)
 		&& eat_token(cursor, TOKEN_WORD | TOKEN_QUESTION_MARK, original))
