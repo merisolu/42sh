@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 13:03:36 by amann             #+#    #+#             */
-/*   Updated: 2023/02/06 18:05:22 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/16 13:38:52 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,7 @@ static bool	check_allocations(char *path, char *query)
 	}
 	if (!query)
 	{
-		if (path)
-			free(path);
+		free(path);
 		return (print_error_bool(false, ERRTEMPLATE_SIMPLE,
 				ERR_MALLOC_FAIL));
 	}

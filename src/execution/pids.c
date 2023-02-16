@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 13:02:59 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/26 13:02:46 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/16 13:40:20 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,7 @@ void	pids_clean_up(t_job *job)
 	i = 0;
 	while (job->pids[i] > 0)
 	{
-		if (job->pids[i] > 0)
-			waitpid(job->pids[i], NULL, WNOHANG);
+		waitpid(job->pids[i], NULL, WNOHANG);
 		i++;
 	}
 	ft_bzero(job->pids, sizeof(pid_t) * MAX_PIDS);

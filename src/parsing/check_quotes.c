@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 13:14:18 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/02 14:58:26 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/16 14:53:21 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ static void	handle_open_brace(t_tokenizer *tokenizer)
 		tokenizer->in_braces = true;
 		(tokenizer->brace_count)++;
 	}
-	else if (tokenizer->in_quotes && tokenizer->quote_type == '\'')
+	else if (tokenizer->quote_type == '\'')
 	{
 		tokenizer->in_squote_braces = true;
 		(tokenizer->brace_sq_count)++;
 	}
-	else if (tokenizer->in_quotes && tokenizer->quote_type == '\"')
+	else if (tokenizer->quote_type == '\"')
 	{
 		tokenizer->in_dquote_braces = true;
 		(tokenizer->brace_dq_count)++;
@@ -48,14 +48,14 @@ static void	handle_close_brace(t_tokenizer *tokenizer)
 		if (tokenizer->brace_count == 0)
 			tokenizer->in_braces = false;
 	}
-	else if (tokenizer->in_quotes && tokenizer->quote_type == '\'')
+	else if (tokenizer->quote_type == '\'')
 	{
 		if (tokenizer->brace_sq_count > 0)
 			(tokenizer->brace_sq_count)--;
 		if (tokenizer->brace_sq_count == 0)
 			tokenizer->in_squote_braces = false;
 	}
-	else if (tokenizer->in_quotes && tokenizer->quote_type == '\"'
+	else if (tokenizer->quote_type == '\"'
 		&& !(tokenizer->in_squotes))
 	{
 		if (tokenizer->brace_dq_count > 0)
