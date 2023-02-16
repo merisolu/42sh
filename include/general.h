@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/15 17:55:18 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/16 11:27:48 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 /* Constants */
 
-# define HISTORY_SIZE 50
+# define HISTORY_SIZE 500
 
 # define PIPE_READ 0
 # define PIPE_WRITE 1
