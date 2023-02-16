@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:43:00 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/25 14:41:32 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/16 11:14:46 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,15 @@ static void	add_redirections(t_ast_redir **redirs, char **result)
 	{
 		if (redirs[i]->aggregation)
 		{
-			*result = ast_string_builder_int(*result, redirs[i]->agg_from);
+			*result = ast_string_builder_int(
+					*result, redirs[i]->agg_from, true);
 			if (*result)
 				*result = ft_strjoinfree(*result, ">&");
 			if (*result && redirs[i]->agg_close)
 				*result = ft_strjoinfree(*result, "-");
 			else if (*result)
-				*result = ast_string_builder_int(*result, redirs[i]->agg_to);
+				*result = ast_string_builder_int(
+						*result, redirs[i]->agg_to, false);
 		}
 		else
 		{

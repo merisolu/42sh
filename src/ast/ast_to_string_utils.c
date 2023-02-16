@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:51:25 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/26 11:07:17 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/16 11:24:18 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,23 @@ char	*ast_string_builder(char *s1, char *s2)
 	return (ft_strjoinfree(temp, s2));
 }
 
-char	*ast_string_builder_int(char *s1, int i)
+char	*ast_string_builder_int(char *s1, int i, bool space)
 {
 	char	*temp;
 	char	*number;
 
-	temp = ft_strjoinfree(s1, " ");
-	if (!temp)
-		return (NULL);
+	if (space)
+	{
+		temp = ft_strjoinfree(s1, " ");
+		if (!temp)
+			return (NULL);
+	}
+	else
+		temp = s1;
 	number = ft_itoa(i);
 	if (!number)
 	{
-		free(s1);
+		free(temp);
 		return (NULL);
 	}
 	temp = ft_strjoinfree(temp, number);

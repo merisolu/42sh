@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:04 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/03 16:59:57 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/16 11:12:15 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,6 @@ char	*ast_to_string(t_ast *ast);
 
 /* ast_to_string_utils.c */
 char	*ast_string_builder(char *s1, char *s2);
-char	*ast_string_builder_int(char *s1, int i);
+char	*ast_string_builder_int(char *s1, int i, bool space);
 
 #endif
