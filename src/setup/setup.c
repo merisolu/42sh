@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:21:45 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/31 12:54:22 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/16 15:28:32 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,8 @@ bool	setup(char *const **env, t_state *state)
 	set_signal_handling();
 	save_cursor(&(state->input_context));
 	display(&(state->input_context), 1);
+	if (setpgid(getpid(), getpid()) == -1
+		|| ioctl(STDIN_FILENO, TIOCSPGRP, &(state->group_id)) == -1)
+		return (false);
 	return (true);
 }
