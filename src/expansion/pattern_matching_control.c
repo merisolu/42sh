@@ -6,23 +6,11 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 15:34:43 by amann             #+#    #+#             */
-/*   Updated: 2023/02/16 13:56:08 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/16 14:43:39 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expansion.h"
-
-static void	handle_percent(char *temp_res, char *temp_exp)
-{
-	size_t	len;
-	size_t	res_len;
-
-	len = ft_strlen(temp_exp);
-	res_len = ft_strlen(temp_res);
-	if (len != 0 && len <= res_len
-		&& (ft_strequ(temp_res + (res_len - len), temp_exp)))
-		ft_strclr(temp_res + (res_len - len));
-}
 
 static void	position_cursor(t_token **cursor, t_state *state, char **temp, \
 		bool hash)
@@ -76,7 +64,7 @@ int	pattern_matching_control(t_token **cursor, t_state *state, char **res, \
 	if (hash)
 		handle_hash(state, temp_res, temp_exp);
 	else
-		handle_percent(temp_res, temp_exp);
+		handle_percent(state, temp_res, temp_exp);
 	return_code = add_to_result(res, temp_res, state);
 	free(temp_res);
 	free(temp_exp);

@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2023/02/16 13:54:57 by amann            ###   ########.fr        #
+#    Updated: 2023/02/16 14:46:32 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,7 +84,7 @@ EXPANSION_FILES = expand_tilde.c expand_variables.c expand_node.c \
 					expand_plus_minus.c	expansion_utils.c \
 					expand_name.c expand_to_value_len.c \
 					pattern_matching_control.c tilde_param_exp.c \
-					tilde_if_checks.c expand_hash.c
+					tilde_if_checks.c expand_hash.c expand_percent.c
 
 HASH_DIR = hash
 HASH_FILES = hash_table.c hash_table_getters.c fnv1.c
