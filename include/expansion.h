@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:12 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/15 17:57:12 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/16 13:56:56 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@
 
 /* Files */
 
+/* expand_hash.c */
+void	handle_hash(t_state *state, char *temp_res, char *temp_exp);
+
 /* expand_tilde.c */
 int		expand_tilde(t_token **cursor, t_state *state, char **result);
 
@@ -32,8 +35,8 @@ int		expand_name(char *value, t_state *state, char **res);
 /* expand_variables.c */
 int		expand_variable(t_token **cursor, t_state *state, char **result);
 
-/* expand_hash_percent.c */
-int		expand_hash_percent(t_token **cursor, t_state *state, char **res, \
+/* pattern_matching_control.c */
+int		pattern_matching_control(t_token **cursor, t_state *state, char **res, \
 		t_token *param);
 
 /* expand_plus_minus.c */

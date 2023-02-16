@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 19:26:38 by amann             #+#    #+#             */
-/*   Updated: 2023/02/16 13:09:10 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/16 13:54:19 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	extended_expansions_control(t_token **cursor, t_state *state, \
 		(TOKEN_MINUS | TOKEN_PLUS | TOKEN_EQUALS | TOKEN_QUESTION_MARK))
 		return (expand_plus_minus(cursor, state, res, param));
 	if ((*cursor)->previous->type & (TOKEN_HASH | TOKEN_PERCENT))
-		return (expand_hash_percent(cursor, state, res, param));
+		return (pattern_matching_control(cursor, state, res, param));
 	return (bad_sub(cursor, state));
 }
 
