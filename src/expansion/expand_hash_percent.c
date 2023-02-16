@@ -92,5 +92,5 @@ int	expand_hash_percent(t_token **cursor, t_state *state, char **res, \
 	return_code = add_to_result(res, temp_res, state);
 	free(temp_res);
 	free(temp_exp);
-	return (0);
+	return (return_code);
 }
