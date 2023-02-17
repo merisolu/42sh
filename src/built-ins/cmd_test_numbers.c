@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 13:49:59 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/06 15:15:14 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/17 15:21:19 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@ static int	check_for_invalid_arguments(char *arg_1, char *arg_2)
 	char	*invalid_argument;
 
 	invalid_argument = NULL;
-	if (!ft_isdigit_str(arg_2))
+	if (!ft_isdigit_str(arg_2)
+		&& !(arg_2[0] == '-' && ft_isdigit_str(arg_2 + 1)))
 		invalid_argument = arg_2;
-	if (!ft_isdigit_str(arg_1))
+	if (!ft_isdigit_str(arg_1)
+		&& !(arg_1[0] == '-' && ft_isdigit_str(arg_1 + 1)))
 		invalid_argument = arg_1;
 	if (invalid_argument)
 		return (print_error_bool(true, ERRTEMPLATE_DOUBLE_NAMED,
