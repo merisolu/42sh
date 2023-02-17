@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 14:27:40 by amann             #+#    #+#             */
-/*   Updated: 2023/02/14 15:51:15 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/17 15:22:28 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static bool	print_invalid_flag_error(char flag)
 {
 	ft_dprintf(STDERR_FILENO,
-		"bash: export: -%c: invalid option\n", flag);
+		"42sh: export: -%c: invalid option\n", flag);
 	ft_dprintf(STDERR_FILENO,
 		"export: usage: export [-p] [name[=value] ...]\n");
 	return (true);
