@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 13:52:11 by jumanner          #+#    #+#             */
-/*   Updated: 2022/12/19 15:41:23 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/17 11:45:54 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	handle_alt_left(t_input_context *ctx)
 		&& ctx->cursor + delta < end_limit
 		&& !ft_isalnum(ctx->input[ctx->cursor - offset]))
 		ctx->cursor += delta;
-	while (ctx->cursor + delta >= start_limit
+	while (ctx->cursor > 0 && ctx->cursor + delta >= start_limit
 		&& ft_isalnum(ctx->input[ctx->cursor - offset]))
 		ctx->cursor += delta;
 	return (1);
