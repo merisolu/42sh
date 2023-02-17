@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:48:06 by amann             #+#    #+#             */
-/*   Updated: 2023/01/17 17:25:06 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/17 16:19:24 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,10 @@ static bool	export_existing_variable(char *name, t_state *state)
 	char	**var;
 	char	*value;
 
-	var = env_get_pointer(name, state->intern);
-	if (!var)
-		var = env_get_pointer(name, state->exported);
+	var = var_get_pointer(name, state);
 	if (var)
 	{
+		ft_printf("var = %s\n", *var);
 		value = ft_strchr(*var, '=');
 		if (value && !var_set_all(name, value + 1, state))
 			return (false);

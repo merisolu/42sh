@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 14:27:40 by amann             #+#    #+#             */
-/*   Updated: 2023/02/17 15:22:28 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/17 16:13:47 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ bool	print_exported(char *const *args, t_state *state)
 {
 	int	i;
 
-	if (!args[1] || (ft_strequ(args[1], "-p") && !args[2]))
+	if (!args[1] || ft_strlen(args[1]) == 0
+		|| (ft_strequ(args[1], "-p") && !args[2]))
 	{
 		i = 0;
 		while (state->exported && (state->exported)[i])

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:09 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/09 14:30:13 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/17 16:06:35 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ char	*env_get(const char *name, char *const *env);
 char	*var_get(const char *name, t_state *state);
 char	*env_get_or(char *name, char *on_fail, char *const *env);
 char	**env_get_pointer(const char *name, char *const *env);
+char	**var_get_pointer(const char *name, t_state *state);
 
 /* shlvl.c */
 int		set_shlvl(char *const **env);

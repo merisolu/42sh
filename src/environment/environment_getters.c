@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 09:52:18 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/09 14:27:12 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/17 16:04:43 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,16 @@ char	**env_get_pointer(const char *name, char *const *env)
 		i++;
 	}
 	return (NULL);
+}
+
+char	**var_get_pointer(const char *name, t_state *state)
+{
+	char	**res;
+
+	res = env_get_pointer(name, state->env);
+	if (!res)
+		res = env_get_pointer(name, state->intern);
+	return (res);
 }
 
 /*
