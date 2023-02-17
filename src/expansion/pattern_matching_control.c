@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 15:34:43 by amann             #+#    #+#             */
-/*   Updated: 2023/02/17 11:59:07 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/17 13:18:26 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	pattern_matching_control(t_token **cursor, t_state *state, char **res, \
 	expand_name(param->value, state, &temp_res);
 	expansions_loop(cursor, state, &temp_exp, true);
 	if (hash)
-		handle_hash(state, temp_res, temp_exp);
+		handle_hash_expansion(state, temp_res, temp_exp);
 	else
 		handle_percent(state, temp_res, temp_exp);
 	return_code = add_to_result(res, temp_res, state);

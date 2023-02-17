@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:12 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/16 14:46:05 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/17 13:18:27 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 /* Files */
 
 /* expand_hash.c */
-void	handle_hash(t_state *state, char *temp_res, char *temp_exp);
+void	handle_hash_expansion(t_state *state, char *temp_res, char *temp_exp);
 
 /* expand_name.c */
 int		expand_name(char *value, t_state *state, char **res);

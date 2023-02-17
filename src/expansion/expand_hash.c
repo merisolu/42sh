@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 13:50:42 by amann             #+#    #+#             */
-/*   Updated: 2023/02/17 11:58:26 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/17 13:18:14 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	handle_hash_glob(t_state *state, char *temp_res, char *temp_exp, \
 	}
 }
 
-void	handle_hash(t_state *state, char *temp_res, char *temp_exp)
+void	handle_hash_expansion(t_state *state, char *temp_res, char *temp_exp)
 {
 	size_t	len;
 	size_t	res_len;
