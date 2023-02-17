@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wrap_up.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:13:45 by amann             #+#    #+#             */
-/*   Updated: 2023/02/06 17:57:32 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/17 11:08:42 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,12 @@ char	**wrap_up(t_auto *autocomp, t_auto_bools *a_bool)
 		if (!filter_matching(*autocomp, a_bool))
 		{
 			ft_free_null_array((void **)*(autocomp->search_results));
+			free(*(autocomp->query));
 			return (NULL);
 		}
 	}
 	if (ft_null_array_len((void **)*(autocomp->search_results)) == 1)
 		truncate_result(*autocomp);
+	free(*(autocomp->query));
 	return (*(autocomp->search_results));
 }
