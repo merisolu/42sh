@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 13:03:36 by amann             #+#    #+#             */
-/*   Updated: 2023/02/16 13:38:52 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/17 13:25:01 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ char	**search_exec(char ***sr, char **orig, t_auto_bools *a_bools, \
 	autocomp.query_len = ft_strlen(query);
 	directory_search(path, &autocomp, false, true);
 	free(path);
-	free(query);
 	free(*orig);
 	return (wrap_up(&autocomp, a_bools));
 }
