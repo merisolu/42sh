@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   autocomplete_display_control.c                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:02:48 by amann             #+#    #+#             */
-/*   Updated: 2023/02/13 12:36:40 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/16 13:59:36 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,11 @@ bool	autocomplete_display_warning(t_state *state, size_t len)
 
 	cursor_to_end(&(state->input_context), &orig_cursor);
 	ft_bzero(&buffer, BUF_SIZE + 1);
-	ft_dprintf(
-		STDOUT_FILENO,
-		"Display all %d possibilities? (y or n) ",
-		len);
+	ft_dprintf(STDOUT_FILENO, "Display all %d possibilities? (y or n) ", len);
 	while (1)
 	{
-		read(STDIN_FILENO, buffer, BUF_SIZE);
+		if (read(STDIN_FILENO, buffer, BUF_SIZE) == -1)
+			return (print_error_bool(false, "error: %s\n", ERR_READ_FAIL));
 		if (ft_strchr(buffer, 'y'))
 			break ;
 		if (ft_strchr(buffer, 'n') || g_last_signal == SIGINT)

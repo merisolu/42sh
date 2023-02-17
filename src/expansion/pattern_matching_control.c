@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pattern_matching_control.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 15:34:43 by amann             #+#    #+#             */
-/*   Updated: 2023/02/16 14:43:39 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/17 11:59:07 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,5 @@ int	pattern_matching_control(t_token **cursor, t_state *state, char **res, \
 	return_code = add_to_result(res, temp_res, state);
 	free(temp_res);
 	free(temp_exp);
-	return (0);
+	return (return_code);
 }

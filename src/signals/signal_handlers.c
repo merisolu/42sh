@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:57:03 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/08 12:47:30 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/16 13:26:20 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ void	set_signal_handling(void)
 {
 	struct sigaction	new_action;
 
-	new_action.sa_flags = 0;
-	new_action.sa_mask = 0;
+	ft_bzero(&new_action, sizeof(struct sigaction));
 	new_action.sa_handler = set_signal_int;
 	sigaction(SIGHUP, &new_action, NULL);
 	signal(SIGINT, set_signal_int);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_unset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 14:52:32 by amann             #+#    #+#             */
-/*   Updated: 2023/02/14 15:50:03 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/16 13:39:50 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ int	cmd_unset(char *const *args, t_state *state)
 	while (args[i])
 	{
 		name = args[i];
-		if (!name)
-			return (ret);
 		if (name[valid_env_name_length(name)])
 		{
 			print_error_bool(false, ERRTEMPLATE_DOUBLE_NAMED_QUOTED,

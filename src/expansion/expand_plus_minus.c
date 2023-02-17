@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_plus_minus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 15:19:14 by amann             #+#    #+#             */
-/*   Updated: 2023/02/15 17:49:04 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/16 13:42:34 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	expand_plus_minus(t_token **cursor, t_state *state, char **res, \
 	int		minus_eq_qm;
 
 	*cursor = (*cursor)->next;
-	if (!cursor)
+	if (!(*cursor))
 		return (1);
 	minus_eq_qm = (TOKEN_MINUS | TOKEN_EQUALS | TOKEN_QUESTION_MARK);
 	set_braces_state(state);

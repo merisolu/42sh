@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 15:27:43 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/09 14:44:57 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/16 14:06:14 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,9 @@ int	cmd_cd(char *const *args, t_state *state)
 	if (var_get("PWD", state))
 		env_set("OLDPWD", var_get("PWD", state), &(state->env));
 	return_value = change_directory(p_flag, path, target);
-	getcwd(buff, PATH_MAX);
+	if (!getcwd(buff, PATH_MAX))
+		return (print_error(1, ERRTEMPLATE_DOUBLE_NAMED,
+				"cd", target, ERR_MALLOC_FAIL));
 	env_set("PWD", buff, &(state->env));
 	return (return_value);
 }

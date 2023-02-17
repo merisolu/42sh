@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search_commands.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:16:26 by amann             #+#    #+#             */
-/*   Updated: 2023/02/13 15:16:45 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/17 11:08:14 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,5 @@ char	**search_commands(t_state *state, char **ti, t_auto_bools *a_bools)
 	ft_free_null_array((void **)paths);
 	if (ft_null_array_len((void **)search_result) == 0)
 		return (check_exec(autocomp, &query, a_bools, state));
-	free(query);
 	return (wrap_up(&autocomp, a_bools));
 }
