@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 10:29:25 by jumanner          #+#    #+#             */
-/*   Updated: 2021/11/23 15:09:49 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/17 11:28:00 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*ft_strncpy(char *dst, const char *src, size_t len)
 	reached_src_end = 0;
 	while (i < len)
 	{
-		if (src[i] && !reached_src_end)
+		if (!reached_src_end && src[i])
 			dst[i] = src[i];
 		else
 		{
