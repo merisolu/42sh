@@ -6,11 +6,18 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 13:50:42 by amann             #+#    #+#             */
-/*   Updated: 2023/02/17 13:18:14 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/20 17:13:42 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expansion.h"
+
+static void	hash_glob_only(t_state *state, char *temp_res)
+{
+	if (state->t.last)
+		ft_strclr(temp_res);
+	return ;
+}
 
 static void	handle_hash_glob(t_state *state, char *temp_res, char *temp_exp, \
 		size_t res_len)
@@ -19,6 +26,8 @@ static void	handle_hash_glob(t_state *state, char *temp_res, char *temp_exp, \
 	size_t	len;
 
 	len = ft_strlen(temp_exp);
+	if (len == 0)
+		return (hash_glob_only(state, temp_res));
 	i = res_len - 1;
 	if (!(state->t.last))
 		i = 0;

@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 14:43:10 by amann             #+#    #+#             */
-/*   Updated: 2023/02/16 14:46:57 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/20 17:07:24 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,23 @@ static void	handle_percent_glob(t_state *state, char *temp_res, \
 	}
 }
 
+void	percent_glob_start(t_state *state, char *temp_res, char *temp_exp, \
+		size_t res_len)
+{
+	size_t	exp_len;
+
+	exp_len = ft_strlen(temp_exp);
+	if (ft_strequ(temp_res + (res_len - exp_len), temp_exp))
+	{
+		if (state->t.last)
+		{
+			ft_strclr(temp_res);
+			return ;
+		}
+		ft_strclr(temp_res + (res_len - exp_len));
+	}
+}
+
 void	handle_percent(t_state *state, char *temp_res, char *temp_exp)
 {
 	size_t	len;
@@ -49,6 +66,12 @@ void	handle_percent(t_state *state, char *temp_res, char *temp_exp)
 	glob = false;
 	if (temp_exp[len - 1] == '*')
 		glob = true;
+	if (temp_exp[0] == '*')
+	{
+		temp_exp++;
+		percent_glob_start(state, temp_res, temp_exp, res_len);
+		return ;
+	}
 	if (!glob && len != 0 && len <= res_len
 		&& (ft_strequ(temp_res + (res_len - len), temp_exp)))
 		ft_strclr(temp_res + (res_len - len));
