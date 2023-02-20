@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:47:12 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/02 17:46:48 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/20 17:39:09 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ static int	find_user(char **res, t_token **cursor, t_state *state)
 int	expand_tilde(t_token **csr, t_state *s, char **res)
 {
 	t_token			*fb;
+	struct passwd	*pw;
 
 	fb = *csr;
 	if (!fb || fb->type != TOKEN_TILDE || ft_strlen(fb->value) > 1)
@@ -79,7 +80,10 @@ int	expand_tilde(t_token **csr, t_state *s, char **res)
 		|| check_colon(fb->previous) || check_param_exp(s, fb))
 	{
 		if (basic_exp(csr, fb, s, (TOKEN_FWD_SLASH | TOKEN_COLON | TOKEN_NULL)))
-			return (add_to_result(res, env_get_or("HOME", "~", s->env), s));
+		{
+			pw = getpwuid(getuid());
+			return (add_to_result(res, pw->pw_dir, s));
+		}
 		if (minus_exp(csr, fb, s, (TOKEN_FWD_SLASH | TOKEN_COLON | TOKEN_NULL)))
 			return (add_to_result(res, env_get_or("OLDPWD", "~-", s->env), s));
 		if (plus_exp(csr, fb, s, (TOKEN_FWD_SLASH | TOKEN_COLON | TOKEN_NULL)))
