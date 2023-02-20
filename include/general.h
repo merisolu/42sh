@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/20 11:49:06 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/20 14:31:31 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@
 # define ERR_NO_HOME "HOME not set"
 # define ERR_NO_OLDPWD "OLDPWD not set"
 # define ERR_SYNTAX "syntax error near unexpected token"
-# define ERR_BAD_FD "bad file descriptor"
+# define ERR_BAD_FD "Bad file descriptor"
 # define ERR_AMBIGUOUS_REDIR "ambiguous redirect"
 # define ERR_NOT_VALID_ID "not a valid identifier"
 # define ERR_STDIN_CLOSED "could not detect standard input"
