@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/16 15:57:14 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/20 11:49:06 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 
 # define BUF_SIZE 16
 # define INPUT_MAX_SIZE LINE_MAX
+# define VAR_MAX LINE_MAX
 
 # define PROMPT "$> "
 # define MULTILINE_PROMPT "> "
@@ -104,6 +105,7 @@
 # define ERR_INVALID_OPTION "invalid option"
 # define ERR_HISTORY_SPEC_OUT_OF_RANGE "history specification out of range"
 # define ERR_NUMERIC_ARG "numeric argument required"
+# define ERR_VAR_LIMIT "variable limit reached. Could not add variable"
 
 /* Globals */
 

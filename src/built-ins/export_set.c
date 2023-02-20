@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 17:49:56 by amann             #+#    #+#             */
-/*   Updated: 2023/01/02 17:50:42 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/20 11:59:17 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	export_set(const char *name, const char *value, char *const **env)
 	if (!destination_pointer)
 	{
 		new_size = ft_null_array_len((void **)*env);
+		if (new_size > VAR_MAX)
+			return (print_error_bool(0, ERRTEMPLATE_SIMPLE, ERR_VAR_LIMIT));
 		destination_pointer = (char **)*env + new_size;
 	}
 	new = ft_strnew(ft_strlen(name) + 1 + ft_strlen(value));

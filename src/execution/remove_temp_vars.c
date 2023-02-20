@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:24:53 by amann             #+#    #+#             */
-/*   Updated: 2023/01/03 17:00:24 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/20 11:37:15 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ bool	remove_temp_vars_from_env(t_ast_context *ctx, t_state *state)
 			if (!env_set(pair, temp, &(state->env)))
 				return (false);
 		}
-		else if (!env_unset(var_list[i], &(state->env)))
-			return (false);
+		else
+			delete_var(var_list[i], &(state->env));
 		i++;
 	}
 	return (true);

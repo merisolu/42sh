@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:09 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/17 16:06:35 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/20 11:42:56 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 
 /* environment.c */
 int		env_set(const char *name, const char *value, char *const **env);
-int		env_unset(const char *name, char *const **env);
 void	env_print_all(char *const *env);
 size_t	valid_env_name_length(char *name);
 
