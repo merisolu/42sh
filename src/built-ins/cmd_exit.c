@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:37:52 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/15 16:15:54 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/20 11:53:33 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ int	cmd_exit(char *const *args, t_state *state)
 	unsigned long	ret;
 	unsigned char	val;
 
+	if (ft_null_array_len((void **)args) > 2)
+	{
+		ft_putendl("exit");
+		return (print_error(1, ERRTEMPLATE_NAMED,
+				"exit", ERR_TOO_MANY_ARGS));
+	}
 	state->exit_builtin = true;
 	state->exiting = 1;
 	state->exit_return_value = 0;
