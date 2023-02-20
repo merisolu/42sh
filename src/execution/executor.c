@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/20 11:21:06 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/20 11:50:09 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,8 @@ t_ast_context *ast, bool forking)
 		return (exit_if_forking(forking, ret));
 	if (built_in_get(args[0]))
 	{
-		if (forking)
-			ret = built_in_run(built_in_get(args[0]), args, state, ast);
-		return (exit_if_forking(forking, ret));
+		ret = built_in_run(built_in_get(args[0]), args, state, ast);
+		return (exit_if_forking(forking, ret * (int)forking));
 	}
 	if (ft_strchr(args[0], '/') || (args[0][0] == '.'))
 		return (exit_if_forking(forking, execute_absolute_path(args, state)));
