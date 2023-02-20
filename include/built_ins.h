@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/14 14:10:36 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/20 11:02:35 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_fc_range
 const t_cmd_dispatch	*get_built_in_dispatch(void);
 t_cmd					*built_in_get(const char *name);
 char					*built_in_search(const char *partial_name);
-pid_t					built_in_run(t_cmd cmd, char *const *args, \
+int						built_in_run(t_cmd cmd, char *const *args, \
 						t_state *state, t_ast_context *ast);
 
 /* built_ins_flags.c */
