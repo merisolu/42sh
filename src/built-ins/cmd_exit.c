@@ -6,15 +6,21 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:37:52 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/20 11:53:33 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/20 14:29:35 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "built_ins.h"
 
+void	print_exit(t_state *state)
+{
+	if (getpid() == state->group_id)
+		ft_putendl_fd("exit", STDERR_FILENO);
+}
+
 int	print_exit_error(char *const *args, t_state *state)
 {
-	ft_dprintf(STDERR_FILENO, "exit\n");
+	print_exit(state);
 	state->exit_return_value = 255;
 	return (print_error(0, ERRTEMPLATE_DOUBLE_NAMED, "exit", args[1],
 			ERR_NUMERIC_ARG));
@@ -27,7 +33,7 @@ int	cmd_exit(char *const *args, t_state *state)
 
 	if (ft_null_array_len((void **)args) > 2)
 	{
-		ft_putendl("exit");
+		print_exit(state);
 		return (print_error(1, ERRTEMPLATE_NAMED,
 				"exit", ERR_TOO_MANY_ARGS));
 	}
@@ -43,6 +49,6 @@ int	cmd_exit(char *const *args, t_state *state)
 		val = (unsigned char)ret;
 		state->exit_return_value = (int)val;
 	}
-	ft_dprintf(STDERR_FILENO, "exit\n");
+	print_exit(state);
 	return (0);
 }
