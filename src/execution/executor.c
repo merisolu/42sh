@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/23 11:47:43 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/20 11:21:06 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,29 +54,30 @@ static pid_t	execute_child(char *const *args, t_state *state, \
 t_ast_context *ast, bool forking)
 {
 	char	*path;
-	pid_t	return_value;
+	pid_t	ret;
 
+	ret = 0;
+	if (ft_strlen(args[0]) == 0)
+		return (exit_if_forking(forking, ret));
 	if (built_in_get(args[0]))
 	{
 		if (forking)
-			return (exit_if_forking(forking,
-					built_in_run(built_in_get(args[0]), args, state, ast)));
-		built_in_run(built_in_get(args[0]), args, state, ast);
-		return (exit_if_forking(forking, 0));
+			ret = built_in_run(built_in_get(args[0]), args, state, ast);
+		return (exit_if_forking(forking, ret));
 	}
 	if (ft_strchr(args[0], '/') || (args[0][0] == '.'))
 		return (exit_if_forking(forking, execute_absolute_path(args, state)));
-	return_value = find_binary(args[0], state, &path, false);
-	if (return_value == 0)
+	ret = find_binary(args[0], state, &path, false);
+	if (ret == 0)
 		return (exit_if_forking(forking, print_error(RETURN_COMMAND_NOT_FOUND,
 					ERRTEMPLATE_NAMED, args[0], ERR_COM_NOT_FOUND)));
-	if (return_value != 1)
-		return (exit_if_forking(forking, return_value));
-	return_value = env_set("_", path, &(state->env));
-	if (return_value)
+	if (ret != 1)
+		return (exit_if_forking(forking, ret));
+	ret = env_set("_", path, &(state->env));
+	if (ret)
 		bin_execve(path, (char **)args, state->env);
 	free(path);
-	return (exit_if_forking(forking, return_value));
+	return (exit_if_forking(forking, ret));
 }
 
 pid_t	execute(char *const *args, t_state *state, t_ast_context *ast)
