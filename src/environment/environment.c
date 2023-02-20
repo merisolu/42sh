@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:39:49 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/20 11:37:51 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/20 11:56:32 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ int	env_set(const char *name, const char *value, char *const **env)
 	if (!destination_pointer)
 	{
 		new_size = ft_null_array_len((void **)*env);
+		if (new_size > VAR_MAX)
+			return (print_error(0, ERRTEMPLATE_SIMPLE, ERR_VAR_LIMIT));
 		destination_pointer = (char **)*env + new_size;
 	}
 	new = ft_strnew(ft_strlen(name) + 1 + ft_strlen(value));

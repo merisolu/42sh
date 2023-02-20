@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:48:06 by amann             #+#    #+#             */
-/*   Updated: 2023/02/20 11:27:23 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/20 11:54:59 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,21 +44,14 @@ static bool	export_new_variable(char *var, t_state *state)
 	return (true);
 }
 
-static bool	export_existing_variable(char *name, t_state *state)
+static bool	eev_helper(char *name, t_state *state)
 {
-	char	**var;
-	char	*value;
 	size_t	len;
+	char	**var;
 
-	var = var_get_pointer(name, state);
-	if (var)
-	{
-		value = ft_strchr(*var, '=');
-		if (value && !var_set_all(name, value + 1, state))
-			return (false);
-		return (true);
-	}
 	len = ft_null_array_len((void **)(state->exported));
+	if (len > VAR_MAX)
+		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_VAR_LIMIT));
 	var = (char **)(state->exported) + len;
 	if (name[valid_env_name_length(name)])
 		return (print_error_bool(false, ERRTEMPLATE_DOUBLE_NAMED_QUOTED,
@@ -70,6 +63,22 @@ static bool	export_existing_variable(char *name, t_state *state)
 		return (print_error_bool(false, ERRTEMPLATE_SIMPLE,
 				ERR_MALLOC_FAIL));
 	return (true);
+}
+
+static bool	export_existing_variable(char *name, t_state *state)
+{
+	char	**var;
+	char	*value;
+
+	var = var_get_pointer(name, state);
+	if (var)
+	{
+		value = ft_strchr(*var, '=');
+		if (value && !var_set_all(name, value + 1, state))
+			return (false);
+		return (true);
+	}
+	return (eev_helper(name, state));
 }
 
 /*
