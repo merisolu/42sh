@@ -6,13 +6,13 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 15:31:16 by amann             #+#    #+#             */
-/*   Updated: 2023/01/05 15:58:14 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/20 15:39:11 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static bool	find_aliased_fd(t_ast_redir **head, int *fd)
+static bool	find_aliased_fd(t_ast_redir **head, int *fd, t_ast_redir **current)
 {
 	int		i;
 	int		check;
@@ -21,7 +21,7 @@ static bool	find_aliased_fd(t_ast_redir **head, int *fd)
 	found = false;
 	check = *fd;
 	i = 0;
-	while (head[i])
+	while (head[i] && (head + i) != current)
 	{
 		if ((head[i])->redir_fd == check)
 		{
@@ -56,9 +56,9 @@ static bool	dup_or_close(t_ast_redir **redir, t_ast_redir **head, t_redir **r_h)
 	else
 	{
 		orig = (*redir)->agg_to;
-		find_aliased_fd(head, &((*redir)->agg_to));
+		find_aliased_fd(head, &((*redir)->agg_to), redir);
 		if (!fd_is_open((*redir)->agg_to) || ((*redir)->agg_to > 2
-				&& !find_aliased_fd(head, &orig)
+				&& !find_aliased_fd(head, &orig, redir)
 				&& !already_aggregated(r_h, (*redir)->agg_to)))
 			return (print_error_bool(
 					false, "42sh: %i: %s\n", (*redir)->agg_to, ERR_BAD_FD));
