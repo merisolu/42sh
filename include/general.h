@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/16 15:57:14 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/17 16:51:13 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 
 # define BUF_SIZE 16
 # define INPUT_MAX_SIZE LINE_MAX
+# define VAR_MAX LINE_MAX
 
 # define PROMPT "$> "
 # define MULTILINE_PROMPT "> "

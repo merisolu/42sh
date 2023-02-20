@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:48:06 by amann             #+#    #+#             */
-/*   Updated: 2023/02/17 16:19:24 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/20 11:27:23 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ static bool	export_new_variable(char *var, t_state *state)
 	len = valid_env_name_length(var);
 	name = ft_strndup(var, len);
 	if (!name)
-		return (print_error_bool(false, ERR_MALLOC_FAIL));
+		return (print_error_bool(false, ERRTEMPLATE_SIMPLE,
+				ERR_MALLOC_FAIL));
 	value = ft_strchr(var, '=');
 	if (exported_no_equals(name, state))
 		delete_var(name, &(state->exported));
@@ -43,40 +44,31 @@ static bool	export_new_variable(char *var, t_state *state)
 	return (true);
 }
 
-static bool	pointer_magic(char *name, t_state *state)
-{
-	char	**dest_ptr;
-	size_t	len;
-
-	len = ft_null_array_len((void **)state->exported);
-	dest_ptr = (char **)&((state->exported)[len]);
-	*dest_ptr = ft_strdup(name);
-	if (!((state->exported)[len]))
-		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	return (true);
-}
-
 static bool	export_existing_variable(char *name, t_state *state)
 {
 	char	**var;
 	char	*value;
+	size_t	len;
 
 	var = var_get_pointer(name, state);
 	if (var)
 	{
-		ft_printf("var = %s\n", *var);
 		value = ft_strchr(*var, '=');
 		if (value && !var_set_all(name, value + 1, state))
 			return (false);
 		return (true);
 	}
+	len = ft_null_array_len((void **)(state->exported));
+	var = (char **)(state->exported) + len;
 	if (name[valid_env_name_length(name)])
 		return (print_error_bool(false, ERRTEMPLATE_DOUBLE_NAMED_QUOTED,
 				"export", name, ERR_NOT_VALID_ID));
 	if (exported_no_equals(name, state))
 		return (true);
-	if (!pointer_magic(name, state))
-		return (false);
+	*var = ft_strdup(name);
+	if (!*var)
+		return (print_error_bool(false, ERRTEMPLATE_SIMPLE,
+				ERR_MALLOC_FAIL));
 	return (true);
 }
 

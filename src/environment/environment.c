@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:39:49 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/02 18:13:00 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/20 11:37:51 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,8 @@ int	env_set(const char *name, const char *value, char *const **env)
 	destination_pointer = env_get_pointer(name, *env);
 	if (!destination_pointer)
 	{
-		new_size = ft_null_array_len((void **)*env) + 1;
-		if (!ft_resize_null_array((void ***)(env), new_size))
-			return (print_error(
-					0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-		destination_pointer = (char **)*env + new_size - 1;
+		new_size = ft_null_array_len((void **)*env);
+		destination_pointer = (char **)*env + new_size;
 	}
 	new = ft_strnew(ft_strlen(name) + 1 + ft_strlen(value));
 	if (!new)
@@ -73,27 +70,6 @@ int	env_set(const char *name, const char *value, char *const **env)
 	ft_strcpy(new + ft_strlen(name) + 1, value);
 	free(*destination_pointer);
 	*destination_pointer = new;
-	return (1);
-}
-
-/*
- * Removes an environment variable, if it is set. If the variable is not set,
- * nothing is done and one is returned.
- *
- * Returns one on success, zero otherwise.
- */
-
-int	env_unset(const char *name, char *const **env)
-{
-	char	**removeable;
-
-	removeable = env_get_pointer(name, *env);
-	if (removeable)
-	{
-		if (!ft_remove_from_null_array((void ***)env, (void *)(*removeable)))
-			return (print_error(
-					0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	}
 	return (1);
 }
 

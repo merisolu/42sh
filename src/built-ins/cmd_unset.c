@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 14:52:32 by amann             #+#    #+#             */
-/*   Updated: 2023/02/16 13:39:50 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/20 11:30:43 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ int	cmd_unset(char *const *args, t_state *state)
 				"unset", name, ERR_NOT_VALID_ID);
 			ret = 1;
 		}
-		if (!env_unset(name, &(state->env)))
-			return (0);
+		delete_var(name, &(state->env));
 		delete_var(name, &(state->exported));
 		delete_var(name, &(state->intern));
 		i++;

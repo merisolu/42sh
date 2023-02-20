@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:21:45 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/16 15:28:32 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/20 11:21:55 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,27 +40,13 @@ static bool	initialise_jobs(t_state *state)
 
 static bool	initialise_arrays(char *const **env, t_state *result)
 {
-	int		i;
-	char	**temp;
-
-	ft_dup_null_array((void **)*env, (void ***)&(result->env), var_copy);
-	result->exported = (char **) ft_memalloc(sizeof(char *) * (INPUT_MAX_SIZE));
-	result->intern = (char **) ft_memalloc(sizeof(char *) * (INPUT_MAX_SIZE));
+	result->env = (char **) ft_memalloc(sizeof(char *) * (VAR_MAX));
+	result->exported = (char **) ft_memalloc(sizeof(char *) * (VAR_MAX));
+	result->intern = (char **) ft_memalloc(sizeof(char *) * (VAR_MAX));
 	if (!(result->intern) || !(result->exported) || !(result->env))
 		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	i = 0;
-	while ((result->env)[i])
-	{
-		temp = (char **)&((result->exported)[i]);
-		*temp = ft_strdup((result->env)[i]);
-		if (!((result->exported)[i]))
-			return (print_error_bool(
-					false,
-					ERRTEMPLATE_SIMPLE,
-					ERR_MALLOC_FAIL
-				));
-		i++;
-	}
+	ft_copy_null_array((void **)(result->env), (void **)*env, var_copy);
+	ft_copy_null_array((void **)(result->exported), (void **)*env, var_copy);
 	return (initialise_jobs(result));
 }
 
@@ -90,7 +76,7 @@ static int	get_state_struct(char *const **env, t_state *result)
 	}
 	if (!initialise_arrays(env, result))
 		return (0);
-	return (env_unset("OLDPWD", &(result->env)));
+	return (1);
 }
 
 bool	setup(char *const **env, t_state *state)
@@ -110,5 +96,6 @@ bool	setup(char *const **env, t_state *state)
 	if (setpgid(getpid(), getpid()) == -1
 		|| ioctl(STDIN_FILENO, TIOCSPGRP, &(state->group_id)) == -1)
 		return (false);
+	delete_var("OLDPWD", &(state->env));
 	return (true);
 }
