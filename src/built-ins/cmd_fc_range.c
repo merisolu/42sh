@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 13:41:49 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/16 11:01:19 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/21 13:51:31 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	parse_string_range(char *arg, int length, t_state *state)
 
 	arg_length = ft_strlen(arg);
 	i = 0;
-	while (i < length)
+	while (i <= length)
 	{
 		if (ft_strnequ(state->history[i], arg, arg_length))
 			return (history_index_to_number(i, state));
