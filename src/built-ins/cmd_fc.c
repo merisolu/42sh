@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:03:39 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/14 14:09:27 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/21 12:51:04 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	execute_from_history(t_fc_range *range, char *replace,
 	i = range->start;
 	while (1)
 	{
-		ft_strclr(state->input_context.input);
+		clear_input(&(state->input_context));
 		temp = cmd_fc_apply_replacement(
 				state->history[history_number_to_index(i, state)],
 				replace);
@@ -57,7 +57,7 @@ static int	execute_from_history(t_fc_range *range, char *replace,
 			return (print_error(1, ERRTEMPLATE_NAMED, "fc", ERR_MALLOC_FAIL));
 		ft_strncpy(state->input_context.input, temp, INPUT_MAX_SIZE);
 		free(temp);
-		ft_putstr(state->input_context.input);
+		ft_putendl_fd(state->input_context.input, STDERR_FILENO);
 		tokenize_and_execute(state);
 		if (i == range->end)
 			break ;

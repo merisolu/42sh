@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:17:10 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/13 11:39:46 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/21 12:03:46 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,10 @@ bool	execution_setup(t_state *state)
 		print_error(1, ERRTEMPLATE_SIMPLE, ERR_TERMIOS_FAIL);
 		return (false);
 	}
-	state->input_context.cursor = ft_strlen(state->input_context.input);
-	move_cursor_to_saved_position(&(state->input_context));
-	ft_putchar('\n');
+	if (!state->running_command)
+	{
+		state->input_context.cursor = ft_strlen(state->input_context.input);
+		move_cursor_to_saved_position(&(state->input_context));
+	}
 	return (true);
 }

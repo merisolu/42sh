@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/20 14:31:31 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/21 11:34:05 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,6 +245,7 @@ typedef struct s_state
 	bool			exit_builtin;
 	bool			stopped_jobs_warning_shown;
 	bool			running_script;
+	bool			running_command;
 }	t_state;
 
 typedef struct s_token

@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2023/02/16 13:41:12 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/21 12:05:14 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,14 @@ void	tokenize_and_execute(t_state *state)
 {
 	t_tokenizer	tokenizer;
 	t_ast		**ast_list;
+	bool		running_from_built_in;
 
 	if (!execution_setup(state))
 		return ;
+	running_from_built_in = state->running_command;
+	state->running_command = true;
+	if (!running_from_built_in)
+		ft_putchar('\n');
 	ast_list = construct_ast_list(
 			tokenize(state->input_context.input, &tokenizer));
 	if (ast_list)
@@ -101,4 +106,6 @@ void	tokenize_and_execute(t_state *state)
 	clear_input(&(state->input_context));
 	if (!terminal_apply_config(&(state->input_conf)))
 		print_error(1, ERRTEMPLATE_SIMPLE, ERR_TERMIOS_FAIL);
+	if (!running_from_built_in)
+		state->running_command = false;
 }

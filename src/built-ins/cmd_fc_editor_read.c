@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 13:23:36 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/27 15:25:45 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/21 12:52:31 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	cmd_fc_read_and_execute_file(t_state *state)
 		last_newline = ft_strrchr(state->input_context.input, '\n');
 		if (last_newline)
 			*last_newline = '\0';
-		ft_putstr(state->input_context.input);
+		ft_putendl_fd(state->input_context.input, STDERR_FILENO);
 		tokenize_and_execute(state);
 		free(line);
 	}
