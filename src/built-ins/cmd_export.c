@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_export.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:48:06 by amann             #+#    #+#             */
-/*   Updated: 2023/02/20 11:54:59 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/21 14:08:46 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static bool	var_set_all(char *name, char *value, t_state *state)
 {
-	if (!export_set(name, value, &(state->exported))
-		|| !export_set(name, value, &(state->intern))
-		|| !env_set(name, value, &(state->env)))
+	if (!env_set(name, value, &(state->env))
+		|| !export_set(name, value, &(state->exported))
+		|| !export_set(name, value, &(state->intern)))
 		return (false);
 	return (true);
 }
