@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/20 11:02:35 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/21 14:01:13 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # define FC_EDIT_FILE "/tmp/42sh_fc_edit_file"
 # define FC_USAGE "fc: usage: fc [-nlr] [-e ename] [first [last]] \
 or fc -s [old=new] [first]\n"
+# define FC_MAX_REPLACE INPUT_MAX_SIZE
 
 /* Types */
 
@@ -119,8 +120,10 @@ bool					cmd_fc_parse_range(char *const *args, char *flags,
 void					cmd_fc_reverse_range(t_fc_range *range);
 
 /* cmd_fc_replace.c */
-char					*cmd_fc_parse_replacement(char *arg);
-char					*cmd_fc_apply_replacement(char *src, char *spec);
+void					cmd_fc_parse_replacements(char *const *args,
+							char *result[FC_MAX_REPLACE]);
+char					*cmd_fc_apply_replacements(char *src,
+							char *spec[FC_MAX_REPLACE]);
 
 /* cmd_exit.c */
 int						cmd_exit(char *const *args, t_state *state);
