@@ -67,8 +67,10 @@ t_state *state)
 	range->start = parse_range(args[offset], length, state);
 	if (args[1 + offset])
 		range->end = parse_range(args[1 + offset], length, state);
-	else
+	else if (ft_strchr(flags, 'l'))
 		range->end = length;
+	else
+		range->end = range->start;
 	if (range->start < 1 || range->end < 1)
 		return (print_error_bool(false,
 				ERRTEMPLATE_NAMED, "fc", ERR_HISTORY_SPEC_OUT_OF_RANGE));
