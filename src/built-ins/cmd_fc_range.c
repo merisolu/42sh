@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 13:41:49 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/21 13:51:31 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/21 14:43:51 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,15 @@ static int	parse_range(char *arg, int length, t_state *state)
 	return (parse_string_range(arg, length, state));
 }
 
+static bool	print_parse_error(char *flags)
+{
+	if (ft_strchr(flags, 's'))
+		return (print_error_bool(false,
+				ERRTEMPLATE_NAMED, "fc", ERR_NO_COMMAND_FOUND));
+	return (print_error_bool(false,
+			ERRTEMPLATE_NAMED, "fc", ERR_HISTORY_SPEC_OUT_OF_RANGE));
+}
+
 bool	cmd_fc_parse_range(char *const *args, char *flags, t_fc_range *range,
 t_state *state)
 {
@@ -72,16 +81,6 @@ t_state *state)
 	else
 		range->end = range->start;
 	if (range->start < 1 || range->end < 1)
-		return (print_error_bool(false,
-				ERRTEMPLATE_NAMED, "fc", ERR_HISTORY_SPEC_OUT_OF_RANGE));
+		return (print_parse_error(flags));
 	return (true);
-}
-
-void	cmd_fc_reverse_range(t_fc_range *range)
-{
-	int	temp;
-
-	temp = range->start;
-	range->start = range->end;
-	range->end = temp;
 }

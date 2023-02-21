@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/21 14:01:13 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/21 14:35:46 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,8 @@ int						cmd_fc_read_and_execute_file(t_state *state);
 /* cmd_fc_range.c */
 bool					cmd_fc_parse_range(char *const *args, char *flags,
 							t_fc_range *range, t_state *state);
+
+/* cmd_fc_range_utils.c */
 void					cmd_fc_reverse_range(t_fc_range *range);
 
 /* cmd_fc_replace.c */

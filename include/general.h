@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:42:24 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/21 11:34:05 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/21 14:38:38 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@
 # define ERR_EXPANSION_SYNTAX "syntax error: operand expected (error token is"
 # define ERR_INVALID_OPTION "invalid option"
 # define ERR_HISTORY_SPEC_OUT_OF_RANGE "history specification out of range"
+# define ERR_NO_COMMAND_FOUND "no command found"
 # define ERR_NUMERIC_ARG "numeric argument required"
 # define ERR_VAR_LIMIT "variable limit reached. Could not add variable"
 
