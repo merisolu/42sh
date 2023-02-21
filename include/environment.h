@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:09 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/20 11:42:56 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/21 13:04:03 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 
 /* environment.c */
 int		env_set(const char *name, const char *value, char *const **env);
-void	env_print_all(char *const *env);
 size_t	valid_env_name_length(char *name);
 
 /* environment_getters.c */

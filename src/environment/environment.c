@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:39:49 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/20 11:56:32 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/21 13:02:59 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,22 +73,4 @@ int	env_set(const char *name, const char *value, char *const **env)
 	free(*destination_pointer);
 	*destination_pointer = new;
 	return (1);
-}
-
-/*
- * Prints all environment variables.
- */
-
-void	env_print_all(char *const *env)
-{
-	size_t	i;
-
-	if (!env)
-		return ;
-	i = 0;
-	while (env[i])
-	{
-		ft_putendl(env[i]);
-		i++;
-	}
 }
