@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 13:50:42 by amann             #+#    #+#             */
-/*   Updated: 2023/02/20 17:13:42 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/22 13:29:44 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	handle_hash_expansion(t_state *state, char *temp_res, char *temp_exp)
 	if (!glob && len != 0 && len <= res_len
 		&& (ft_strnequ(temp_res, temp_exp, len)))
 	{
-		ft_memmove((void *)temp_res, (void *)(temp_res + len), res_len);
+		ft_memmove((void *)temp_res, (void *)(temp_res + len), res_len - len);
 		ft_strclr(temp_res + res_len);
 		return ;
 	}
