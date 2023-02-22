@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:54:23 by amann             #+#    #+#             */
-/*   Updated: 2023/02/15 18:23:46 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/22 13:24:51 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,27 +29,29 @@ static char	*find_query_loop(int len, char *str, char c)
 	return (ft_strdup(str + start));
 }
 
-static bool	expansion_handler(t_state *state, char *last_word)
+static bool	expansion_handler(t_state *state, char **last_word)
 {
-	bool	var;
 	char	*temp;
 
-	var = last_word[0] == '$';
-	temp = ft_strdup(last_word);
-	if (!temp)
+	if ((*last_word)[0] == '$')
 	{
-		free(last_word);
-		return (false);
-	}
-	if (!expand_node(&temp, state, true))
-	{
-		free(temp);
-		free(last_word);
-		return (false);
-	}
-	if (var)
+		temp = ft_strdup(*last_word);
+		if (!expand_node(&temp, state, true))
+		{
+			free(*last_word);
+			return (false);
+		}
 		insert_expansion(&(state->input_context), temp);
-	free(temp);
+		free(temp);
+	}
+	else
+	{
+		if (!expand_node(last_word, state, true))
+		{
+			free(*last_word);
+			return (false);
+		}
+	}
 	return (true);
 }
 
@@ -63,7 +65,7 @@ char	*find_query(char *str, char c, t_state *state, bool expand)
 		return (NULL);
 	if (expand)
 	{
-		if (!expansion_handler(state, last_word))
+		if (!expansion_handler(state, &last_word))
 			return (NULL);
 	}
 	if (c == ' ')

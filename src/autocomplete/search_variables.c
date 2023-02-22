@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 18:37:40 by amann             #+#    #+#             */
-/*   Updated: 2023/02/06 17:55:33 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/22 13:22:08 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,10 @@ char	**search_variables(t_state *s, char **ti, t_auto_bools *a_bools)
 		return (print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	temp = find_query(*ti, ' ', s, false);
 	dollar = ft_strchr(temp, '$');
-	query = dollar + 1;
 	if (c_b(dollar))
-		query = dollar + 2;
+		query = ft_strdup(dollar + 2);
+	else
+		query = ft_strdup(dollar + 1);
 	if (!search_env_intern(s->env, query, &search_result, c_b(dollar))
 		|| !search_env_intern(s->intern, query, &search_result, c_b(dollar)))
 	{
