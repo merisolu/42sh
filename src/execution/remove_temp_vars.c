@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   remove_temp_vars.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:24:53 by amann             #+#    #+#             */
-/*   Updated: 2023/02/20 11:37:15 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/22 13:45:38 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ bool	remove_temp_vars_from_env(t_ast_context *ctx, t_state *state)
 			pair = var_list[i];
 			temp = ft_strchr(pair, '=') + 1;
 			pair[ft_dstchr(pair, '=', ft_strlen(pair))] = '\0';
-			if (!env_set(pair, temp, &(state->env)))
+			if (!export_set(pair, temp, &(state->env)))
 				return (false);
 		}
 		else
