@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 15:27:43 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/16 14:06:14 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/22 11:58:56 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,12 @@ static int	check_destination_errors(char *name, char *path)
 	return (0);
 }
 
-static int	construct_path(char *target, char **result)
+static int	construct_path(char *target, char **result, t_state *state, \
+		bool p_flag)
 {
 	char	*path;
 
+	path = NULL;
 	if (ft_path_is_absolute(target))
 	{
 		*result = ft_strdup(target);
@@ -41,7 +43,10 @@ static int	construct_path(char *target, char **result)
 	}
 	else
 	{
-		path = getcwd(NULL, 0);
+		if (!p_flag)
+			path = ft_strdup(var_get("PWD", state));
+		if (!path || p_flag)
+			path = getcwd(NULL, 0);
 		if (!path)
 			return (print_error(0,
 					ERRTEMPLATE_NAMED, "cd", ERR_CANNOT_GET_CWD));
@@ -53,15 +58,26 @@ static int	construct_path(char *target, char **result)
 	return (1);
 }
 
-static int	change_directory(bool p_flag, char *path, char *target)
+static int	change_directory(bool p_flag, char *path, char *target, \
+		t_state *state)
 {
-	int	return_value;
+	int		return_value;
+	char	buff[PATH_MAX];
 
 	if (!p_flag)
 		ft_normalize_path(path, &target);
 	else
 		target = ft_strdup(path);
 	return_value = chdir(target);
+	if (p_flag)
+	{
+		if (!getcwd(buff, PATH_MAX))
+			return (print_error(1, ERRTEMPLATE_DOUBLE_NAMED,
+					"cd", target, ERR_MALLOC_FAIL));
+		env_set("PWD", buff, &(state->env));
+	}
+	else
+		env_set("PWD", target, &(state->env));
 	free(target);
 	free(path);
 	return (return_value);
@@ -73,12 +89,12 @@ int	cmd_cd(char *const *args, t_state *state)
 	char	*path;
 	int		return_value;
 	bool	p_flag;
-	char	buff[PATH_MAX];
 
 	target = get_cd_target(args, state, &p_flag);
 	if (!target)
 		return (1);
-	if (!ft_path_is_within_limits(target) || !construct_path(target, &path))
+	if (!ft_path_is_within_limits(target)
+		|| !construct_path(target, &path, state, p_flag))
 		return (print_error(1, ERRTEMPLATE_DOUBLE_NAMED,
 				"cd", target, ERR_INVALID_PATH));
 	if (check_destination_errors(target, path) != 0)
@@ -88,10 +104,6 @@ int	cmd_cd(char *const *args, t_state *state)
 	}
 	if (var_get("PWD", state))
 		env_set("OLDPWD", var_get("PWD", state), &(state->env));
-	return_value = change_directory(p_flag, path, target);
-	if (!getcwd(buff, PATH_MAX))
-		return (print_error(1, ERRTEMPLATE_DOUBLE_NAMED,
-				"cd", target, ERR_MALLOC_FAIL));
-	env_set("PWD", buff, &(state->env));
+	return_value = change_directory(p_flag, path, target, state);
 	return (return_value);
 }
