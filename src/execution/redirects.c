@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 17:18:05 by amann             #+#    #+#             */
-/*   Updated: 2023/02/13 15:57:03 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/22 12:42:34 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ bool	handle_redirects(t_ast *node, t_redir **r)
 			i++;
 			continue ;
 		}
+		free(r[i]);
 		r[i] = (t_redir *) ft_memalloc(sizeof(t_redir));
 		if (!r[i])
 			return (print_error_bool(false, ERRTEMPLATE_SIMPLE,
