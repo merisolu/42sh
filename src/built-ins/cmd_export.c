@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:48:06 by amann             #+#    #+#             */
-/*   Updated: 2023/02/21 14:08:46 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/22 13:52:25 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static bool	var_set_all(char *name, char *value, t_state *state)
 {
-	if (!env_set(name, value, &(state->env))
+	if (!export_set(name, value, &(state->env))
 		|| !export_set(name, value, &(state->exported))
 		|| !export_set(name, value, &(state->intern)))
 		return (false);
