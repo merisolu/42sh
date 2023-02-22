@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:03:39 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/21 14:00:31 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/22 10:26:46 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int	execute_from_history(t_fc_range *range,
 	return (state->last_return_value);
 }
 
-static void	print_history(bool show_numbers, t_fc_range *range,
+static int	print_history(bool show_numbers, t_fc_range *range,
 	t_state *state)
 {
 	int	i;
@@ -88,6 +88,7 @@ static void	print_history(bool show_numbers, t_fc_range *range,
 		else
 			i++;
 	}
+	return (0);
 }
 
 int	cmd_fc(char *const *args, t_state *state)
@@ -106,15 +107,13 @@ int	cmd_fc(char *const *args, t_state *state)
 	if (!cmd_fc_parse_range(args + offset + \
 		ft_null_array_len((void **)replace) + 1, flags, &range, state))
 		return (1);
+	if (cmd_fc_check_empty_history_errors(state, flags))
+		return (1);
 	if (ft_strchr(flags, 'r'))
 		cmd_fc_reverse_range(&range);
 	if (ft_strchr(flags, 'l'))
-		print_history(!ft_strchr(flags, 'n'), &range, state);
-	else
-	{
-		if (!ft_strchr(flags, 's'))
-			return (edit_and_execute(args, flags, &range, state));
-		return (execute_from_history(&range, replace, state));
-	}
-	return (0);
+		return (print_history(!ft_strchr(flags, 'n'), &range, state));
+	if (!ft_strchr(flags, 's'))
+		return (edit_and_execute(args, flags, &range, state));
+	return (execute_from_history(&range, replace, state));
 }

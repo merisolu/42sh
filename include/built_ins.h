@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/21 14:35:46 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/22 10:26:12 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,10 @@ void					cmd_fc_parse_replacements(char *const *args,
 							char *result[FC_MAX_REPLACE]);
 char					*cmd_fc_apply_replacements(char *src,
 							char *spec[FC_MAX_REPLACE]);
+
+/* cmd_fc_utils.c */
+bool					cmd_fc_check_empty_history_errors(t_state *state,
+							char *flags);
 
 /* cmd_exit.c */
 int						cmd_exit(char *const *args, t_state *state);
