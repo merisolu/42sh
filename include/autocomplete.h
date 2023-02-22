@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/15 17:39:42 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/22 17:28:59 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,9 @@ int		autocomplete_display_control(t_state *state, char ***search_result, \
 /* autocomplete_display_columns.c */
 void	autocomplete_display_columns(char **search_result, size_t len, \
 		t_state *state);
+
+/* autocomplete_handle_dot.c */
+int		autocomplete_handle_dot(t_state *state, char *ti);
 
 /* autocomplete_position_cursor.c */
 void	cursor_to_end(t_input_context *ic, size_t *orig_cursor);

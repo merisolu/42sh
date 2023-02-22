@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2023/02/22 15:44:58 by amann            ###   ########.fr        #
+#    Updated: 2023/02/22 17:29:28 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,8 @@ AUTOCOMPLETE_FILES = autocomplete.c search_commands.c directory_search.c \
 					find_query.c search_exec.c directory_search_loops.c\
 					autocomplete_display_control.c find_longest.c \
 					autocomplete_display_columns.c \
-					autocomplete_position_cursor.c insert_expansion.c
+					autocomplete_position_cursor.c insert_expansion.c \
+					autocomplete_handle_dot.c
 
 BUILT_INS_DIR = built-ins
 BUILT_INS_FILES = built_ins.c built_ins_flags.c cmd_cd.c cmd_echo.c \

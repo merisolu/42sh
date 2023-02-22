@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/13 12:27:01 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/22 17:29:59 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ static int	free_and_display(char **ti, t_state *state, char ***sr, bool f)
 	ft_free_null_array((void **) *sr);
 	return (ret);
 }
+
 /*
  * Provides contextual, dynamic, completion of:
  *		- commands
@@ -137,6 +138,8 @@ int	autocomplete(t_state *state, bool second_tab)
 	trimmed_input = trim_input_to_cursor(state->input_context);
 	if (!trimmed_input)
 		return (0);
+	if (ft_strequ(trimmed_input, "."))
+		return (autocomplete_handle_dot(state, trimmed_input));
 	search_type = get_search_type(trimmed_input);
 	a_bools.filtered = false;
 	a_bools.second_tab = second_tab;
