@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 11:32:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/14 14:21:21 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/22 15:39:20 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,11 @@ t_token	*tokenize(char *input, t_tokenizer *t)
 		t->backslash_inhibited = \
 			(input[i] == '\\' && !t->backslash_inhibited
 				&& !(t->in_quotes && t->quote_type == '\''));
-		i += 1 + (input[i + 1] == '\n' && t->backslash_inhibited);
+		i++;
 	}
 	if (t->buff && !token_add(&result, type, ft_strdup(t->buff)))
 		print_error_ptr(NULL, "\n42sh: %s\n", ERR_MALLOC_FAIL);
 	free(t->buff);
+	cleanse_new_lines(result);
 	return (result);
 }

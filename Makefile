@@ -6,7 +6,7 @@
 #    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2023/02/22 12:51:09 by amann            ###   ########.fr        #
+#    Updated: 2023/02/22 15:40:05 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -103,7 +103,8 @@ INPUT_FILES = clipboard_copy.c clipboard_cut.c clipboard_paste.c \
 
 PARSING_DIR = parsing
 PARSING_FILES = eat_read_token.c get_token_type.c lexer.c literals.c \
-				token.c token_list.c add_to_result.c check_quotes.c
+				token.c token_list.c add_to_result.c check_quotes.c \
+				cleanse_new_lines.c
 
 SETUP_DIR = setup
 SETUP_FILES = setup.c setup_termcaps.c setup_input.c setup_fd.c

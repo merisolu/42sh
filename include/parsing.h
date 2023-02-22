@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:16 by jumanner          #+#    #+#             */
-/*   Updated: 2023/01/30 13:25:25 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/22 15:41:05 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@
 
 /* check_quotes.c */
 void			check_quotes(char c, t_tokenizer *tokenizer);
+
+/* cleanse_new_lines.c */
+void			cleanse_new_lines(t_token *list);
 
 /* eat_read_token.c */
 bool			eat_token(\
