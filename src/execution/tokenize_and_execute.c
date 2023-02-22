@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2023/02/21 12:05:14 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/22 16:22:03 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static void	execute_ast_list(t_ast **ast, t_state *state)
 			break ;
 		job = jobs_create(ast[i], state);
 		if (!job || !execute_ast(&(t_ast_context){ast[i], redir, &pipes, \
-			ast[i]->amp, job, 0}, state))
+			ast[i]->amp, job, 0}, state) || state->exiting)
 			break ;
 		job_execute(job, ast[i]->amp, state);
 		handle_logical_ops(ast, state, &i);
