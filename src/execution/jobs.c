@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:34:04 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/09 11:50:13 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/22 10:57:23 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_job	*jobs_create(t_ast *ast, t_state *state)
  */
 void	job_wait(t_job *job, bool no_hang, t_state *state)
 {
-	pid_wait(job, job_get_last_pid(job), no_hang);
+	pid_wait(job, job->pids[0], no_hang);
 	if (job->state == JOB_STOPPED)
 		job_current_update(job, state);
 	if (job->state == JOB_DONE)
