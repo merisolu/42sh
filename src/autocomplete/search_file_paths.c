@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 17:44:44 by amann             #+#    #+#             */
-/*   Updated: 2023/02/17 13:21:20 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/23 11:13:47 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,27 @@ static void	reset_query_and_path(char **query, char **path)
 	*query = temp;
 }
 
+static bool	set_exec(char *path, char *ti)
+{
+	bool	first_word;
+	int		i;
+
+	first_word = true;
+	i = (int)ft_strlen(path) - 1;
+	while (i >= 0)
+	{
+		if (ti[i] == ' ')
+		{
+			first_word = false;
+			break ;
+		}
+		i--;
+	}
+	if (first_word && path[0] == '.')
+		return (true);
+	return (false);
+}
+
 char	**search_file_paths(char **trimmed_input, t_auto_bools *a_bool, \
 		t_state *state)
 {
@@ -59,7 +80,7 @@ char	**search_file_paths(char **trimmed_input, t_auto_bools *a_bool, \
 	if (!path || !query)
 		return (print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	autocomp.query_len = ft_strlen(query);
-	directory_search(path, &autocomp, false, false);
+	directory_search(path, &autocomp, false, set_exec(path, *trimmed_input));
 	free(path);
 	return (wrap_up(&autocomp, a_bool));
 }
