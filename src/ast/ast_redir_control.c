@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:42:07 by amann             #+#    #+#             */
-/*   Updated: 2023/02/13 13:27:02 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/23 16:02:40 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,15 @@
 
 static bool	set_specified_fd(t_ast_redir **res, t_token **cursor)
 {
+	int	fd;
+
 	(*res)->redir_fd = ft_atoi((*cursor)->value);
 	if ((*res)->redir_fd > 9)
 	{
+		fd = (*res)->redir_fd;
 		ft_memdel((void **)res);
-		return (print_error_bool(false, ERR_BAD_FD));
+		return (print_error_bool(false, "42sh: %i: %s\n",
+					fd, ERR_BAD_FD));
 	}
 	*cursor = (*cursor)->next;
 	return (true);
