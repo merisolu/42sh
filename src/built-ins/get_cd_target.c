@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 14:43:11 by amann             #+#    #+#             */
-/*   Updated: 2023/02/09 15:07:13 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/23 18:15:56 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,21 @@ static bool	check_flags(char *const *args, int *i, bool *p_flag)
 	return (true);
 }
 
+static char	*cd_dash(t_state *state)
+{
+	struct stat	test;
+	char		*temp;
+	int			ret;
+
+	temp = var_get("OLDPWD", state);
+	if (!temp)
+		print_error(0, ERRTEMPLATE_NAMED, "cd", ERR_NO_OLDPWD);
+	ret = stat(temp, &test);
+	if ((ret == 0 && S_ISDIR(test.st_mode)) || ft_is_dir(temp))
+		ft_printf("%s\n", temp);
+	return (temp);
+}
+
 char	*get_cd_target(char *const *args, t_state *state, bool *p_flag)
 {
 	char	*temp;
@@ -58,13 +73,6 @@ char	*get_cd_target(char *const *args, t_state *state, bool *p_flag)
 		return (temp);
 	}
 	if (ft_strequ(args[i], "-"))
-	{
-		temp = var_get("OLDPWD", state);
-		if (!temp)
-			print_error(0, ERRTEMPLATE_NAMED, "cd", ERR_NO_OLDPWD);
-		if (ft_is_dir(temp))
-			ft_putendl(temp);
-		return (temp);
-	}
+		return (cd_dash(state));
 	return (args[i]);
 }
