@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 17:18:02 by amann             #+#    #+#             */
-/*   Updated: 2022/12/19 16:18:58 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/23 14:55:33 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,13 @@
 static int	set_open_flags(t_ast_redir *redir, int *perm)
 {
 	int	open_flags;
+	struct stat path_stat;
 
 	if (redir->redir_out)
 	{
+		stat(redir->redir_file, &path_stat);
+		if (S_ISFIFO(path_stat.st_mode))
+			return (O_RDWR | O_NONBLOCK);
 		open_flags = O_WRONLY | O_CREAT;
 		if (ft_strequ(redir->redir_op, REDIR_APPEND))
 			open_flags |= O_APPEND;

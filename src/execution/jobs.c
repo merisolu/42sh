@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:34:04 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/22 16:55:19 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/23 14:54:38 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ void	job_wait(t_job *job, bool no_hang, t_state *state)
 {
 	int	i;
 
+	if (no_hang)
+		job_current_update(job, state);
 	i = 0;
 	while (job->pids[i])
 	{

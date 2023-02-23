@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:39:28 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/22 15:18:19 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/23 15:01:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ void	job_execute(t_job *job, bool background, t_state *state)
 		}
 	}
 	else
+	{
 		job->state = JOB_CREATED;
+		job_current_update(job, state);
+	}
 }
 
 void	job_find_new_previous_job(t_state *state)
