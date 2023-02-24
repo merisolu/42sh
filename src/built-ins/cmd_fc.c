@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 13:03:39 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/22 10:26:46 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/02/24 10:38:11 by jumanner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static int	print_history(bool show_numbers, t_fc_range *range,
 	{
 		if (show_numbers)
 			ft_printf("%d", i);
-		ft_printf("\t%s\n",
+		ft_printf("\t %s\n",
 			state->history[history_number_to_index(i, state)]);
 		if (i == range->end)
 			break ;
