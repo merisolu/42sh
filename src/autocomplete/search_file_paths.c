@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 17:44:44 by amann             #+#    #+#             */
-/*   Updated: 2023/02/23 11:13:47 by amann            ###   ########.fr       */
+/*   Updated: 2023/02/25 14:33:21 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,18 @@ static void	reset_query_and_path(char **query, char **path)
 {
 	char	*temp;
 
-	*path = ft_strndup(*query, last_slash(*query));
-	temp = ft_strdup(ft_strrchr(*query, '/') + 1);
-	ft_strdel(query);
-	*query = temp;
+	if (ft_strchr(*query, '/'))
+	{
+		*path = ft_strndup(*query, last_slash(*query));
+		temp = ft_strdup(ft_strrchr(*query, '/') + 1);
+		ft_strdel(query);
+		*query = temp;
+		return ;
+	}
+	temp = getcwd(NULL, PATH_MAX);
+	*path = ft_strjoin(temp, "/");
+	free(temp);
+	return ;
 }
 
 static bool	set_exec(char *path, char *ti)
@@ -73,10 +81,7 @@ char	**search_file_paths(char **trimmed_input, t_auto_bools *a_bool, \
 	query = find_query(*trimmed_input, ' ', state, true);
 	initialise_autocomp(&autocomp, &query, &search_result, &count);
 	path = NULL;
-	if (ft_strchr(query, '/'))
-		reset_query_and_path(&query, &path);
-	else
-		path = ft_strdup("./");
+	reset_query_and_path(&query, &path);
 	if (!path || !query)
 		return (print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	autocomp.query_len = ft_strlen(query);
