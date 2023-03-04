@@ -9,7 +9,7 @@ This shell does a lot, like A LOT. Here's an overview video if you'd like a 'gui
 
 ## Intro
 
-Utilising the skills we learned while completeing [21sh](https://github.com/AlexMannDesigns/21sh), this is a more enhanced and "semi-POSIX-compliant" implementation of a Unix Shell. 
+Utilising the skills we learned while completing [21sh](https://github.com/AlexMannDesigns/21sh), this is a more enhanced and "semi-POSIX-compliant" implementation of a Unix Shell. 
 
 This shell is effectively 'built on top of' 21sh, although to create some of the features needed for 42sh, some parts of the program had to be completely overhauled. As such, please see the 21sh readme, everything that shell can do, this shell can do better! Only the features unique to 42sh are covered here. 
 
