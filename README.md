@@ -24,7 +24,7 @@ This shell boasts the following features:
   - The following redirection operations: ">", "<", ">>" and "<<"
   - File descriptor aggregation ">&"
   - Command line separators ";" and logical-operators "&&" and "||"
-  - Both environment and internal shell variables
+  - Both environment and internal shell variables (export, set, unset)
   - Job control monitoring (jobs, fg, bg, and the '&' operator)
   - Correct monitoring of all signals
   - Inhibitors (" ", ' ', \)
@@ -59,10 +59,28 @@ To compile and run this program you will need:
   - A Unix or Unix-like operating system (preferrably MacOs or Linux)
   - GNU Make 3.81
 
-Clone this repository and in the root directory run the following command to enter the shell:
+Clone this repository and in the root directory run the following command to enter the shell: `make; ./42sh`
+
+## Modular features
+
+- Inhibitors
+
+42sh includes full handling of single quotes, double quotes and backslashes. Text input can be edited across multiple lines and single quotes and backslashes can be used to inhibit the expasion of variables. Double quotes will only inhibit tilde expansion.
+
+- Additional parameter expansion formats
+
+The following formats are fully handled in this shell, and will even autocomplete [this is something even bash can't do ;) ]. I also added a basic implementation of globbing with '*', to demonstrate the pattern matching functionalities of the last 4 formats listed below:
 
 ```
-make; make clean; ./21sh
+  - ${parameter:-word}
+  - ${parameter:=word}
+  - ${parameter:?word}
+  - ${parameter:+word}
+  - ${#parameter}
+  - ${parameter%}
+  - ${parameter%%}
+  - ${parameter#}
+  - ${parameter##}
 ```
 
 ## Resources we found very useful:
