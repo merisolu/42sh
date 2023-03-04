@@ -1,6 +1,6 @@
 # 42sh
 
-This is it, "The Big One", 42sh is a milestone project at [Hive, Helsinki](https://www.hive.fi/en/). The aim is to build the most complete and stable Unix Shell possible.
+This is it, "The Big One", 42sh is a milestone project at [Hive, Helsinki](https://www.hive.fi/en/). The aim is to build the most complete and stable Unix Shell possible. This project was built by a 2 person team, [Alex](https://github.com/AlexMannDesigns) (that's me, hello!) and [Juha](https://github.com/merisolu)
 
 This shell does a lot, like A LOT. Here's an overview video if you'd like a 'guided tour' of the basic features and few more nifty things:
 
@@ -61,6 +61,8 @@ To compile and run this program you will need:
 
 Clone this repository and in the root directory run the following command to enter the shell: `make; ./42sh`
 
+In no way should this shell ever crash (e.g. segmentation fault or bus error), leak memory, freeze or get stuck in a loop. Please report any such issues to us if you find them!
+
 ## Modular features
 
 - Inhibitors
@@ -82,6 +84,25 @@ The following formats are fully handled in this shell, and will even autocomplet
   - ${parameter#}
   - ${parameter##}
 ```
+- Complete history management
+
+In this project, we went far beyond the simple up and down navigation required in 21sh. The following features are fully functional:
+
+```
+  - Expansions: !! * !word * !number * !-number
+  - History is saved to a file so it can be accessed over several sessions
+  - The built-in fc (including all POSIX options)
+  - Incremental history search using ctrl-r
+```
+- Contextual, dynamic autocompletion
+
+Commands, built-ins, files, filepaths, internal and environment variables can all be autocompleted using the tab key. The behaviour implemented is much the same way as bash, including the column display if there is more than one potential option and tab is pressed twice. If more than 100 potential options are about to be displayed, the user is given the option to abort the process.
+
+When autocompleting variables, the completion is format-sensitive, so `$HO` completes to `$HOME` and `${HO` to `${HOME}`, for example.
+
+When autocompleting filepaths, a slash '/' character will be printed instead of a space if the completed word is a directory.
+
+Autocompletion is "contextual", it will only suggest commands and built-ins while the cursor is in the first word, in all other cases, it will suggest files, except in cases where the word starts with a '$'.
 
 ## Resources we found very useful:
 
