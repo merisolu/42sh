@@ -100,9 +100,27 @@ Commands, built-ins, files, filepaths, internal and environment variables can al
 
 When autocompleting variables, the completion is format-sensitive, so `$HO` completes to `$HOME` and `${HO` to `${HOME}`, for example.
 
-When autocompleting filepaths, a slash '/' character will be printed instead of a space if the completed word is a directory.
+When autocompleting filepaths, a slash '/' character will be printed after the word instead of a space, if the completed word is a directory.
 
 Autocompletion is "contextual", it will only suggest commands and built-ins while the cursor is in the first word, in all other cases, it will suggest files, except in cases where the word starts with a '$'.
+
+- Hash table
+
+Hashing allows for more optimal searches for commands. Rather than searching the whole `$PATH` variable every time a command runs, it can be added to the hash table with the built-in 'hash'. As a secondary feature, the hash table also allows the user to track the number of times each hash command has been executed. We used the [FNV-1](https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function) hashing algorithm to implement this feature.
+
+- The built-in 'test'
+
+This built-in allows the user to check file types and compare values. The following operators are included:
+
+```
+  -b (file is block special) * -c (file is character special) * -d (file is a directory)
+  -e (file exists) * -f (file is a regular file) * -g (file is set-group-id)
+  -L (file is a symbolic link) * -p (file is a named pipe) * -r (user has read access)
+  -S  (file is a socket) * -s (file size > 0) * -u (file's set-user-id bit is set)'
+  -w (user has write access) * -x (user has search and execute access) * -z STRING (STRING has length of zero)
+  = (srting equals) * -eq (integer equals) * -ne (not equals) * -ge (greater than or equal to)
+  -lt (less than) * -le (less than or equal to) * ! EXPRESSION (EXPRESSION is false)
+```
 
 ## Resources we found very useful:
 
