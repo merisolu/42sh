@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   truncate_result.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 14:41:37 by amann             #+#    #+#             */
-/*   Updated: 2023/01/17 13:34:06 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/23 13:35:28 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,19 @@
  * of the search query.
  */
 
-void	truncate_result(t_auto autocomp)
+void	truncate_result(t_auto *autocomp)
 {
 	char	*truncated;
 
 	truncated = ft_strdup(
-			((*(autocomp.search_results))[0]) + autocomp.query_len
+			((autocomp->search_result_final)[0]) + autocomp->query_len
 			);
 	if (!truncated)
 	{
 		print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
 		return ;
 	}
-	ft_strdel(&((*(autocomp.search_results))[0]));
-	(*(autocomp.search_results))[0] = truncated;
+	ft_strdel(&((autocomp->search_result_final)[0]));
+	(autocomp->search_result_final)[0] = truncated;
 	return ;
 }

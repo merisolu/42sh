@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search_file_paths.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 17:44:44 by amann             #+#    #+#             */
-/*   Updated: 2023/02/25 14:33:21 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/23 17:58:10 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,7 @@ char	**search_file_paths(char **trimmed_input, t_auto_bools *a_bool, \
 	autocomp.query_len = ft_strlen(query);
 	directory_search(path, &autocomp, false, set_exec(path, *trimmed_input));
 	free(path);
-	return (wrap_up(&autocomp, a_bool));
+	wrap_up(&autocomp);
+	(void) a_bool;
+	return autocomp.search_result_final;
 }

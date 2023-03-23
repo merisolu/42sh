@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 18:37:40 by amann             #+#    #+#             */
-/*   Updated: 2023/03/23 13:07:20 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/23 17:58:55 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,7 @@ char	**search_variables(t_state *s, char **ti, t_auto_bools *a_bools)
 	}
 	free(temp);
 	autocomp = autocomp_setup(&query, c_b(dollar), &search_result);
-	return (wrap_up(&autocomp, a_bools));
+	(void) a_bools;
+	wrap_up(&autocomp);
+	return autocomp.search_result_final;
 }

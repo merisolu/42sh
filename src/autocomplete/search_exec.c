@@ -3,25 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   search_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 13:03:36 by amann             #+#    #+#             */
-/*   Updated: 2023/02/17 13:25:01 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/03/23 17:59:55 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
 
-char	**check_exec(t_auto autocomp, char **query, t_auto_bools *a_bools,
-		t_state *state)
+void	check_exec(t_auto *autocomp, t_state *state)
 {
-	if (ft_strequ(*query, "."))
+	if (ft_strequ(*(autocomp->query), "."))
 	{
-		(*(autocomp.search_results))[0] = ft_strdup("./");
-		free(*query);
-		return (wrap_up(&autocomp, a_bools));
+		(autocomp->search_result_final)[0] = ft_strdup("./");
+		free(*(autocomp->query));
+		wrap_up(autocomp);
+		return ;
 	}
-	return (search_exec(autocomp.search_results, query, a_bools, state));
+	
+	(void) state;
+	return ;
+	//return (search_exec(autocomp, state));
 }
 
 /*
@@ -30,7 +33,7 @@ char	**check_exec(t_auto autocomp, char **query, t_auto_bools *a_bools,
  *	filesystem.
  *
  */
-
+/*
 static bool	check_allocations(char *path, char *query)
 {
 	if (!path)
@@ -68,11 +71,17 @@ static void	set_path_query(char **path, char **query, char **orig, \
 		*path = ft_strdup("./");
 	}
 }
+*/
 
-char	**search_exec(char ***sr, char **orig, t_auto_bools *a_bools, \
-		t_state *state)
+// this is called from check exec via search commands, needs some work...
+// maybe scrap and start again once the program will compile and run again.
+
+void search_exec(t_auto *autocomp, t_state *state)
 {
-	char	*query;
+	(void) autocomp;
+	(void) state;
+	return ;
+/*	char	*query;
 	char	*path;
 	int		count;
 	t_auto	autocomp;
@@ -83,10 +92,10 @@ char	**search_exec(char ***sr, char **orig, t_auto_bools *a_bools, \
 	if (!check_allocations(path, query))
 		return (NULL);
 	count = 0;
-	initialise_autocomp(&autocomp, &query, sr, &count);
+	//initialise_autocomp(&autocomp, &query, sr, &count);
 	autocomp.query_len = ft_strlen(query);
 	directory_search(path, &autocomp, false, true);
 	free(path);
 	free(*orig);
-	return (wrap_up(&autocomp, a_bools));
+	return (wrap_up(&autocomp, a_bools));*/
 }

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   filter_matching.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 13:38:58 by amann             #+#    #+#             */
-/*   Updated: 2023/02/16 13:35:50 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/03/23 18:39:03 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
 
-static char	*create_new_string(t_auto autocomp, size_t max_len)
+static char	*create_new_string(t_auto *autocomp, size_t max_len)
 {
 	char	*new_string;
 
@@ -20,18 +20,18 @@ static char	*create_new_string(t_auto autocomp, size_t max_len)
 	if (!new_string)
 		return ((char *)print_error_ptr(NULL, ERRTEMPLATE_SIMPLE,
 				ERR_MALLOC_FAIL));
-	ft_strcpy(new_string, *(autocomp.query));
+	ft_strcpy(new_string, *(autocomp->query));
 	return (new_string);
 }
 
-static void	filter_loop(t_auto autocomp, const size_t *i, bool *flag, char c)
+static void	filter_loop(t_auto *autocomp, const size_t *i, bool *flag, char c)
 {
 	size_t	idx;
 
 	idx = 0;
-	while ((*(autocomp.search_results))[idx])
+	while ((autocomp->search_result_final)[idx])
 	{
-		if ((*(autocomp.search_results))[idx][*i] != c)
+		if ((autocomp->search_result_final)[idx][*i] != c)
 		{
 			*flag = true;
 			break ;
@@ -42,16 +42,16 @@ static void	filter_loop(t_auto autocomp, const size_t *i, bool *flag, char c)
 	return ;
 }
 
-static bool	update_results(t_auto autocomp, char *new_string)
+static bool	update_results(t_auto *autocomp, char *new_string)
 {
-	ft_free_null_array((void **)*(autocomp.search_results));
-	*(autocomp.search_results) = (char **) ft_memalloc(sizeof(char *) * 2);
-	if (!(*(autocomp.search_results)))
+	ft_free_null_array((void **)(autocomp->search_result_final));
+	autocomp->search_result_final = (char **) ft_memalloc(sizeof(char *) * 2);
+	if (!(autocomp->search_result_final))
 	{
 		free(new_string);
 		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	}
-	(*(autocomp.search_results))[0] = new_string;
+	(autocomp->search_result_final)[0] = new_string;
 	return (true);
 }
 
@@ -61,29 +61,29 @@ static bool	free_return_false(char *str)
 	return (false);
 }
 
-bool	filter_matching(t_auto autocomp, t_auto_bools *a_bool)
+bool	filter_matching(t_auto *autocomp)
 {
 	size_t	max_len;
 	size_t	i;
 	char	*new_string;
 	bool	flag;
 
-	max_len = find_longest(*(autocomp.search_results));
+	max_len = find_longest(autocomp->search_result_final);
 	new_string = create_new_string(autocomp, max_len);
 	if (!new_string)
 		return (false);
 	flag = false;
-	i = autocomp.query_len;
+	i = autocomp->query_len;
 	while (i < max_len)
 	{
-		filter_loop(autocomp, &i, &flag, (*(autocomp.search_results))[0][i]);
-		if (flag && i == autocomp.query_len)
+		filter_loop(autocomp, &i, &flag, (autocomp->search_result_final)[0][i]);
+		if (flag && i == autocomp->query_len)
 			return (free_return_false(new_string));
 		else if (flag)
 			break ;
-		new_string[i] = (*(autocomp.search_results))[0][i];
+		new_string[i] = (autocomp->search_result_final)[0][i];
 		i++;
 	}
-	a_bool->filtered = true;
+	autocomp->auto_bools.filtered = true;
 	return (update_results(autocomp, new_string));
 }

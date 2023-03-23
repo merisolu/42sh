@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:16:26 by amann             #+#    #+#             */
-/*   Updated: 2023/03/23 13:06:01 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/23 18:41:41 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ static bool	search_builtins(t_auto *autocomp)
 	{
 		if (ft_strnequ(*(autocomp->query), builtins[i].name, autocomp->query_len))
 		{
-			(*(autocomp->search_results))[autocomp->count] = ft_strdup((char *)builtins[i].name);
-			if (!((*(autocomp->search_results))[autocomp->count]))
+			(autocomp->search_result_final)[autocomp->count] = ft_strdup((char *)builtins[i].name);
+			if (!((autocomp->search_result_final)[autocomp->count]))
 			{
 				return (print_error_bool(false, ERRTEMPLATE_SIMPLE,
 						ERR_MALLOC_FAIL));
@@ -48,11 +48,11 @@ static char	**get_paths(t_state *state)
 	return (ft_strsplit(path_var, ':'));
 }
 
-static char	**free_all_return(char ***search_result, char ***paths)
+static char	**free_all_return(char **search_result, char ***paths)
 {
-	ft_free_null_array((void **)*search_result);
+	ft_free_null_array((void **)search_result);
 	ft_free_null_array((void **)*paths);
-	*search_result = NULL;
+	search_result = NULL;
 	*paths = NULL;
 	return (NULL);
 }
@@ -83,28 +83,31 @@ static bool	search_paths_loop(char **paths, t_auto *autocomp)
  * stop unless there is a second tab press.
  */
 
-char	**search_commands(t_state *state, t_auto *autocomp)
+void	search_commands(t_state *state, t_auto *autocomp)
 {
-	char **sr;
 	char **paths;
 	char *query;
 
 	paths = get_paths(state);
-	sr = (char **) ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE);
-	autocomp->search_results = &sr;
-	if (!(paths) || !(*(autocomp->search_results)))
-		return (print_error_ptr(free_all_return(autocomp->search_results, &(paths)),
-				ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
+	autocomp->search_result_final = (char **) ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE);
+	if (!(paths) || !(autocomp->search_result_final))
+	{
+		print_error_ptr(free_all_return(autocomp->search_result_final, &(paths)), ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
+		return ;
+	}
 	query = find_query(autocomp->trimmed_input, ' ', state, true);
 	autocomp->query = &query;
-//	initialise_autocomp(&autocomp, &query, &search_result, &count);
 	autocomp->query_len = ft_strlen(*(autocomp->query));
 	if (!search_builtins(autocomp))
-		return (NULL);
+		return ;
 	if (!search_paths_loop(paths, autocomp))
-		return (free_all_return(autocomp->search_results, &(paths)));
+	{
+		free_all_return(autocomp->search_result_final, &(paths));
+		return ;
+	}
 	ft_free_null_array((void **)(paths));
-	if (ft_null_array_len((void **)*(autocomp->search_results)) == 0)
-		return (check_exec(*autocomp, autocomp->query, &(autocomp->auto_bools), state));
-	return (wrap_up(autocomp, &(autocomp->auto_bools)));
+	//if (ft_null_array_len((void **)(autocomp->search_result_final)) == 0)
+	//	return (check_exec(autocomp, state));
+	wrap_up(autocomp);
+	return ;
 }

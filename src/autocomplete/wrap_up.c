@@ -3,26 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   wrap_up.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:13:45 by amann             #+#    #+#             */
-/*   Updated: 2023/02/22 13:15:31 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/23 18:38:03 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
 
-static void	free_and_reshuffle(char ***sr, int i)
+
+static void	free_and_reshuffle(t_auto *autocomp, int i)
 {
-	free((*sr)[i]);
-	while ((*sr)[i])
+	free((autocomp->search_result_final)[i]);
+	while ((autocomp->search_result_final)[i])
 	{
-		(*sr)[i] = (*sr)[i + 1];
+		(autocomp->search_result_final)[i] = (autocomp->search_result_final)[i + 1];
 		i++;
 	}
 }
 
-static void	sort_options(char ***sr)
+static void	sort_options(t_auto *autocomp)
 {
 	int		i;
 	int		res;
@@ -31,39 +32,34 @@ static void	sort_options(char ***sr)
 
 	swapped = false;
 	i = 0;
-	while ((*sr)[i + 1])
+	while ((autocomp->search_result_final)[i + 1])
 	{
-		res = ft_strcmp((*sr)[i], (*sr)[i + 1]);
+		res = ft_strcmp((autocomp->search_result_final)[i], (autocomp->search_result_final)[i + 1]);
 		if (res == 0)
-			free_and_reshuffle(sr, i);
+			free_and_reshuffle(autocomp, i);
 		else if (res > 0)
 		{
-			temp = (*sr)[i];
-			(*sr)[i] = (*sr)[i + 1];
-			(*sr)[i + 1] = temp;
+			temp = (autocomp->search_result_final)[i];
+			(autocomp->search_result_final)[i] = (autocomp->search_result_final)[i + 1];
+			(autocomp->search_result_final)[i + 1] = temp;
 			swapped = true;
 		}
 		i++;
 	}
 	if (swapped)
-		sort_options(sr);
+		sort_options(autocomp);
 }
 
-char	**wrap_up(t_auto *autocomp, t_auto_bools *a_bool)
+void	wrap_up(t_auto *autocomp)
 {
-	sort_options(autocomp->search_results);
-	if (!(a_bool->second_tab)
-		&& ft_null_array_len((void **)(*(autocomp->search_results))) > 1)
+	sort_options(autocomp);
+	if (!(autocomp->auto_bools.second_tab)
+		&& ft_null_array_len((void **)(autocomp->search_result_final)) > 1)
 	{
-		if (!filter_matching(*autocomp, a_bool))
-		{
-			ft_free_null_array((void **)*(autocomp->search_results));
-			free(*(autocomp->query));
-			return (NULL);
-		}
+		if (!filter_matching(autocomp))
+			return ;
 	}
-	if (ft_null_array_len((void **)*(autocomp->search_results)) == 1)
-		truncate_result(*autocomp);
-	free(*(autocomp->query));
-	return (*(autocomp->search_results));
+	if (ft_null_array_len((void **)(autocomp->search_result_final)) == 1)
+		truncate_result(autocomp);
+	return ;
 }
