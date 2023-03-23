@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/03/23 18:37:39 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/23 18:53:22 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	initialise_autocomp(t_auto *autocomp, char **query, \
 		char ***search_result, int *count)
 {
-	autocomp->query = query;
+	autocomp->query = *query;
 	autocomp->search_results = search_result;
 	autocomp->count = *count;
 }

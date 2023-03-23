@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 13:38:58 by amann             #+#    #+#             */
-/*   Updated: 2023/03/23 18:39:03 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/23 18:58:13 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static char	*create_new_string(t_auto *autocomp, size_t max_len)
 	if (!new_string)
 		return ((char *)print_error_ptr(NULL, ERRTEMPLATE_SIMPLE,
 				ERR_MALLOC_FAIL));
-	ft_strcpy(new_string, *(autocomp->query));
+	ft_strcpy(new_string, autocomp->query);
 	return (new_string);
 }
 

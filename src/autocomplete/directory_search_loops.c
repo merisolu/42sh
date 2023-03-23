@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 13:56:14 by amann             #+#    #+#             */
-/*   Updated: 2023/03/23 13:18:14 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/23 18:54:43 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	check_match_is_file(char *path, char *name)
 
 int	exec_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir)
 {
-	if (ft_strnequ(*(ac->query), entry->d_name, ac->query_len)
+	if (ft_strnequ(ac->query, entry->d_name, ac->query_len)
 		&& check_execution_rights(path, entry->d_name) == 1)
 	{
 		if (ac->query_len == 0
@@ -62,7 +62,7 @@ int	exec_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir)
 
 int	bin_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir)
 {
-	if (ft_strnequ(*(ac->query), entry->d_name, ac->query_len)
+	if (ft_strnequ(ac->query, entry->d_name, ac->query_len)
 		&& check_execution_rights(path, entry->d_name) == 1
 		&& check_match_is_file(path, entry->d_name) == 1)
 	{
@@ -79,7 +79,7 @@ int	bin_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir)
 
 int	fp_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir)
 {
-	if (ft_strnequ(*(ac->query), entry->d_name, ac->query_len))
+	if (ft_strnequ(ac->query, entry->d_name, ac->query_len))
 	{
 		if (ac->query_len == 0
 			&& (ft_strequ(entry->d_name, ".")

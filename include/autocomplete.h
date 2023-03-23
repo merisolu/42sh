@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/03/23 17:56:08 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/23 18:52:42 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_auto
 	t_search_type	search_type;
 	char			**search_result_final;
 	int				count;
-	char			**query;
+	char			*query;
 	size_t			query_len;
 	char			***search_results;
 	t_auto_bools	auto_bools;
