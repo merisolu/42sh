@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/03/23 19:28:48 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/23 19:39:55 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,10 @@ char	*find_query(char *str, char c, t_state *state, bool expand);
 void	insert_expansion(t_input_context *ctx, char *exp);
 
 /* search_commands.c */
-void	search_commands(t_state *state, t_auto *autocomp);
+void	search_commands(t_auto *autocomp, t_state *state);
 
 /* search_file_paths.c */
-char	**search_file_paths(char **trimmed_input, t_auto_bools *a_bool, \
-		t_state *state);
+void	search_file_paths(t_auto *autocomp, t_state *state);
 size_t	last_slash(char *str);
 
 /* search_variables.c */

@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 17:44:44 by amann             #+#    #+#             */
-/*   Updated: 2023/03/23 17:58:10 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/23 19:52:14 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,16 @@ size_t	last_slash(char *str)
 	return (len + 1);
 }
 
-static void	reset_query_and_path(char **query, char **path)
+static void	reset_query_and_path(t_auto *autocomp, char **path)
 {
 	char	*temp;
 
-	if (ft_strchr(*query, '/'))
+	if (ft_strchr(autocomp->query, '/'))
 	{
-		*path = ft_strndup(*query, last_slash(*query));
-		temp = ft_strdup(ft_strrchr(*query, '/') + 1);
-		ft_strdel(query);
-		*query = temp;
+		*path = ft_strndup(autocomp->query, last_slash(autocomp->query));
+		temp = ft_strdup(ft_strrchr(autocomp->query, '/') + 1);
+		free(autocomp->query);
+		autocomp->query = temp;
 		return ;
 	}
 	temp = getcwd(NULL, PATH_MAX);
@@ -65,29 +65,26 @@ static bool	set_exec(char *path, char *ti)
 	return (false);
 }
 
-char	**search_file_paths(char **trimmed_input, t_auto_bools *a_bool, \
-		t_state *state)
+void	search_file_paths(t_auto *autocomp, t_state *state)
 {
-	char	**search_result;
-	char	*query;
-	int		count;
 	char	*path;
-	t_auto	autocomp;
 
-	search_result = (char **) ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE);
-	if (!search_result)
-		return (print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	count = 0;
-	query = find_query(*trimmed_input, ' ', state, true);
-	initialise_autocomp(&autocomp, &query, &search_result, &count);
+	autocomp->search_result_final = (char **) ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE);
+	if (!autocomp->search_result_final)
+	{
+		print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
+		return ;
+	}
+	autocomp->query = find_query(autocomp->trimmed_input, ' ', state, true);
 	path = NULL;
-	reset_query_and_path(&query, &path);
-	if (!path || !query)
-		return (print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	autocomp.query_len = ft_strlen(query);
-	directory_search(path, &autocomp, false, set_exec(path, *trimmed_input));
+	reset_query_and_path(autocomp, &path);
+	if (!path || !(autocomp->query))
+	{
+		print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
+		return ;
+	}
+	autocomp->query_len = ft_strlen(autocomp->query);
+	directory_search(path, autocomp, false, set_exec(path, autocomp->trimmed_input));
 	free(path);
-	wrap_up(&autocomp);
-	(void) a_bool;
-	return autocomp.search_result_final;
+	return ;
 }

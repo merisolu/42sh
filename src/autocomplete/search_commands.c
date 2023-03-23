@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:16:26 by amann             #+#    #+#             */
-/*   Updated: 2023/03/23 19:29:25 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/23 19:38:22 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,7 @@ static bool	search_builtins(t_auto *autocomp)
 		{
 			(autocomp->search_result_final)[autocomp->count] = ft_strdup((char *)builtins[i].name);
 			if (!((autocomp->search_result_final)[autocomp->count]))
-			{
 				return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-			}
 			(autocomp->count)++;
 		}
 		i++;
@@ -73,7 +71,7 @@ static bool	search_paths_loop(char **paths, t_auto *autocomp)
  * stop unless there is a second tab press.
 */
 
-void	search_commands(t_state *state, t_auto *autocomp)
+void	search_commands(t_auto *autocomp, t_state *state)
 {
 	char **paths;
 

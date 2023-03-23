@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/03/23 19:27:52 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/23 19:47:43 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,11 @@ static int	free_and_display(char **ti, t_state *state, char ***sr, bool f)
  * static var from main that monitors this
  */
 
+//TODO
+// we are currently allocating INPUT_MAX_SIZE char pointers to
+// the results array but this may cause problems if there are more
+// results. Look into allocating and resizing.
+
 int	autocomplete(t_state *state, bool second_tab)
 {
 	t_auto			autocomp;
@@ -142,15 +147,12 @@ int	autocomplete(t_state *state, bool second_tab)
 	autocomp.auto_bools.filtered = false;
 	autocomp.auto_bools.second_tab = second_tab;
 	if (autocomp.search_type == SEARCH_COMMAND)
-		search_commands(state, &autocomp);
+		search_commands(&autocomp, state);
 	else if (autocomp.search_type == SEARCH_FILE_PATH)
-	{
-		ft_putendl("\nhello");
-		return 0;
-	}
+		search_file_paths(&autocomp, state);
 	else
 		return 0;
-		/*autocomp.search_result_final = search_file_paths(&(autocomp.trimmed_input), &(autocomp.auto_bools), state);
+	/*
 	else if (autocomp.search_type == SEARCH_VARIABLE)
 		autocomp.search_result_final = search_variables(state, &(autocomp.trimmed_input), &(autocomp.auto_bools));*/
 	//ft_printf("control: %s %s %d\n", autocomp.trimmed_input, autocomp.search_result_final[0], autocomp.auto_bools.filtered);
