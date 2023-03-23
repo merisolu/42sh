@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:18 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/22 15:27:50 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/03/23 12:11:51 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 # if __linux__
 #  include <signal.h>
+#  define SIGEMT SIGBUS
 # endif
 
 # include "libft.h"

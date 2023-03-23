@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search_commands.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:16:26 by amann             #+#    #+#             */
-/*   Updated: 2023/02/17 11:08:14 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/03/23 12:55:12 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,29 +84,31 @@ static bool	search_paths_loop(char **paths, t_auto *autocomp)
  * stop unless there is a second tab press.
  */
 
-char	**search_commands(t_state *state, char **ti, t_auto_bools *a_bools)
+char	**search_commands(t_state *state, t_auto *autocomp)
 {
-	char	**search_result;
-	char	**paths;
-	char	*query;
-	int		count;
-	t_auto	autocomp;
-
+	char **sr;
+	char **paths;
+	char *query;
+	
+	int count;
 	paths = get_paths(state);
-	search_result = (char **) ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE);
-	if (!paths || !search_result)
-		return (print_error_ptr(free_all_return(&search_result, &paths),
+	sr = (char **) ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE);
+	autocomp->search_results = &sr;
+	if (!(paths) || !(*(autocomp->search_results)))
+		return (print_error_ptr(free_all_return(autocomp->search_results, &(paths)),
 				ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 	count = 0;
-	query = find_query(*ti, ' ', state, true);
-	initialise_autocomp(&autocomp, &query, &search_result, &count);
-	autocomp.query_len = ft_strlen(query);
-	if (!search_builtins(query, &search_result, &count, autocomp.query_len))
+	autocomp->count = &count;
+	query = find_query(autocomp->trimmed_input, ' ', state, true);
+	autocomp->query = &query;
+//	initialise_autocomp(&autocomp, &query, &search_result, &count);
+	autocomp->query_len = ft_strlen(*(autocomp->query));
+	if (!search_builtins(*(autocomp->query), autocomp->search_results, autocomp->count, autocomp->query_len))
 		return (NULL);
-	if (!search_paths_loop(paths, &autocomp))
-		return (free_all_return(&search_result, &paths));
-	ft_free_null_array((void **)paths);
-	if (ft_null_array_len((void **)search_result) == 0)
-		return (check_exec(autocomp, &query, a_bools, state));
-	return (wrap_up(&autocomp, a_bools));
+	if (!search_paths_loop(paths, autocomp))
+		return (free_all_return(autocomp->search_results, &(paths)));
+	ft_free_null_array((void **)(paths));
+	if (ft_null_array_len((void **)*(autocomp->search_results)) == 0)
+		return (check_exec(*autocomp, autocomp->query, &(autocomp->auto_bools), state));
+	return (wrap_up(autocomp, &(autocomp->auto_bools)));
 }

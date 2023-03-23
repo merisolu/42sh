@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   autocomplete.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/22 17:29:59 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/23 12:56:41 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,28 +128,28 @@ static int	free_and_display(char **ti, t_state *state, char ***sr, bool f)
 
 int	autocomplete(t_state *state, bool second_tab)
 {
-	char			*trimmed_input;
-	char			**search_result;
-	t_search_type	search_type;
-	t_auto_bools	a_bools;
+	t_auto			autocomp;
 
 	if (!state)
 		return (0);
-	trimmed_input = trim_input_to_cursor(state->input_context);
-	if (!trimmed_input)
+	ft_bzero((void *)&autocomp, sizeof(autocomp));
+	autocomp.trimmed_input = trim_input_to_cursor(state->input_context);
+	if (!autocomp.trimmed_input)
 		return (0);
-	if (ft_strequ(trimmed_input, "."))
-		return (autocomplete_handle_dot(state, trimmed_input));
-	search_type = get_search_type(trimmed_input);
-	a_bools.filtered = false;
-	a_bools.second_tab = second_tab;
-	search_result = NULL;
-	if (search_type == SEARCH_COMMAND)
-		search_result = search_commands(state, &trimmed_input, &a_bools);
-	else if (search_type == SEARCH_FILE_PATH)
-		search_result = search_file_paths(&trimmed_input, &a_bools, state);
-	else if (search_type == SEARCH_VARIABLE)
-		search_result = search_variables(state, &trimmed_input, &a_bools);
-	return (free_and_display(&trimmed_input, state, &search_result,
-			a_bools.filtered));
+	if (ft_strequ(autocomp.trimmed_input, "."))
+		return (autocomplete_handle_dot(state, autocomp.trimmed_input));
+	autocomp.search_type = get_search_type(autocomp.trimmed_input);
+	autocomp.auto_bools.filtered = false;
+	autocomp.auto_bools.second_tab = second_tab;
+	autocomp.search_result_final = NULL;
+	if (autocomp.search_type == SEARCH_COMMAND)
+		autocomp.search_result_final = search_commands(state, &autocomp);
+	else
+		return (0);
+	/*else if (autocomp.search_type == SEARCH_FILE_PATH)
+		autocomp.search_result_final = search_file_paths(&(autocomp.trimmed_input), &(autocomp.auto_bools), state);
+	else if (autocomp.search_type == SEARCH_VARIABLE)
+		autocomp.search_result_final = search_variables(state, &(autocomp.trimmed_input), &(autocomp.auto_bools));*/
+	return (free_and_display(&(autocomp.trimmed_input), state, &(autocomp.search_result_final),
+			autocomp.auto_bools.filtered));
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   autocomplete.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/22 17:28:59 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/23 12:53:54 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,23 @@ typedef enum e_search_type
 	SEARCH_VARIABLE
 }	t_search_type;
 
-typedef struct s_auto
-{
-	int		*count;
-	char	**query;
-	size_t	query_len;
-	char	***search_results;
-}			t_auto;
-
 typedef struct s_auto_bools
 {
 	bool	filtered;
 	bool	second_tab;
 }			t_auto_bools;
+
+typedef struct s_auto
+{
+	char			*trimmed_input;
+	t_search_type	search_type;
+	char			**search_result_final;
+	int				*count;
+	char			**query;
+	size_t			query_len;
+	char			***search_results;
+	t_auto_bools	auto_bools;
+}			t_auto;
 
 typedef struct s_autocomplete_display
 {
@@ -100,8 +104,7 @@ char	*find_query(char *str, char c, t_state *state, bool expand);
 void	insert_expansion(t_input_context *ctx, char *exp);
 
 /* search_commands.c */
-char	**search_commands(t_state *state, char **trimmed_input, \
-		t_auto_bools *a_bool);
+char	**search_commands(t_state *state, t_auto *autocomp);
 
 /* search_exec.c */
 char	**search_exec(char ***sr, char **ti, t_auto_bools *a_bool, \
