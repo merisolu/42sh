@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search_variables.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 18:37:40 by amann             #+#    #+#             */
-/*   Updated: 2023/02/22 13:22:08 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/23 13:07:20 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static t_auto	autocomp_setup(char **query, bool brackets, char ***sr)
 {
 	t_auto	autocomp;
 
-	autocomp.count = NULL;
+	autocomp.count = 0;
 	autocomp.query = query;
 	autocomp.query_len = ft_strlen(*query);
 	autocomp.search_results = sr;

@@ -6,13 +6,13 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:16:26 by amann             #+#    #+#             */
-/*   Updated: 2023/03/23 12:55:12 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/23 13:06:01 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
 
-static bool	search_builtins(char *query, char ***sr, int *count, size_t len)
+static bool	search_builtins(t_auto *autocomp)
 {
 	const t_cmd_dispatch	*builtins;
 	size_t					i;
@@ -21,16 +21,15 @@ static bool	search_builtins(char *query, char ***sr, int *count, size_t len)
 	i = 0;
 	while (builtins[i].run != NULL)
 	{
-		if (ft_strnequ(
-				query, builtins[i].name, len))
+		if (ft_strnequ(*(autocomp->query), builtins[i].name, autocomp->query_len))
 		{
-			(*sr)[*count] = ft_strdup((char *)builtins[i].name);
-			if (!(*sr)[*count])
+			(*(autocomp->search_results))[autocomp->count] = ft_strdup((char *)builtins[i].name);
+			if (!((*(autocomp->search_results))[autocomp->count]))
 			{
 				return (print_error_bool(false, ERRTEMPLATE_SIMPLE,
 						ERR_MALLOC_FAIL));
 			}
-			(*count)++;
+			(autocomp->count)++;
 		}
 		i++;
 	}
@@ -89,21 +88,18 @@ char	**search_commands(t_state *state, t_auto *autocomp)
 	char **sr;
 	char **paths;
 	char *query;
-	
-	int count;
+
 	paths = get_paths(state);
 	sr = (char **) ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE);
 	autocomp->search_results = &sr;
 	if (!(paths) || !(*(autocomp->search_results)))
 		return (print_error_ptr(free_all_return(autocomp->search_results, &(paths)),
 				ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	count = 0;
-	autocomp->count = &count;
 	query = find_query(autocomp->trimmed_input, ' ', state, true);
 	autocomp->query = &query;
 //	initialise_autocomp(&autocomp, &query, &search_result, &count);
 	autocomp->query_len = ft_strlen(*(autocomp->query));
-	if (!search_builtins(*(autocomp->query), autocomp->search_results, autocomp->count, autocomp->query_len))
+	if (!search_builtins(autocomp))
 		return (NULL);
 	if (!search_paths_loop(paths, autocomp))
 		return (free_all_return(autocomp->search_results, &(paths)));
