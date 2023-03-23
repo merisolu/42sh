@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/03/23 18:53:22 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/23 19:27:52 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,15 +143,20 @@ int	autocomplete(t_state *state, bool second_tab)
 	autocomp.auto_bools.second_tab = second_tab;
 	if (autocomp.search_type == SEARCH_COMMAND)
 		search_commands(state, &autocomp);
+	else if (autocomp.search_type == SEARCH_FILE_PATH)
+	{
+		ft_putendl("\nhello");
+		return 0;
+	}
 	else
-		return (0);
-	/*else if (autocomp.search_type == SEARCH_FILE_PATH)
-		autocomp.search_result_final = search_file_paths(&(autocomp.trimmed_input), &(autocomp.auto_bools), state);
+		return 0;
+		/*autocomp.search_result_final = search_file_paths(&(autocomp.trimmed_input), &(autocomp.auto_bools), state);
 	else if (autocomp.search_type == SEARCH_VARIABLE)
 		autocomp.search_result_final = search_variables(state, &(autocomp.trimmed_input), &(autocomp.auto_bools));*/
 	//ft_printf("control: %s %s %d\n", autocomp.trimmed_input, autocomp.search_result_final[0], autocomp.auto_bools.filtered);
 	//ft_putendl("\nhere");
 
+	wrap_up(&autocomp);
 	// NB we will need to free all pointers in autocomp struct
 	return (free_and_display(&(autocomp.trimmed_input), state, &(autocomp.search_result_final),
 			autocomp.auto_bools.filtered));

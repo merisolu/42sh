@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+         #
+#    By: amann <amann@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2023/02/23 12:19:18 by amann            ###   ########.fr        #
+#    Updated: 2023/03/23 19:29:14 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ AUTOCOMPLETE_FILES = autocomplete.c search_commands.c directory_search.c \
 					filter_matching.c truncate_result.c \
 					check_result_is_dir.c search_file_paths.c \
 					search_variables.c wrap_up.c search_env_intern.c \
-					find_query.c search_exec.c directory_search_loops.c\
+					find_query.c directory_search_loops.c\
 					autocomplete_display_control.c find_longest.c \
 					autocomplete_display_columns.c \
 					autocomplete_position_cursor.c insert_expansion.c \

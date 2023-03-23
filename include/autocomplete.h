@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/03/23 18:52:42 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/23 19:28:48 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,6 @@ void	insert_expansion(t_input_context *ctx, char *exp);
 
 /* search_commands.c */
 void	search_commands(t_state *state, t_auto *autocomp);
-
-/* search_exec.c */
-void	search_exec(t_auto *autocomp, t_state *state);
-void	check_exec(t_auto *autocomp, t_state *state);
 
 /* search_file_paths.c */
 char	**search_file_paths(char **trimmed_input, t_auto_bools *a_bool, \

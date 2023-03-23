@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 18:37:40 by amann             #+#    #+#             */
-/*   Updated: 2023/03/23 17:58:55 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/23 19:30:05 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static t_auto	autocomp_setup(char **query, bool brackets, char ***sr)
 	t_auto	autocomp;
 
 	autocomp.count = 0;
-	autocomp.query = query;
+	autocomp.query = *query;
 	autocomp.query_len = ft_strlen(*query);
 	autocomp.search_results = sr;
 	autocomp.query_len += 1;

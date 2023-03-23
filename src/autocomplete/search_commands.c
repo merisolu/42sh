@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:16:26 by amann             #+#    #+#             */
-/*   Updated: 2023/03/23 18:56:51 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/23 19:29:25 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ static bool	search_builtins(t_auto *autocomp)
 			(autocomp->search_result_final)[autocomp->count] = ft_strdup((char *)builtins[i].name);
 			if (!((autocomp->search_result_final)[autocomp->count]))
 			{
-				return (print_error_bool(false, ERRTEMPLATE_SIMPLE,
-						ERR_MALLOC_FAIL));
+				return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 			}
 			(autocomp->count)++;
 		}
@@ -72,7 +71,7 @@ static bool	search_paths_loop(char **paths, t_auto *autocomp)
  * If there is more than 1 possible solution, we check if there matching chars
  * beyond the end of the query string in all possible results. Otherwise, we
  * stop unless there is a second tab press.
- */
+*/
 
 void	search_commands(t_state *state, t_auto *autocomp)
 {
@@ -96,9 +95,5 @@ void	search_commands(t_state *state, t_auto *autocomp)
 		return ;
 	}
 	ft_free_null_array((void **)(paths));
-	//if (ft_null_array_len((void **)(autocomp->search_result_final)) == 0)
-	//	return (check_exec(autocomp, state));
-
-	wrap_up(autocomp);
 	return ;
 }
