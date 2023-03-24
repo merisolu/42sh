@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search_env_intern.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:49:42 by amann             #+#    #+#             */
-/*   Updated: 2023/01/16 17:11:15 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/24 17:25:55 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,28 +33,28 @@ static bool	free_temp_return(char *temp)
 			ERR_MALLOC_FAIL));
 }
 
-static bool	allocate_new_result(char ***sr, size_t *count, char *temp, bool b)
+static bool	allocate_new_result(t_auto *ac, char *temp, bool b)
 {
 	if (b)
 	{
-		(*(sr))[*count] = ft_strnew(sizeof(char) * (ft_strlen(temp) + 3));
-		if (!((*(sr))[*count]))
+		(ac->search_result_final)[ac->count] = ft_strnew(sizeof(char) * (ft_strlen(temp) + 3));
+		if (!((ac->search_result_final)[ac->count]))
 			return (free_temp_return(temp));
-		(*(sr))[*count][0] = '$';
-		(*(sr))[*count][1] = '{';
-		ft_strcpy(((*(sr))[*count]) + 2, temp);
-		(*(sr))[*count][ft_strlen(temp) + 2] = '}';
+		(ac->search_result_final)[ac->count][0] = '$';
+		(ac->search_result_final)[ac->count][1] = '{';
+		ft_strcpy(((ac->search_result_final)[ac->count]) + 2, temp);
+		(ac->search_result_final)[ac->count][ft_strlen(temp) + 2] = '}';
 	}
 	else
 	{
-		(*(sr))[*count] = ft_strnew(sizeof(char) * (ft_strlen(temp) + 1));
-		if (!((*(sr))[*count]))
+		(ac->search_result_final)[ac->count] = ft_strnew(sizeof(char) * (ft_strlen(temp) + 1));
+		if (!((ac->search_result_final)[ac->count]))
 			return (free_temp_return(temp));
-		(*(sr))[*count][0] = '$';
-		ft_strcpy(((*(sr))[*count]) + 1, temp);
+		(ac->search_result_final)[ac->count][0] = '$';
+		ft_strcpy(((ac->search_result_final)[ac->count]) + 1, temp);
 	}
 	free(temp);
-	(*count)++;
+	(ac->count)++;
 	return (true);
 }
 
@@ -73,27 +73,26 @@ static char	*get_temp(char *const *arr, size_t i)
 	return (res);
 }
 
-bool	search_env_intern(char *const *arr, char *query, char ***sr, bool b)
+bool	search_env_intern(char *const *arr, t_auto *autocomp, bool b)
 {
 	size_t	i;
-	size_t	count;
 	size_t	len;
 	char	*temp;
 
-	len = ft_strlen(query);
-	count = ft_null_array_len((void **)*sr);
+	len = ft_strlen(autocomp->query);
+	autocomp->count = ft_null_array_len((void **)(autocomp->search_result_final));
 	i = 0;
 	while (arr[i])
 	{
-		if (ft_strnequ(arr[i], query, len))
+		if (ft_strnequ(arr[i], autocomp->query, len))
 		{
 			temp = get_temp(arr, i);
 			if (!temp)
 				return (false);
-			if (!allocate_new_result(sr, &count, temp, b))
+			if (!allocate_new_result(autocomp, temp, b))
 				return (false);
 		}
-		if (count >= INPUT_MAX_SIZE - 1)
+		if (autocomp->count >= INPUT_MAX_SIZE - 1)
 			return (true);
 		i++;
 	}

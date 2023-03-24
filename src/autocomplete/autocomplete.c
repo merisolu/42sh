@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/03/23 19:47:43 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/24 17:20:04 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,11 +129,12 @@ static int	free_and_display(char **ti, t_state *state, char ***sr, bool f)
 //TODO
 // we are currently allocating INPUT_MAX_SIZE char pointers to
 // the results array but this may cause problems if there are more
-// results. Look into allocating and resizing.
+// results. Look into allocating and resizing. ATM directory_search will just
+// stop when the limit is reached, but this could be better
 
 int	autocomplete(t_state *state, bool second_tab)
 {
-	t_auto			autocomp;
+	t_auto	autocomp;
 
 	if (!state)
 		return (0);
@@ -151,12 +152,11 @@ int	autocomplete(t_state *state, bool second_tab)
 	else if (autocomp.search_type == SEARCH_FILE_PATH)
 		search_file_paths(&autocomp, state);
 	else
-		return 0;
-	/*
-	else if (autocomp.search_type == SEARCH_VARIABLE)
-		autocomp.search_result_final = search_variables(state, &(autocomp.trimmed_input), &(autocomp.auto_bools));*/
+		search_variables(&autocomp, state);
 	//ft_printf("control: %s %s %d\n", autocomp.trimmed_input, autocomp.search_result_final[0], autocomp.auto_bools.filtered);
-	//ft_putendl("\nhere");
+	ft_putendl("\n");
+	for (int i = 0; (autocomp.search_result_final)[i]; i++)
+		ft_putendl((autocomp.search_result_final)[i]);
 
 	wrap_up(&autocomp);
 	// NB we will need to free all pointers in autocomp struct

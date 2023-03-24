@@ -6,58 +6,37 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 18:37:40 by amann             #+#    #+#             */
-/*   Updated: 2023/03/23 19:30:05 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/24 17:22:17 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
-
-static t_auto	autocomp_setup(char **query, bool brackets, char ***sr)
-{
-	t_auto	autocomp;
-
-	autocomp.count = 0;
-	autocomp.query = *query;
-	autocomp.query_len = ft_strlen(*query);
-	autocomp.search_results = sr;
-	autocomp.query_len += 1;
-	if (brackets)
-		autocomp.query_len += 1;
-	return (autocomp);
-}
 
 static bool	c_b(char *dollar_start)
 {
 	return (*(dollar_start + 1) == '{');
 }
 
-char	**search_variables(t_state *s, char **ti, t_auto_bools *a_bools)
+void	search_variables(t_auto *autocomp, t_state *state)
 {
-	char	**search_result;
 	char	*dollar;
-	char	*query;
 	char	*temp;
-	t_auto	autocomp;
 
-	search_result = (char **) ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE);
-	if (!search_result || !ti)
-		return (print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
-	temp = find_query(*ti, ' ', s, false);
+	autocomp->search_result_final = (char **) ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE);
+	if (!(autocomp->search_result_final))
+	{
+		print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
+		return ;
+	}
+	temp = find_query(autocomp->trimmed_input, ' ', state, false);
 	dollar = ft_strchr(temp, '$');
 	if (c_b(dollar))
-		query = ft_strdup(dollar + 2);
+		autocomp->query = ft_strdup(dollar + 2);
 	else
-		query = ft_strdup(dollar + 1);
-	if (!search_env_intern(s->env, query, &search_result, c_b(dollar))
-		|| !search_env_intern(s->intern, query, &search_result, c_b(dollar)))
-	{
-		free(temp);
-		ft_free_null_array((void **)search_result);
-		return (NULL);
-	}
+		autocomp->query = ft_strdup(dollar + 1);
+	autocomp->query_len = ft_strlen(autocomp->query) + c_b(dollar);
+	search_env_intern(state->env, autocomp, c_b(dollar));
+	search_env_intern(state->intern, autocomp, c_b(dollar));
 	free(temp);
-	autocomp = autocomp_setup(&query, c_b(dollar), &search_result);
-	(void) a_bools;
-	wrap_up(&autocomp);
-	return autocomp.search_result_final;
+	return ;
 }

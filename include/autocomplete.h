@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/03/23 19:39:55 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/24 17:27:57 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,10 +111,10 @@ void	search_file_paths(t_auto *autocomp, t_state *state);
 size_t	last_slash(char *str);
 
 /* search_variables.c */
-char	**search_variables(t_state *state, char **ti, t_auto_bools *a_bool);
+void	search_variables(t_auto *autocomp, t_state *state);
 
 /* search_env_intern.c */
-bool	search_env_intern(char *const *arr, char *query, char ***sr, bool b);
+bool	search_env_intern(char *const *arr, t_auto *autocomp, bool b);
 
 /* directory_search.c */
 int		directory_search(char *path, t_auto *autocomp, bool bin, bool exec);
