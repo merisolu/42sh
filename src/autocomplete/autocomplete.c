@@ -6,19 +6,11 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/03/24 17:20:04 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/24 17:49:01 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
-
-void	initialise_autocomp(t_auto *autocomp, char **query, \
-		char ***search_result, int *count)
-{
-	autocomp->query = *query;
-	autocomp->search_results = search_result;
-	autocomp->count = *count;
-}
 
 /*
  * We need to base our search on the cursor position in the string and its
@@ -26,11 +18,11 @@ void	initialise_autocomp(t_auto *autocomp, char **query, \
  * any whitespace chars preceding the first word.
  */
 
-static char	*trim_input_to_cursor(t_input_context ic)
+static char *trim_input_to_cursor(t_input_context ic)
 {
-	char	*input_to_cursor;
-	char	*trimmed_input;
-	int		i;
+	char *input_to_cursor;
+	char *trimmed_input;
+	int i;
 
 	if (ft_strlen(ic.input) == 0 || ic.cursor == 0)
 		return (ft_strdup(""));
@@ -65,11 +57,11 @@ static char	*trim_input_to_cursor(t_input_context ic)
  * then we know we are looking for a variable name.
  */
 
-static t_search_type	get_search_type(char *trimmed_input)
+static t_search_type get_search_type(char *trimmed_input)
 {
-	int		i;
-	int		res;
-	char	c;
+	int i;
+	int res;
+	char c;
 
 	res = SEARCH_COMMAND;
 	i = 0;
@@ -85,18 +77,20 @@ static t_search_type	get_search_type(char *trimmed_input)
 	return (res);
 }
 
-//if an autocommpletion happens, tab should be reset.
-//This can be controlled by the return value
+// if an autocommpletion happens, tab should be reset.
+// This can be controlled by the return value
 
-static int	free_and_display(char **ti, t_state *state, char ***sr, bool f)
+static int free_and_display(t_auto *autocomp, t_state *state)
 {
-	int	ret;
+	int ret;
 
-	ft_strdel(ti);
-	if (!*sr)
-		return (0);
-	ret = autocomplete_display_control(state, sr, f);
-	ft_free_null_array((void **) *sr);
+	ret = autocomplete_display_control(
+		state,
+		&(autocomp->search_result),
+		autocomp->auto_bools.filtered);
+	ft_free_null_array((void **)(autocomp->search_result));
+	ft_strdel(&(autocomp->trimmed_input));
+	ft_strdel(&(autocomp->query));
 	return (ret);
 }
 
@@ -126,15 +120,18 @@ static int	free_and_display(char **ti, t_state *state, char ***sr, bool f)
  * static var from main that monitors this
  */
 
-//TODO
-// we are currently allocating INPUT_MAX_SIZE char pointers to
-// the results array but this may cause problems if there are more
-// results. Look into allocating and resizing. ATM directory_search will just
-// stop when the limit is reached, but this could be better
+// TODO
+//  we are currently allocating INPUT_MAX_SIZE char pointers to
+//  the results array but this may cause problems if there are more
+//  results. Look into allocating and resizing. ATM directory_search will just
+//  stop when the limit is reached, but this could be better
 
-int	autocomplete(t_state *state, bool second_tab)
+// variable result being printed incorrectly
+// second_tab not working properly
+
+int autocomplete(t_state *state, bool second_tab)
 {
-	t_auto	autocomp;
+	t_auto autocomp;
 
 	if (!state)
 		return (0);
@@ -146,20 +143,19 @@ int	autocomplete(t_state *state, bool second_tab)
 		return (autocomplete_handle_dot(state, autocomp.trimmed_input));
 	autocomp.search_type = get_search_type(autocomp.trimmed_input);
 	autocomp.auto_bools.filtered = false;
-	autocomp.auto_bools.second_tab = second_tab;
+	(autocomp.auto_bools).second_tab = second_tab;
 	if (autocomp.search_type == SEARCH_COMMAND)
 		search_commands(&autocomp, state);
 	else if (autocomp.search_type == SEARCH_FILE_PATH)
 		search_file_paths(&autocomp, state);
 	else
 		search_variables(&autocomp, state);
-	//ft_printf("control: %s %s %d\n", autocomp.trimmed_input, autocomp.search_result_final[0], autocomp.auto_bools.filtered);
+	// ft_printf("control: %s %s %d\n", autocomp.trimmed_input, autocomp.search_result[0], autocomp.auto_bools.filtered);
 	ft_putendl("\n");
-	for (int i = 0; (autocomp.search_result_final)[i]; i++)
-		ft_putendl((autocomp.search_result_final)[i]);
+	for (int i = 0; (autocomp.search_result)[i]; i++)
+		ft_putendl((autocomp.search_result)[i]);
 
 	wrap_up(&autocomp);
 	// NB we will need to free all pointers in autocomp struct
-	return (free_and_display(&(autocomp.trimmed_input), state, &(autocomp.search_result_final),
-			autocomp.auto_bools.filtered));
+	return (free_and_display(&autocomp, state));
 }

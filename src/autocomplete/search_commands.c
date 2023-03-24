@@ -6,16 +6,16 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:16:26 by amann             #+#    #+#             */
-/*   Updated: 2023/03/23 19:38:22 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/24 17:48:06 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
 
-static bool	search_builtins(t_auto *autocomp)
+static bool search_builtins(t_auto *autocomp)
 {
-	const t_cmd_dispatch	*builtins;
-	size_t					i;
+	const t_cmd_dispatch *builtins;
+	size_t i;
 
 	builtins = get_built_in_dispatch();
 	i = 0;
@@ -23,8 +23,8 @@ static bool	search_builtins(t_auto *autocomp)
 	{
 		if (ft_strnequ(autocomp->query, builtins[i].name, autocomp->query_len))
 		{
-			(autocomp->search_result_final)[autocomp->count] = ft_strdup((char *)builtins[i].name);
-			if (!((autocomp->search_result_final)[autocomp->count]))
+			(autocomp->search_result)[autocomp->count] = ft_strdup((char *)builtins[i].name);
+			if (!((autocomp->search_result)[autocomp->count]))
 				return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 			(autocomp->count)++;
 		}
@@ -33,9 +33,9 @@ static bool	search_builtins(t_auto *autocomp)
 	return (true);
 }
 
-static char	**get_paths(t_state *state)
+static char **get_paths(t_state *state)
 {
-	char	*path_var;
+	char *path_var;
 
 	path_var = env_get("PATH", state->env);
 	if (!path_var)
@@ -45,9 +45,9 @@ static char	**get_paths(t_state *state)
 	return (ft_strsplit(path_var, ':'));
 }
 
-static bool	search_paths_loop(char **paths, t_auto *autocomp)
+static bool search_paths_loop(char **paths, t_auto *autocomp)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (paths[i])
@@ -69,29 +69,29 @@ static bool	search_paths_loop(char **paths, t_auto *autocomp)
  * If there is more than 1 possible solution, we check if there matching chars
  * beyond the end of the query string in all possible results. Otherwise, we
  * stop unless there is a second tab press.
-*/
+ */
 
-void	search_commands(t_auto *autocomp, t_state *state)
+void search_commands(t_auto *autocomp, t_state *state)
 {
 	char **paths;
 
 	paths = get_paths(state);
-	autocomp->search_result_final = (char **) ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE);
-	if (!(paths) || !(autocomp->search_result_final))
+	autocomp->search_result = (char **)ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE);
+	if (!(paths) || !(autocomp->search_result))
 	{
 		ft_free_null_array((void **)paths);
 		print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
-		return ;
+		return;
 	}
 	autocomp->query = find_query(autocomp->trimmed_input, ' ', state, true);
 	autocomp->query_len = ft_strlen(autocomp->query);
 	if (!search_builtins(autocomp))
-		return ;
+		return;
 	if (!search_paths_loop(paths, autocomp))
 	{
 		ft_free_null_array((void **)paths);
-		return ;
+		return;
 	}
 	ft_free_null_array((void **)(paths));
-	return ;
+	return;
 }

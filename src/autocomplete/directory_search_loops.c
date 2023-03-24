@@ -6,16 +6,16 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 13:56:14 by amann             #+#    #+#             */
-/*   Updated: 2023/03/24 15:28:17 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/24 17:48:06 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
 
-static int	check_execution_rights(char *path, char *name)
+static int check_execution_rights(char *path, char *name)
 {
-	int		result;
-	char	*temp;
+	int result;
+	char *temp;
 
 	ft_path_join(path, name, &temp);
 	if (!temp)
@@ -25,10 +25,10 @@ static int	check_execution_rights(char *path, char *name)
 	return (result);
 }
 
-static int	check_match_is_file(char *path, char *name)
+static int check_match_is_file(char *path, char *name)
 {
-	int		result;
-	char	*temp;
+	int result;
+	char *temp;
 
 	ft_path_join(path, name, &temp);
 	if (!temp)
@@ -38,17 +38,14 @@ static int	check_match_is_file(char *path, char *name)
 	return (result);
 }
 
-int	exec_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir)
+int exec_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir)
 {
-	if (ft_strnequ(ac->query, entry->d_name, ac->query_len)
-		&& check_execution_rights(path, entry->d_name) == 1)
+	if (ft_strnequ(ac->query, entry->d_name, ac->query_len) && check_execution_rights(path, entry->d_name) == 1)
 	{
-		if (ac->query_len == 0
-			&& (ft_strequ(entry->d_name, ".")
-				|| ft_strequ(entry->d_name, "..")))
+		if (ac->query_len == 0 && (ft_strequ(entry->d_name, ".") || ft_strequ(entry->d_name, "..")))
 			return (0);
-		(ac->search_result_final)[ac->count] = ft_strdup(entry->d_name);
-		if (!((ac->search_result_final)[ac->count]))
+		(ac->search_result)[ac->count] = ft_strdup(entry->d_name);
+		if (!((ac->search_result)[ac->count]))
 		{
 			closedir(dir);
 			return (print_error(-1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
@@ -60,14 +57,12 @@ int	exec_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir)
 	return (0);
 }
 
-int	bin_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir)
+int bin_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir)
 {
-	if (ft_strnequ(ac->query, entry->d_name, ac->query_len)
-		&& check_execution_rights(path, entry->d_name) == 1
-		&& check_match_is_file(path, entry->d_name) == 1)
+	if (ft_strnequ(ac->query, entry->d_name, ac->query_len) && check_execution_rights(path, entry->d_name) == 1 && check_match_is_file(path, entry->d_name) == 1)
 	{
-		(ac->search_result_final)[ac->count] = ft_strdup(entry->d_name);
-		if (!((ac->search_result_final)[ac->count]))
+		(ac->search_result)[ac->count] = ft_strdup(entry->d_name);
+		if (!((ac->search_result)[ac->count]))
 		{
 			closedir(dir);
 			return (print_error(-1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
@@ -77,16 +72,14 @@ int	bin_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir)
 	return (0);
 }
 
-int	fp_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir)
+int fp_search(char *path, t_auto *ac, struct dirent *entry, DIR *dir)
 {
 	if (ft_strnequ(ac->query, entry->d_name, ac->query_len))
 	{
-		if (ac->query_len == 0
-			&& (ft_strequ(entry->d_name, ".")
-				|| ft_strequ(entry->d_name, "..")))
+		if (ac->query_len == 0 && (ft_strequ(entry->d_name, ".") || ft_strequ(entry->d_name, "..")))
 			return (0);
-		(ac->search_result_final)[ac->count] = ft_strdup(entry->d_name);
-		if (!((ac->search_result_final)[ac->count]))
+		(ac->search_result)[ac->count] = ft_strdup(entry->d_name);
+		if (!((ac->search_result)[ac->count]))
 		{
 			closedir(dir);
 			return (print_error(-1, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));

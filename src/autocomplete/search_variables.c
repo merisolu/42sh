@@ -6,27 +6,27 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 18:37:40 by amann             #+#    #+#             */
-/*   Updated: 2023/03/24 17:22:17 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/24 17:48:06 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
 
-static bool	c_b(char *dollar_start)
+static bool c_b(char *dollar_start)
 {
 	return (*(dollar_start + 1) == '{');
 }
 
-void	search_variables(t_auto *autocomp, t_state *state)
+void search_variables(t_auto *autocomp, t_state *state)
 {
-	char	*dollar;
-	char	*temp;
+	char *dollar;
+	char *temp;
 
-	autocomp->search_result_final = (char **) ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE);
-	if (!(autocomp->search_result_final))
+	autocomp->search_result = (char **)ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE);
+	if (!(autocomp->search_result))
 	{
 		print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
-		return ;
+		return;
 	}
 	temp = find_query(autocomp->trimmed_input, ' ', state, false);
 	dollar = ft_strchr(temp, '$');
@@ -38,5 +38,5 @@ void	search_variables(t_auto *autocomp, t_state *state)
 	search_env_intern(state->env, autocomp, c_b(dollar));
 	search_env_intern(state->intern, autocomp, c_b(dollar));
 	free(temp);
-	return ;
+	return;
 }

@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/03/24 17:27:57 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/24 17:49:19 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,10 @@ typedef struct s_auto
 {
 	char			*trimmed_input;
 	t_search_type	search_type;
-	char			**search_result_final;
+	char			**search_result;
 	int				count;
 	char			*query;
 	size_t			query_len;
-	char			***search_results;
 	t_auto_bools	auto_bools;
 }			t_auto;
 
@@ -69,8 +68,6 @@ typedef struct s_autocomplete_display
 
 /* autocomplete.c */
 int		autocomplete(t_state *state, bool second_tab);
-void	initialise_autocomp(t_auto *autocomp, char **query, \
-		char ***search_result, int *count);
 
 /* autocomplete_display_control.c */
 int		autocomplete_display_control(t_state *state, char ***search_result, \

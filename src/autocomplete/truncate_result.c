@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 14:41:37 by amann             #+#    #+#             */
-/*   Updated: 2023/03/23 13:35:28 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/24 17:48:06 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,18 @@
  * of the search query.
  */
 
-void	truncate_result(t_auto *autocomp)
+void truncate_result(t_auto *autocomp)
 {
-	char	*truncated;
+	char *truncated;
 
 	truncated = ft_strdup(
-			((autocomp->search_result_final)[0]) + autocomp->query_len
-			);
+		((autocomp->search_result)[0]) + autocomp->query_len);
 	if (!truncated)
 	{
 		print_error_ptr(NULL, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
-		return ;
+		return;
 	}
-	ft_strdel(&((autocomp->search_result_final)[0]));
-	(autocomp->search_result_final)[0] = truncated;
-	return ;
+	ft_strdel(&((autocomp->search_result)[0]));
+	(autocomp->search_result)[0] = truncated;
+	return;
 }
