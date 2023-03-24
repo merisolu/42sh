@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:05:12 by amann             #+#    #+#             */
-/*   Updated: 2023/03/23 13:07:03 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/24 15:27:48 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ bool	check_result_is_dir(char *path, t_auto *autocomp, \
 		}
 		ft_strcpy(temp, entry->d_name);
 		temp[ft_strlen(entry->d_name)] = '/';
-		ft_strdel(&((*(autocomp->search_results))[(autocomp->count)]));
-		(*(autocomp->search_results))[(autocomp->count)] = temp;
+		ft_strdel(&((autocomp->search_result_final)[autocomp->count]));
+		(autocomp->search_result_final)[autocomp->count] = temp;
 	}
 	free(full_path);
 	return (true);
