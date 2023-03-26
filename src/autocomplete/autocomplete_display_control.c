@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:02:48 by amann             #+#    #+#             */
-/*   Updated: 2023/03/26 16:28:21 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/26 17:10:55 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,13 @@ static bool	autocomplete_display_warning(t_state *state, size_t len)
  *
 */
 
-static void	append_space(char **text)
+static void	append_space(t_input_context *ctx, char **text, bool filtered)
 {
 	char	*temp;
 
+	if (ctx->input[ctx->cursor] || filtered
+		|| (*text)[ft_strlen(*text) - 1] == '/')
+		return ;
 	temp = ft_strnew(sizeof(char) * (ft_strlen(*text) + 1));
 	if (!temp)
 		return ;
@@ -77,9 +80,7 @@ static int	insert_text(t_input_context *ctx, char **text, bool filtered)
 	size_t	new_cursor_pos;
 	size_t	text_len;
 
-	if (!(ctx->input[ctx->cursor]) && !filtered
-		&& (*text)[ft_strlen(*text) - 1] != '/')
-		append_space(text);
+	append_space(ctx, text, filtered);
 	text_len = ft_strlen(*text);
 	new_cursor_pos = ctx->cursor + text_len;
 	limit_reached = ft_strlen(ctx->input) + text_len >= INPUT_MAX_SIZE;
@@ -106,7 +107,7 @@ int	autocomplete_display_control(t_auto *autocomp, t_state *state)
 	if (len == 1)
 		return (insert_text(
 				&(state->input_context),
-				&((autocomp->search_result)[0]),
+				&(autocomp->search_result[0]),
 				autocomp->auto_bools.filtered
 				));
 	else if (len)

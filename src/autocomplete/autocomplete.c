@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/03/26 16:15:28 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/26 17:03:54 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,8 +151,9 @@ int autocomplete(t_state *state, bool second_tab)
 //	ft_putendl("\n");
 //	for (int i = 0; (autocomp.search_result)[i]; i++)
 //		ft_putendl((autocomp.search_result)[i]);
-
+	
 	wrap_up(&autocomp);
+
 	// NB we will need to free all pointers in autocomp struct
 	return (free_and_display(&autocomp, state));
 }

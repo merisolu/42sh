@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 18:37:40 by amann             #+#    #+#             */
-/*   Updated: 2023/03/24 17:48:06 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/26 17:10:20 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void search_variables(t_auto *autocomp, t_state *state)
 		autocomp->query = ft_strdup(dollar + 2);
 	else
 		autocomp->query = ft_strdup(dollar + 1);
-	autocomp->query_len = ft_strlen(autocomp->query) + c_b(dollar);
+	autocomp->query_len = ft_strlen(autocomp->query) + c_b(dollar) + 1;
 	search_env_intern(state->env, autocomp, c_b(dollar));
 	search_env_intern(state->intern, autocomp, c_b(dollar));
 	free(temp);
