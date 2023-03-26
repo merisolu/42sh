@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/03/24 17:49:19 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/26 16:24:48 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@
 # include "cursor.h"
 # include "signals.h"
 # include "expansion.h"
+
+/* Constants */
+
+# define AUTOCOMP_DISPLAY_LIMIT 100
 
 /* Structs and enums */
 
@@ -70,8 +74,7 @@ typedef struct s_autocomplete_display
 int		autocomplete(t_state *state, bool second_tab);
 
 /* autocomplete_display_control.c */
-int		autocomplete_display_control(t_state *state, char ***search_result, \
-		bool filtered);
+int		autocomplete_display_control(t_auto *autocomp, t_state *state);
 
 /* autocomplete_display_columns.c */
 void	autocomplete_display_columns(char **search_result, size_t len, \

@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/03/24 17:49:01 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/26 16:15:28 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,7 @@ static int free_and_display(t_auto *autocomp, t_state *state)
 {
 	int ret;
 
-	ret = autocomplete_display_control(
-		state,
-		&(autocomp->search_result),
-		autocomp->auto_bools.filtered);
+	ret = autocomplete_display_control(autocomp, state);
 	ft_free_null_array((void **)(autocomp->search_result));
 	ft_strdel(&(autocomp->trimmed_input));
 	ft_strdel(&(autocomp->query));
@@ -118,7 +115,7 @@ static int free_and_display(t_auto *autocomp, t_state *state)
  * multiple, nothing happens, until tab is pressed again, and then all
  * possible propositions are printed to the STDOUT. The tab arg is a
  * static var from main that monitors this
- */
+*/
 
 // TODO
 //  we are currently allocating INPUT_MAX_SIZE char pointers to
@@ -151,9 +148,9 @@ int autocomplete(t_state *state, bool second_tab)
 	else
 		search_variables(&autocomp, state);
 	// ft_printf("control: %s %s %d\n", autocomp.trimmed_input, autocomp.search_result[0], autocomp.auto_bools.filtered);
-	ft_putendl("\n");
-	for (int i = 0; (autocomp.search_result)[i]; i++)
-		ft_putendl((autocomp.search_result)[i]);
+//	ft_putendl("\n");
+//	for (int i = 0; (autocomp.search_result)[i]; i++)
+//		ft_putendl((autocomp.search_result)[i]);
 
 	wrap_up(&autocomp);
 	// NB we will need to free all pointers in autocomp struct

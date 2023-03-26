@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   autocomplete_display_control.c                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:02:48 by amann             #+#    #+#             */
-/*   Updated: 2023/02/16 13:59:36 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/03/26 16:28:21 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
 
-bool	autocomplete_display_warning(t_state *state, size_t len)
+static bool	autocomplete_display_warning(t_state *state, size_t len)
 {
 	char	buffer[BUF_SIZE + 1];
 	size_t	orig_cursor;
@@ -47,15 +47,15 @@ bool	autocomplete_display_warning(t_state *state, size_t len)
  * In all other cases, we need to present the user with all the possible
  * things it could be. They are displayed in lexicographical order and
  * in nice neat columns, with no duplicates. The sorting is handled in
- * wrap_up.
+ * wrap_up().
  *
- * If there are a lot of possibilities, with prompt the user with a warning
+ * If there are a lot of possibilities, we prompt the user with a warning
  * before dumping loads of text on to the STDOUT. The default min in bash
  * for this warning to be given is 100 (completion-query-items):
  *
  * https://www.gnu.org/software/bash/manual/bash.html#Readline-Init-File-Syntax
  *
- */
+*/
 
 static void	append_space(char **text)
 {
@@ -73,6 +73,7 @@ static void	append_space(char **text)
 static int	insert_text(t_input_context *ctx, char **text, bool filtered)
 {
 	int		limit_reached;
+	char	*crs_start;
 	size_t	new_cursor_pos;
 	size_t	text_len;
 
@@ -88,32 +89,33 @@ static int	insert_text(t_input_context *ctx, char **text, bool filtered)
 		text_len = ft_strlen(*text);
 		new_cursor_pos = ctx->cursor + text_len;
 	}
-	ft_memmove(
-		ctx->input + ctx->cursor + text_len,
-		ctx->input + ctx->cursor,
-		ft_strlen(ctx->input + ctx->cursor));
-	ft_memcpy(ctx->input + ctx->cursor, *text, text_len);
+	crs_start = ctx->input + ctx->cursor;
+	ft_memmove(crs_start + text_len, crs_start, ft_strlen(crs_start));
+	ft_memcpy(crs_start, *text, text_len);
 	ctx->cursor = new_cursor_pos;
 	if (limit_reached)
 		ft_putstr(tgetstr("bl", NULL));
 	return (1);
 }
 
-int	autocomplete_display_control(t_state *state, char ***search_result, \
-		bool filtered)
+int	autocomplete_display_control(t_auto *autocomp, t_state *state)
 {
 	size_t			len;
 
-	len = ft_null_array_len((void **)(*search_result));
+	len = ft_null_array_len((void **)(autocomp->search_result));
 	if (len == 1)
-		return (insert_text(&(state->input_context), &((*search_result)[0]), \
-				filtered));
+		return (insert_text(
+				&(state->input_context),
+				&((autocomp->search_result)[0]),
+				autocomp->auto_bools.filtered
+				));
 	else if (len)
 	{
-		len = ft_null_array_len((void **)(*search_result));
-		if (len > 100 && !autocomplete_display_warning(state, len))
+		len = ft_null_array_len((void **)(autocomp->search_result));
+		if (len > AUTOCOMP_DISPLAY_LIMIT
+			&& !autocomplete_display_warning(state, len))
 			return (0);
-		autocomplete_display_columns(*search_result, len, state);
+		autocomplete_display_columns(autocomp->search_result, len, state);
 	}
 	return (-1);
 }
