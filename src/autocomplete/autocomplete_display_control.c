@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:02:48 by amann             #+#    #+#             */
-/*   Updated: 2023/03/26 17:10:55 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/26 17:35:23 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	autocomplete_display_control(t_auto *autocomp, t_state *state)
 	if (len == 1)
 		return (insert_text(
 				&(state->input_context),
-				&(autocomp->search_result[0]),
+				autocomp->search_result,
 				autocomp->auto_bools.filtered
 				));
 	else if (len)
