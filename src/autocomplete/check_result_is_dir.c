@@ -6,23 +6,23 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 16:05:12 by amann             #+#    #+#             */
-/*   Updated: 2023/03/24 17:48:06 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/27 15:51:59 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
 
-static bool close_and_return(DIR *dir)
+static bool	close_and_return(DIR *dir)
 {
 	closedir(dir);
 	return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 }
 
-bool check_result_is_dir(char *path, t_auto *autocomp,
-						 struct dirent *entry, DIR *dir)
+bool	check_result_is_dir(char *path, t_auto *autocomp, struct dirent *entry, \
+			DIR *dir)
 {
-	char *temp;
-	char *full_path;
+	char	*temp;
+	char	*full_path;
 
 	full_path = ft_strjoin(path, entry->d_name);
 	if (!full_path)

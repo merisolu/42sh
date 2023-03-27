@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/03/26 17:03:54 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/27 15:50:20 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
  * any whitespace chars preceding the first word.
  */
 
-static char *trim_input_to_cursor(t_input_context ic)
+static char	*trim_input_to_cursor(t_input_context ic)
 {
-	char *input_to_cursor;
-	char *trimmed_input;
-	int i;
+	char	*input_to_cursor;
+	char	*trimmed_input;
+	int		i;
 
 	if (ft_strlen(ic.input) == 0 || ic.cursor == 0)
 		return (ft_strdup(""));
@@ -57,11 +57,11 @@ static char *trim_input_to_cursor(t_input_context ic)
  * then we know we are looking for a variable name.
  */
 
-static t_search_type get_search_type(char *trimmed_input)
+static t_search_type	get_search_type(char *trimmed_input)
 {
-	int i;
-	int res;
-	char c;
+	int		i;
+	int		res;
+	char	c;
 
 	res = SEARCH_COMMAND;
 	i = 0;
@@ -77,12 +77,9 @@ static t_search_type get_search_type(char *trimmed_input)
 	return (res);
 }
 
-// if an autocommpletion happens, tab should be reset.
-// This can be controlled by the return value
-
-static int free_and_display(t_auto *autocomp, t_state *state)
+static int	free_and_display(t_auto *autocomp, t_state *state)
 {
-	int ret;
+	int	ret;
 
 	ret = autocomplete_display_control(autocomp, state);
 	ft_free_null_array((void **)(autocomp->search_result));
@@ -126,9 +123,9 @@ static int free_and_display(t_auto *autocomp, t_state *state)
 // variable result being printed incorrectly
 // second_tab not working properly
 
-int autocomplete(t_state *state, bool second_tab)
+int	autocomplete(t_state *state, bool second_tab)
 {
-	t_auto autocomp;
+	t_auto	autocomp;
 
 	if (!state)
 		return (0);
@@ -147,13 +144,6 @@ int autocomplete(t_state *state, bool second_tab)
 		search_file_paths(&autocomp, state);
 	else
 		search_variables(&autocomp, state);
-	// ft_printf("control: %s %s %d\n", autocomp.trimmed_input, autocomp.search_result[0], autocomp.auto_bools.filtered);
-//	ft_putendl("\n");
-//	for (int i = 0; (autocomp.search_result)[i]; i++)
-//		ft_putendl((autocomp.search_result)[i]);
-	
 	wrap_up(&autocomp);
-
-	// NB we will need to free all pointers in autocomp struct
 	return (free_and_display(&autocomp, state));
 }

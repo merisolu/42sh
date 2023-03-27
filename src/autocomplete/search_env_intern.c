@@ -6,15 +6,15 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:49:42 by amann             #+#    #+#             */
-/*   Updated: 2023/03/24 17:48:06 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/27 16:17:35 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
 
-static size_t find_equals(char *str)
+static size_t	find_equals(char *str)
 {
-	size_t res;
+	size_t	res;
 
 	res = 0;
 	while (str[res])
@@ -26,18 +26,19 @@ static size_t find_equals(char *str)
 	return (0);
 }
 
-static bool free_temp_return(char *temp)
+static bool	free_temp_return(char *temp)
 {
 	free(temp);
-	return (print_error_bool(false, ERRTEMPLATE_SIMPLE,
-							 ERR_MALLOC_FAIL));
+	return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL));
 }
 
-static bool allocate_new_result(t_auto *ac, char *temp, bool b)
+static bool	allocate_new_result(t_auto *ac, char *temp, bool b)
 {
 	if (b)
 	{
-		(ac->search_result)[ac->count] = ft_strnew(sizeof(char) * (ft_strlen(temp) + 3));
+		(ac->search_result)[ac->count] = ft_strnew(
+				sizeof(char) * (ft_strlen(temp) + 3)
+				);
 		if (!((ac->search_result)[ac->count]))
 			return (free_temp_return(temp));
 		(ac->search_result)[ac->count][0] = '$';
@@ -47,7 +48,9 @@ static bool allocate_new_result(t_auto *ac, char *temp, bool b)
 	}
 	else
 	{
-		(ac->search_result)[ac->count] = ft_strnew(sizeof(char) * (ft_strlen(temp) + 1));
+		(ac->search_result)[ac->count] = ft_strnew(
+				sizeof(char) * (ft_strlen(temp) + 1)
+				);
 		if (!((ac->search_result)[ac->count]))
 			return (free_temp_return(temp));
 		(ac->search_result)[ac->count][0] = '$';
@@ -58,10 +61,10 @@ static bool allocate_new_result(t_auto *ac, char *temp, bool b)
 	return (true);
 }
 
-static char *get_temp(char *const *arr, size_t i)
+static char	*get_temp(char *const *arr, size_t i)
 {
-	size_t equals_idx;
-	char *res;
+	size_t	equals_idx;
+	char	*res;
 
 	equals_idx = find_equals(arr[i]);
 	if (equals_idx == 0)
@@ -69,15 +72,15 @@ static char *get_temp(char *const *arr, size_t i)
 	res = ft_strndup(arr[i], equals_idx);
 	if (!res)
 		return ((char *)print_error_ptr(NULL, ERRTEMPLATE_SIMPLE,
-										ERR_MALLOC_FAIL));
+				ERR_MALLOC_FAIL));
 	return (res);
 }
 
-bool search_env_intern(char *const *arr, t_auto *autocomp, bool b)
+bool	search_env_intern(char *const *arr, t_auto *autocomp, bool b)
 {
-	size_t i;
-	size_t len;
-	char *temp;
+	size_t	i;
+	size_t	len;
+	char	*temp;
 
 	len = ft_strlen(autocomp->query);
 	autocomp->count = ft_null_array_len((void **)(autocomp->search_result));

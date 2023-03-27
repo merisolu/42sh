@@ -6,29 +6,29 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 17:44:44 by amann             #+#    #+#             */
-/*   Updated: 2023/03/24 17:48:06 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/27 16:27:09 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
 
-size_t last_slash(char *str)
+size_t	last_slash(char *str)
 {
-	size_t len;
+	size_t	len;
 
 	len = ft_strlen(str);
 	while (len)
 	{
 		if (str[len] == '/')
-			break;
+			break ;
 		len--;
 	}
 	return (len + 1);
 }
 
-static void reset_query_and_path(t_auto *autocomp, char **path)
+static void	reset_query_and_path(t_auto *autocomp, char **path)
 {
-	char *temp;
+	char	*temp;
 
 	if (ft_strchr(autocomp->query, '/'))
 	{
@@ -36,18 +36,18 @@ static void reset_query_and_path(t_auto *autocomp, char **path)
 		temp = ft_strdup(ft_strrchr(autocomp->query, '/') + 1);
 		free(autocomp->query);
 		autocomp->query = temp;
-		return;
+		return ;
 	}
 	temp = getcwd(NULL, PATH_MAX);
 	*path = ft_strjoin(temp, "/");
 	free(temp);
-	return;
+	return ;
 }
 
-static bool set_exec(char *path, char *ti)
+static bool	set_exec(char *path, char *ti)
 {
-	bool first_word;
-	int i;
+	bool	first_word;
+	int		i;
 
 	first_word = true;
 	i = (int)ft_strlen(path) - 1;
@@ -56,7 +56,7 @@ static bool set_exec(char *path, char *ti)
 		if (ti[i] == ' ')
 		{
 			first_word = false;
-			break;
+			break ;
 		}
 		i--;
 	}
@@ -65,15 +65,17 @@ static bool set_exec(char *path, char *ti)
 	return (false);
 }
 
-void search_file_paths(t_auto *autocomp, t_state *state)
+void	search_file_paths(t_auto *autocomp, t_state *state)
 {
-	char *path;
+	char	*path;
 
-	autocomp->search_result = (char **)ft_memalloc(sizeof(char *) * INPUT_MAX_SIZE);
+	autocomp->search_result = (char **)ft_memalloc(
+			sizeof(char *) * INPUT_MAX_SIZE
+			);
 	if (!autocomp->search_result)
 	{
 		print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
-		return;
+		return ;
 	}
 	autocomp->query = find_query(autocomp->trimmed_input, ' ', state, true);
 	path = NULL;
@@ -81,10 +83,12 @@ void search_file_paths(t_auto *autocomp, t_state *state)
 	if (!path || !(autocomp->query))
 	{
 		print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
-		return;
+		return ;
 	}
 	autocomp->query_len = ft_strlen(autocomp->query);
-	directory_search(path, autocomp, false, set_exec(path, autocomp->trimmed_input));
+	directory_search(
+		path, autocomp, false, set_exec(path, autocomp->trimmed_input)
+		);
 	free(path);
-	return;
+	return ;
 }
