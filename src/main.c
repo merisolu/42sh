@@ -6,7 +6,7 @@
 /*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/20 13:50:02 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/03/27 17:10:39 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,7 @@ static t_input_result	input_handler(t_state *state)
 		if (check_history_reserved_sequences(state))
 			result = INPUT_MARK_FOUND;
 		if (ft_strequ(TAB, state->input_context.found_reserved_sequence))
-		{
-			if (autocomplete(state, tab) <= 0)
-				tab = true;
-		}
+			tab = autocomplete(state, tab) <= 0;
 		display(&(state->input_context), 1);
 	}
 	else if (result != INPUT_NOTHING_READ)

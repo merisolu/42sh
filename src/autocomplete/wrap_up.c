@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:13:45 by amann             #+#    #+#             */
-/*   Updated: 2023/03/27 16:39:37 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/27 16:54:10 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	sort_options(t_auto *ac)
 		i++;
 	}
 	if (swapped)
-		sort_options(autocomp);
+		sort_options(ac);
 	return ;
 }
 

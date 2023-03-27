@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:16:26 by amann             #+#    #+#             */
-/*   Updated: 2023/03/27 16:13:27 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/27 16:53:45 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static bool	search_builtins(t_auto *ac)
 	return (true);
 }
 
-static char	*get_paths(t_state *state)
+static char	**get_paths(t_state *state)
 {
 	char	*path_var;
 

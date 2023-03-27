@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:02:48 by amann             #+#    #+#             */
-/*   Updated: 2023/03/27 15:50:52 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/27 17:06:49 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	autocomplete_display_control(t_auto *autocomp, t_state *state)
 				autocomp->search_result,
 				autocomp->auto_bools.filtered
 			));
-	else if (len)
+	else if (len && autocomp->auto_bools.second_tab)
 	{
 		len = ft_null_array_len((void **)(autocomp->search_result));
 		if (len > AUTOCOMP_DISPLAY_LIMIT
