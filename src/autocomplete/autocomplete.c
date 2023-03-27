@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 10:07:51 by jumanner          #+#    #+#             */
-/*   Updated: 2023/03/27 15:50:20 by amann            ###   ########.fr       */
+/*   Updated: 2023/03/27 17:19:06 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,15 +113,6 @@ static int	free_and_display(t_auto *autocomp, t_state *state)
  * possible propositions are printed to the STDOUT. The tab arg is a
  * static var from main that monitors this
 */
-
-// TODO
-//  we are currently allocating INPUT_MAX_SIZE char pointers to
-//  the results array but this may cause problems if there are more
-//  results. Look into allocating and resizing. ATM directory_search will just
-//  stop when the limit is reached, but this could be better
-
-// variable result being printed incorrectly
-// second_tab not working properly
 
 int	autocomplete(t_state *state, bool second_tab)
 {
