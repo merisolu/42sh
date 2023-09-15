@@ -74,13 +74,45 @@ static t_input_result	input_handler(t_state *state)
 	return (result);
 }
 
+/*
+ * Function reads command-line input from STDIN
+ * We send a bool to setup to ensure that termcaps functions are
+ * not triggered.
+ * Here we want to return the return value of the command that was ran.
+ * TODO - let's make this reading process a little cleaner
+ */
+static int read_from_stdin(t_state *state, char *const *env)
+{
+	char		buff[INPUT_MAX_SIZE];
+	ssize_t		read_ret;
+
+	ft_bzero(buff, INPUT_MAX_SIZE);
+	read_ret = read(STDIN_FILENO, buff, BUF_SIZE);
+	if (!ft_strlen(buff))
+		return (0);
+	if (read_ret)
+	{
+		read_ret = read(STDIN_FILENO, buff + ft_strlen(buff), BUF_SIZE);
+		while (read_ret)
+			read_ret = read(STDIN_FILENO, buff + ft_strlen(buff), BUF_SIZE);
+	}
+	if (!setup(&env, state, true))
+		return (cleanup(state, 1)); // magic number, needs fixing
+	ft_strcpy(state->input_context.input, buff);
+	state->running_command = true;
+	tokenize_and_execute(state);
+	return (cleanup(state, state->last_return_value));
+}
+
 int	main(const int argc, const char **argv, char *const *env)
 {
 	t_state	state;
 
 	(void)argc;
 	(void)argv;
-	if (!setup(&env, &state))
+	if (!isatty(STDIN_FILENO))
+		return (read_from_stdin(&state, env));
+	if (!setup(&env, &state, false))
 		return (cleanup(&state, 1));
 	while (!state.exiting)
 	{

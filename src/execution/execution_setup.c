@@ -40,8 +40,9 @@ bool	execution_setup(t_state *state)
 	}
 	if (!run_history_expansion(state))
 		return (false);
-	if (!terminal_apply_config(&(state->orig_conf)))
+	if (!(state->reading_from_stdin) && !terminal_apply_config(&(state->orig_conf)))
 	{
+		// print error bool....?
 		print_error(1, ERRTEMPLATE_SIMPLE, ERR_TERMIOS_FAIL);
 		return (false);
 	}

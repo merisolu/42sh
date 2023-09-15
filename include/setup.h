@@ -18,7 +18,7 @@
 # include "signals.h"
 
 /* setup.c */
-bool	setup(char *const **env, t_state *state);
+bool	setup(char *const **env, t_state *state, bool stdin);
 
 /* setup_fd.c */
 bool	setup_fd(void);

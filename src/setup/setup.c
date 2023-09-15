@@ -79,20 +79,23 @@ static int	get_state_struct(char *const **env, t_state *result)
 	return (1);
 }
 
-bool	setup(char *const **env, t_state *state)
+bool	setup(char *const **env, t_state *state, bool stdin)
 {
 	if (!get_state_struct(env, state) || !set_shlvl(&(state->env)))
 		return (false);
-	if (!setup_fd())
+	if (stdin)
+		state->reading_from_stdin = true;
+	if (!(state->reading_from_stdin) && !setup_fd())
 		return (false);
-	if (!setup_termcaps())
+	if (!(state->reading_from_stdin) && !setup_termcaps())
 		return (false);
-	if (!setup_input(state))
+	if (!(state->reading_from_stdin) && !setup_input(state))
 		return (false);
 	history_load(state);
 	set_signal_handling();
 	save_cursor(&(state->input_context));
-	display(&(state->input_context), 1);
+	if (!(state->reading_from_stdin))
+		display(&(state->input_context), 1); // magic number... (force?)
 	if (setpgid(getpid(), getpid()) == -1
 		|| ioctl(STDIN_FILENO, TIOCSPGRP, &(state->group_id)) == -1)
 		return (false);

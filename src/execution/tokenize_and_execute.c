@@ -104,7 +104,7 @@ void	tokenize_and_execute(t_state *state)
 		execute_ast_list(ast_list, state);
 	history_store(state->input_context.input, state, 0);
 	clear_input(&(state->input_context));
-	if (!terminal_apply_config(&(state->input_conf)))
+	if (!(state->reading_from_stdin) && !terminal_apply_config(&(state->input_conf)))
 		print_error(1, ERRTEMPLATE_SIMPLE, ERR_TERMIOS_FAIL);
 	if (!running_from_built_in)
 		state->running_command = false;

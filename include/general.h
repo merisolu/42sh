@@ -247,6 +247,7 @@ typedef struct s_state
 	bool			stopped_jobs_warning_shown;
 	bool			running_script;
 	bool			running_command;
+	bool			reading_from_stdin;
 }	t_state;
 
 typedef struct s_token
