@@ -147,6 +147,13 @@ OBJS := $(patsubst %, $(OBJ_DIR)/%, $(SRC_FILES:.c=.o))
 
 GCC_FLAGS = -Wall -Wextra -Werror -O2
 
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+    ifeq ($(shell uname -p),arm)
+        GCC_FLAGS += -arch x86_64
+    endif
+endif
+   
 $(NAME): $(LIB_PATH) $(OBJS)
 	$(CC) $(GCC_FLAGS) $(OBJS) -o $(NAME) -ltermcap -L $(LIB_DIR) -lft
 
