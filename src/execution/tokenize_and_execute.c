@@ -96,7 +96,7 @@ void	tokenize_and_execute(t_state *state)
 		return ;
 	running_from_built_in = state->running_command;
 	state->running_command = true;
-	if (!running_from_built_in)
+	if (!(state->reading_from_stdin) && !running_from_built_in)
 		ft_putchar('\n');
 	ast_list = construct_ast_list(
 			tokenize(state->input_context.input, &tokenizer));

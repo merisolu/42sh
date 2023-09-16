@@ -118,7 +118,7 @@ TERMINAL_FILES = terminal_configuration.c
 
 UTILS_DIR = utils
 UTILS_FILES = error.c utils.c utils_input.c return_value.c syntax_error.c \
-			  fd_is_open.c
+			  fd_is_open.c read_input_into_buff.c
 
 SRC_FILES = main.c \
 			$(patsubst %, $(AST_DIR)/%, $(AST_FILES)) \
@@ -153,7 +153,7 @@ ifeq ($(UNAME_S),Darwin)
         GCC_FLAGS += -arch x86_64
     endif
 endif
-   
+
 $(NAME): $(LIB_PATH) $(OBJS)
 	$(CC) $(GCC_FLAGS) $(OBJS) -o $(NAME) -ltermcap -L $(LIB_DIR) -lft
 

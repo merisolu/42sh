@@ -79,23 +79,15 @@ static t_input_result	input_handler(t_state *state)
  * We send a bool to setup to ensure that termcaps functions are
  * not triggered.
  * Here we want to return the return value of the command that was ran.
- * TODO - let's make this reading process a little cleaner
  */
 static int read_from_stdin(t_state *state, char *const *env)
 {
 	char		buff[INPUT_MAX_SIZE];
-	ssize_t		read_ret;
 
-	ft_bzero(buff, INPUT_MAX_SIZE);
-	read_ret = read(STDIN_FILENO, buff, BUF_SIZE);
+	if (!(read_input_to_buff(buff)))
+		return (1);
 	if (!ft_strlen(buff))
 		return (0);
-	if (read_ret)
-	{
-		read_ret = read(STDIN_FILENO, buff + ft_strlen(buff), BUF_SIZE);
-		while (read_ret)
-			read_ret = read(STDIN_FILENO, buff + ft_strlen(buff), BUF_SIZE);
-	}
 	if (!setup(&env, state, true))
 		return (cleanup(state, 1)); // magic number, needs fixing
 	ft_strcpy(state->input_context.input, buff);

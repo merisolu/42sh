@@ -34,7 +34,8 @@ bool	execution_setup(t_state *state)
 {
 	if (ft_strisempty(state->input_context.input))
 	{
-		ft_putchar('\n');
+		if (!(state->reading_from_stdin))
+			ft_putchar('\n');
 		clear_input(&(state->input_context));
 		return (false);
 	}

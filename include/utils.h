@@ -36,6 +36,9 @@ bool	fd_is_open(int fd);
 bool	print_bool_syntax_error(char *message, t_token *token, bool ret);
 bool	print_bool_sep_error(char *message, t_token *token, bool ret);
 
+/* read_input_into_buff.c */
+bool	read_input_to_buff(char *buff);
+
 /* return_value.c */
 int		get_return_value_from_status(int status);
 void	set_return_value(int return_value, t_state *state);
