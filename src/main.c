@@ -85,11 +85,11 @@ static int read_from_stdin(t_state *state, char *const *env)
 	char		buff[INPUT_MAX_SIZE];
 
 	if (!(read_input_to_buff(buff)))
-		return (1);
+		return (RETURN_ERROR);
 	if (!ft_strlen(buff))
-		return (0);
+		return (RETURN_OK);
 	if (!setup(&env, state, true))
-		return (cleanup(state, 1)); // magic number, needs fixing
+		return (cleanup(state, RETURN_ERROR));
 	ft_strcpy(state->input_context.input, buff);
 	state->running_command = true;
 	tokenize_and_execute(state);
@@ -105,7 +105,7 @@ int	main(const int argc, const char **argv, char *const *env)
 	if (!isatty(STDIN_FILENO))
 		return (read_from_stdin(&state, env));
 	if (!setup(&env, &state, false))
-		return (cleanup(&state, 1));
+		return (cleanup(&state, RETURN_ERROR));
 	while (!state.exiting)
 	{
 		check_signal(&state);

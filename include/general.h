@@ -51,6 +51,8 @@
 # define RETURN_NO_ACCESS 126
 # define RETURN_COMMAND_NOT_FOUND 127
 # define RETURN_SUSPENDED 146
+# define RETURN_OK 0
+# define RETURN_ERROR 1
 
 /* Errors */
 
