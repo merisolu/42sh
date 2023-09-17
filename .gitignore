@@ -1,6 +1,11 @@
 .vscode/
 obj/
 .DS_Store
+wheels/
+venv/
+.venv
+__pycache__/
+tests/*.*ml
 *.a
 *.o
 *.swp
