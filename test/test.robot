@@ -1,5 +1,5 @@
 *** Settings ***
-Documentation    A unix shell test suite
+Documentation    A Unix Shell test suite
 ...              The idea here is to create the most flexible, versatile and
 ...              comprehensive 42 school shell project testing suite imaginable.
 Library          ShellLibrary.py
@@ -13,27 +13,36 @@ ${shell_output}      42sh_output
 ${shell_return}      42sh_return
 ${bash_output}       bash_output
 ${bash_return}       bash_return
-${test_string}       echo This is a test!
 ${return_OK}         ${0}
 
+@{ECHO}    echo "hello world"    echo owowow    echo    echo h"el'lo' "world
+
 *** Test Cases ***
-Test Simple Command
+Test Echo Loop
+    FOR    ${case}    IN    @{ECHO}
+        Simple Command    ${case}
+    END
+
+*** Keywords ***
+Simple command
+    [Documentation]    Sends a command to the test shell and compares its output and return
+    ...                values with the reference shell
+    [Arguments]        ${test_case}
     Create test files
-    Command            ${test_string}     ${shell}        ${shell_output}    ${shell_return}
-    Command            ${test_string}     ${bash}         ${bash_output}     ${bash_return}
-    ${diff_output}=    Check Diff         ${shell_output}    ${bash_output}
-    ${diff_return}=    Check Diff         ${shell_return}    ${bash_return}
+    Command            ${test_case}       ${shell}        ${shell_output}    ${shell_return}
+    Command            ${test_case}       ${bash}         ${bash_output}     ${bash_return}
+    ${diff_output}=    Check diff         ${shell_output}    ${bash_output}
+    ${diff_return}=    Check diff         ${shell_return}    ${bash_return}
     Should be equal    ${diff_output}     ${return_OK}
     Should be equal    ${diff_return}     ${return_OK}
     Delete test files
 
-*** Keywords ***
 Command
     [Arguments]     ${arg_string}      ${target_shell}    ${output}    ${return}
     ${value}=       run command        ${arg_string}      ${target_shell}    ${output}    ${return}
     RETURN          ${value}
 
-Check Diff
+Check diff
     [Documentation]    Diffs the two files pased as arguments and returns the value
     [Arguments]    ${file_1}    ${file_2}
     ${value}=      diff    ${file1}    ${file_2}
