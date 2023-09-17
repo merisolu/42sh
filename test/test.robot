@@ -11,11 +11,13 @@ ${shell}             .././42sh
 ${bash}              bash
 ${shell_output}      42sh_output
 ${bash_output}       bash_output
-${test_string}       echo This is a test!
+${test_string}       ls
+#echo This is a test!
 ${return_OK}         ${0}
 
 *** Test Cases ***
 Test Echo
+    Create test files
     ${ret_val_sh}=          Command            ${test_string}     ${shell}        ${shell_output}
     ${ret_val_bash}=        Command            ${test_string}     ${bash}         ${bash_output}
     ${diff}=                Check Diff         ${shell_output}    ${bash_output}
@@ -33,6 +35,10 @@ Check Diff
     [Arguments]    ${shell_output}    ${bash_output}
     ${value}=      diff               ${shell_output}    ${bash_output}
     RETURN         ${value}
+
+Create test files
+    create file    ${shell_output}
+    create file    ${bash_output}
 
 Delete output files
     [Documentation]    The delete file function just passes args to 'rm' cmd line

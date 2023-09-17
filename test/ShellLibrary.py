@@ -7,7 +7,10 @@ def run_command(arg_string: str, shell_path: str, output_file: str):
         Output is sent to the "output file"
     """
     console(f"\nRunning test case: '{arg_string}' in '{shell_path}'")
-    return system(f"echo {arg_string} | {shell_path} > {output_file}")
+    # TODO Double check this does ACTUALLY return the correct value -- check python docs for system
+    ret_val = system(f"echo {arg_string} | {shell_path} > {output_file}")
+    console(f"\nreturn value = {ret_val}")
+    return ret_val
 
 def diff(shell_output: str, bash_output: str):
     """
@@ -24,3 +27,9 @@ def delete_file(file_path: str):
         TODO add a check to make sure it is only deleting files created by this test suite
     """
     system(f"rm {file_path}")
+
+def create_file(file_name: str):
+    """
+        Creates files in test dir to write outputs to
+    """
+    system(f"touch {file_name}")
