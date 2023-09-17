@@ -13,8 +13,7 @@ ${shell_output}      42sh_output
 ${shell_return}      42sh_return
 ${bash_output}       bash_output
 ${bash_return}       bash_return
-${test_string}       ls
-#echo This is a test!
+${test_string}       echo This is a test!
 ${return_OK}         ${0}
 
 *** Test Cases ***
