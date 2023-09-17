@@ -49,7 +49,7 @@ Command
 Check diff
     [Documentation]    Diffs the two files pased as arguments and returns the value
     [Arguments]        ${file_1}    ${file_2}
-    ${value}=          diff    ${file1}    ${file_2}
+    ${value}=          diff         ${file_1}    ${file_2}
     RETURN             ${value}
 
 Create simple test files
@@ -63,7 +63,7 @@ Delete simple test files
     [Documentation]    The delete file function just passes test file paths to 'rm' cmd line
     ...                program and thus should be used with extreme caution.
     ...                Used in tear-down of simple command test
-    delete file        ${shell_output}
-    delete file        ${bash_output}
-    delete file        ${shell_return}
-    delete file        ${bash_return}
+    delete file        ${shell_name}    output
+    delete file        ${bash}          output
+    delete file        ${shell_name}    return
+    delete file        ${bash}          return
