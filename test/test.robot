@@ -25,6 +25,10 @@ ${echo_file_path}    test_cases/echo_test_cases.txt
 # errors will need to be handled differently due to differences in text of err message
 # add a bit of visual pizazz to the console logs, now are a bit stale and hard to read
 # Move keywords to a separate resources file
+# To look into:
+# how test setup and teardown works in rfw (no fixtures...?)
+# how to run specific test cases in rfw
+# how to run all tests, not stopping when a case fails.
 *** Test Cases ***
 Test Builtin Echo
     [Documentation]    Testing for the builtin function 'echo'
