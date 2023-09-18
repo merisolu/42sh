@@ -1,24 +1,30 @@
 *** Settings ***
 Documentation    A Unix Shell test suite
 Library          ShellLibrary.py
+Library          OperatingSystem
+Library          String
 
 *** Variables ***
 # for some reason the Catenate builtin is not working, using hard-coded values for now
 ${shell_name}        42sh
 ${shell}             .././42sh
 ${bash}              bash
-${shell_output}      42sh_output
-${shell_return}      42sh_return
-${bash_output}       bash_output
-${bash_return}       bash_return
+${shell_output}      temp/42sh_output
+${shell_return}      temp/42sh_return
+${bash_output}       temp/bash_output
+${bash_return}       temp/bash_return
 ${diff_OK}           ${0}
 
-@{ECHO}    echo "hello world"    echo owowow    echo    echo h"el'lo' "world
+${TEMP_DIR}          temp
+${echo_file_path}    test_cases/echo_test_cases.txt
+
+#@{ECHO}    echo "hello world"    echo owowow    echo    echo h"el'lo' "world
 
 *** Test Cases ***
 Test Builtin Echo
     [Documentation]    Testing for the builtin function 'echo'
     # TODO add a bit of visual pizazz to this, the console logs are a bit stale and hard to read
+    @{ECHO}=           Get test cases    ${echo_file_path}
     FOR    ${case}    IN    @{ECHO}
         Simple Command    ${case}
     END
@@ -26,6 +32,14 @@ Test Builtin Echo
 # TODO errors will need to be handled differently due to differences in text of err message
 # maybe create a different function to handle cases where errors are expected
 *** Keywords ***
+Get test cases
+    [Documentation]    Reads test case file given as argument and returns them
+    ...                in list format
+    [Arguments]        ${path}
+    ${cases}=          Get file          ${path}
+    @{case_list}=      Split to lines    ${cases}
+    RETURN             @{case_list}
+
 Simple command
     [Documentation]    Sends a command to the test shell and compares its output and return
     ...                values with the reference shell
@@ -54,16 +68,11 @@ Check diff
 
 Create simple test files
     [Documentation]    Test set-up, creates files for sending test case outputs and returns
-    create file        ${shell_output}
-    create file        ${bash_output}
-    create file        ${shell_return}
-    create file        ${bash_return}
+    Create File        ${shell_output}
+    Create File        ${bash_output}
+    Create File        ${shell_return}
+    Create File        ${bash_return}
 
 Delete simple test files
-    [Documentation]    The delete file function just passes test file paths to 'rm' cmd line
-    ...                program and thus should be used with extreme caution.
-    ...                Used in tear-down of simple command test
-    delete file        ${shell_name}    output
-    delete file        ${bash}          output
-    delete file        ${shell_name}    return
-    delete file        ${bash}          return
+    [Documentation]     Removes all the files created for comparing test outputs
+    Remove Directory    ${TEMP_DIR}    recursive=True

@@ -7,7 +7,7 @@ def run_command(arg_string: str, shell_path: str, output_file: str, return_file:
         Output is sent to the "output_file", silencing error messages
         Return value is sent to "return_file"
     """
-    console(f"Running test case: '{arg_string}' in '{shell_path}'")
+    console(f"\nRunning test case: '{arg_string}' in '{shell_path}'")
     system(f"echo {arg_string} | {shell_path} > {output_file} 2>&- ; \
            echo \"echo $?\" | {shell_path} > {return_file}")
 
@@ -18,20 +18,3 @@ def diff(shell_output: str, bash_output: str):
     """
     console(f"Comparing files: {shell_output} and {bash_output}")
     return system(f"diff {shell_output} {bash_output}")
-
-def delete_file(shell_name: str, file_type: str):
-    """
-        Takes a path to a file and deletes it
-        NB. THIS FUNCTION IS DANGEROUS, at the moment it is just being used
-        to delete test output and return value files.
-        TODO add a check to make sure it is only deleting files created by this test suite - maybe check time stamp is within last few minutes before deleting?
-    """
-    console(f"deleting {shell_name}_{file_type}...")
-    system(f"rm {shell_name}_{file_type}")
-
-def create_file(file_name: str):
-    """
-        Creates files in test dir to write outputs to
-    """
-    console(f"\ncreating file: {file_name}")
-    system(f"touch {file_name}")
