@@ -20,15 +20,17 @@ ${diff_OK}           ${0}
 ${TEMP_DIR}          temp
 ${echo_file_path}    test_cases/echo_test_cases.txt
 
+# TODO
+# Add more test case files and implement with new test cases
+# errors will need to be handled differently due to differences in text of err message
+# add a bit of visual pizazz to the console logs, now are a bit stale and hard to read
+# Move keywords to a separate resources file
 *** Test Cases ***
 Test Builtin Echo
     [Documentation]    Testing for the builtin function 'echo'
-    # TODO add a bit of visual pizazz to this, the console logs are a bit stale and hard to read
     @{ECHO}=           Get test cases    ${echo_file_path}
     Simple command test loop             @{ECHO}
 
-# TODO errors will need to be handled differently due to differences in text of err message
-# maybe create a different function to handle cases where errors are expected
 *** Keywords ***
 Simple command test loop
     [Documentation]    Takes a list of test cases and runs them using Simple Command
