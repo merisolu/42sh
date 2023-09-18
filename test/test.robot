@@ -25,13 +25,22 @@ Test Builtin Echo
     [Documentation]    Testing for the builtin function 'echo'
     # TODO add a bit of visual pizazz to this, the console logs are a bit stale and hard to read
     @{ECHO}=           Get test cases    ${echo_file_path}
-    FOR    ${case}    IN    @{ECHO}
-        Simple Command    ${case}
-    END
+    Simple command test loop             @{ECHO}
 
 # TODO errors will need to be handled differently due to differences in text of err message
 # maybe create a different function to handle cases where errors are expected
 *** Keywords ***
+Simple command test loop
+    [Documentation]    Takes a list of test cases and runs them using Simple Command
+    [Arguments]        @{CASES}
+
+    # just for debugging readability
+    log                \n    console=yes
+
+    FOR    ${case}    IN    @{CASES}
+        Simple Command    ${case}
+    END
+
 Get test cases
     [Documentation]    Reads test case file given as argument and returns them
     ...                in list format
@@ -68,6 +77,7 @@ Check diff
 
 Create simple test files
     [Documentation]    Test set-up, creates files for sending test case outputs and returns
+    ...                The Create File function comes from OperatingSystem lib
     Create File        ${shell_output}
     Create File        ${bash_output}
     Create File        ${shell_return}
@@ -75,4 +85,5 @@ Create simple test files
 
 Delete simple test files
     [Documentation]     Removes all the files created for comparing test outputs
+    ...                 The Remove Directory function comes from OperatingSystem lib
     Remove Directory    ${TEMP_DIR}    recursive=True

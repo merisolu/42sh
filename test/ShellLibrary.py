@@ -7,7 +7,7 @@ def run_command(arg_string: str, shell_path: str, output_file: str, return_file:
         Output is sent to the "output_file", silencing error messages
         Return value is sent to "return_file"
     """
-    console(f"\nRunning test case: '{arg_string}' in '{shell_path}'")
+    console(f"Running test case: '{arg_string}' in '{shell_path}'")
     system(f"echo {arg_string} | {shell_path} > {output_file} 2>&- ; \
            echo \"echo $?\" | {shell_path} > {return_file}")
 
