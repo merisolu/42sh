@@ -5,20 +5,20 @@ Library          OperatingSystem
 Library          String
 
 *** Variables ***
-# for some reason the Catenate builtin is not working, using hard-coded values for now
+# shell_name should be the name of the binary being tested.
+# shell should be the relative path to that binary
+# bash can be changed to the name of another reference shell
 ${shell_name}        42sh
-${shell}             .././42sh
+${shell}             .././${shell_name}
 ${bash}              bash
-${shell_output}      temp/42sh_output
-${shell_return}      temp/42sh_return
+${shell_output}      temp/${shell_name}_output
+${shell_return}      temp/${shell_name}_return
 ${bash_output}       temp/bash_output
 ${bash_return}       temp/bash_return
 ${diff_OK}           ${0}
 
 ${TEMP_DIR}          temp
 ${echo_file_path}    test_cases/echo_test_cases.txt
-
-#@{ECHO}    echo "hello world"    echo owowow    echo    echo h"el'lo' "world
 
 *** Test Cases ***
 Test Builtin Echo
