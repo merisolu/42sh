@@ -1,20 +1,24 @@
 from robot.api.logger import info, debug, trace, console
 from os import system
+from subprocess import run
 
-def run_command(arg_string: str, shell_path: str, output_file: str, return_file: str):
+# timeout in seconds for tests
+TIMEOUT = 5
+
+def run_command(arg_string: str, shell_path: str) -> dict:
     """
         Runs the given "arg_string" in the shell identified by "shell_path"
-        Output is sent to the "output_file", silencing error messages
-        Return value is sent to "return_file"
+        run function: https://docs.python.org/3/library/subprocess.html#subprocess.run
+        The command-line ran simply echoes the arg_string onto a pipe, which is then
+        read from and executed by the shell binary.
+        Run returns a class instance from which we can access the necessary outputs and
+        return values for the purposes of testing.
     """
-    console(f"Running test case: '{arg_string}' in '{shell_path}'")
-    system(f"echo {arg_string} | {shell_path} > {output_file} 2>&- ; \
-           echo \"echo $?\" | {shell_path} > {return_file}")
-
-def diff(shell_output: str, bash_output: str):
-    """
-        Takes the paths to the output of the tested shell and the refernce shell,
-        diffs them, returning the value.
-    """
-    console(f"Comparing files: {shell_output} and {bash_output}")
-    return system(f"diff {shell_output} {bash_output}")
+    result = run(
+        f"echo {arg_string} | {shell_path}",
+        shell=True,
+        capture_output=True,
+        timeout=TIMEOUT
+        )
+    #console(f"return = {result.returncode} output = {result.stdout} error = {result.stderr}")
+    return dict(output=result.stdout, err_output=result.stderr, return_value=result.returncode)
