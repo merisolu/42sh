@@ -20,6 +20,7 @@ ${echo_file_path}    test_cases/echo_test_cases.txt
 # TODO
 # Add more test case files and implement with new test cases
 # A different testing process will be required to check redirections are working properly
+# skip cases if the line begins with a # symbol
 # errors will need to be handled differently due to differences in text of err message
 #  - Using python to chop out the relevant part of the message text might be the best way forward
 # Find a minishell implementation that works with existing bash script to test this on

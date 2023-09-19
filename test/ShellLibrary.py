@@ -1,5 +1,5 @@
 from robot.api.logger import info, debug, trace, console
-from subprocess import run
+from subprocess import run, PIPE, Popen
 
 # timeout in seconds for tests
 TIMEOUT = 5
@@ -13,17 +13,20 @@ def run_command(arg_string: str, shell_path: str) -> dict:
         Run returns a class instance from which we can access the necessary outputs and
         return values for the purposes of testing.
     """
+    ps = Popen(('echo', f'{arg_string}'), stdout=PIPE)
     result = run(
-        f"echo {arg_string} | {shell_path}",
+        f'{shell_path}',
         shell=True,
         capture_output=True,
+        stdin=ps.stdout,
         text=True,
-        timeout=TIMEOUT
+        timeout=TIMEOUT,
+        executable="/bin/bash"
         )
-    #console(f"case: {arg_string}")
-    #console(f"return = {result.returncode}")
-    #console(f"output = {result.stdout}")
-    #console(f"error = {result.stderr}")
+    console(f'\ncase: {arg_string} | shell = {shell_path}')
+    console(f"return = {result.returncode}")
+    console(f"output = {result.stdout}")
+    console(f"error = {result.stderr}")
     return dict(
         output=result.stdout,
         err_output=result.stderr,

@@ -1,5 +1,20 @@
+echo hello world
 echo "hello world"
-echo owowow
-echo
-echo h"el'lo' "world
-ls -l abc
+echo 'hello world'
+echo hello'world'
+echo hello""world
+echo ''
+echo "$PWD"
+echo '$PWD'
+echo "aspas ->'"
+echo "aspas -> ' "
+echo 'aspas ->"'
+echo 'aspas -> " '
+echo 'exit_code ->$? user ->$USER home -> $HOME'
+echo '$'
+echo "$"
+echo $
+echo $?
+echo $?HELLO
+echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<'
+echo "exit_code ->$? user ->$USER home -> $HOME"
