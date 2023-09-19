@@ -1,5 +1,4 @@
 from robot.api.logger import info, debug, trace, console
-from os import system
 from subprocess import run
 
 # timeout in seconds for tests
@@ -21,4 +20,8 @@ def run_command(arg_string: str, shell_path: str) -> dict:
         timeout=TIMEOUT
         )
     #console(f"return = {result.returncode} output = {result.stdout} error = {result.stderr}")
-    return dict(output=result.stdout, err_output=result.stderr, return_value=result.returncode)
+    return dict(
+        output=result.stdout,
+        err_output=result.stderr,
+        return_value=result.returncode
+        )

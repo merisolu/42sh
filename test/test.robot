@@ -55,8 +55,8 @@ Get test cases
     RETURN             @{case_list}
 
 Simple command
-    [Documentation]    Sends a command to the test shell and compares its output and return
-    ...                values with the reference shell
+    [Documentation]    Sends a command to the test shell and compares its output and
+    ...                return values with the reference shell
     [Arguments]        ${test_case}
     ${shell_result}    Command            ${test_case}       ${shell}
     ${bash_result}     Command            ${test_case}       ${bash}
