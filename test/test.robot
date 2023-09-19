@@ -20,6 +20,8 @@ ${echo_file_path}    test_cases/echo_test_cases.txt
 # Add more test case files and implement with new test cases
 # A different testing process will be required to check redirections are working properly
 # errors will need to be handled differently due to differences in text of err message
+#  - Using python to chop out the relevant part of the message text might be the best way forward
+# Find a minishell implementation that works with existing bash script to test this on
 # add a bit of visual pizazz to the console logs, now are a bit stale and hard to read
 # add some basic tests for norminette and Makefile/compiling without errors
 # Move keywords to a separate resources file
