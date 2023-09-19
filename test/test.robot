@@ -3,6 +3,7 @@ Documentation    A Unix Shell test suite
 Library          ShellLibrary.py
 Library          String
 Library          Collections
+Library          OperatingSystem
 
 *** Variables ***
 # shell_name should be the name of the binary being tested.

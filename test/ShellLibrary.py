@@ -17,9 +17,13 @@ def run_command(arg_string: str, shell_path: str) -> dict:
         f"echo {arg_string} | {shell_path}",
         shell=True,
         capture_output=True,
+        text=True,
         timeout=TIMEOUT
         )
-    #console(f"return = {result.returncode} output = {result.stdout} error = {result.stderr}")
+    #console(f"case: {arg_string}")
+    #console(f"return = {result.returncode}")
+    #console(f"output = {result.stdout}")
+    #console(f"error = {result.stderr}")
     return dict(
         output=result.stdout,
         err_output=result.stderr,
