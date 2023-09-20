@@ -93,6 +93,8 @@ static int read_from_stdin(t_state *state, char *const *env)
 	ft_strcpy(state->input_context.input, buff);
 	state->running_command = true;
 	tokenize_and_execute(state);
+	if (state->exiting)
+		state->last_return_value = state->exit_return_value;
 	return (cleanup(state, state->last_return_value));
 }
 

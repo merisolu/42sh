@@ -23,9 +23,11 @@ def run_command(arg_string: str, shell_path: str) -> dict:
         shell_path,
         capture_output=True,
         stdin=ps.stdout,
-        text=True, # True returns a string, False returns byte-code
+        #text=True, # True returns a string, False returns byte-code
         timeout=TIMEOUT,
         )
+
+    ps.wait(timeout=TIMEOUT)
 
     # debugging
     console(f'\ncase: {arg_string} | shell = {shell_path}')

@@ -32,3 +32,12 @@ void	update_window_size(t_input_context *context)
 	context->width = size.ws_col;
 	context->height = size.ws_row;
 }
+
+void	print_tokens(t_token *list)
+{
+	while (list)
+	{
+		ft_printf("value: %s\n", list->value);
+		list = list->next;
+	}
+}
