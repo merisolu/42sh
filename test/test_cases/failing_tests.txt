@@ -1,4 +1,4 @@
-# weird things happening with quotes in python string
+# backslash inside double quotes is not being handled properly
 echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<"
 
 export A-
