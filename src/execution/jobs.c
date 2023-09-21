@@ -15,7 +15,6 @@
 /*
  * Sets up a new job in the state->jobs array and returns it. Returns NULL on
  * error.
- * 
  * The command text needs to be updated to only take the specific section
  * of input that created this job!
  */
@@ -76,7 +75,7 @@ void	job_wait(t_job *job, bool no_hang, t_state *state)
 }
 
 /*
- * Update status of all jobs in the state->jobs array. 
+ * Update status of all jobs in the state->jobs array.
  */
 void	jobs_check_status(t_state *state)
 {
@@ -112,7 +111,7 @@ void	jobs_print_changed(t_state *state)
 			state->jobs[i].needs_status_print = false;
 		}
 		i++;
-	}	
+	}
 }
 
 /*

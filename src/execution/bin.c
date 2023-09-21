@@ -22,9 +22,8 @@
  *
  * *result should be freed after it is no longer needed.
  *
- * Returns 1 on success, 0 on not found, -1 on failed malloc.
+ * Returns 1 on success, 0 on not found in PATH, -1 on failed malloc.
  */
-
 static int	bin_find(const char *name, char **paths, char **result)
 {
 	size_t	i;
@@ -76,7 +75,8 @@ int	bin_env_find(const char *name, t_state *state, char **result, bool silent)
 	{
 		if (silent)
 			return (-1);
-		return (print_error(-1, "42sh: %s", ERR_NO_SUCH_FILE_OR_DIR));
+		return (print_error(RETURN_COMMAND_NOT_FOUND,
+			"42sh: %s", ERR_NO_SUCH_FILE_OR_DIR));
 	}
 	paths = ft_strsplit(path, ':');
 	if (!paths)

@@ -53,9 +53,8 @@ int	check_path_validity(char *path)
 
 /*
  * Attempts to find a binary with the given name from the hash table, then from
- * PATH in env. Returns -1 on malloc fail, 0 on not found, 1 on success.
+ * PATH in env. Returns -1 on malloc fail, 0 on not found in PATH, 1 on success.
  */
-
 int	find_binary(char *name, t_state *state, char **result, bool silent)
 {
 	char	*hash_table_result;

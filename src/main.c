@@ -17,7 +17,8 @@ int	g_last_signal;
 static void	finish_execution(t_state *state)
 {
 	update_window_size(&(state->input_context));
-	if (g_last_signal != 0 && state->last_return_value > 128)
+	if (g_last_signal != 0 && (state->last_return_value > 128
+			|| state->last_return_value == 127))
 		ft_putchar('\n');
 	jobs_print_changed(state);
 	jobs_check_status(state);
