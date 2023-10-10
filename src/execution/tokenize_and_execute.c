@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_and_execute.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 13:44:51 by amann             #+#    #+#             */
-/*   Updated: 2023/02/22 16:22:03 by amann            ###   ########.fr       */
+/*   Updated: 2023/10/10 15:51:48 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,8 @@ void	tokenize_and_execute(t_state *state)
 		execute_ast_list(ast_list, state);
 	history_store(state->input_context.input, state, 0);
 	clear_input(&(state->input_context));
-	if (!(state->reading_from_stdin) && !terminal_apply_config(&(state->input_conf)))
+	if (!(state->reading_from_stdin)
+		&& !terminal_apply_config(&(state->input_conf)))
 		print_error(1, ERRTEMPLATE_SIMPLE, ERR_TERMIOS_FAIL);
 	if (!running_from_built_in)
 		state->running_command = false;

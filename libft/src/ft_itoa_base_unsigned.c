@@ -38,7 +38,7 @@ char	*ft_itoa_ullong_base(const unsigned long long value, int base)
 	n = value;
 	i = 0;
 	while (n / base > 0)
-	{	
+	{
 		n = n / base;
 		i++;
 	}

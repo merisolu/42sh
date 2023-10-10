@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putcharn_fd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 11:18:22 by jumanner          #+#    #+#             */
-/*   Updated: 2022/08/31 10:20:38 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/10/10 15:55:15 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,5 @@ void	ft_putcharn_fd(char c, int n, int fd)
 		if (write(fd, &c, 1) == -1)
 			return ;
 		n--;
-	}	
+	}
 }

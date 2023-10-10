@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bin.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 12:29:06 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/13 14:28:16 by amann            ###   ########.fr       */
+/*   Updated: 2023/10/10 15:53:47 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	bin_env_find(const char *name, t_state *state, char **result, bool silent)
 		if (silent)
 			return (-1);
 		return (print_error(RETURN_COMMAND_NOT_FOUND,
-			ERRTEMPLATE_SIMPLE, ERR_NO_SUCH_FILE_OR_DIR));
+				ERRTEMPLATE_SIMPLE, ERR_NO_SUCH_FILE_OR_DIR));
 	}
 	paths = ft_strsplit(path, ':');
 	if (!paths)

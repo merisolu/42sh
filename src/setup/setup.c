@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 13:21:45 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/20 11:21:55 by amann            ###   ########.fr       */
+/*   Updated: 2023/10/10 15:50:44 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ bool	setup(char *const **env, t_state *state, bool stdin)
 	set_signal_handling();
 	save_cursor(&(state->input_context));
 	if (!(state->reading_from_stdin))
-		display(&(state->input_context), 1); // magic number... (force?)
+		display(&(state->input_context), 1);
 	if (setpgid(getpid(), getpid()) == -1
 		|| ioctl(STDIN_FILENO, TIOCSPGRP, &(state->group_id)) == -1)
 		return (false);

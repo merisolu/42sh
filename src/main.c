@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 13:13:35 by jumanner          #+#    #+#             */
-/*   Updated: 2023/03/27 17:10:39 by amann            ###   ########.fr       */
+/*   Updated: 2023/10/10 15:54:17 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static t_input_result	input_handler(t_state *state)
  * not triggered.
  * Here we want to return the return value of the command that was ran.
  */
-static int read_from_stdin(t_state *state, char *const *env)
+static int	read_from_stdin(t_state *state, char *const *env)
 {
 	char		buff[INPUT_MAX_SIZE];
 
