@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast_retokenize.c                                   :+:      :+:    :+:   */
+/*   expansions_retokenize.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:21:06 by amann             #+#    #+#             */
-/*   Updated: 2023/02/16 11:09:48 by amann            ###   ########.fr       */
+/*   Updated: 2023/10/10 16:12:14 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,14 @@ static void	rt_loop(t_tokenizer *t, t_token **res, t_token_type *type, char *lc)
 	t->buff_idx = 0;
 }
 
+/*
+	This process needs a big re-think. It's incredibly convoluted because we are trying to
+	cram a few different things into the same algorithm.
+
+	The process will probably be a lot smoother if we re-tokenise everything first,
+	then handle quote and backslash inhibition.
+
+*/
 t_token	*expansions_retokenize(char *line)
 {
 	t_token			*result;
@@ -114,5 +122,8 @@ t_token	*expansions_retokenize(char *line)
 	else if (type != TOKEN_BACKSLASH || !result)
 		token_add(&result, type, ft_strdup(t.buff));
 	free(t.buff);
+
+	print_tokens(result);
+
 	return (result);
 }

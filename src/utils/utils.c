@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:03:49 by jumanner          #+#    #+#             */
-/*   Updated: 2023/10/10 15:48:55 by amann            ###   ########.fr       */
+/*   Updated: 2023/10/10 16:10:20 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	print_tokens(t_token *list)
 {
 	while (list)
 	{
-		ft_printf("value: %s\n", list->value);
+		ft_printf("type: %d | value: %s\n", list->type, list->value);
 		list = list->next;
 	}
 }
