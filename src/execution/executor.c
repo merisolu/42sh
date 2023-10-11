@@ -97,12 +97,12 @@ pid_t	execute(char *const *args, t_state *state, t_ast_context *ast)
 			return (-1);
 		else if (pid != 0)
 		{
-			gid = process_group_set(pid, ast->job->pids[0], (!ast->background));
+			gid = process_group_set(state, pid, ast->job->pids[0], (!ast->background));
 			if (gid == -1)
 				return (-1);
 			return (pid);
 		}
-		if (process_group_set(getpid(), ast->job->pids[0], false) == -1)
+		if (process_group_set(state, getpid(), ast->job->pids[0], false) == -1)
 			return (-1);
 	}
 	return (execute_child(args, state, ast, forking));

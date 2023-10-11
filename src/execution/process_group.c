@@ -17,7 +17,7 @@
  * creates a new process group. If 'foreground' is set to true, the process
  * group will be set as the foreground process group.
  */
-pid_t	process_group_set(pid_t pid, pid_t job_first_pid, bool foreground)
+pid_t	process_group_set(t_state *state, pid_t pid, pid_t job_first_pid, bool foreground)
 {
 	pid_t	target;
 
@@ -27,7 +27,7 @@ pid_t	process_group_set(pid_t pid, pid_t job_first_pid, bool foreground)
 		target = pid;
 	if (setpgid(pid, target) == -1)
 		return (-1);
-	if (foreground)
+	if (foreground && !(state->reading_from_stdin))
 	{
 		if (ioctl(STDIN_FILENO, TIOCSPGRP, &target) == -1)
 			return (-1);

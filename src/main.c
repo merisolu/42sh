@@ -91,7 +91,6 @@ static int	read_from_stdin(t_state *state, char *const *env)
 	if (!setup(&env, state, true))
 		return (cleanup(state, RETURN_ERROR));
 	ft_strcpy(state->input_context.input, buff);
-	state->running_command = true;
 	tokenize_and_execute(state);
 	if (state->exiting)
 		state->last_return_value = state->exit_return_value;

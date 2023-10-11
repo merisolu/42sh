@@ -44,7 +44,7 @@ bool	execution_setup(t_state *state)
 	if (!(state->reading_from_stdin)
 		&& !terminal_apply_config(&(state->orig_conf)))
 		return (print_error_bool(false, ERRTEMPLATE_SIMPLE, ERR_TERMIOS_FAIL));
-	if (!state->running_command)
+	if (!(state->reading_from_stdin) && !(state->running_command))
 	{
 		state->input_context.cursor = ft_strlen(state->input_context.input);
 		move_cursor_to_saved_position(&(state->input_context));

@@ -96,8 +96,10 @@ bool	setup(char *const **env, t_state *state, bool stdin)
 	save_cursor(&(state->input_context));
 	if (!(state->reading_from_stdin))
 		display(&(state->input_context), 1);
-	if (setpgid(getpid(), getpid()) == -1
-		|| ioctl(STDIN_FILENO, TIOCSPGRP, &(state->group_id)) == -1)
+	if (setpgid(getpid(), getpid()) == -1)
+		return (false);
+	if (!(state->reading_from_stdin)
+		&& ioctl(STDIN_FILENO, TIOCSPGRP, &(state->group_id)) == -1)
 		return (false);
 	delete_var("OLDPWD", &(state->env));
 	return (true);
