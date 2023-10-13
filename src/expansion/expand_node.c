@@ -75,7 +75,7 @@ static bool	malloc_err(t_state *state)
 
 bool	expand_node(char **word, t_state *state, bool autocomp)
 {
-	t_token		*list;
+	t_token		*token_list;
 	char		*result;
 
 	if (!*word)
@@ -83,11 +83,19 @@ bool	expand_node(char **word, t_state *state, bool autocomp)
 	ft_bzero((void *)&(state->t), sizeof(state->t));
 	state->t.expansion_word = *word;
 	state->t.autocomp = autocomp;
-	list = expansions_retokenize(*word);
-	if (!list)
+	token_list = expansions_retokenize(*word);
+	if (!token_list)
 		return (malloc_err(state));
 	result = NULL;
-	expansions_loop(&list, state, &result, false);
+
+	// quote and backslash handling should happen before the expansions_loop
+	// un-closed quotes are checked by input process to handle newlines.
+	// Therefore, it should be safe to re-categorise tokens inside quotes
+	// based on the quote type
+	// With backslash, it should be ok to just change the type of the
+	// subsequent token - thereby 'escaping' it before the expansions_loop
+
+	expansions_loop(&token_list, state, &result, false);
 	reset_state(state);
 	if (!result)
 		return (false);

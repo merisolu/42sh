@@ -76,13 +76,14 @@ static void retokenize_init(t_retokenize *t, char *word)
 }
 
 /*
-	This process needs a big re-think. It's incredibly convoluted because we are trying to
-	cram a few different things into the same algorithm.
-
-	The process will probably be a lot smoother if we re-tokenise everything first,
-	then handle quote and backslash inhibition.
-
-*/
+ * Separating tokenisation process from the backslash and quote inhibition
+ * process.
+ * This function simply takes the given 'word', from the AST, and creates
+ * a like-for-like list of tokens.
+ * Inhibition handling is now completed in a subsequent process, for the
+ * sake of simplicity. The previous combined algorithm was extremely 
+ * convoluted.
+ */
 t_token	*expansions_retokenize(char *word)
 {
 	t_token			*result;
