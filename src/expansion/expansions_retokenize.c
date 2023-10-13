@@ -37,14 +37,11 @@ static const t_token_dispatch	*get_parse_token_dispatch(void)
 	return (dispatch_table);
 }
 
-static t_token_type	get_parser_token_type(char value, t_tokenizer *tokenizer)
+static t_token_type	get_parser_token_type(char value)
 {
 	const t_token_dispatch	*dispatch_table;
 	size_t					i;
 
-	if (value != '\'' && tokenizer->in_quotes && tokenizer->quote_type == '\''
-		&& !ft_is_whitespace(value))
-		return (TOKEN_WORD);
 	dispatch_table = get_parse_token_dispatch();
 	i = 0;
 	while (dispatch_table[i].token != TOKEN_NULL)
@@ -61,31 +58,21 @@ static t_token_type	get_parser_token_type(char value, t_tokenizer *tokenizer)
 		return (TOKEN_JUNK);
 }
 
-static t_tokenizer	retokenize_init(char *line)
+static void	add_token_and_reset_buff(t_token **result, t_retokenize *t)
 {
-	t_tokenizer	t;
-
-	ft_bzero(&t, sizeof(t_tokenizer));
-	t.buff = ft_strnew(ft_strlen(line) + 1);
-	t.brace_count = 0;
-	t.special = (TOKEN_DOUBLE_QUOTE | TOKEN_SINGLE_QUOTE | TOKEN_BACKSLASH \
-			| TOKEN_CURLY_OPEN | TOKEN_CURLY_CLOSED | TOKEN_PERCENT \
-			| TOKEN_HASH | TOKEN_EQUALS | TOKEN_QUESTION_MARK);
-	return (t);
+	token_add(result, t->previous_type, ft_strdup(t->buff));
+	ft_strclr(t->buff);
+	t->j = 0;
 }
 
-static void	rt_loop(t_tokenizer *t, t_token **res, t_token_type *type, char *lc)
+static void retokenize_init(t_retokenize *t, char *word)
 {
-	if (t->backslash_inhibited)
-		token_add(res, TOKEN_WORD, ft_strdup(t->buff));
-	else if (*type != TOKEN_BACKSLASH)
-		token_add(res, *type, ft_strdup(t->buff));
-	t->backslash_inhibited = (*type == TOKEN_BACKSLASH
-			&& !t->backslash_inhibited
-			&& !(t->in_quotes && t->quote_type == '\''));
-	ft_bzero(t->buff, ft_strlen(t->buff) + 1);
-	*type = get_parser_token_type(*lc, t);
-	t->buff_idx = 0;
+	ft_bzero((void *)t, sizeof(t_retokenize));
+	t->buff = ft_strnew(ft_strlen(word) + 1);
+	t->previous_type = get_parser_token_type(word[0]);
+	(t->buff)[0] = word[0];
+	t->i = 1;
+	t->j = 1;
 }
 
 /*
@@ -96,31 +83,30 @@ static void	rt_loop(t_tokenizer *t, t_token **res, t_token_type *type, char *lc)
 	then handle quote and backslash inhibition.
 
 */
-t_token	*expansions_retokenize(char *line)
+t_token	*expansions_retokenize(char *word)
 {
 	t_token			*result;
-	t_token_type	type;
-	int				i;
-	t_tokenizer		t;
+	t_retokenize	t;
 
-	t = retokenize_init(line);
+	ft_printf("word = %s\n", word);
+
+	result = NULL;
+	retokenize_init(&t, word);
 	if (!t.buff)
 		return (NULL);
-	result = NULL;
-	type = get_parser_token_type(line[0], &t);
-	i = 0;
-	while (line[i])
+	while (word[t.i])
 	{
-		if (get_parser_token_type(line[i], &t) != type
-			|| (i > 0 && type & t.special))
-			rt_loop(&t, &result, &type, line + i);
-		check_quotes(line[i], &t);
-		t.buff[t.buff_idx++] = line[i++];
+		t.current_type = get_parser_token_type(word[t.i]);
+		if (t.current_type != t.previous_type)
+		{
+			add_token_and_reset_buff(&result, &t);
+			t.previous_type = t.current_type;
+		}
+		t.buff[t.j] = word[t.i];
+		(t.j)++;
+		(t.i)++;
 	}
-	if (t.backslash_inhibited)
-		token_add(&result, TOKEN_WORD, ft_strdup(t.buff));
-	else if (type != TOKEN_BACKSLASH || !result)
-		token_add(&result, type, ft_strdup(t.buff));
+	add_token_and_reset_buff(&result, &t);
 	free(t.buff);
 
 	print_tokens(result);

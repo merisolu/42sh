@@ -224,6 +224,15 @@ typedef struct s_tokenizer
 	t_token_type	special;
 }	t_tokenizer;
 
+typedef struct s_retokenize
+{
+	t_token_type	previous_type;
+	t_token_type	current_type;
+	int				i;
+	int				j;
+	char			*buff;
+}	t_retokenize;
+
 typedef struct s_state
 {
 	char *const		*env;
