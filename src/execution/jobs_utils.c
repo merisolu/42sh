@@ -40,7 +40,8 @@ void	job_execute(t_job *job, bool background, t_state *state)
 	if (!background)
 	{
 		job_wait(job, false, state);
-		ioctl(STDIN_FILENO, TIOCSPGRP, &(state->group_id));
+		if (!(state->reading_from_stdin))
+			ioctl(STDIN_FILENO, TIOCSPGRP, &(state->group_id));
 		if (WIFSIGNALED(job->return_value))
 			print_signal(WTERMSIG(job->return_value));
 		if (job->state == JOB_STOPPED)
