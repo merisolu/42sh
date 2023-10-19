@@ -6,7 +6,7 @@
 #    By: amann <amann@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 13:02:44 by jumanner          #+#    #+#              #
-#    Updated: 2023/03/23 19:29:14 by amann            ###   ########.fr        #
+#    Updated: 2023/10/19 14:58:08 by amann            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -86,7 +86,8 @@ EXPANSION_FILES = expand_tilde.c expand_variables.c expand_node.c \
 					expand_plus_minus.c	expansion_utils.c \
 					expand_name.c expand_to_value_len.c \
 					pattern_matching_control.c tilde_param_exp.c \
-					tilde_if_checks.c expand_hash.c expand_percent.c
+					tilde_if_checks.c expand_hash.c expand_percent.c \
+					handle_inhibitors.c
 
 HASH_DIR = hash
 HASH_FILES = hash_table.c hash_table_getters.c fnv1.c
@@ -145,7 +146,7 @@ SRCS := $(patsubst %, $(SRC_DIR)/%, $(SRC_FILES))
 OBJ_DIR = ./obj
 OBJS := $(patsubst %, $(OBJ_DIR)/%, $(SRC_FILES:.c=.o))
 
-GCC_FLAGS = -Wall -Wextra -Werror -O2
+GCC_FLAGS = -Wall -Wextra -Werror -g
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Darwin)

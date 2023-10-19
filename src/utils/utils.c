@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:03:49 by jumanner          #+#    #+#             */
-/*   Updated: 2023/10/19 12:01:12 by amann            ###   ########.fr       */
+/*   Updated: 2023/10/19 15:29:06 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ static size_t	get_token_type_max_width(t_token *list)
 		max = max / 10;
 		res += 1;
 	}
-	return res;
+	return (res);
 }
 
 void	print_tokens(t_token *list)
 {
-	size_t width;
+	size_t	width;
 
 	width = get_token_type_max_width(list);
 	while (list)

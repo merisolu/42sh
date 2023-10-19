@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:11 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/13 14:09:04 by amann            ###   ########.fr       */
+/*   Updated: 2023/10/19 15:38:23 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int		job_id_to_job(char *id, t_state *state, t_job **result);
 int		job_id_to_job_error_print(int value, char *caller, char *id);
 
 /* process_group.c */
-pid_t	process_group_set(t_state *state, pid_t pid, pid_t job_first_pid, bool foreground);
+pid_t	process_group_set(t_state *state, pid_t pid, pid_t first_pid, bool fg);
 
 /* pipes.c */
 void	pipe_reset(int pipe[2]);

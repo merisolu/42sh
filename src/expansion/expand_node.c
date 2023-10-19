@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_node.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:18:51 by amann             #+#    #+#             */
-/*   Updated: 2023/02/15 18:12:19 by amann            ###   ########.fr       */
+/*   Updated: 2023/10/19 15:29:57 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,7 @@ bool	expand_node(char **word, t_state *state, bool autocomp)
 	if (!token_list)
 		return (malloc_err(state));
 	result = NULL;
-
-	// quote and backslash handling should happen before the expansions_loop
-	// un-closed quotes are checked by input process to handle newlines.
-	// Therefore, it should be safe to re-categorise tokens inside quotes
-	// based on the quote type
-	// With backslash, it should be ok to just change the type of the
-	// subsequent token - thereby 'escaping' it before the expansions_loop
-
+	handle_inhibitors(&token_list);
 	expansions_loop(&token_list, state, &result, false);
 	reset_state(state);
 	if (!result)

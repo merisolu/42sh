@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:32:12 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/17 13:18:27 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/10/19 12:11:16 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,9 @@ t_token	*expansions_retokenize(char *line);
 bool	var_exists_and_set(char *name, t_state *state);
 void	move_cursor_to_end(t_token **cursor, t_state *state);
 void	set_braces_state(t_state *state);
+
+/* handle_inhibitors.c */
+void	handle_inhibitors(t_token **list);
 
 /* parse_expansions.c */
 bool	parse_expansions(t_ast *root, t_state *state);

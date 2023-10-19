@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jumanner <jumanner@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 13:39:02 by jumanner          #+#    #+#             */
-/*   Updated: 2023/02/20 11:50:09 by jumanner         ###   ########.fr       */
+/*   Updated: 2023/10/19 15:39:01 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,25 +79,25 @@ t_ast_context *ast, bool forking)
 	return (exit_if_forking(forking, ret));
 }
 
-pid_t	execute(char *const *args, t_state *state, t_ast_context *ast)
+pid_t	execute(char *const *ag, t_state *state, t_ast_context *ast)
 {
-	bool	forking;
+	bool	fork;
 	pid_t	pid;
 	pid_t	gid;
 
 	if (!update_env_execution(state, ast))
 		return (-1);
-	forking = (ast->background || in_pipes(ast->pipes)
-			|| !built_in_get(args[0]));
-	update_hash_table(args, state);
-	if (forking)
+	fork = (ast->background || in_pipes(ast->pipes) || !built_in_get(ag[0]));
+	update_hash_table(ag, state);
+	if (fork)
 	{
 		pid = start_fork(ast);
 		if (pid == -1)
 			return (-1);
 		else if (pid != 0)
 		{
-			gid = process_group_set(state, pid, ast->job->pids[0], (!ast->background));
+			gid = process_group_set(state, pid,
+					ast->job->pids[0], !(ast->background));
 			if (gid == -1)
 				return (-1);
 			return (pid);
@@ -105,5 +105,5 @@ pid_t	execute(char *const *args, t_state *state, t_ast_context *ast)
 		if (process_group_set(state, getpid(), ast->job->pids[0], false) == -1)
 			return (-1);
 	}
-	return (execute_child(args, state, ast, forking));
+	return (execute_child(ag, state, ast, fork));
 }

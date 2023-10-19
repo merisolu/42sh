@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:21:06 by amann             #+#    #+#             */
-/*   Updated: 2023/10/19 11:49:05 by amann            ###   ########.fr       */
+/*   Updated: 2023/10/19 15:29:21 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static const t_token_dispatch	*get_parse_token_dispatch(void)
 	{'%', TOKEN_PERCENT},
 	{'?', TOKEN_QUESTION_MARK},
 	{'*', TOKEN_STAR},
+	{'\n', TOKEN_NEWLINE},
 	{'\0', TOKEN_NULL}
 	};
 
@@ -83,14 +84,16 @@ static void retokenize_init(t_retokenize *t, char *word)
  * Inhibition handling is now completed in a subsequent process, for the
  * sake of simplicity. The previous combined algorithm was extremely
  * convoluted.
+ *
+ * Tokens for special characters will need to only be one char long.
+ *
  */
 t_token	*expansions_retokenize(char *word)
 {
 	t_token			*result;
 	t_retokenize	t;
 
-	ft_printf("##### RETOKENIZE START #####\nword = %s\n", word);
-
+	//ft_printf("##### RETOKENIZE START #####\nword = %s\n", word);
 	result = NULL;
 	retokenize_init(&t, word);
 	if (!t.buff)
@@ -98,7 +101,8 @@ t_token	*expansions_retokenize(char *word)
 	while (word[t.i])
 	{
 		t.current_type = get_parser_token_type(word[t.i]);
-		if (t.current_type != t.previous_type)
+		if (t.current_type != t.previous_type
+			|| !(t.previous_type & (TOKEN_WHITESPACE | TOKEN_WORD)))
 		{
 			add_token_and_reset_buff(&result, &t);
 			t.previous_type = t.current_type;
@@ -109,8 +113,7 @@ t_token	*expansions_retokenize(char *word)
 	}
 	add_token_and_reset_buff(&result, &t);
 	free(t.buff);
-
-	print_tokens(result);
-	ft_printf("#####  RETOKENIZE END  #####\n");
+	//print_tokens(result);
+	//ft_printf("#####  RETOKENIZE END  #####\n");
 	return (result);
 }
