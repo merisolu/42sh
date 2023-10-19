@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 18:37:40 by amann             #+#    #+#             */
-/*   Updated: 2023/03/27 16:35:01 by amann            ###   ########.fr       */
+/*   Updated: 2023/10/19 17:49:05 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	search_variables(t_auto *autocomp, t_state *state)
 		print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
 		return ;
 	}
-	temp = find_query(autocomp->trimmed_input, ' ', state, false);
+	temp = find_query(autocomp->trimmed_input, state, false);
 	dollar = ft_strchr(temp, '$');
 	if (c_b(dollar))
 		autocomp->query = ft_strdup(dollar + 2);

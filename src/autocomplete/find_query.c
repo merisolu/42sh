@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   find_query.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amann <amann@student.hive.fi>              +#+  +:+       +#+        */
+/*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 13:54:23 by amann             #+#    #+#             */
-/*   Updated: 2023/02/22 13:24:51 by amann            ###   ########.fr       */
+/*   Updated: 2023/10/19 17:51:11 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "autocomplete.h"
 
-static char	*find_query_loop(int len, char *str, char c)
+static char	*find_query_loop(int len, char *str)
 {
 	int	start;
 
 	start = 0;
 	while (len > -1)
 	{
-		if (str[len] == c)
+		if (str[len] == ' ')
 		{
 			start = len + 1;
 			break ;
@@ -55,12 +55,12 @@ static bool	expansion_handler(t_state *state, char **last_word)
 	return (true);
 }
 
-char	*find_query(char *str, char c, t_state *state, bool expand)
+char	*find_query(char *str, t_state *state, bool expand)
 {
 	char	*last_word;
 	char	*res;
 
-	last_word = find_query_loop((int)ft_strlen(str), str, ' ');
+	last_word = find_query_loop((int)ft_strlen(str), str);
 	if (!last_word)
 		return (NULL);
 	if (expand)
@@ -68,9 +68,7 @@ char	*find_query(char *str, char c, t_state *state, bool expand)
 		if (!expansion_handler(state, &last_word))
 			return (NULL);
 	}
-	if (c == ' ')
-		return (last_word);
-	res = find_query_loop((int)ft_strlen(last_word), last_word, c);
+	res = find_query_loop((int)ft_strlen(last_word), last_word);
 	free(last_word);
 	if (!res)
 		return (NULL);

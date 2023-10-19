@@ -1,10 +1,12 @@
+Notes on pattern matching
+
 What we need to do:
 
 * - matching any string, including empty strings
 
 ? - matching any single character
 
-[...] - matching any single character enclosed in the brackets. 
+[...] - matching any single character enclosed in the brackets.
 
 [!...] - matching any character NOT enclosed in the brackets
 
@@ -21,7 +23,7 @@ Notes on […] square bracket handling
 
 The enclosed string cannot be empty. Therefore:
 
-[][!] 
+[][!]
 
 would match the characters ‘]’, ‘[‘, and ‘!’
 

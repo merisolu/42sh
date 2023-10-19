@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:21:06 by amann             #+#    #+#             */
-/*   Updated: 2023/10/19 15:56:33 by amann            ###   ########.fr       */
+/*   Updated: 2023/10/19 17:26:02 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ t_token	*expansions_retokenize(char *word)
 		(t.i)++;
 	}
 	add_token_and_reset_buff(&result, &t);
+	//print_tokens(result);
 	free(t.buff);
 	return (result);
 }

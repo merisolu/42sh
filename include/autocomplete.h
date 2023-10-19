@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 15:08:42 by jumanner          #+#    #+#             */
-/*   Updated: 2023/03/26 16:24:48 by amann            ###   ########.fr       */
+/*   Updated: 2023/10/19 17:49:50 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ bool	filter_matching(t_auto *autocomp);
 size_t	find_longest(char **search_results);
 
 /* find_query.c */
-char	*find_query(char *str, char c, t_state *state, bool expand);
+char	*find_query(char *str, t_state *state, bool expand);
 
 /* insert_expansion.c */
 void	insert_expansion(t_input_context *ctx, char *exp);

@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 17:44:44 by amann             #+#    #+#             */
-/*   Updated: 2023/03/27 16:27:09 by amann            ###   ########.fr       */
+/*   Updated: 2023/10/19 17:49:10 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	search_file_paths(t_auto *autocomp, t_state *state)
 		print_error(0, ERRTEMPLATE_SIMPLE, ERR_MALLOC_FAIL);
 		return ;
 	}
-	autocomp->query = find_query(autocomp->trimmed_input, ' ', state, true);
+	autocomp->query = find_query(autocomp->trimmed_input, state, true);
 	path = NULL;
 	reset_query_and_path(autocomp, &path);
 	if (!path || !(autocomp->query))
