@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:03:49 by jumanner          #+#    #+#             */
-/*   Updated: 2023/10/10 16:10:20 by amann            ###   ########.fr       */
+/*   Updated: 2023/10/19 12:01:12 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,37 @@ void	update_window_size(t_input_context *context)
 	context->height = size.ws_row;
 }
 
-void	print_tokens(t_token *list)
+static size_t	get_token_type_max_width(t_token *list)
 {
+	float	max;
+	size_t	current_value;
+	size_t	res;
+
+	max = 0;
 	while (list)
 	{
-		ft_printf("type: %d | value: %s\n", list->type, list->value);
+		current_value = list->type;
+		if (current_value > max)
+			max = current_value;
+		list = list->next;
+	}
+	res = 1;
+	while (max > 1)
+	{
+		max = max / 10;
+		res += 1;
+	}
+	return res;
+}
+
+void	print_tokens(t_token *list)
+{
+	size_t width;
+
+	width = get_token_type_max_width(list);
+	while (list)
+	{
+		ft_printf("type: %*d | value: %s\n", width, list->type, list->value);
 		list = list->next;
 	}
 }

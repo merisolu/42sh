@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 17:21:06 by amann             #+#    #+#             */
-/*   Updated: 2023/10/10 16:12:14 by amann            ###   ########.fr       */
+/*   Updated: 2023/10/19 11:49:05 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static void retokenize_init(t_retokenize *t, char *word)
  * This function simply takes the given 'word', from the AST, and creates
  * a like-for-like list of tokens.
  * Inhibition handling is now completed in a subsequent process, for the
- * sake of simplicity. The previous combined algorithm was extremely 
+ * sake of simplicity. The previous combined algorithm was extremely
  * convoluted.
  */
 t_token	*expansions_retokenize(char *word)
@@ -89,7 +89,7 @@ t_token	*expansions_retokenize(char *word)
 	t_token			*result;
 	t_retokenize	t;
 
-	ft_printf("word = %s\n", word);
+	ft_printf("##### RETOKENIZE START #####\nword = %s\n", word);
 
 	result = NULL;
 	retokenize_init(&t, word);
@@ -111,6 +111,6 @@ t_token	*expansions_retokenize(char *word)
 	free(t.buff);
 
 	print_tokens(result);
-
+	ft_printf("#####  RETOKENIZE END  #####\n");
 	return (result);
 }
