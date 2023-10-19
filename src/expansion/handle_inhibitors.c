@@ -6,7 +6,7 @@
 /*   By: amann <amann@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 16:03:49 by jumanner          #+#    #+#             */
-/*   Updated: 2023/10/19 15:37:26 by amann            ###   ########.fr       */
+/*   Updated: 2023/10/19 15:58:12 by amann            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,10 @@ static void	handle_quote_state(t_token **list, bool *in_dq, bool *in_sq)
 
 static void	handle_backslash(t_token **list, bool in_quotes, t_token **head)
 {
-	int		special_char;
 	t_token	*current;
 
-	special_char = TOKEN_DOLLAR | TOKEN_DOUBLE_QUOTE | TOKEN_BACKSLASH \
-					| TOKEN_NEWLINE;
-	if (in_quotes && !((*list)->next->type & special_char))
+	if (in_quotes && !((*list)->next->type & (TOKEN_DOLLAR | \
+		TOKEN_DOUBLE_QUOTE | TOKEN_BACKSLASH | TOKEN_NEWLINE)))
 		(*list)->type = TOKEN_WORD;
 	else if ((*list)->next)
 	{
