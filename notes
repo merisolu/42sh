@@ -1,0 +1,84 @@
+What we need to do:
+
+* - matching any string, including empty strings
+
+? - matching any single character
+
+[...] - matching any single character enclosed in the brackets. 
+
+[!...] - matching any character NOT enclosed in the brackets
+
+NB [1-9] indicates a range of characters, this must also be handled
+
+\ (backslash) inhibition also needs to function properly
+
+
+Notes on * ? wildcard handling
+
+The star * includes empty strings, so could be 0 characters. This is not true for ?. e.g. ls d*k* could list files called darkly, ducky, dark and duck. However, ls d*k? would list ducky but not any of the others.
+
+Notes on […] square bracket handling
+
+The enclosed string cannot be empty. Therefore:
+
+[][!] 
+
+would match the characters ‘]’, ‘[‘, and ‘!’
+
+Forward slashes ‘/‘ cannot be matched
+
+The characters * and ? lose their special meaning inside square brackets
+
+Planning and Thought Process:
+
+THIS IS NOT REG-EX - what you would pass to grep as an argument, for example, is handled very differently
+
+POSIX explanation of pattern matching:
+
+https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_13
+
+What the shell is doing here, is extending the list of words in the command, based on the matches that it is able to find within the current working directory.
+
+Steps (potential):
+
+	It’s probably best treated as an expansion, so should be handled AFTER the AST has been constructed
+
+	- When a word is found containing one of the above special characters, the search process begins
+
+	- If matches are found, the original word is replaced by the matches
+
+NB: no pattern matching happens when assigning variables, but it does happen when expanding them.
+
+Globbing does happen while in autocomplete mode as well.
+
+It is also smart with redirections, if more than one match is found, ‘ambiguous redirect’ error message is displayed
+
+This presents us with a problem. What makes the most sense would be to implement globbing from somewhere within the expand node function, as this is also called from the autocomplete process. I think it makes the most logical sense to treat globbing as a form of ‘expansion’. This is also where we are doing our ‘high resolution’ re-tokenizing, which will also be needed to handle globbing properly. If I put it somewhere else, I would need to re-re-tokenize, and the process becomes even more convoluted.
+
+BUT there is a major issue with putting it in expand_node, due to the limitations of C and the current design of the shell. Namely, expand_node takes the address of each ‘word’, either from within the AST or the cursor context during autocompletion, and expands it in isolation. This works fine with tildes and variables, but is problematic in globbing, as if multiple matches are found, we need to either:
+
+	- replace one word with multiple words in the case of the AST
+
+	or
+
+	- replace one word with one if only one match is found, or return all potential matches to be displayed, in the case of autocompletion
+
+
+globbing seems to be happening after variable expansion, and there does seem to be an extra step of lexical analysis
+
+based on, for example, setting a variable’s value to * or ‘*’ - it still knows whether or not to inhibit the glob when that variable is invoked.
+
+This is contrary to a tilde or dollar, which is expanded as the variable is assigned. Note also that when used with export, globbing does not happen either. e.g. export hello=* (but with autocomplete, if there is only one possibility, it will still be expanded)
+
+
+TO DO
+
+Refactor the expansions retokenise process. It’s extremely convoluted and trying to do multiple things at once. - DONE
+
+
+Get shell running on mac - done!
+Find a sensible place in the AST to start the pattern matching process - done!
+Add some robot framework unit tests - ongoing
+A lot more comments are needed - add where relevant to the old code interacted with. Maybe convert comments to docstrings by removing empty lines. - ongoing
+Add checks to makefile to ensure cross compatibility on different macs and linux - DONE
+review extend param expansions as these also use globbing but only a rudimentry implementation was used
